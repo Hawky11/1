@@ -80,6 +80,30 @@ The existing Stage11 project already compiles `AITrace.cpp`, so no `.vcxproj` or
 
 Start with clean runtime logs. Run a short COM-vs-COM session exercising the same type-1 / payload-0x1E path, then close normally so buffers flush.
 
+## Stage17 initialization diagnostics (revision r1)
+
+The earlier runtime test produced the Stage16 write/queue traces but no `ArcanaAI_Bit113SetterTrace.log`. The callsite source had several early-return paths that did not write to the Stage17 log, so absence of that file alone did not identify the cause.
+
+The diagnostic revision on branch `stage17-callsite-init-diagnostics` adds a startup marker before validation, logs all three relevant INI switch values, and emits Stage17-specific errors on the former early-return paths (conflicting DR0/DR1 modes, missing `AALib.exe`, invalid image/ranges, or failed initial P1/P2 reads). It also corrects the Stage17 logger's CRLF line ending.
+
+After copying this overlay into the assembled Stage11 project, verify the exact source revision before building:
+
+```powershell
+Select-String -Path .\\src\\AITrace.cpp -SimpleMatch 'STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1'
+```
+
+A match is required. The Stage11 project already compiles `AITrace.cpp`; no separate translation unit or project-file entry is needed. Build with MSVC x86, retain Build.log, and install the newly built `dinput8.dll` plus this overlay's `ArcanaAI.ini` beside the actual game executable / `AALib.exe`.
+
+With clean logs, the first entries in `ArcanaAI_Bit113SetterTrace.log` should contain:
+
+- `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1`
+- `STAGE17_INIT: FieldTraceThread entered.`
+- `STAGE17_CONFIG:` including values read from the INI beside the loaded proxy DLL.
+
+The file should now be created even when the callsite is disabled or validation fails. If other ArcanaAI logs are written but this marker file is still absent, stop before another gameplay test: verify that the newly built DLL was copied to the folder the game actually loads, and that the local `src\\AITrace.cpp` contained the marker when compiled. A successful link alone does not prove that the correct overlay was copied.
+
+---
+
 ## Required upload
 
 - `Build.log`

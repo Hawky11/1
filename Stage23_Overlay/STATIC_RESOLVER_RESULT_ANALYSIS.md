@@ -91,10 +91,10 @@ The trace filters to known P1/P2 objects with dispatcher event type `1` and payl
 
 ## 4. Runtime verification status
 
-**Source-only at this checkpoint.** Stage23 has not yet been compiled or run in the game. Do not assume the CALL wrapper installed just because the code is present.
+**Build retry pending.** The first user-side compile attempt reached `AIQueueTrace.cpp` and failed at two conversions from `BYTE*` to `std::intptr_t` (MSVC C2440). Revision r2 changes both resolver-address comparisons to `reinterpret_cast<std::intptr_t>(resolver)`. This is a pointer representation conversion only; it does not alter the relative-call destination calculation, signature checks, or hook flow. The corrected revision has not yet been rebuilt or run in-game. Do not assume the CALL wrapper installed just because the code is present.
 
 Expected marker:
-`STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r1`
+`STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2`
 
 Expected installation line:
 `Installed Stage23 resolver-result observer at callsite RVA 0x000EE273 -> helper RVA 0x0012EAC0`

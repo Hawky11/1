@@ -6,7 +6,7 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- **Next source candidate (Stage23, source-only):** [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace), HEAD `abaf5bb48d0920632f7b9e1d7c0316eeda3c330d`. The full replacement is `Stage23_Overlay/src/AIQueueTrace.cpp` plus `Stage23_Overlay/ArcanaAI.ini`.
+- **Next source candidate (Stage23, source-only):** [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace), HEAD `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`. The full replacement is `Stage23_Overlay/src/AIQueueTrace.cpp` plus `Stage23_Overlay/ArcanaAI.ini`.
 - **Latest tested source:** [stage22-payload-1e-post-and-trace](https://github.com/Hawky11/1/tree/stage22-payload-1e-post-and-trace), HEAD `27b711d4b3ee8079060bfbab8f8ecc22713ac917`.
 - **Latest runtime evidence:** [stage22-payload-1e-runtime-evidence](https://github.com/Hawky11/1/tree/stage22-payload-1e-runtime-evidence), HEAD `5b9d1bd83d1324d899f4c5f7f17dcaca136e7453`. This remains the latest verified run; Stage23 has no runtime evidence yet.
 - Stage22 Build: Visual Studio 18 Community / MSVC 14.51.36231 / Win32 x86. All eight C++ units compiled; `dinput8.dll` linked at **225,792 bytes**. One non-fatal C4754 warning at `AICommandSiteTrace.cpp:785`.
@@ -14,7 +14,7 @@
 - Stage18/20/17 result from that run: all 11 gate records match object-guard and setter records one-to-one by side/player/thread/tick/parent return. Gate AL=1/key `0x19`; object DWORD `0x640`, bit2 clear, AL=0; setter index `0x71` follows 71–96 QPC ticks later.
 - **Corrected resolver dataflow from the exact AALib.exe binary:** the type-1 mapping call is at `0xEE273` -> `0x52EAC0`. It returns a pointer in EAX. The dispatcher reads result byte `+3` into EDI at `0xEE28D`; after the mapped value is consumed by helper `0x4F57D0`, EDI is overwritten by `MOV EDI,[EBP+8]` at `0xEE30B`. The later `CMP EDI,1` at `0xEE3E1` therefore tests the original dispatcher event type, not the resolver byte. In the payload-`0x1E` branch, EDI is then overwritten again as the controller-array pointer by `LEA EDI,[ESI+0x3A3C]` at `0xEE3FC`.
 - Stage21 r2's captured pre-call EDI was therefore correctly sampled in time, but semantically mislabeled. Stage23 logs the actual resolver return record at `0xEE273`; the inherited field is renamed `preCallEdi` and retained only as a raw register value.
-- The Stage23 source hook validates callsite prefix/CALL/suffix, helper prologue, resolved destination, and PE fingerprint. It copies/replays the original four cdecl arguments once, logs the 12-byte returned record and field bytes, restores post-call registers/EFLAGS, and leaves the original caller stack cleanup intact.
+- The Stage23 source hook validates callsite prefix/CALL/suffix, helper prologue, resolved destination, and PE fingerprint. It copies/replays the original four cdecl arguments once, logs the 12-byte returned record and field bytes, restores post-call registers/EFLAGS, and leaves the original caller stack cleanup intact. The first user build on 2026-11-09 failed at two `static_cast<std::intptr_t>(resolver)` expressions (C2440); r2 fixes both with `reinterpret_cast<std::intptr_t>(resolver)`. This is a type-correct pointer-to-address conversion only.
 - Stage16 writer and Stage19 state-map logs in Stage22 upload were zero bytes; exact bit17 writer and state-map correlations remain open.
 - Preserve Stage21 r1/r2, Stage22 source and Stage22 runtime evidence unchanged.
 
@@ -22,12 +22,21 @@
 
 1. Apply the Stage23 overlay **on top of the assembled Stage22 project**: replace `src/AIQueueTrace.cpp` with `Stage23_Overlay/src/AIQueueTrace.cpp`, and replace `ArcanaAI.ini` with `Stage23_Overlay/ArcanaAI.ini`. No project-file change is required; `AIQueueTrace.cpp` is already part of the build.
 2. Build `Release | Win32` using the same MSVC x86 Build.bat workflow. Upload the complete `Build.log` first. Do not install a DLL if the build fails.
-3. After a successful build, start a normal COM-vs-COM session and confirm marker `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r1` and installation at callsite RVA `0x000EE273` -> helper RVA `0x0012EAC0`.
+3. After a successful build, start a normal COM-vs-COM session and confirm marker `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2` and installation at callsite RVA `0x000EE273` -> helper RVA `0x0012EAC0`.
 4. Upload `ArcanaAI_Stage23ResolverResultTrace.log`, `ArcanaAI_Stage21PayloadConsumerTrace.log`, `ArcanaAI_Stage22PayloadPostAndTrace.log`, `ArcanaAI_EventDispatchTrace.log`, and `ArcanaAI_QueueTrace.log`. Include same-run Stage18 gate, Stage20 object guard, Stage17 setter, Stage16 writer, and Stage19 state-map logs when available.
 5. Correlate Stage23 `resolverByte03`, raw 12-byte record, resolver arguments and player state with Stage21 classifier/fallback and Stage22 consumer records. Do not call `resolverByte03` an attack/action ID until runtime patterns support that interpretation.
 6. Stage23 is diagnostic-only. Do not force resolver values, edit game tables, or change helper arguments. Preserve all existing stage/evidence branches.
 
 The expected new file is `ArcanaAI_Stage23ResolverResultTrace.log`. Stage23 remains source-only until the Build.log, runtime marker, and successful hook-installation line are verified.
+
+## Latest Stage23 build attempt — compile stopped (2026-11-09 00:33:23)
+
+The user supplied the complete Build.log transcript. Visual Studio 2026 Developer Command Prompt 18.9.1 / MSVC 14.51.36231 was initialized for x86 successfully. The project-file check, compiler/linker path checks, and compilation of `Proxy.cpp`, `ComVsCom.cpp`, `AITrace.cpp`, and `AICommandTrace.cpp` passed. Compilation stopped in `src\\AIQueueTrace.cpp` with two MSVC C2440 errors:
+
+- line 1515: `static_cast` cannot convert `BYTE*` to `intptr_t`;
+- line 1567: the same conversion error.
+
+No DLL link occurred; do not infer a usable Stage23 DLL from this attempt. Both expressions compared a calculated integer destination with the helper pointer. Stage23 r2 corrects only those pointer conversions to `reinterpret_cast<std::intptr_t>(resolver)` and updates the build marker to `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2`. The branch is updated, but r2 still requires a fresh Release | Win32 build and runtime verification.
 
 ## Historical build/runtime details
 

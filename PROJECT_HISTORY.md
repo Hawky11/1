@@ -28,7 +28,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 20 | [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace) | `11dde281a08a3481517d0cb60d4752393fa0e578` | Build-verified Stage20 source; real object-bit-2 helper wrapper |
 | 20r | [stage20-bit113-object-bit2-runtime-evidence](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-runtime-evidence) | `08125627bfbb588aff8e735168c51a1083cb06e6` | 33 positive object-guard samples and three payload-0x1E dispatch events |
 | 21 | [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace) | `d210c3540ddd29fff1795ef8da6d3605958d481a` | Exact r1 source snapshot used for the successful build and runtime test |
-| 21r | [stage21-payload-1e-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-runtime-evidence) | `274a58e2b514766ea2ef067c83f3ae321a0908ce` | Archived Build.log, Stage21 consumer logs and Stage20 AL=0 → Stage17 setter correlation |
+| 21r | [stage21-payload-1e-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-runtime-evidence) | `fe96faadaf1cea2ab559a5f0e0c2346eca9cc802` | Archived Build.log and runtime logs; P1 object-guard AL=0 → setter → bit17 set/clear chain |
 | 21r2 | [stage21-payload-1e-consumer-trace-r2](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace-r2) | `28fd26b76c22b9070eabaa33a85c713876234aaf` | Unbuilt correction: save decoded action EDI before classifier helper |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
@@ -863,3 +863,37 @@ A separate source branch preserves this correction without rewriting r1: [stage2
 1. Capture a natural fallback where slot 3 is nonzero before `0x4F7EB0`, or controller bit `0x400` is set before the following AND, to confirm an actual state transition.
 2. Capture the actual bit17 writer after the P1 direct setter call; this run's Stage16 write log is empty even though the Stage17 CALL was observed.
 3. If another Stage21 payload capture is needed, build from r2 to obtain a valid pre-call decoded action code. Do not rewrite or overwrite the r1 evidence branch.
+
+
+## Stage21 Stage16 blob reinspection correction — bit17 transitions confirmed (2026-11-08)
+
+This correction supersedes the Stage21 runtime paragraph above that described `ArcanaAI_PlayerBit17WriteTrace.log` as zero bytes. That statement came from a normal file-read result that returned no text for an oversized blob. The file is present in the upload and its Git blob was successfully retrieved and parsed.
+
+- Blob size: **7,565,612 bytes**.
+- Lines: **14,089**.
+- `PLAYER_BIT17_WRITE` records: **14,081**.
+- Exactly **two** bit17 transitions were found in the entire run; both are P1: one set and one later clear.
+
+### Set transition correlated to the object guard and setter
+
+All three records use P1 player `0x0E9C1F78` and thread 23660:
+- Stage20 object-guard record: qpc `0x00000764133B9CC6`, `[object+0x3B70]=0x00010440`, bit2 clear, real helper `AL=0`.
+- Stage17 setter record: qpc `0x00000764133B9D15`, CALL RVA `0x000C6502`, index `0x71`; gap from guard is **79 QPC ticks**.
+- Stage16 set record: sequence 11981, qpc `0x00000764133B9E7E`, RVA `0x0000FAD2`, watched field `player+0x3B84`; old DWORD `0x01000000`, new DWORD `0x01020000`, `oldBit17=0`, `newBit17=1`, `shadowBit17Changed=1`. It occurs **361 QPC ticks after the setter** and **440 ticks after the object guard**.
+
+This confirms the tested P1 path end-to-end: object bit2 clear causes the original helper to return AL=0; the caller reaches the direct bit-113 setter; the player's bit17 is actually set by the write at RVA `0xFAD2`.
+
+### Later clear
+
+Stage16 sequence 12178 records qpc `0x000007641364D88E`, RVA `0x000ED1A9`, old DWORD `0x00020000`, new DWORD `0x00000000`, `oldBit17=1`, `newBit17=0`. This is **2,701,840 QPC ticks after the set** and confirms the later clear path in the same capture.
+
+### Corrected Stage21 r1 conclusions
+
+- The previous statement that Stage16 writer evidence was unavailable is withdrawn.
+- The P1 object-bit-2-clear → actual AL=0 → index-0x71 setter → actual bit17 0→1 write chain is now confirmed with QPC-level evidence.
+- Stage16 observed exactly one set and one clear transition in this run; the P2 side had no bit17 transition.
+- Stage18 still has no gate-result entries, so no same-event Stage18 table-key/state-index correlation has been established.
+- Stage21 r1 fallback slot 3 and controller flag 0x400 were already zero before the respective P1/P2 fallback calls; a nonzero-to-zero mutation remains unobserved.
+- The r1 `decodedActionCode` value remains invalid because EDI was sampled after the classifier helper. The separately preserved r2 source saves EDI before that helper but is not built or runtime-tested.
+
+Updated detailed analysis: [Stage21 runtime analysis](https://github.com/Hawky11/1/blob/stage21-payload-1e-consumer-runtime-evidence/Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md). Updated evidence-branch HEAD: `fe96faadaf1cea2ab559a5f0e0c2346eca9cc802`.

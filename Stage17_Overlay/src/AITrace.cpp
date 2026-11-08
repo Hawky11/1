@@ -56,7 +56,7 @@ namespace
     constexpr DWORD kStage17Bit113Index = 0x71u;
     constexpr DWORD kStage17Bit113RecordCapacity = 512u;
     constexpr BYTE kStage17Bit113ExpectedCall[5] = { 0xE8, 0x99, 0x95, 0xF4, 0xFF };
-    constexpr char kStage17BuildMarker[] = "STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1";
+    constexpr char kStage17BuildMarker[] = "STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2";
 
     struct TraceSite
     {

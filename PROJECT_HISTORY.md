@@ -355,3 +355,28 @@ The user's reported build failed before link. Do not install any DLL from this a
 After inserting the forward declaration, the diagnostic build marker was bumped from `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1` to the distinct `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2`. This prevents a stale r1 DLL from being mistaken for the corrected r2 source. The Stage17 README's PowerShell check and expected runtime marker were updated accordingly.
 
 Current source branch: `stage17-callsite-init-diagnostics`; latest HEAD after README update: `ebabe7faa0521115425e56d9b6880b76e1a48806`. This revision is still source-only; no MSVC build result is available yet.
+
+
+## Stage17 diagnostic r2 build succeeded — 2026-11-08 16:32
+
+The user supplied the next MSVC x86 Build.log from `D:\\INCUBATOR\\ArcanaAIOverhaul`, started 2026-11-08 at 16:32:02. The local source marker check had already returned the r1 marker before the compile-fix update; the corrected r2 source has since been verified in GitHub at branch `stage17-callsite-init-diagnostics`, HEAD `ebabe7faa0521115425e56d9b6880b76e1a48806`.
+
+Build results in the supplied log:
+- Visual Studio 2026 18.9.1 / MSVC 14.51.36231, x86 environment initialized successfully.
+- All eight C++ translation units compiled, including `AITrace.cpp` and the existing Stage14/15 `AICommandSiteTrace.cpp`.
+- Link succeeded and created `build\\dinput8.dll`.
+- DLL size: **198,144 bytes**.
+- The previous 14 C3861 errors for `ReadDwordAtAddress` are gone.
+- One non-fatal C4754 warning remains at `AICommandSiteTrace.cpp` lines 782–785, related to mixed-width arithmetic in the stack-snapshot address bound calculation. It did not prevent compile or link.
+
+This is the first successful build of the corrected Stage17 callsite diagnostic revision. It proves compilation/linking, not that the DLL has been installed, loaded, or that the RVA `0xC6502` hook installed.
+
+### Next runtime verification
+
+1. Copy the new 198,144-byte `build\\dinput8.dll` and the matching Stage17 `ArcanaAI.ini` beside the actual game executable / `AALib.exe`, keeping a backup of the prior DLL.
+2. Launch the game and inspect `ArcanaAI_Bit113SetterTrace.log` before running another full COM-vs-COM test.
+3. Its first lines must contain `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2`, `STAGE17_INIT`, and `STAGE17_CONFIG` with `EnableStage17Bit113SetterCallTrace=1`.
+4. Inspect the hook installation result. If it reports installation at RVA `0x000C6502`, then conduct a short COM-vs-COM session to obtain `BIT113_SET_CALL` entries and correlate their QPC/player pointers with Stage16 bit17 writes.
+5. If other ArcanaAI logs appear but the Stage17 marker does not, stop and determine which DLL/INI pair the game actually loaded. Do not repeat a full test blindly.
+
+The Stage17 callsite candidate remains runtime-unconfirmed until the log proves successful hook installation and matching `BIT113_SET_CALL` records.

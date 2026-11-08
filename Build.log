@@ -1,0 +1,47 @@
+ArcanaAIOverhaul Stage 11 build log
+Started: 09.11.2026  0:39:38,25
+Project: D:\INCUBATOR\ArcanaAIOverhaul
+Temporary work: C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Build_600_21538_27249
+
+[1/6] Project files: OK
+[2/6] Using vswhere: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe
+VSINSTALL=C:\Program Files\Microsoft Visual Studio\18\Community
+VCVARS=C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+[3/6] Calling vcvarsall x86. Its output is intentionally NOT redirected to Build.log.
+vcvarsall exit code: 0
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\bin\Hostx86\x86\cl.exe
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\bin\Hostx86\x86\link.exe
+[4/6] Compiler and linker path checks passed.
+Compiler version will be validated by compiling the real source files.
+
+[5/6] Compiling C++ sources
+
+===== Compiling Proxy.cpp =====
+Proxy.cpp
+
+===== Compiling ComVsCom.cpp =====
+ComVsCom.cpp
+
+===== Compiling AITrace.cpp =====
+AITrace.cpp
+
+===== Compiling AICommandTrace.cpp =====
+AICommandTrace.cpp
+
+===== Compiling AIQueueTrace.cpp =====
+AIQueueTrace.cpp
+
+===== Compiling AICommandSiteTrace.cpp =====
+AICommandSiteTrace.cpp
+D:\INCUBATOR\ArcanaAIOverhaul\src\AICommandSiteTrace.cpp(785) : warning C4754: Правила преобразования арифметических операций в сравнении по адресу D:\INCUBATOR\ArcanaAIOverhaul\src\AICommandSiteTrace.cpp(782) означают, что одна ветвь не может быть выполнена. Приведите "(i * ...)" к "ULONG64" (или к аналогичному типу из 8 байт).
+
+===== Compiling AIProducerContextTrace.cpp =====
+AIProducerContextTrace.cpp
+
+===== Compiling AIParentFlowTrace.cpp =====
+AIParentFlowTrace.cpp
+
+[6/6] Linking build\dinput8.dll
+   Создается библиотека build\dinput8.lib и объект build\dinput8.exp
+
+BUILD SUCCEEDED. DLL size: 229376 bytes.

@@ -18,7 +18,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 13 | [stage13-alternate-callsite-diagnostics](https://github.com/Hawky11/1/tree/stage13-alternate-callsite-diagnostics) | `19b0e6fc40d9b7626cb2557aa844123eb3419ec1` | Alternate queue callsite at F6AD7 |
 | 14 | [stage14-producer-call-diagnostics](https://github.com/Hawky11/1/tree/stage14-producer-call-diagnostics) | `dcd036d1b3cead45f8400fd8545dff41d0d59131` | Parent/helper call context and return values |
 | 15 | [stage15-postguard-flow-diagnostics](https://github.com/Hawky11/1/tree/stage15-postguard-flow-diagnostics) | `4d1e2a049c835a991647cb04565d31d330aeac95` | Branch-by-branch flow between F2ED0 and F6AD7 |
-| 16 | [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace) | `955fe3bb2baff0822949a40350321f4fb84f8d6f` | Source-only write-only watchpoints for P1/P2 player+0x3B84; awaiting build/runtime test |
+| 16 | [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace) | `58313d8c0f6071bc8099fc5ec04ae04d2974dafd` | Runtime-confirmed bit17 setter/clearer; Stage17 caller verification remains |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -145,3 +145,47 @@ No immediate `OR [reg+0x3B84],0x00020000` was found. Two dynamic OR sites were r
 Stage16 is **source-only**. It has not been compiled with MSVC and has not been installed or runtime-tested here. No Stage16 `Build.log` or runtime log has been uploaded. Do not report Stage16 as successful until the user supplies the build and runtime evidence.
 
 Next: follow `Stage16_Overlay/README_STAGE16.md` to assemble the Stage11 base plus Stage12–Stage16 overlays, build with MSVC x86, run a short COM-vs-COM session, close normally, and upload the fresh logs. Compare each write event to Stage15 F6A68/F6A9D/F6AD7, QueueTrace, and EventDispatchTrace. Do not infer the flag setter from the static candidate alone.
+
+
+## Stage 16 runtime results — 2026-11-08
+
+Run window: `13:02:27.719`–`13:03:18.651`. Runtime analysis: [Stage16_Overlay/RUNTIME_ANALYSIS.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/RUNTIME_ANALYSIS.md).
+
+The Stage16 player-field log contains 30,114 `PLAYER_BIT17_WRITE` records. It starts with exact P1/P2 player and field addresses, initial DWORD values, and `DR7=0x00DD0005`. Eight installation batches report 60 thread watchpoint installations; there are no skipped-thread, dropped-record, or warning/error entries in the Stage16 log. The other Stage15/12 queue, dispatcher, producer and alternate-callsite logs are also present.
+
+### Confirmed setter
+
+The five observed 0→1 transitions all execute the same generic bitfield setter:
+- Instruction at VA `0x0040FAD0` / RVA `0x0000FAD0`: `or dword ptr [eax],edx`.
+- In each bit17 transition, EAX equals the exact watched P1/P2 field address and EDX=`0x00020000`.
+- The instruction belongs to helper VA `0x0040FAA0` / RVA `0x0000FAA0`, which accepts a bit index and uses player bitfield base `+0x3B78`.
+- Index `0x71` (113) maps to DWORD offset `+0x3B84`, bit remainder 17, mask `0x00020000`.
+- The helper log also records 75 writes with EDX=`0x00400000` (bit 22), which do not set bit17.
+
+A static search of 129 direct references to the generic helper found one literal-index caller at VA `0x004C6502`. It performs a generic test of bit index 2 at `0x00495B00`; when AL=0 it calls the bitfield helper with index `0x71` and player in ESI. This is a strong static candidate, but Stage16 did not record the helper's caller return address, so this callsite is not yet runtime-proven.
+
+### Confirmed clearer
+
+All five observed 1→0 transitions came from VA `0x004ED19F` / RVA `0x000ED19F`:
+
+```asm
+and dword ptr [esi+3B84h], 0xFFF9FFFF
+```
+
+For each transition ESI was the exact watched P1/P2 player object, and the preceding `0x004F2ED0` helper returned AL=0. The mask clears bits 17 and 18. The write watchpoint saw 597 executions at the clearer, but only five changed bit17 from 1 to 0.
+
+### Correlation with the event path
+
+Six matching Stage15 parent events were observed in this run. For all six, F2F50 returned EAX=`0x11E`, F2ED0 returned AL=0, and EDI=`0x1E` passed the payload compare.
+
+Five events had bit17 set when F6A68 ran. In each case the generic setter set bit17 before the branch, F6A68's original JZ was not taken, and the event did not reach F6A9D/F6AD7. The clearer subsequently reset bit17.
+
+The sixth event (P1 at `13:03:12.258`) arrived at F6A68 with bit17=0; the JZ was taken, F6A9D was reached, and F6AD7 inserted `type=1,payload=0x1E`. QueueTrace reported `ACCEPTED_BY_QUEUE`; EventDispatchTrace confirmed the same pair. FinalCommandTrace correctly has no matching payload-`0x1E` record because that event used the alternate writer at F6AD7, not F7C5D.
+
+This run therefore confirms the bit17 set/clear instructions and strongly correlates the temporary flag with suppression at F6A68. The sample is six parent events; do not overgeneralize it to all matches or all AI events.
+
+### Build-log limitation and next target
+
+No `Build.log` was uploaded. Runtime logs prove that the module was active and its watchpoints installed, but compiler output and build warnings were not independently reviewed.
+
+Next diagnostic question: which runtime caller supplies bit index `0x71` to `0x0040FAA0`? Stage17 should observe entry to the generic setter, record its caller return address, ECX/player, stack bit-index argument and relevant surrounding state, and verify or reject the static candidate at `0x004C6502`. Preserve the Stage16 and Stage12–Stage15 branches as evidence snapshots.

@@ -93,7 +93,7 @@ Five events had bit17 set at F6A68. In each case:
 1. The generic setter wrote bit17=1 before the branch check.
 2. F6A68 observed bit17=1; the original `JZ` was not taken (`branchTaken=0`).
 3. The event did not reach F6A9D or the alternate queue call at F6AD7.
-4. The clear instruction at F6ED19F (RVA `0xED19F`) then reset bit17 to 0.
+4. The clear instruction at RVA `0xED19F` then reset bit17 to 0.
 
 The sixth event (P1 at `13:03:12.258`) arrived with bit17 already 0:
 1. F6A68 took its `JZ` branch (`branchTaken=1`).

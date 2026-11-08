@@ -90,7 +90,7 @@ extern "C"
             add esp, 4
             popad
             popfd
-            add esp, 4
+            lea esp, [esp+4] // Discard saved ECX without changing helper EFLAGS.
             ret 4
         }
     }

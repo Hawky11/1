@@ -10,11 +10,12 @@ This repository tracks the staged investigation of the ArcanaAI COM-vs-COM event
 
 ## Current checkpoint
 
-- Latest completed runtime stage: **Stage15 — post-guard branch-flow diagnostics**.
-- Current diagnostic implementation: [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace).
-- Stage16 HEAD (source-only; awaiting Windows build/runtime test): `590675c3db91ea0b4def838bce91908b7b97c667`.
+- Latest runtime-evidenced stage: **Stage16 — bit17 writer and clearer identified**.
+- Active evidence branch: [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace).
+- Stage16 HEAD: `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
 - Stage15 evidence HEAD: `4d1e2a049c835a991647cb04565d31d330aeac95`.
-- Stage16 traces write-only hardware watchpoints on the exact P1/P2 `[player+0x3B84]` DWORDs. No Stage16 Build.log or runtime trace has been received yet.
+- Stage16 recorded five bit17 set/clear pairs. The setter is the generic player bitfield OR at RVA `0xFAD0`, called through helper RVA `0xFAA0`; the clearer is the masked AND at RVA `0xED19F`. Five of six sampled type-1/`0x1E` events were stopped at F6A68 while bit17=1; one event with bit17=0 passed, was accepted by F6AD7, and reached EventDispatch.
+- Build.log was not uploaded, so compiler output remains unreviewed.
 - Historical Stage12–Stage15 branches are evidence snapshots. Do not rewrite them.
 
 ## Repository workflow

@@ -73,6 +73,14 @@ After successful build:
 
 Keep `ArcanaAI_ParentFlowTrace.log` and `ArcanaAI_ProducerContextTrace.log` when available.
 
+## Runtime results
+
+The 2026-11-08 run is analyzed in [RUNTIME_ANALYSIS.md](RUNTIME_ANALYSIS.md). It captured 30,114 writes, with five real bit17 set transitions from the generic player bitfield setter at RVA 0xFAD0 and five clears from RVA 0xED19F. Those five set/clear pairs align with the five F6A68 branch decisions that suppressed type-1/payload-0x1E events. The sixth event arrived with bit17=0 and was accepted by the alternate queue at F6AD7 and then observed by EventDispatchTrace.
+
+Static review also found a strong direct caller candidate for bit index 0x71 at VA 0x4C6502. The runtime caller return address was not captured, so a short follow-up trace is still needed to verify that callsite and identify the full semantic trigger.
+
+Build.log was not uploaded. Runtime instrumentation and watchpoint installation are visible in the logs, but the compiler transcript remains unreviewed.
+
 ## How to validate the run
 
 - Check for the Stage16 startup record with the exact P1/P2 watch addresses and their initial values.

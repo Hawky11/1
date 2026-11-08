@@ -72,9 +72,10 @@ extern "C"
         {
             // Replaces the original CALL 0x00495B00 at RVA 0x000C64F1.
             // At entry: [ESP]=original continuation 0x000C64F6, [ESP+4]=bit index 2.
-            // Duplicate the original argument for the real helper. Its RET 4
-            // removes only the duplicate, leaving this hook's return + original arg.
-            // After logging, RET 4 reproduces the original helper's stack cleanup.
+            // Save original ECX for logging, then duplicate the original argument.
+            // The helper's RET 4 removes only the duplicate. The observer context
+            // therefore has saved ECX, this hook's return, and the original argument.
+            // After logging, discard saved ECX and RET 4 to reproduce original cleanup.
             // AL/EAX and EFLAGS from the real helper are preserved; original TEST/JNE
             // at 0x000C64F6/0x000C64F8 remain untouched.
             push ecx
@@ -1210,7 +1211,7 @@ namespace
         record.Edx = context[5];
         record.Esi = context[1];
         record.Edi = context[0];
-        record.EspAtHook = context[3] + 8u;
+        record.EspAtHook = context[3] + 4u;
         record.EFlags = context[8];
 
         // Exact post-0x4F02C0 mapping in 0x4F6BA0:
@@ -1403,7 +1404,7 @@ namespace
         record.Edx = context[5];
         record.Esi = context[1];
         record.Edi = context[0];
-        record.EspAtHook = context[3] + 4u;
+        record.EspAtHook = context[3] + 8u; // Account for saved ECX plus PUSHFD.
         record.EFlags = context[8];
 
         record.Player3A34 = 0;

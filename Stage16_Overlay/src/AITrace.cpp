@@ -587,7 +587,7 @@ namespace
                 {
                     installed = true;
                 }
-                else if ((context.Dr7 & 0x0000000Fu) == 0)
+                else if ((context.Dr7 & 0x00FF000Fu) == 0)
                 {
                     context.Dr0 = g_watchP1;
                     context.Dr1 = g_watchP2;
@@ -598,8 +598,8 @@ namespace
                     context.Dr7 = (context.Dr7 & ~0x00FF000Fu) | g_watchDr7Configuration;
                     installed = SetThreadContext(thread, &context) != FALSE;
                 }
-                // If DR0/DR1 belong to another debugger/tool, keep the thread
-                // tracked but leave its debug-register state untouched.
+                // If any DR0/DR1 enable or RW/LEN configuration bits are set,
+                // keep the thread tracked but leave its debug-register state untouched.
             }
             ResumeThread(thread);
         }

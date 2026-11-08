@@ -9,7 +9,7 @@
 - Latest runtime-evidenced stage: **Stage16 — player bit17 setter/clearer trace**
 - Latest runtime-evidence branch: `stage16-player-bit17-writer-trace` (HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`)
 - Current source/diagnostic branch: `stage17-bit113-setter-caller-trace`
-- Stage17 HEAD at this handoff: `46a84d2286e94ba66fd46fb11454d1189b36b526`
+- Stage17 HEAD at this handoff: `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`
 - Stage17 overlay instructions: [Stage17_Overlay/README_STAGE17.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/README_STAGE17.md)
 - Stage17 static caller review: [Stage17_Overlay/STATIC_CALLER_REVIEW.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/STATIC_CALLER_REVIEW.md)
 - Previous evidence branch (unchanged): `stage15-postguard-flow-diagnostics`, HEAD `4d1e2a049c835a991647cb04565d31d330aeac95`
@@ -129,13 +129,21 @@ FinalCommandTrace has no matching payload `0x1E` entry because this successful e
 
 This strongly ties temporary bit17=1 to suppression of this particular type-1/`0x1E` branch in the six sampled events. Do not generalize beyond the observed sample or declare the full semantic meaning of bit113 solved yet.
 
-## Next task: build and run the prepared Stage17 overlay
+## Latest Stage17 build attempt — blocked before linking
+
+The user supplied a fresh Build.log from 2026-11-08. Visual Studio 2026 18.9.1 / MSVC 14.51.36231 initialized x86 successfully, but compilation stopped in `src/AITrace.cpp` with repeated C3861 errors: `ReadDwordAtAddress` was not declared (14 call sites). No successful DLL exists; do not install or run this build.
+
+The tracked `Stage16_Overlay/src/AITrace.cpp` on Stage17 matches the Stage16 branch blob and already contains the helper implementation before the call sites. The error therefore points to a different/stale/partially merged local source file, although the exact local mismatch cannot be confirmed without seeing it. Stage17 HEAD is now `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`; it adds a forward declaration and updates the README with a safe replacement/check command.
+
+### Next task: rebuild with the exact Stage16 AITrace overlay
+
+
 
 Stage17 source has been prepared in `stage17-bit113-setter-caller-trace`, based on the exact Stage16 evidence snapshot. It adds the passive generic-setter entry trace at VA `0x0040FAA0`, filtering to input bit index `0x71`. The hook validates the original seven-byte prologue, preserves the incoming flags/registers, replays the original prologue, and logs the caller return address plus decoded E8 target.
 
 Read [Stage17_Overlay/README_STAGE17.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/README_STAGE17.md) and [STATIC_CALLER_REVIEW.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/STATIC_CALLER_REVIEW.md). The expected static candidate is VA `0x004C6502` / RVA `0x000C6502`, return VA `0x004C6507` / RVA `0x000C6507`, decoded target `0x0040FAA0`. This must be confirmed from runtime logs, not assumed.
 
-The next user-side operation is to apply overlays Stage12 through Stage17, build with MSVC x86, retain `Build.log`, run a short COM-vs-COM session and upload fresh logs, especially `ArcanaAI_Bit113SetterTrace.log`.
+First copy the current `Stage16_Overlay/src/AITrace.cpp` over the extracted project's `src/AITrace.cpp`, following the PowerShell instructions in `Stage17_Overlay/README_STAGE17.md`. Verify both the `ReadDwordAtAddress` forward declaration and implementation are present, then rebuild with MSVC x86 and retain a fresh `Build.log`. Only after a successful compile/link should the user install the DLL, run a short COM-vs-COM session, and upload fresh runtime logs, especially `ArcanaAI_Bit113SetterTrace.log`. If C3861 persists, obtain the exact local `src/AITrace.cpp` before making further source changes.
 
 The Stage17 trace records:
 - caller return address;

@@ -2264,12 +2264,14 @@ namespace
         const bool installed = enabled != 0 ? InstallFinalCommandCallHook() : false;
         const bool alternateInstalled =
             alternateEnabled != 0 ? InstallAlternateQueueCallHook() : false;
+        // Install the generic setter observer before enabling the F69F0 parent hook.
+        // This avoids a window in which a new bit-113 setter call could be missed.
+        const bool stage17Installed = stage17Enabled != 0 ? InstallStage17Bit113SetterHook() : false;
         const bool stage14Installed =
             stage14Enabled != 0 ? InstallStage14ProducerHooks() : false;
         const bool stage15Installed =
             (stage15Enabled != 0 && stage14Enabled != 0) ?
                 (InterlockedCompareExchange(&g_stage15Installed, 0, 0) != 0) : false;
-        const bool stage17Installed = stage17Enabled != 0 ? InstallStage17Bit113SetterHook() : false;
         ReleaseMutex(patchMutex);
         CloseHandle(patchMutex);
         if (enabled != 0 && !installed)
@@ -2330,6 +2332,7 @@ namespace
                     static_cast<long>(stage14Dropped),
                     static_cast<unsigned long>(kStage14ProbeRecordCapacity));
                 AppendStage14Log(stage14Warning);
+                if (stage17Installed) AppendStage17Log(stage14Warning);
                 InterlockedExchange(&g_stage14ProbeReportedDropped, stage14Dropped);
             }
 

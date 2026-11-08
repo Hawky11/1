@@ -12,7 +12,7 @@ Stage 13 does **not** assume what payload `0x1E` means. It records the actual ca
 - the exact return address and three original stack arguments (queue, event type, payload);
 - 16 DWORDs from the original stack, including surrounding stack arguments;
 - DWORDs from `EBP-0x100` through `EBP+0x20`, each guarded by a safe read;
-- a `0xC0`-byte code window from `RVA 0xF657` through `RVA 0xF6B16`;
+- a `0x380`-byte code window from `RVA 0xF67D7` through `RVA 0xF6B56`;
 - the original five CALL bytes are restored in the recorded code window, even though the live instruction is temporarily patched.
 
 Records are written to `ArcanaAI_AlternateCallTrace.log`.
@@ -21,11 +21,11 @@ Records are written to `ArcanaAI_AlternateCallTrace.log`.
 
 - The hook is installed only after the existing AALib.exe PE fingerprint check succeeds.
 - It refuses to patch unless `AALib.exe+0xF6AD7` is a five-byte near CALL whose decoded destination is exactly `AALib.exe+0xF2DE0`.
-- It reuses the existing queue-helper tail-jump target, preserving the original queue helper path and the Stage 12 queue observer.
+- It uses the same verified queue-helper target as the existing tracer; the Stage 13 hook can run even when the Stage 11 F7C5D observer is disabled, and the Stage 12 queue observer remains in the call path.
 - The shim restores all general-purpose registers and EFLAGS before tail-jumping.
 - The callsite patch is applied while other process threads are suspended and while holding the existing shared patch-install mutex.
 - It records only the exact P1/P2 queue addresses; it does not change event type, payload, queue state, AI decisions, or helper arguments.
-- If the Stage 13 check fails, the existing Stage 11 final-command hook continues to run; the alternate hook is simply not installed.
+- If the Stage 13 check fails, the existing Stage 11 final-command hook (when enabled) continues to run; the alternate hook is simply not installed. The two callsite hooks have independent INI switches.
 
 ## Apply and build
 
@@ -44,7 +44,7 @@ Records are written to `ArcanaAI_AlternateCallTrace.log`.
 - `ArcanaAI_EventDispatchTrace.log`
 - `ArcanaAI_FinalCommandTrace.log`
 
-The existing ParentFlow and ProducerContext logs may be retained, but they are not required for the main Stage 13 question.
+The existing ParentFlow and ProducerContext logs may be retained, but they are not required for the main Stage 13 question. `EnableAlternateCallsiteTrace` controls this hook independently of `EnableFinalCommandTrace`.
 
 ## Build/runtime status
 

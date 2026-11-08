@@ -117,8 +117,8 @@ namespace
     constexpr DWORD kAlternateFrameBytesAfter = 0x020u;
     constexpr DWORD kAlternateFrameValueCount =
         (kAlternateFrameBytesBefore + kAlternateFrameBytesAfter) / sizeof(DWORD) + 1u;
-    constexpr DWORD kAlternateCodeBytesBefore = 0x080u;
-    constexpr DWORD kAlternateCodeBytesAfter = 0x040u;
+    constexpr DWORD kAlternateCodeBytesBefore = 0x300u;
+    constexpr DWORD kAlternateCodeBytesAfter = 0x080u;
     constexpr DWORD kAlternateCodeByteCount =
         kAlternateCodeBytesBefore + kAlternateCodeBytesAfter;
     constexpr DWORD kLocalBytes = 0xD4u;
@@ -793,9 +793,9 @@ namespace
                         static_cast<LONG>(i * sizeof(DWORD));
                     char label[16]{};
                     if (displacement < 0)
-                        sprintf_s(label, "F-%03lX", static_cast<unsigned long>(-displacement));
+                        sprintf_s(label, sizeof(label), "F-%03lX", static_cast<unsigned long>(-displacement));
                     else
-                        sprintf_s(label, "F+%03lX", static_cast<unsigned long>(displacement));
+                        sprintf_s(label, sizeof(label), "F+%03lX", static_cast<unsigned long>(displacement));
                     const int written = sprintf_s(
                         message + used, sizeof(message) - static_cast<std::size_t>(used),
                         "%s%s=%08lX",
@@ -1065,9 +1065,10 @@ namespace
             alternateFlushMs = kMaxFlushIntervalMs;
         g_alternateFlushIntervalMs = static_cast<DWORD>(alternateFlushMs);
 
-        if (enabled == 0)
+        if (enabled == 0 && alternateEnabled == 0)
         {
-            AppendLog("Final-command trace is disabled in ArcanaAI.ini. No code hook was installed.");
+            AppendLog("Final-command and alternate-callsite traces are both disabled in ArcanaAI.ini. No code hook was installed.");
+            AppendAlternateLog("Both Stage 11 and Stage 13 callsite traces are disabled in ArcanaAI.ini.");
             return 0;
         }
 
@@ -1098,11 +1099,20 @@ namespace
         g_playerP1 = g_gameBase + kP1ControlRva - kPlayerControlOffset;
         g_playerP2 = g_gameBase + kP2ControlRva - kPlayerControlOffset;
 
-        char start[640]{};
-        sprintf_s(start,
-            "Stage 11 final-command trace requested. Player identity is derived from the exact queue pointer; original EDI is logged separately. Records type-1 events from callsite RVA 0xF7C62 for exact P1/P2 CPU queues.");
-        AppendLog(start);
-        AppendAlternateLog("Stage 13 alternate-callsite trace requested. Captures registers, stack arguments, EBP frame window, and original code bytes for the call at RVA 0xF6AD7 (return RVA 0xF6ADC).");
+        if (enabled != 0)
+        {
+            char start[640]{};
+            sprintf_s(start,
+                "Stage 11 final-command trace requested. Player identity is derived from the exact queue pointer; original EDI is logged separately. Records type-1 events from callsite RVA 0xF7C62 for exact P1/P2 CPU queues.");
+            AppendLog(start);
+        }
+        else
+            AppendLog("Final-command trace is disabled; Stage 13 alternate-callsite trace may still run independently.");
+
+        if (alternateEnabled != 0)
+            AppendAlternateLog("Stage 13 alternate-callsite trace requested. Captures registers, stack arguments, EBP frame window, and original code bytes for the call at RVA 0xF6AD7 (return RVA 0xF6ADC).");
+        else
+            AppendAlternateLog("Stage 13 alternate-callsite trace is disabled in ArcanaAI.ini.");
 
         // Stage 5 and Stage 7 both patch executable code. Use the same named
         // mutex so their brief thread-suspension/patch windows cannot overlap.
@@ -1121,17 +1131,20 @@ namespace
             return 0;
         }
 
-        const bool installed = InstallFinalCommandCallHook();
+        // Publish the verified helper address for either callsite shim. The
+        // Stage 13 observer can run even when the Stage 11 F7C5D observer is off.
+        g_ArcanaQueueInsertTarget = g_gameBase + kQueueInsertRva;
+        const bool installed = enabled != 0 ? InstallFinalCommandCallHook() : false;
         const bool alternateInstalled =
-            installed && alternateEnabled != 0 ? InstallAlternateQueueCallHook() : false;
+            alternateEnabled != 0 ? InstallAlternateQueueCallHook() : false;
         ReleaseMutex(patchMutex);
         CloseHandle(patchMutex);
-        if (!installed)
+        if (enabled != 0 && !installed)
+            AppendLog("WARNING: Stage 11 final-command callsite hook was not installed.");
+        if (alternateEnabled != 0 && !alternateInstalled)
+            AppendAlternateLog("WARNING: Stage 13 alternate callsite hook was not installed.");
+        if (!installed && !alternateInstalled)
             return 0;
-        if (alternateEnabled == 0)
-            AppendAlternateLog("Stage 13 alternate callsite trace is disabled in ArcanaAI.ini; no F6AD7 patch was installed.");
-        else if (!alternateInstalled)
-            AppendAlternateLog("WARNING: Stage 13 alternate callsite hook was not installed; the existing final-command hook remains active.");
 
         DWORD lastAlternateFlushTick = GetTickCount();
         for (;;)

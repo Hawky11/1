@@ -30,6 +30,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 21 | [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace) | `d210c3540ddd29fff1795ef8da6d3605958d481a` | Exact r1 source snapshot used for the successful build and runtime test |
 | 21r | [stage21-payload-1e-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-runtime-evidence) | `150a666f6f61e58aa67766010e6af4300a51d901` | Archived Build.log and runtime logs; P1 object-guard AL=0 → setter → bit17 set/clear chain |
 | 21r2 | [stage21-payload-1e-consumer-trace-r2](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace-r2) | `28fd26b76c22b9070eabaa33a85c713876234aaf` | Unbuilt correction: save decoded action EDI before classifier helper |
+| 22 | [stage22-payload-1e-post-and-trace](https://github.com/Hawky11/1/tree/stage22-payload-1e-post-and-trace) | `a47ff89d488e74819a800dad49cd08d78d02f438` | Source-only post-AND controller bit-0x400 observer, based on Stage21 r2 |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -897,3 +898,35 @@ Stage16 sequence 12178 records qpc `0x000007641364D88E`, RVA `0x000ED1A9`, old D
 - The r1 `decodedActionCode` value remains invalid because EDI was sampled after the classifier helper. The separately preserved r2 source saves EDI before that helper but is not built or runtime-tested.
 
 Updated detailed analysis: [Stage21 runtime analysis](https://github.com/Hawky11/1/blob/stage21-payload-1e-consumer-runtime-evidence/Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md). Updated evidence-branch HEAD: `150a666f6f61e58aa67766010e6af4300a51d901`.
+
+
+## Stage22 source stage — payload-0x1E controller post-AND trace (2026-11-08)
+
+Source branch: [stage22-payload-1e-post-and-trace](https://github.com/Hawky11/1/tree/stage22-payload-1e-post-and-trace), HEAD \`a47ff89d488e74819a800dad49cd08d78d02f438\`. It branches from the corrected Stage21 r2 source branch \`stage21-payload-1e-consumer-trace-r2\`, HEAD \`28fd26b76c22b9070eabaa33a85c713876234aaf\`. No earlier source or evidence branch was modified.
+
+### Scope
+
+Stage21 r1 captured the controller flags immediately before the following AND, but both P1/P2 samples already had bit \`0x400\` clear. Stage22 adds a post-instruction observation at dispatcher RVA \`0x000EE451\`:
+
+\`\`\`asm
+004EE44B mov esi, [esi+4]
+004EE44E add esp, 8
+004EE451 and dword ptr [esi+8], 0xFFFFFBFF
+\`\`\`
+
+- Expected seven-byte AND encoding: \`81 66 08 FF FB FF FF\`; the six-byte preceding context is also validated.
+- The seven-byte instruction is replaced with a five-byte relative CALL plus two NOPs.
+- The wrapper captures the controller DWORD before the operation, executes the exact original AND once, captures the value after, and restores the post-AND EFLAGS and all general registers.
+- Installation uses the shared patch mutex, thread suspension, byte revalidation, instruction-cache flush and original page-protection restoration. Any fingerprint/signature mismatch refuses the patch.
+- The new log is \`ArcanaAI_Stage22PayloadPostAndTrace.log\`; records include dispatcher type/payload, controller pointer, side when resolvable, before/after DWORDs and bit-\`0x400\` values.
+- The inherited Stage21 r2 classifier wrapper logs \`decodedActionCodePreCall\`, fixing the r1 post-helper EDI sampling defect. The Stage21 slot-3 before/after helper capture is retained.
+
+### Status
+
+**Stage22 is source-only, not build-verified or runtime-tested.** No DLL size, hook installation, or runtime result is claimed. The exact expected instruction bytes are checked at runtime before patching; if they differ, the Stage22 hook must refuse installation.
+
+### Next test
+
+Apply \`Stage22_Overlay/src/AIQueueTrace.cpp\` and \`Stage22_Overlay/ArcanaAI.ini\` to the assembled Stage20/21 project, then build Release | Win32. After successful build, verify both Stage21 r2 and Stage22 markers plus installation at RVA \`0x000EE451\`. Capture the Stage22 post-AND log and matching Stage21, dispatch, queue, Stage20, Stage17, Stage16, Stage18 and Stage19 logs.
+
+Interpretation: \`bit400Before=1 bit400After=0\` proves the controller flag actually changed. \`0 -> 0\` proves execution only. A natural nonzero slot-3 entry is still required to prove the independent slot clear; same-event Stage18 gate correlation also remains open. Preserve all Stage21 historical branches and the Stage21 r1 runtime evidence unchanged.

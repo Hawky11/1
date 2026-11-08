@@ -17,31 +17,32 @@ The three Stage20 records for payload `0x1E` show `eventType=1`, `payload=0x1E`,
 
 ## 2. Type-1 dispatch branch inside 0x004EE200
 
-At VA `0x004EE3E1`, the dispatcher checks the event type:
+The original dispatcher event type is loaded from `[EBP+8]` near function entry. A value of 1 selects the type-1 resolver path. The resolver at `0x0052EAC0` returns a structure; its byte at offset `+3` is loaded into EDI. The later `cmp edi,1` therefore checks the **decoded action code**, not the original dispatcher event type.
 
 ```asm
-004EE3E1 cmp edi, 1
+004EE3E1 cmp edi, 1             ; decoded action code
 004EE3E4 jne 004EE34F
-004EE3EA cmp ebx, 20h
+004EE3EA cmp ebx, 20h           ; original payload
 004EE3ED jge 004EE40F
 ...
-004EE422 push 1
-004EE424 mov eax, ebx
+004EE422 push 1                 ; selector argument to 0x4E8CF0
+004EE424 mov eax, ebx            ; payload
 004EE426 call 004E8CF0
 004EE42B add esp, 4
 004EE42E test al, al
 004EE430 je 004EE443
 ```
 
-At this point:
-- `EDI` is the event type (1).
-- `EBX` is the event payload (`0x1E` in the relevant samples).
-- `ESI` is the player object.
-- The helper receives the payload in `EAX`, player in `ESI`, and event type 1 on the stack.
+At the classifier call:
+- `[dispatcher EBP+8]` is the original dispatcher event type (1).
+- `[dispatcher EBP+0x0C]` is the original dispatcher payload (`0x1E`).
+- `EDI` is the decoded action code returned by `0x52EAC0`; it must be 1 to reach this callsite.
+- `EBX` is the payload and `ESI` is the player object.
+- The helper receives the payload in `EAX`, player in `ESI`, and a literal selector argument 1 on the stack. That selector is not the dispatcher's event type, even though both values are 1 in this trace.
 
 ### Helper 0x004E8CF0
 
-For event type 1, the helper copies the payload to EDI, performs a state-dependent check through `0x00525860`, and then applies the payload range check:
+For selector argument 1, the helper copies the payload from EAX to EDI, performs a state-dependent check through `0x00525860`, and then applies the payload range check:
 
 ```asm
 004E8D35 test al, al
@@ -99,7 +100,7 @@ The new code wraps only these two CALL instructions inside the existing dispatch
 
 | Callsite RVA | Original helper RVA | Captured evidence |
 |---|---:|---|
-| `0x000EE426` | `0x000E8CF0` | Real post-call EAX/AL for event type 1 / payload 0x1E |
+| `0x000EE426` | `0x000E8CF0` | Real post-call EAX/AL, original dispatcher type/payload, decoded action code, and helper selector argument |
 | `0x000EE446` | `0x000F7EB0` | Exact array pointer, slot index, slot DWORD before and after the original clear, plus controller flags before the following AND |
 
 Both original helpers are called exactly once. The wrappers duplicate the original cdecl arguments and leave the original caller-owned arguments on the stack, so the original `ADD ESP` instructions remain in charge of cleanup. The CALL-site bytes, helper destinations, and surrounding instructions are validated before patching. Both patches share the existing patch-install mutex and are installed while other process threads are suspended.
@@ -113,7 +114,7 @@ EnableStage21PayloadConsumerTrace=1
 
 New log: `ArcanaAI_Stage21PayloadConsumerTrace.log`.
 
-The log intentionally emits only known P1/P2 player objects with event type 1 and payload `0x1E`. The classifier record reports the actual AL. The fallback record reports slot-3 pre/post values. The next instruction after the fallback call is the statically verified bit-`0x400` clear; the Stage21 slot wrapper records controller flags immediately before that instruction, not after it.
+The log intentionally emits only known P1/P2 player objects with original dispatcher type 1 and payload `0x1E`. The classifier record reports the actual AL plus separate `dispatchType`, `dispatchPayload`, `decodedActionCode`, and `helperArg` fields. The fallback record reports original dispatch type/payload and slot-3 pre/post values. The next instruction after the fallback call is the statically verified bit-`0x400` clear; the Stage21 slot wrapper records controller flags immediately before that instruction, not after it.
 
 Correlate Stage21 records with `ArcanaAI_EventDispatchTrace.log` by player, side, thread ID, and QPC. Stage12's `callerRVA=0xEE5CB` remains the dispatcher caller return site; Stage21's own hook return sites are `0xEE42B` and `0xEE44B`.
 

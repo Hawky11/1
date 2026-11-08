@@ -84,4 +84,11 @@ Close the game normally so buffered logs flush.
 5. Look for a naturally reachable valid row containing 0xFF and an actual Stage18 resultAL=0.
 6. Compare the runtime table byte readback with the PE's initial 0xFA/0xFF values, without assuming the tables cannot change after load.
 
+For the two selectors seen in Stage18, the on-disk key-`0x19` table has these `0xFF` rows below the caller's exclusive `0x1C` index limit:
+
+- P1 selector `0x0A`: `01, 03, 09, 0F, 14, 15, 16, 17`.
+- P2 selector `0x17`: `01, 03, 07, 09, 0D, 0F`.
+
+These are direct state indices (`0x00..0x17`), so they bypass the new Stage19 converter hook. Stage18 still observes their subsequent `0x4F2FD0` gate call and will record the actual `AL=0` if one occurs. In contrast, mapped rows `0x18..0x1B` are all `0xFA` for these two known selectors.
+
 No semantic names are assigned to raw codes, WORD flags, table selectors or bytes without evidence.

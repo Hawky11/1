@@ -6,6 +6,33 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
+- **Current diagnostic-source branch:** `stage21-payload-1e-consumer-trace`, HEAD `8b99c75723ef99e0473c53777b39239a1e851bab`. This is a source-only overlay based on immutable Stage20 source HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`.
+- **Latest runtime evidence branch:** `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`. Stage20 wrapper at RVA `0xC64F1` produced 33 actual `AL=1` object-guard records with bit2 set. No natural `AL=0` negative-control sample has been recorded.
+- Stage21 overlay files: `Stage21_Overlay/src/AIQueueTrace.cpp`, `Stage21_Overlay/ArcanaAI.ini`, `Stage21_Overlay/README_STAGE21.md`, and `Stage21_Overlay/STATIC_PAYLOAD_1E_CONSUMER_ANALYSIS.md`.
+- Stage21 adds observational wrappers at `0xEE426 -> 0x4E8CF0` and `0xEE446 -> 0x4F7EB0`, logging the classifier's actual AL for type 1/payload `0x1E` and the controller-array slot-3 before/after values. New log: `ArcanaAI_Stage21PayloadConsumerTrace.log`.
+- **Stage21 has not been compiled or runtime-tested.** There is no Stage21 Build.log or DLL in the repository. Do not install until the user's Windows/MSVC x86 Release build succeeds and the log confirms both hooks installed.
+- Stage19 source branch remains `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; Stage18 source branch remains `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. Keep all older branches unchanged.
+
+## Stage21 static findings (source-only)
+
+1. Stage12's `callerRVA=0x000EE5CB` is the return site after the call to dispatcher entry `0x000EE200`; it is not the dispatcher's entry or a consumer routine.
+2. In the type-1/payload-`0x1E` branch, `0x4E8CF0` is called at `0xEE426`. Static disassembly shows this helper returns `AL=0` for payload `0x1E` (whether its intermediate lookup rejects the state or the final `payload<=0x17` test fails).
+3. The `JE 0xEE443` path then calls `0x4F7EB0` at `0xEE446`, clearing `DWORD [controllerArray+0x10]` (slot 3). The next instruction clears bit `0x400` in `[controller+8]`.
+4. The bit17 branch at `F6A68` uses `JE F6A9D`: bit17=0 selects the alternate path. The guards at `F6A9D` and `F6AAC` route to common continuation `F6AC8`; the queue call at `F6AD7` is after that convergence. This statically explains why the branch probes may report taken while the payload is still queued.
+5. The new source logs runtime AL and slot mutation. Static analysis is not a substitute for a Stage21 runtime capture.
+
+## Next actions — Stage21 build and runtime
+
+1. Start from the complete assembled Stage20 project. Keep Stage20 `src/AITrace.cpp` and all earlier source files unchanged.
+2. Replace assembled `src/AIQueueTrace.cpp` with `Stage21_Overlay/src/AIQueueTrace.cpp`; replace `ArcanaAI.ini` with `Stage21_Overlay/ArcanaAI.ini`.
+3. Build `Release | Win32` with the existing MSVC/Build.bat pipeline. Upload the complete Build.log. Stop if compilation/linking fails.
+4. After a successful build, back up the current DLL, install the new DLL and run a natural COM-vs-COM session. Confirm marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r1` and successful installation of both CALL wrappers.
+5. Upload `ArcanaAI_Stage21PayloadConsumerTrace.log`, matching `ArcanaAI_EventDispatchTrace.log`, `ArcanaAI_Bit113ObjectGuardTrace.log`, and matching Stage18/17/16/19/15/queue/alternate-call/parent-flow logs.
+6. Verify actual `resultAL=0` at the classifier and a slot-3 value transition to zero. Separately seek a natural Stage20 object-guard `AL=0` sample with `[object+0x3B70] & 4 == 0`; do not edit memory manually or use Cheat Engine to force the result.
+
+
+- Repository: https://github.com/Hawky11/1
+- Documentation branch: `main`
 - Latest runtime evidence branch: `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`; contains the 2026-11-08 19:58:47 runtime logs, exact Stage20 overlay and STAGE20_RUNTIME_ANALYSIS.md. The Stage20 wrapper installed at 0xC64F1; 33 object-guard records matched 33 Stage18 gates, all AL=1 with bit 2 set.
 - Current diagnostic source branch: `stage20-bit113-object-bit2-guard-trace`, HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`; MSVC build succeeded at 19:55:42 with a 216,576-byte DLL. Runtime installation/hook behavior is confirmed in the companion evidence branch.
 - Stage19 source snapshot (parent of Stage20): `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; keep separate from the Stage19 evidence branch.

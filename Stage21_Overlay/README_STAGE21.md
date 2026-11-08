@@ -40,3 +40,20 @@ Stage20's real object-guard trace stays enabled in the inherited INI. Keep a cop
 ## Scope
 
 Stage21 does not alter any AI helper result or game state beyond the original game helper effects. The only in-game code changes are observational CALL wrappers, and both original callees are invoked once. The code has not yet been compiled or runtime-tested; those checks are pending the user's Windows/MSVC build and fresh in-game run.
+
+
+## Runtime result (r1, 2026-11-08)
+
+The exact r1 Build.log and runtime logs are archived in this branch. Read [STAGE21_RUNTIME_ANALYSIS.md](STAGE21_RUNTIME_ANALYSIS.md) for the QPC correlations and limitations.
+
+Confirmed in this run:
+- Build succeeded; all eight C++ translation units compiled and the 222,208-byte DLL linked.
+- Both Stage21 CALL wrappers installed.
+- P1 and P2 type-1 / payload-0x1E events returned actual classifier AL=0 and both executed the fallback helper.
+- A natural Stage20 P1 object-bit-2-clear sample returned AL=0 and was followed 79 QPC ticks later by the direct bit-113 setter call at 0xC6502.
+
+Limitations:
+- Both slot-3 values were already zero before the clear; no nonzero-to-zero transition was seen.
+- The Stage16 write-trace file is empty, so the bit17 post-setter transition is not confirmed.
+- Stage18's observer installed but recorded no gate results in this run.
+- The r1 `decodedActionCode` log field is invalid: it sampled EDI after the classifier helper, which repurposed the register. A corrected source-only r2 branch preserves pre-call EDI as `decodedActionCodePreCall`.

@@ -240,3 +240,67 @@ Stage17 was updated without modifying Stage16 or any earlier evidence branch:
 - Expanded `Stage17_Overlay/README_STAGE17.md` with the exact overlay-copy requirement and a PowerShell check that verifies the local `src/AITrace.cpp` contains both the declaration and implementation.
 
 This is a defensive source fix and build-path clarification, **not a verified build fix**. Stage17 remains uncompiled and untested until a fresh MSVC x86 Build.log shows a successful compile/link. If the same C3861 errors remain after copying the current Stage16 overlay, inspect the exact local `src/AITrace.cpp` rather than changing hook logic blindly.
+
+
+## Stage 17 callsite build and runtime follow-up — 2026-11-08 (caller log pending)
+
+Evidence branch: [stage17-bit113-setter-callsite-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-callsite-trace), HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`.
+
+This is a separate Stage17 implementation snapshot from the earlier `stage17-bit113-setter-caller-trace` branch. The callsite variant replaces the five-byte CALL at RVA `0x000C6502` with a passive observer that tail-jumps to the original generic bitset setter at RVA `0x0000FAA0`. Its supplied INI enables `EnableStage17Bit113SetterCallTrace=1`. The expected original CALL bytes are `E8 99 95 F4 FF`, resolving to the setter; expected return RVA is `0x000C6507`.
+
+### Build result
+
+The user supplied the complete Build.log in chat. It reports:
+- Visual Studio 2026 18.9.1, MSVC 14.51.36231, x86 environment initialized successfully.
+- All eight translation units compiled: Proxy.cpp, ComVsCom.cpp, AITrace.cpp, AICommandTrace.cpp, AIQueueTrace.cpp, AICommandSiteTrace.cpp, AIProducerContextTrace.cpp, AIParentFlowTrace.cpp.
+- Linking succeeded: `build\\dinput8.dll`, 190,976 bytes.
+- One non-fatal warning C4754 in `AICommandSiteTrace.cpp` lines 782–785. It concerns the mixed-width intermediate in the stack snapshot address calculation:
+  `static_cast<std::uint64_t>(stackBase) + i * sizeof(DWORD)`, followed by a 32-bit address bound check. The compiler suggests widening the `i * sizeof(DWORD)` subexpression. This warning did not prevent compilation or linking and is not evidence of a Stage17 hook failure.
+- The Build.log was shared in conversation but was not included in the uploaded branch tree.
+
+### Runtime run: 2026-11-08, approximately 15:40:27–15:41:09
+
+The new branch contains Stage16/15/14/12 correlation logs from this session:
+- `ArcanaAI_PlayerBit17WriteTrace.log`: 22,739 `PLAYER_BIT17_WRITE` records; 60 game-thread watchpoint installations; no warning/error/drop lines in the file.
+- `ArcanaAI_ProducerCallTrace.log`: Stage14 and Stage15 probes; Stage15 branch counts are six F6A5D, six F6A63, six F6A68, three F6A9D, and zero F6AAC records.
+- `ArcanaAI_AlternateCallTrace.log`: three relevant alternate writer calls at F6AD7.
+- `ArcanaAI_QueueTrace.log`: all three corresponding type-1 / payload-`0x1E` inserts report `ACCEPTED_BY_QUEUE`.
+- `ArcanaAI_EventDispatchTrace.log`: all three matching type-1 / payload-`0x1E` events are seen by the dispatcher with `beforeMatches=1` and `afterMatches=1`.
+- The reviewed PlayerBit17Write, ProducerCall, Queue and EventDispatch logs contain no warning/error/drop reports.
+
+### Reconfirmed writer/clearer sequence
+
+Three actual 0→1 bit17 changes were captured, each immediately associated by QPC with an F6A68 sample for the same player:
+| Time | Player | Setter post-EIP / RVA | Setter EAX | Setter EDX | Clear post-EIP / RVA |
+|---|---|---|---|---|---|
+| 15:40:46.482 | P2 | `0x00D2FAD2 / 0xFAD2` | `0x0E9F0824` | `0x00020000` | `0x00E0D1A9 / 0xED1A9` |
+| 15:40:53.020 | P2 | `0x00D2FAD2 / 0xFAD2` | `0x0E9F0824` | `0x00020000` | `0x00E0D1A9 / 0xED1A9` |
+| 15:41:01.431 | P1 | `0x00D2FAD2 / 0xFAD2` | `0x0E9C5AFC` | `0x00020000` | `0x00E0D1A9 / 0xED1A9` |
+
+The setter instruction itself remains VA `0x0040FAD0` (`or [eax],edx`); the logged EIP is after it. The clearer instruction itself remains VA `0x004ED19F` (`and [esi+3B84h],0xFFF9FFFF`); the logged EIP is after it. Each clear changed the watched DWORD from `0x00030000` to `0x00010000`, clearing bit17.
+
+### Six event outcomes
+
+All six matching parent events had F2F50 return EAX=`0x11E`, F2ED0 return AL=0, and EDI=`0x1E` at the relevant payload/branch check.
+
+| Time | Player | bit17 at F6A68 | Original JZ | Result |
+|---|---|---:|---|---|
+| 15:40:44.850 | P1 | 0 | Taken | F6AD7; accepted and dispatched |
+| 15:40:46.482 | P2 | 1 | Not taken | Suppressed before F6A9D/F6AD7 |
+| 15:40:53.020 | P2 | 1 | Not taken | Suppressed before F6A9D/F6AD7 |
+| 15:40:53.351 | P1 | 0 | Taken | F6AD7; accepted and dispatched |
+| 15:41:00.061 | P2 | 0 | Taken | F6AD7; accepted and dispatched |
+| 15:41:01.431 | P1 | 1 | Not taken | Suppressed before F6A9D/F6AD7 |
+
+The three bit17=1 cases each have a matching 0→1 setter write before F6A68 and a 1→0 clear afterward. The three bit17=0 cases each reach the alternate queue and EventDispatch. This is a second independent six-event sample supporting the bit17/F6A68 relationship; it still does not establish the full semantic meaning of bit113.
+
+### Important missing Stage17 evidence
+
+The uploaded branch tree does **not** contain `ArcanaAI_Bit113SetterTrace.log`. The callsite variant writes its own log and should record either:
+- an installation line for the passive observer at RVA `0x000C6502`, or
+- a validation/patch failure explaining why it refused to install,
+followed by `BIT113_SET_CALL` records if the callsite executes.
+
+The expected records expose `callRVA=0x000C6502`, `returnRVA=0x000C6507`, `index=0x00000071`, P1/P2 player object, registers, related object fields, stack and QPC. Without this file, the newly tested runtime still does **not** confirm that the three setter calls came from the static candidate at `0x004C6502`; the candidate remains unproven.
+
+Next operation: obtain/upload only `ArcanaAI_Bit113SetterTrace.log` from the same game/output folder as the other ArcanaAI logs. Do not request another build or match unless the file was never created. If it was not created, check the active game-folder `ArcanaAI.ini` for `EnableStage17Bit113SetterCallTrace=1` and confirm the just-built DLL was installed in the game directory before arranging a targeted rerun. Keep this evidence branch immutable.

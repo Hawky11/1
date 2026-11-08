@@ -8,7 +8,7 @@
 - Documentation branch: `main`
 - Latest runtime-tested stage: **Stage15**
 - Current diagnostic implementation branch: `stage16-player-bit17-writer-trace`
-- Stage16 HEAD at last check: `955fe3bb2baff0822949a40350321f4fb84f8d6f`
+- Stage16 HEAD at last check: `590675c3db91ea0b4def838bce91908b7b97c667`
 - Stage15 evidence branch / unchanged HEAD: `stage15-postguard-flow-diagnostics` / `4d1e2a049c835a991647cb04565d31d330aeac95`
 - Stage16 instructions: [Stage16_Overlay/README_STAGE16.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/README_STAGE16.md)
 - Stage16 static review: [STATIC_XREF_REVIEW.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/STATIC_XREF_REVIEW.md)
@@ -55,7 +55,7 @@ The overlay modifies the existing Stage11 `src/AITrace.cpp` module. It uses writ
 - Player object bases derive from the confirmed P1/P2 COM control addresses minus `0x3F2C`; the watched DWORD is then at +`0x3B84`.
 - Only threads with DR0 and DR1 address registers both zero and all DR0/DR1 enable and RW/LEN fields clear (`DR7 & 0x00FF000F == 0`) are eligible. Existing DR2/DR3 are preserved. COMvsCOM writer thread is excluded. Threads skipped for occupied slots are logged and not retried.
 - The legacy Stage2 `EnableControlFieldTrace` mode shares DR0/DR1 and must stay disabled. Supplied INI does so and enables `EnablePlayerBit17WriteTrace=1`.
-- The dedicated log is `ArcanaAI_PlayerBit17WriteTrace.log`; it captures EIP-after/RVA-after, 24 code bytes, thread/context, QPC/time, new DWORD and a shadow old DWORD/bit17.
+- The dedicated log is `ArcanaAI_PlayerBit17WriteTrace.log`; it captures writes from any user-mode module in the target process, absolute EIP-after, `inAALib=0/1`, AALib RVA when applicable, 24 code bytes, thread/context, QPC/time, new DWORD and a best-effort shadow old DWORD/bit17.
 - The old-value shadow is best-effort. `shadowInitialized=1` only means the startup baseline read succeeded; it does not prove every write was seen. A skipped thread or dropped record may leave it stale. Check all warning and drop records.
 
 ### Critical current status
@@ -91,7 +91,7 @@ Keep `ArcanaAI_ParentFlowTrace.log` and `ArcanaAI_ProducerContextTrace.log` when
 2. Read Build.log for successful x86 build and warnings/errors.
 3. In `ArcanaAI_PlayerBit17WriteTrace.log`, confirm Stage16 startup addresses, initial values, `DR7=0x00DD0005`, and one or more `Hardware watchpoint install batch` records.
 4. Inspect every skipped-thread warning and dropped-record warning. If any relevant writer thread was skipped, do not claim complete write coverage.
-5. Analyze `PLAYER_BIT17_WRITE` entries. The logged EIP/RVA is **after** the write; disassemble the 24-byte code window to identify the writer instruction. Correlate side, address, thread ID, QPC, timestamp, registers, full DWORD and bit17 transitions.
+5. Analyze `PLAYER_BIT17_WRITE` entries. The logged EIP is **after** the write; disassemble the 24-byte code window to identify the writer instruction. If `inAALib=0`, use the absolute EIP and code bytes to identify the external in-process module. Correlate side, address, thread ID, QPC, timestamp, registers, full DWORD and bit17 transitions.
 6. Check whether VA `0x004ED19F` / RVA `0x000ED19F` actually fires for P1/P2. Do not assume ESI is a player base until the watched effective address and player object match the logged target.
 7. Correlate bit17 writes with Stage15 F6A68/F6A9D/F6AD7, AlternateCallTrace, QueueTrace and EventDispatchTrace. Establish whether a transition precedes or follows the parent branch and event insertion.
 8. Separate observed facts from hypotheses. The one clear path at 0xED19F does not prove it is the only writer.

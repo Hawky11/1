@@ -6,6 +6,26 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
+- **Latest runtime evidence:** `stage21-payload-1e-consumer-runtime-evidence`, HEAD `fe96faadaf1cea2ab559a5f0e0c2346eca9cc802`. It contains the exact r1 source/INI overlay, user-supplied Build.log, runtime logs and updated `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
+- **Tested source:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. Build succeeded at 2026-11-08 21:43:30; eight C++ units compiled; DLL size 222,208 bytes; one non-fatal C4754 warning at AICommandSiteTrace.cpp:785. Both Stage21 wrappers installed.
+- **Corrected but untested source:** `stage21-payload-1e-consumer-trace-r2`, HEAD `28fd26b76c22b9070eabaa33a85c713876234aaf`. It saves EDI before the classifier helper, logs `decodedActionCodePreCall`, and uses build marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`. It has not been built; r1 remains the exact runtime-tested source.
+- Stage21 r1 runtime: P1 and P2 dispatched event type 1 / payload `0x1E`, were accepted by queue and reached dispatch. At classifier CALL `0xEE426`, both real helper returns were `EAX=0 / AL=0`; both fallback calls at `0xEE446` executed. Slot 3 and controller bit `0x400` were already zero in both events, so the fallback's non-idempotent state mutation remains unobserved.
+- **Full direct-setter chain confirmed for P1:** object `[player+0x3B70]=0x00010440`, bit2 clear, actual object-helper `AL=0`; Stage17 then recorded setter CALL `0xC6502`, index `0x71`, same player/thread, 79 QPC ticks later. Stage16 recorded actual `player+0x3B84` bit17 set `0→1` at RVA `0xFAD2`, 361 QPC ticks after the setter. A later clear `1→0` occurred at RVA `0xED1A9`, 2,701,840 QPC ticks after the set.
+- Stage16 `ArcanaAI_PlayerBit17WriteTrace.log` is **7,565,612 bytes**, contains **14,081** writer records and exactly two bit17 transitions (one P1 set, one P1 clear). Earlier empty-content reads were a retrieval limitation, not an empty file.
+- Stage18 observer installed but recorded no gate results; Stage19 had 1,320 state-map calls but none correlated with the object guard/setter at 21:45:03.002. Do not claim same-event Stage18/19 correlation.
+- R1's `decodedActionCode` field is invalid because EDI was sampled after helper `0x4E8CF0`; the values equal the controller-array pointers. R2 fixes this by saving pre-call EDI. Preserve the r1 evidence unchanged.
+- Stage19 source branch remains `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; Stage18 source branch remains `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. Keep all historical branches unchanged.
+
+## Next actions
+
+1. The Stage21 r1 consumer path and full P1 object-guard → setter → bit17 set/clear chain are runtime-confirmed. Do not rebuild r1; use the r2 overlay only for a further run that needs a valid decoded-action field.
+2. If testing fallback state mutation further, seek a natural event with nonzero controller-array slot 3 or controller bit `0x400` set before the fallback. Both current P1/P2 events had those values already zero.
+3. If a same-event state-table connection is needed, capture a Stage18 gate-result record correlated to the object guard/setter event. The Stage18 observer installed in this run but emitted no gate results.
+4. For another consumer capture, build from r2 and preserve the full Build.log. Do not alter the r1 source/evidence snapshots.
+
+
+- Repository: https://github.com/Hawky11/1
+- Documentation branch: `main`
 - **Latest runtime evidence:** `stage21-payload-1e-consumer-runtime-evidence`, HEAD `274a58e2b514766ea2ef067c83f3ae321a0908ce`. It contains the exact r1 source/INI overlay, user-supplied Build.log, runtime logs and `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
 - **Tested source:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. Build succeeded at 2026-11-08 21:43:30; eight C++ units compiled; DLL size 222,208 bytes; one non-fatal C4754 warning at AICommandSiteTrace.cpp:785. Both Stage21 wrappers installed.
 - **Corrected but untested source:** `stage21-payload-1e-consumer-trace-r2`, HEAD `28fd26b76c22b9070eabaa33a85c713876234aaf`. It saves EDI before the classifier helper, logs `decodedActionCodePreCall`, and uses build marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`. It has not been built; r1 remains the exact runtime-tested source.
@@ -155,7 +175,7 @@ Run began 2026-11-08 19:58:47. Stage20 marker/config were present. The observati
 
 ### Current task — Stage21 follow-up
 
-Stage21 r1 and the Stage20 object-bit-2 negative-control sample have been captured. The two remaining runtime questions are whether a nonzero slot-3 / set controller flag is actually cleared by the payload-`0x1E` fallback, and whether the direct bit-113 setter changes bit17 in the same call. Use the corrected Stage21 r2 source if another consumer capture is needed. Preserve the r1 tested source/evidence and all Stage12–Stage20 historical branches unchanged.
+Stage21 r1 now confirms the payload-`0x1E` classifier fallback for P1/P2 and the complete P1 object-guard AL=0 → setter index 0x71 → bit17 0→1 write chain, followed by a later bit17 clear. Remaining runtime gaps are a nonzero slot-3 / set controller-bit-0x400 fallback sample and same-event Stage18 gate correlation. The r1 decoded-action field is invalid; use the corrected, unbuilt Stage21 r2 branch for a later capture if that field is required. Preserve r1 evidence and all Stage12–Stage20 historical branches unchanged.
 
 ## Historical branch rules
 

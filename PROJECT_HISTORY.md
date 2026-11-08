@@ -23,6 +23,11 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 17b | [stage17-callsite-init-diagnostics](https://github.com/Hawky11/1/tree/stage17-callsite-init-diagnostics) | `c33317c9b2fa28c339c38f3aaebdcb9a378b73a1` | Diagnostic hardening for the Stage17 direct-callsite observer; build/runtime pending |
 | 18 | [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace) | `520eec4cd216795e8ffbaa8738b3602b5e40d39a` | Passive observer of the 0x4F2FD0 state-table gate result; source-only, build/runtime pending |
 | 18r | [stage18-bit113-gate-runtime-evidence](https://github.com/Hawky11/1/tree/stage18-bit113-gate-runtime-evidence) | 0139152b9eeb778a23ec4f3197c57faff749a78a | Uploaded Stage18/17/16 runtime logs plus the matching Stage18 overlay and runtime analysis; Build.log not uploaded |
+| 19 | [stage19-bit113-state-map-trace](https://github.com/Hawky11/1/tree/stage19-bit113-state-map-trace) | `841142895a976419a9bda197be286e7434993067` | State-code conversion observer; runtime evidence preserved separately |
+| 19r | [stage19-bit113-state-map-runtime-evidence](https://github.com/Hawky11/1/tree/stage19-bit113-state-map-runtime-evidence) | `3e75c07c7bdbd0827112f6a488936587a41a1b4b` | Stage19/18/17/16 runtime evidence and matching overlay |
+| 20 | [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace) | `11dde281a08a3481517d0cb60d4752393fa0e578` | Build-verified Stage20 source; real object-bit-2 helper wrapper |
+| 20r | [stage20-bit113-object-bit2-runtime-evidence](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-runtime-evidence) | `08125627bfbb588aff8e735168c51a1083cb06e6` | 33 positive object-guard samples and three payload-0x1E dispatch events |
+| 21 | [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace) | `8b99c75723ef99e0473c53777b39239a1e851bab` | Source-only consumer hooks at EE426/EE446; build/runtime pending |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -765,3 +770,44 @@ No explicit warning/error/drop/failure records were found in the reviewed runtim
 See `Stage20_Overlay/STAGE20_RUNTIME_ANALYSIS.md` on the evidence branch for detailed counts and correlations. Preserve all Stage12–Stage19 historical branches unchanged.
 
 Documentation sync on `main`: latest runtime evidence branch HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`; current Stage20 source remains `11dde281a08a3481517d0cb60d4752393fa0e578`.
+
+
+## Stage21 source stage — locate the payload-0x1E consumer (2026-11-08)
+
+Source branch: [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace), HEAD `8b99c75723ef99e0473c53777b39239a1e851bab`. It branches from the immutable Stage20 source snapshot `stage20-bit113-object-bit2-guard-trace`, HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`. Stage20 runtime evidence remains separately preserved in `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`.
+
+### Static consumer identification
+
+- Corrected the Stage12 address interpretation: dispatcher entry is RVA `0x000EE200`; `callerRVA=0x000EE5CB` is the return address after the dispatcher CALL.
+- In the type-1 branch at `0x004EE200`, the dispatcher calls `0x004E8CF0` at RVA `0x000EE426` with payload in EAX, player in ESI and event type 1 on the stack.
+- For payload `0x1E`, helper `0x004E8CF0` is statically constrained to return `AL=0`: if the intermediate `0x00525860` lookup returns nonzero, the helper's early exit is AL=0; otherwise `0x1E < 0x20`, but `0x1E <= 0x17` is false at the final `SETBE`.
+- The subsequent `JE 0x004EE443` selects the fallback call `0x004F7EB0` at RVA `0x000EE446`. The helper writes zero to `DWORD [controllerArray + index*4 + 4]`; the caller supplies index 3 and pointer `player+0x3A3C`, so the exact slot is `[controllerArray+0x10]`. The next instruction clears bit `0x400` in `[controller+8]`.
+- This locates a real consumer-side effect downstream of dispatcher and explains why the unrelated monitored FinalCommand callsite `0xF7C5D` had no payload-`0x1E` record.
+
+### F6A68 / F6A9D / F6AAC control-flow clarification
+
+- At `F6A68`, bit17=0 makes `JE F6A9D` taken; bit17=1 takes the other path and returns at `F6A9C` rather than entering the alternate queue insertion.
+- On the bit17-clear path, `F6A9D` checks `[ebp-4] != 2`; its taken branch jumps to `F6AC8`. If it falls through, the secondary helper at `F6AA5` runs.
+- At `F6AAC`, the secondary helper's nonzero result also jumps to `F6AC8`; zero allows the extra `0x72` setter sequence before joining at the same `F6AC8`.
+- `F6AC8` is a common continuation, not a return. The queue insertion call at `F6AD7` follows it. Therefore the F6A9D and F6AAC taken branches do not prevent queueing payload `0x1E`; they skip only the extra side-effect sequence. This resolves the previously reported “branch taken but still reaches F6AD7” observation by static disassembly.
+- The Stage20 evidence bundle did not contain the Stage15 per-probe runtime records needed for a fresh QPC-level reconstruction of each of the three individual branch episodes. The conclusion above is control-flow proof from the matching static binary, not a newly claimed per-event runtime trace.
+
+### Stage21 source overlay
+
+- `Stage21_Overlay/src/AIQueueTrace.cpp` adds two observational CALL wrappers:
+  - `0xEE426 -> 0x4E8CF0`: logs real post-call EAX/AL for type-1/payload-`0x1E`.
+  - `0xEE446 -> 0x4F7EB0`: logs array pointer, index, and slot-3 DWORD before/after the original clear, plus controller flags immediately before the following AND instruction.
+- Both wrappers duplicate the original cdecl arguments, invoke the original helper exactly once, preserve its result/register effects for the original caller, and leave original caller stack cleanup instructions intact. Install-time validation checks the surrounding instruction signatures and decoded helper destinations; installation uses the shared patch mutex and suspends other process threads.
+- `Stage21_Overlay/ArcanaAI.ini` enables `EnableStage21PayloadConsumerTrace=1`. New log: `ArcanaAI_Stage21PayloadConsumerTrace.log`.
+- `Stage21_Overlay/STATIC_PAYLOAD_1E_CONSUMER_ANALYSIS.md` contains the full disassembly and trace contract. `Stage21_Overlay/README_STAGE21.md` contains application/build steps.
+
+### Status and next action
+
+Stage21 is **source-only**. No MSVC build, DLL, runtime hook installation or Stage21 runtime evidence is claimed in this commit.
+
+1. Apply the Stage21 `AIQueueTrace.cpp` and INI overlays to the assembled Stage20 project, keeping Stage20 `AITrace.cpp` and all earlier source units intact.
+2. Build `Release | Win32` and preserve the complete Build.log. Do not install if compilation/linking fails.
+3. After a successful build, confirm the Stage21 marker and both CALL-wrapper installation entries; then capture `ArcanaAI_Stage21PayloadConsumerTrace.log` with the matching Stage12 EventDispatch and Stage20 object-guard logs.
+4. Confirm runtime classifier `AL=0` and slot-`3` pre/post clear. Separately continue the natural Stage20 object-bit-2-clear experiment to obtain the missing object-guard `AL=0) sample. Never force the object bit or helper return value.
+
+Stage21 is a source snapshot only; Stage20 source/evidence and all earlier historical branches remain unchanged.

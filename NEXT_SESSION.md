@@ -8,7 +8,7 @@
 - Documentation branch: `main`
 - Latest runtime evidence branch: `stage17-callsite-init-diagnostics`
 - Latest runtime evidence HEAD: `dcfd1efbe221438b1f2b3fae800ca76b1fa87e7d`
-- Current source-only Stage18 branch: `stage18-bit113-gate-condition-trace`, HEAD `de8555f1eb34f647711595493ecee2cec22fb120`; it is pending MSVC build and runtime verification.
+- Current source-only Stage18 branch: `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`; it is pending MSVC build and runtime verification.
 - Earlier Stage17 pre-fix branch (preserve unchanged): `stage17-bit113-setter-callsite-trace`, HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`.
 - Earlier Stage17 entry-hook source branch (preserve unchanged): `stage17-bit113-setter-caller-trace`, HEAD at last review `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
 - Stage16 baseline evidence branch: `stage16-player-bit17-writer-trace`, HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
@@ -36,7 +36,7 @@ Runtime run: 2026-11-08, initialization at 16:34:05, relevant events 16:34:29–
 
 ## Stage18 source-only status — build and runtime validation are next
 
-- Source branch: [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace), HEAD \`de8555f1eb34f647711595493ecee2cec22fb120\`.
+- Source branch: [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace), HEAD \`520eec4cd216795e8ffbaa8738b3602b5e40d39a\`.
 - The Stage17 runtime evidence branch remains unchanged and remains the latest completed runtime test.
 - Stage18 adds a passive observer at RVA \`0x000C64A5\`, immediately after helper \`0x000F2FD0\` returns to caller \`0x000C63B0\`.
 - New overlay files: \`Stage18_Overlay/src/AITrace.cpp\`, \`Stage18_Overlay/ArcanaAI.ini\`, \`README_STAGE18.md\`, and \`STATIC_GATE_ANALYSIS.md\`.

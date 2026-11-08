@@ -64,3 +64,22 @@ Run a short natural COM-vs-COM session. Do not force-edit object fields or playe
 5. Continue looking for a natural Stage18 AL=0 result. Stage20 does not observe calls rejected by the earlier table gate.
 
 Stage20's expected correlation pattern is a hypothesis to validate; no semantic interpretation should be assigned to the object field beyond the directly observed bit test.
+
+
+## Build result — successful (2026-11-08 19:55:42)
+
+The user supplied the complete build transcript in chat. The Stage20 overlay was applied to the assembled Stage11 project and the build completed successfully:
+
+- Visual Studio 18 Community; MSVC 14.51.36231; x86 / Win32.
+- All eight C++ translation units compiled, including the new `AITrace.cpp`.
+- Link step succeeded and produced `build\\dinput8.dll`.
+- Final DLL size: **216,576 bytes**.
+- One non-fatal existing C4754 warning remains in `AICommandSiteTrace.cpp` lines 782–785 (the arithmetic comparison warning is outside the Stage20 object-guard code).
+
+The complete Build.log was pasted in chat but has not been uploaded as a repository file. This is a **build-verified, runtime-pending** source snapshot. Compilation/linking does not establish that the Stage20 wrapper installed in the game process.
+
+## Next: runtime verification
+
+Back up the working DLL, install the successful build, then first inspect `ArcanaAI_Bit113ObjectGuardTrace.log`. Confirm the Stage20 marker, `EnableStage20Bit113ObjectGuardTrace=1`, and the successful wrapper installation at RVA `0x000C64F1`. Stop before gameplay if installation fails. After installation is confirmed, run a short natural COM-vs-COM test and upload the new object-guard log plus the Stage18/17/16/19 and relevant Stage15/queue/dispatch logs.
+
+The target remains to correlate the 31 Stage18 P2 index-`0x19` gate-only calls with the real object-helper AL and `[object+0x3B70] & 4`, and compare them against the four known setter episodes.

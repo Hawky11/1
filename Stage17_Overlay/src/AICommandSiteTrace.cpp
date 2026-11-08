@@ -701,7 +701,7 @@ namespace
         if (timestamp != nullptr) now = *timestamp;
         else GetLocalTime(&now);
         char line[4600]{};
-        const char newline[3] = { '\\r', '\\n', '\\0' };
+        const char newline[3] = { 13, 10, 0 };
         const int count = sprintf_s(line, sizeof(line),
             "[%04u-%02u-%02u %02u:%02u:%02u.%03u] %s%s",
             now.wYear, now.wMonth, now.wDay,

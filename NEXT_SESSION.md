@@ -37,7 +37,7 @@ This is a second independent six-event confirmation of the bit17/F6A68 correlati
 
 The 2026-11-08 15:40:27–15:41:09 runtime run did not create `ArcanaAI_Bit113SetterTrace.log`. The corrected Stage17 r2 source has now been successfully built, so the next step is runtime installation and startup verification—not another build. Do **not** immediately run a full match.
 
-A diagnostic-source revision is now available in branch `stage17-callsite-init-diagnostics`, current HEAD `34fbf14975b3e5d1b9dd6bdec0c3d6c8756bc25f`. It is based on the prior runtime-evidence branch; that original branch is unchanged. The first build with the r1 marker present exposed 14 MSVC C3861 errors because `ReadDwordAtAddress` was used before declaration in the Stage17 recorder. This has been fixed in the current branch: a forward declaration now appears immediately before `QueueStage17Bit113SetterRecord`, and the implementation remains later in the same anonymous namespace.
+A diagnostic-source revision is now available in branch `stage17-callsite-init-diagnostics`, current HEAD `ebabe7faa0521115425e56d9b6880b76e1a48806`. It is based on the prior runtime-evidence branch; that original branch is unchanged. The first build with the r1 marker present exposed 14 MSVC C3861 errors because `ReadDwordAtAddress` was used before declaration in the Stage17 recorder. This has been fixed in the current branch: a forward declaration now appears immediately before `QueueStage17Bit113SetterRecord`, and the implementation remains later in the same anonymous namespace.
 
 The revised `AITrace.cpp`:
 

@@ -6,6 +6,7 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
+- **Current source candidate (not built):** [stage22-payload-1e-post-and-trace](https://github.com/Hawky11/1/tree/stage22-payload-1e-post-and-trace), HEAD `a47ff89d488e74819a800dad49cd08d78d02f438`. Based on Stage21 r2, retains `decodedActionCodePreCall` and adds a post-AND observer at `0xEE451` for controller `[+8]` before/after the actual bit-`0x400` clear. Exact bytes are validated; wrapper executes the AND once and restores its EFLAGS.
 - **Latest runtime evidence:** `stage21-payload-1e-consumer-runtime-evidence`, HEAD `150a666f6f61e58aa67766010e6af4300a51d901`. It contains the exact r1 source/INI overlay, user-supplied Build.log, runtime logs and updated `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
 - **Tested source:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. Build succeeded at 2026-11-08 21:43:30; eight C++ units compiled; DLL size 222,208 bytes; one non-fatal C4754 warning at AICommandSiteTrace.cpp:785. Both Stage21 wrappers installed.
 - **Corrected but untested source:** `stage21-payload-1e-consumer-trace-r2`, HEAD `28fd26b76c22b9070eabaa33a85c713876234aaf`. It saves EDI before the classifier helper, logs `decodedActionCodePreCall`, and uses build marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`. It has not been built; r1 remains the exact runtime-tested source.
@@ -18,15 +19,18 @@
 
 ## Next actions
 
-1. The Stage21 r1 consumer path and full P1 object-guard → setter → bit17 set/clear chain are runtime-confirmed. Do not rebuild r1; use the r2 overlay only for a further run that needs a valid decoded-action field.
-2. If testing fallback state mutation further, seek a natural event with nonzero controller-array slot 3 or controller bit `0x400` set before the fallback. Both current P1/P2 events had those values already zero.
-3. If a same-event state-table connection is needed, capture a Stage18 gate-result record correlated to the object guard/setter event. The Stage18 observer installed in this run but emitted no gate results.
-4. For another consumer capture, build from r2 and preserve the full Build.log. Do not alter the r1 source/evidence snapshots.
+1. Use the Stage22 overlay as the next build candidate: replace the assembled project's `src/AIQueueTrace.cpp` with `Stage22_Overlay/src/AIQueueTrace.cpp`, and replace `ArcanaAI.ini` with `Stage22_Overlay/ArcanaAI.ini`. Preserve the inherited Stage20 sources and project settings.
+2. Build `Release | Win32`; upload the complete `Build.log` before interpreting runtime output. Stage22 is source-only and has not been built.
+3. In a natural COM-vs-COM session, confirm both markers: `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2` and `STAGE22_PAYLOAD_POST_AND_BUILD=2026-11-08-r1`. Confirm the Stage21 classifier/slot wrappers and Stage22 installation at RVA `0xEE451`.
+4. Upload `ArcanaAI_Stage22PayloadPostAndTrace.log`, `ArcanaAI_Stage21PayloadConsumerTrace.log`, `ArcanaAI_EventDispatchTrace.log`, `ArcanaAI_QueueTrace.log`, plus same-run Stage20 object guard, Stage17 setter, Stage16 writer, Stage18 gate and Stage19 state-map logs.
+5. Check whether Stage22 records `bit400Before=1 bit400After=0`. A `0 -> 0` sample proves only that the AND executed; it is not a state transition. Stage21 slot-3 fields still need a natural nonzero pre-value to prove a slot clear.
+6. Keep the separate same-event Stage18 gate correlation question open. Do not claim it was resolved by the Stage22 overlay.
 
+Preserve Stage21 r1 source/evidence, Stage21 r2 source, and all earlier stage branches unchanged.
 
 ## Historical build/runtime details
 
-The stage-specific records below are retained for chronology. The current Stage21 status and next tasks are in the checkpoint and action list at the top of this file.
+The stage-specific records below are retained for chronology. The current Stage22 source candidate and next build/runtime tasks are in the action list above.
 
 ## Latest build result — successful
 

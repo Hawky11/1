@@ -12,6 +12,9 @@
 
 namespace
 {
+    // Explicit declaration for the Stage16 watchpoint reader used below.
+    bool ReadDwordAtAddress(DWORD address, DWORD* value);
+
     // RVAs confirmed from the user's correct COMvsCOM entry in the CE table.
     constexpr DWORD kP1ControlRva = 0x0DCA5EA4;
     constexpr DWORD kP2ControlRva = 0x0DCD0BCC;

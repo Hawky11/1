@@ -677,7 +677,7 @@ namespace
         char message[4096]{};
         int used = sprintf_s(
             message, sizeof(message),
-            "STAGE14_PROBE seq=%ld probe=%s side=%s tid=%lu tick=%lu qpc=%llu stackBase=0x%08lX parentEBP=0x%08lX player=0x%08lX cpu=0x%08lX retOrArg0=0x%08lX regs=(EAX:%08lX ECX:%08lX EDX:%08lX EBX:%08lX EBP:%08lX ESI:%08lX EDI:%08lX EFLAGS:%08lX) stackMask=0x%03lX stack=",
+            "STAGE14_PROBE seq=%ld probe=%s side=%s tid=%lu tick=%lu qpc=%llu stackBase=0x%08lX ebp=0x%08lX player=0x%08lX cpu=0x%08lX stack0=0x%08lX regs=(EAX:%08lX ECX:%08lX EDX:%08lX EBX:%08lX EBP:%08lX ESI:%08lX EDI:%08lX EFLAGS:%08lX) stackMask=0x%03lX stack=",
             static_cast<long>(sequence),
             Stage14ProbeName(probeId),
             side == 1 ? "P1" : (side == 2 ? "P2" : "UNKNOWN"),
@@ -1257,7 +1257,17 @@ namespace
             for (DWORD i = 0; i < 32u && offset + i < byteCount; ++i)
             {
                 BYTE value = 0;
-                const bool readable = SafeReadByte(g_gameBase + rva + offset + i, &value);
+                const DWORD addressRva = rva + offset + i;
+                bool readable = false;
+                if (InterlockedCompareExchange(&g_alternateHookInstalled, 0, 0) != 0 &&
+                    addressRva >= kAlternateQueueCallRva &&
+                    addressRva < kAlternateQueueCallRva + 5u)
+                {
+                    value = g_alternateOriginalCallBytes[addressRva - kAlternateQueueCallRva];
+                    readable = true;
+                }
+                else
+                    readable = SafeReadByte(g_gameBase + addressRva, &value);
                 const int written = readable
                     ? sprintf_s(line + used, sizeof(line) - static_cast<std::size_t>(used),
                         "%02X", static_cast<unsigned int>(value))

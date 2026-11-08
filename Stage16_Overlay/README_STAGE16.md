@@ -95,4 +95,8 @@ Build.log was not uploaded. Runtime instrumentation and watchpoint installation 
 
 ## Status / limitations
 
-This is a source-only diagnostic overlay. It has **not** been compiled with MSVC or runtime-tested in this environment. The user must verify a successful x86 build, the Stage16 startup record, actual watchpoint installation batches, and the new runtime traces before relying on its results. Stage12–Stage15 historical branches remain untouched.
+Stage16 has now been exercised in a runtime session dated 2026-11-08. The active Stage16 record, both exact P1/P2 watch addresses, DR7 configuration, 60 watchpoint installation events, 30,114 write records, and five bit17 set/clear pairs are present in the uploaded logs. The Stage15 branch and queue traces corroborate the five suppressed events and the one successful alternate-queue event.
+
+**Build.log was not uploaded.** Therefore the compiler transcript, warnings, and exact build command have not been independently reviewed. Runtime logs establish that the module was loaded and the instrumentation operated, but they do not substitute for the missing compiler log. See [RUNTIME_ANALYSIS.md](RUNTIME_ANALYSIS.md) for the complete findings.
+
+Stage12–Stage15 historical branches remain untouched.

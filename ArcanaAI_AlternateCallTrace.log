@@ -1,2 +1,2 @@
-[2026-11-08 18:00:15.399] Stage 13 alternate-callsite trace requested. Captures registers, stack arguments, EBP frame window, and original code bytes for the call at RVA 0xF6AD7 (return RVA 0xF6ADC).
-[2026-11-08 18:00:15.666] Installed Stage 13 alternate queue callsite hook at RVA=0x000F6AD7 (return RVA=0x000F6ADC); original destination=queue helper RVA=0x000F2DE0; original bytes=E8 04 C3 FF FF; suspended=39 thread(s).
+[2026-11-08 19:05:37.413] Stage 13 alternate-callsite trace requested. Captures registers, stack arguments, EBP frame window, and original code bytes for the call at RVA 0xF6AD7 (return RVA 0xF6ADC).
+[2026-11-08 19:05:37.716] Installed Stage 13 alternate queue callsite hook at RVA=0x000F6AD7 (return RVA=0x000F6ADC); original destination=queue helper RVA=0x000F2DE0; original bytes=E8 04 C3 FF FF; suspended=39 thread(s).

@@ -6,8 +6,8 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- Latest runtime evidence branch: `stage19-bit113-state-map-runtime-evidence`, HEAD `3e75c07c7bdbd0827112f6a488936587a41a1b4b`; contains Stage19/18/17/16/15 logs and the exact Stage19 overlay plus runtime analysis. Build.log was not included.
-- Current diagnostic source branch: `stage20-bit113-object-bit2-guard-trace`, HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`; **MSVC build succeeded** on 2026-11-08 at 19:55:42. DLL size 216,576 bytes. Runtime installation/hook behavior pending.
+- Latest runtime evidence branch: `stage20-bit113-object-bit2-runtime-evidence`; contains the 2026-11-08 19:58:47 runtime logs, exact Stage20 overlay and STAGE20_RUNTIME_ANALYSIS.md. The Stage20 wrapper installed at 0xC64F1; 33 object-guard records matched 33 Stage18 gates, all AL=1 with bit 2 set.
+- Current diagnostic source branch: `stage20-bit113-object-bit2-guard-trace`, HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`; MSVC build succeeded at 19:55:42 with a 216,576-byte DLL. Runtime installation/hook behavior is confirmed in the companion evidence branch.
 - Stage19 source snapshot (parent of Stage20): `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; keep separate from the Stage19 evidence branch.
 - Stage18 source snapshot: `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`; Stage18 runtime evidence remains preserved in `stage18-bit113-gate-runtime-evidence`.
 - Earlier Stage17 pre-fix branch (preserve unchanged): `stage17-bit113-setter-callsite-trace`, HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`.
@@ -90,39 +90,32 @@ Helper EAX totals: 532×0, 435×1, 268×3. The observed WORD flags agree with th
 
 No warning/error/drop was found in the reviewed Stage19, Stage18, Stage17, Stage16, Stage15, Queue, Dispatch, FinalCommand or AlternateCall logs.
 
-## Current task — runtime-test Stage20
+## Stage20 runtime result — confirmed
 
-Source branch: [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace), HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`. It is based on the immutable Stage19 source snapshot, not the Stage19 runtime-evidence branch.
+Evidence branch: [stage20-bit113-object-bit2-runtime-evidence](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-runtime-evidence). Full analysis: `Stage20_Overlay/STAGE20_RUNTIME_ANALYSIS.md`. Source: [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace), HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`.
 
-### Build result — successful
+Run began 2026-11-08 19:58:47. Stage20 marker/config were present. The observational wrapper installed at CALL RVA `0x000C64F1`, original helper `0x00095B00`, resume `0x000C64F6`, `suspended=40`; the original TEST/JNE remained untouched.
 
-The user supplied the complete build transcript in chat:
-- Started 2026-11-08 19:55:42,91.
-- Visual Studio 18 Community; MSVC 14.51.36231; Win32/x86.
-- All eight C++ translation units compiled, including AITrace.cpp.
-- Link succeeded: build\\dinput8.dll.
-- DLL size: **216,576 bytes**.
-- One non-fatal C4754 warning remains in AICommandSiteTrace.cpp lines 782–785. This warning is in the existing command-site arithmetic comparison and did not prevent linking.
-- The Build.log was pasted in chat and has not been uploaded as a repository file.
+- 33 Stage20 object-guard records, all P2, matched all 33 Stage18 gate records by side/player/QPC; each Stage20 QPC followed its gate by 129–173 ticks.
+- All 33 actual helper results were `AL=1`, with checked `[object+0x3B70]=0x4C` and bit `0x4` set; all read masks `0x3F`.
+- Stage18 table gate records were all `AL=1`, key `0x19`; their separate `stateIndex` distribution was 0A (4), 04 (2), 14 (25), 10 (2). Do not conflate table key with `stateIndex`.
+- Stage17 passive setter observer installed at `0xC6502` but logged zero `BIT113_SET_CALL` records. Stage16 captured 28,043 writes, all `oldBit17=0` / `newBit17=0`; no bit17 transitions.
+- Stage19 map trace captured 2,974 records, but its map index must remain separate from Stage18's table key/stateIndex unless same-event correlation is proven.
+- Three alternate callsite invocations at `0xF6AD7` carried payload `0x1E` (P2 once, P1 twice). Each was accepted into its CPU queue as type 1/payload `0x1E`, then observed by EventDispatchTrace.
+- In all three alternate episodes bit17 was zero and the F6A68 branch was taken; F6AD7 still followed 620–851 QPC ticks later. Thus bit17=1 is not required for this observed alternate queue/dispatch path.
+- FinalCommandTrace logged 60 records but no payload `0x1E` at its monitored callsite `0xF7C5D`; this does not negate the separate queue/dispatch evidence.
+- No explicit error/warning/drop/failure records were found in the reviewed logs. The new runtime upload did not include a Build.log file; the successful build transcript was supplied in chat before the test.
 
-The build result is recorded in the [Stage20 README](https://github.com/Hawky11/1/blob/stage20-bit113-object-bit2-guard-trace/Stage20_Overlay/README_STAGE20.md). Status: **build-verified, runtime-pending**.
+### Current task — Stage21 investigation
 
-### Stage20 runtime objective
+Do not patch another hook until the next path is statically mapped. Focus on two independent gaps:
 
-Stage20 wraps the original five-byte CALL at RVA 0x000C64F1 to helper 0x00495B00. With argument 2, this helper tests bit 0x4 in [object+0x3B70]; AL=1 causes the original JNE at 0x000C64F8 to skip the bit-113 setter at 0x000C6502.
+1. **Direct-setter control sample:** collect a natural call with object bit 2 clear so Stage20 records the real `AL=0`; correlate it to Stage18 and a possible Stage17 call at `0xC6502` / Stage16 bit17 transition. No forced memory edits.
+2. **Payload-0x1E consumer:** identify the consumer after the observed type-1/payload-`0x1E` dispatch at caller RVA `0x000EE5CB`. The existing FinalCommand observer at `0x000F7C5D` did not see this payload, so do not assume it is the universal final path.
 
-The wrapper records actual AL/EAX, the original ECX object pointer, the EBX slot pointer and [EBX], [object+0x3B70], bit-2 state, player fields, parent return and QPC. It calls the original helper with the duplicated original argument, preserves helper return registers/EFLAGS, discards saved ECX with flag-neutral LEA, and returns through the original call stack cleanup. Original TEST/JNE remain untouched; no new DR0–DR3 watchpoints are used.
+Also inspect why `F6A68` and `F6A9D` branch probes report taken while bit17=0, but the same parent frame still reaches `F6AD7` and queues payload `0x1E`. Branch labels are probe names, not complete semantic descriptions.
 
-### Next actions
-
-1. Back up the current working DLL and install the newly built 216,576-byte DLL.
-2. Before gameplay, inspect ArcanaAI_Bit113ObjectGuardTrace.log. Confirm the Stage20 build marker, EnableStage20Bit113ObjectGuardTrace=1, and successful wrapper installation at RVA 0x000C64F1 with original helper RVA 0x00095B00. If validation/installation failed, stop before gameplay and inspect the Stage20-specific error.
-3. Once installation is confirmed, run a short natural COM-vs-COM test. Do not force-edit the object fields or player state.
-4. Upload ArcanaAI_Bit113ObjectGuardTrace.log, ArcanaAI_Bit113GateTrace.log, ArcanaAI_Bit113SetterTrace.log, ArcanaAI_StateMapTrace.log, ArcanaAI_PlayerBit17WriteTrace.log, ArcanaAI_ProducerCallTrace.log, ArcanaAI_QueueTrace.log, ArcanaAI_EventDispatchTrace.log, ArcanaAI_FinalCommandTrace.log, and ArcanaAI_AlternateCallTrace.log where available.
-5. Correlate Stage20 results to Stage18/19 by player pointer and QPC. Test whether the 31 P2 state-index-0x19 gate-only cases show guard AL=1 and bit 2 set, and whether the four known setter episodes show AL=0 and bit 2 clear.
-6. Continue seeking a natural Stage18 AL=0 result on a valid 0xFF table cell; Stage20 does not observe calls rejected by the earlier table gate.
-
-Preserve the Stage19 source/evidence branches and all Stage12–Stage19 historical branches unchanged.
+Preserve Stage19 source/evidence and all Stage12–Stage19 historical branches unchanged.
 
 ## Historical branch rules
 

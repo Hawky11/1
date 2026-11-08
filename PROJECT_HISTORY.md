@@ -348,3 +348,10 @@ Current branch HEAD: `34fbf14975b3e5d1b9dd6bdec0c3d6c8756bc25f` (source fix comm
 The user's reported build failed before link. Do not install any DLL from this attempt and do not treat it as a Stage17 build. The local build script deletes its project-local `build\\dinput8.dll` before compilation; the previously installed game-folder DLL is not thereby replaced.
 
 **Next:** copy the corrected `Stage17_Overlay/src/AITrace.cpp` from this branch into the assembled project, verify the existing marker again, rerun Build.bat, and provide the new Build.log. Do not run another game test until a successful link. The current corrected source has not yet been compiled in MSVC in this environment.
+
+
+### Stage17 corrected-source marker revision r2 — 2026-11-08
+
+After inserting the forward declaration, the diagnostic build marker was bumped from `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1` to the distinct `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2`. This prevents a stale r1 DLL from being mistaken for the corrected r2 source. The Stage17 README's PowerShell check and expected runtime marker were updated accordingly.
+
+Current source branch: `stage17-callsite-init-diagnostics`; latest HEAD after README update: `ebabe7faa0521115425e56d9b6880b76e1a48806`. This revision is still source-only; no MSVC build result is available yet.

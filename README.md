@@ -12,9 +12,9 @@ This repository tracks the staged investigation of the ArcanaAI COM-vs-COM event
 
 - Latest runtime-evidenced stage: **Stage16 — bit17 setter and clearer confirmed**.
 - Latest runtime evidence branch: [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace), HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
-- Current source/diagnostic implementation: [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace), HEAD `46a84d2286e94ba66fd46fb11454d1189b36b526`.
+- Current source/diagnostic implementation: [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace), HEAD `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
 - Stage16 confirmed five bit17 0→1 transitions through the generic setter at RVA `0xFAD0`, and five 1→0 clears at RVA `0xED19F`. Five of six sampled type-1/`0x1E` events were stopped at F6A68 while bit17=1; the one event with bit17=0 reached the alternate queue and EventDispatch.
-- Stage17 adds a filtered entry observer at setter RVA `0xFAA0` for bit index `0x71`, with caller return-address and CALL-target decoding. It is source-only and awaits MSVC x86 build/runtime validation.
+- Stage17 adds a filtered entry observer at setter RVA `0xFAA0` for bit index `0x71`, with caller return-address and CALL-target decoding. The first MSVC x86 build attempt failed in `AITrace.cpp` with C3861 (`ReadDwordAtAddress` not found); Stage17 now carries an explicit forward declaration and a pre-build source-copy check. Rebuild/runtime validation is still pending.
 - Stage16 `Build.log` was not uploaded, so its compiler transcript remains unavailable even though runtime logs confirmed the module and watchpoints were active.
 - Historical Stage12–Stage16 branches are evidence snapshots. Do not rewrite them.
 

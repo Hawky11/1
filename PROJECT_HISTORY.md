@@ -380,3 +380,67 @@ This is the first successful build of the corrected Stage17 callsite diagnostic 
 5. If other ArcanaAI logs appear but the Stage17 marker does not, stop and determine which DLL/INI pair the game actually loaded. Do not repeat a full test blindly.
 
 The Stage17 callsite candidate remains runtime-unconfirmed until the log proves successful hook installation and matching `BIT113_SET_CALL` records.
+
+
+## Stage 17 runtime result — direct bit-113 caller confirmed (2026-11-08)
+
+Evidence branch: [stage17-callsite-init-diagnostics](https://github.com/Hawky11/1/tree/stage17-callsite-init-diagnostics), uploaded runtime-log HEAD `dcfd1efbe221438b1f2b3fae800ca76b1fa87e7d`. This contains the corrected r2 source plus the fresh 16:34 runtime logs. The earlier `stage17-bit113-setter-callsite-trace` branch remains an unchanged pre-fix snapshot.
+
+### Build and initialization
+
+The user supplied Build.log from 2026-11-08 16:32:02:
+- Visual Studio 2026 18.9.1 / MSVC 14.51.36231, x86.
+- All eight C++ translation units compiled.
+- Link succeeded; `build\\dinput8.dll` size **198,144 bytes**.
+- Non-fatal C4754 remains in `AICommandSiteTrace.cpp` lines 782–785; it did not prevent linking.
+
+Runtime initialization at 16:34:05:
+- `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2`
+- `FieldTraceThread` entered.
+- INI values: `EnableControlFieldTrace=0`, `EnablePlayerBit17WriteTrace=1`, `EnableStage17Bit113SetterCallTrace=1`.
+- Installed the passive observer at RVA `0x000C6502`, return RVA `0x000C6507`, original helper RVA `0x0000FAA0`; 34 process threads were suspended during the patch.
+- No Stage17 error, warning, or ring-drop line was present.
+
+### Direct runtime attribution
+
+`ArcanaAI_Bit113SetterTrace.log` contains nine `BIT113_SET_CALL` records. All report:
+- `callRVA=0x000C6502`
+- `returnRVA=0x000C6507`
+- `index=0x00000071`
+- The exact P1/P2 object pointer in both `player` and `ECX/ESI`.
+
+The Stage16 player-field log contains 20,456 `PLAYER_BIT17_WRITE` records and eight actual bit17 transitions: four 0→1 sets and four 1→0 clears. The Stage16 worker installed 62 write-watchpoint instances across 10 installation batches. No warning/error/drop/skip report was present in the reviewed PlayerBit17WriteTrace.
+
+Every one of the four observed 0→1 writes at RVA `0x0000FAD2` has a preceding Stage17 call from the candidate site with the same side and player object. The Stage17 call observed `player+0x3B84=0`; the Stage16 write immediately followed from the original helper and set that field to `0x00020000`.
+
+| Player | Time | Stage17 call seq | Stage17 QPC | Stage16 setter QPC | Delta |
+|---|---|---:|---:|---:|---:|
+| P2 | 16:34:29.538 | 1 | 7940066152498 | 7940066152865 | 367 |
+| P1 | 16:34:30.940 | 3 | 7940080167261 | 7940080167781 | 520 |
+| P1 | 16:34:36.957 | 5 | 7940140346097 | 7940140346493 | 396 |
+| P2 | 16:34:43.566 | 7 | 7940206436096 | 7940206436449 | 353 |
+
+Thus the static candidate at `AALib.exe+0xC6502` is **runtime-confirmed as the caller that set bit17 in all four observed transitions in this run**. Five additional Stage17 calls (seq 2, 4, 6, 8, 9) saw `player+0x3B84=0x00020000` already set; these are repeated/idempotent calls and did not correspond to additional 0→1 transitions. The callsite is confirmed for the observed scenario, not proven to be the only possible setter path in every game state.
+
+All four corresponding clears were again observed at RVA `0x000ED1A9` (post-EIP for instruction `0x000ED19F`), with the watched DWORD transitioning from `0x00030000` to `0x00010000`.
+
+### Relationship to the event suppression
+
+The new ProducerCallTrace has four Stage15 records at each of:
+- `F6A5D_F2ED0_BRANCH`
+- `F6A63_PAYLOAD_BRANCH`
+- `F6A68_PLAYER_BIT17_BRANCH`
+
+All four F6A68 records saw bit17=1 and recorded `branchTaken=0` (the original JZ was not taken). There were zero F6A9D local-guard records and zero F6AAC secondary-helper records. The alternate-callsite hook at F6AD7 installed successfully but recorded no actual calls. QueueTrace and EventDispatchTrace contain no type-1 / payload-`0x1E` insert/dispatch in this run. The sample therefore confirms the suppression side of the bit17 gate; it does not add a new successful type-1 / payload-`0x1E` insertion sample.
+
+### Caller context and remaining question
+
+At the Stage17 callsite, the captured `otherObject` pointer equals the player pointer, and `other3B70` was `0x650` or `0x640`; bit index 2 is clear in both values, which is consistent with the final `0x495B00` guard allowing the setter call.
+
+The captured low words at player `+0x3A36` were `0x42`, `0x22`, `0x20`, and `0x5E`. These differ from the `0x1A/0x18/0x19` values in the documented straight-line comparison sequence preceding the call. This does not invalidate the runtime callsite match; the hook is installed at the exact validated CALL and the setter transitions follow it. It means the next static/dynamic review should reconstruct which earlier branch paths enter the final block, and whether any helper between that comparison and the call changes these fields. Do not infer the semantic meaning of the state fields yet.
+
+### Conclusion
+
+Stage17 has completed its primary goal: it proves that `0x004C6502` passes bit index 113 to the generic bitset setter and initiates all four captured bit17 set transitions. Together with Stage16's runtime-confirmed setter at `0x0040FAD0`, clearer at `0x004ED19F`, and Stage15's F6A68 branch, the origin and suppression chain are now linked by runtime evidence.
+
+Next investigation should focus on the conditions and branch paths inside caller function RVA `0x000C63B0`, particularly the earlier helper/branch gates and the repeated calls while bit17 is already set. Preserve this runtime branch as an evidence snapshot; put any new instrumentation in a new Stage18 branch.

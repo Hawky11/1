@@ -22,6 +22,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 17 | [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace) | `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e` | Source-only setter-entry observer for bit index 0x71; awaiting build/runtime test |
 | 17b | [stage17-callsite-init-diagnostics](https://github.com/Hawky11/1/tree/stage17-callsite-init-diagnostics) | `c33317c9b2fa28c339c38f3aaebdcb9a378b73a1` | Diagnostic hardening for the Stage17 direct-callsite observer; build/runtime pending |
 | 18 | [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace) | `520eec4cd216795e8ffbaa8738b3602b5e40d39a` | Passive observer of the 0x4F2FD0 state-table gate result; source-only, build/runtime pending |
+| 18r | [stage18-bit113-gate-runtime-evidence](https://github.com/Hawky11/1/tree/stage18-bit113-gate-runtime-evidence) | 0139152b9eeb778a23ec4f3197c57faff749a78a | Uploaded Stage18/17/16 runtime logs plus the matching Stage18 overlay and runtime analysis; Build.log not uploaded |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -499,3 +500,58 @@ Next:
 5. Correlate Stage18 \`resultAL\` with the derived table byte and Stage17 setter calls/QPCs. Distinguish the helper-gated route from the direct comparison path.
 
 Keep the Stage17 runtime branch immutable. If the Stage18 build fails, fix the source before any runtime test; if the build succeeds but the hook does not install, stop and diagnose from the Stage18-specific log rather than repeating the scenario.
+
+
+## Stage18 runtime result — state-table gate and payload-0x1E suppression (2026-11-08)
+
+Runtime evidence branch: [stage18-bit113-gate-runtime-evidence](https://github.com/Hawky11/1/tree/stage18-bit113-gate-runtime-evidence), HEAD 0139152b9eeb778a23ec4f3197c57faff749a78a. The earlier source-only branch [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace), HEAD 520eec4cd216795e8ffbaa8738b3602b5e40d39a, is preserved as the source snapshot. The runtime branch contains the uploaded logs and the exact Stage18 overlay. The separate analysis is in Stage18_Overlay/STAGE18_RUNTIME_ANALYSIS.md.
+
+### Startup and hook installation
+
+Runtime started on 2026-11-08 at 18:00:15. The logs show:
+- Stage18 marker STAGE18_BIT113_GATE_BUILD=2026-11-08-r1;
+- EnableStage18Bit113GateTrace=1, EnableStage17Bit113SetterCallTrace=1, and EnablePlayerBit17WriteTrace=1;
+- successful Stage18 hook installation at RVA 0x000C64A5, after the helper CALL at 0x000C64A0 to 0x000F2FD0, with 44 threads suspended;
+- successful Stage17 hook installation at RVA 0x000C6502, targeting generic SetBit helper 0x0000FAA0, also with 44 threads suspended.
+
+**Build.log was not included in the uploaded files.** The startup markers and install messages prove the loaded DLL ran both observers, but the exact MSVC compiler/linker output and DLL size are not available for this run.
+
+### Gate result and correlation
+
+Stage18 logged six BIT113_GATE_RESULT records. All six returned AL=1; all six post-return table readbacks were 0xFA (not sentinel 0xFF), with key 0x19. The three unique state/table cases were:
+
+| Player | State index | Selector | Byte address | Readback |
+|---|---:|---:|---:|---:|
+| P1 | 0x0E | 0x0A | 0x0559DBDD | 0xFA |
+| P2 | 0x19 | 0x17 | 0x055A073B | 0xFA |
+| P1 | 0x18 | 0x0A | 0x0559DCE1 | 0xFA |
+
+The table byte is reread after the helper returns, so it is corroborative; the helper's actual AL is authoritative. No AL=0 example was captured in this run.
+
+Stage17 contains six setter calls, all from caller RVA 0x000C6502, return RVA 0x000C6507, bit index 0x71, and the matching player object. Stage16 contains 15,094 PLAYER_BIT17_WRITE records and six bit17 transitions: three 0→1 sets at RVA 0x0000FAD2 with EDX=0x00020000, and three clears at RVA 0x000ED1A9.
+
+| Episode | Player | Gate→setter | Setter→bit17 set | Bit17 set→F6A68 | F6A68→clear |
+|---:|---|---:|---:|---:|---:|
+| 1 | P1 | 136 QPC ticks | 342 | 2,015 | 1,572 |
+| 2 | P2 | 135 QPC ticks | 343 | 1,974 | 1,767 |
+| 3 | P1 | 169 QPC ticks | 441 | 2,537 | 1,989 |
+
+Each episode also contains a second helper/setter call after bit17 is already set. These later calls are idempotent OR operations, not additional 0→1 transitions.
+
+### Why the setter is called twice per episode
+
+The Stage18 caller-frame records split into two parent return addresses:
+- 0x00DB6801 (RVA 0x00096801, static VA 0x00496801) follows a direct CALL to 0x004C63B0 at 0x004967FC.
+- 0x00DEB9FA (RVA 0x000CB9FA, static VA 0x004CB9FA) follows an indirect CALL EDX at 0x004CB9F8 inside a dispatcher beginning at 0x004CB9C0.
+
+The dispatcher reads a function pointer from table VA 0x0428AEF0 + index*4. Static data inspection confirms entry index 0x0A at VA 0x0428AF18 contains pointer 0x004C63B0. Therefore, both paths invoke the same caller: once directly and once through callback/function-table slot 10. This explains the paired Stage18 gate and Stage17 setter records.
+
+### Target payload-0x1E suppression
+
+The three Stage15 F6A68 records have EDI=0x0000001E, bit17=1, ZF=1, and branchTaken=0. The target attempts were observed at 18:00:35.343 (P1), 18:00:37.836 (P2), and 18:00:42.083 (P1).
+
+There are no later F6A9D or F6AAC branch records, and the F6AD7 alternate queue callsite hook installed but recorded no invocation. QueueTrace, EventDispatchTrace, and FinalCommandTrace each contain 27 type-1 records for other payloads; none has payload 0x1E.
+
+**Conclusion:** Stage18 confirms that the 0x4F2FD0 state-table gate allowed all three observed target episodes (AL=1, readback 0xFA). Stage17/16 then show bit17 being set, and Stage15 confirms that bit17 is the decisive suppression condition for the target payload-0x1E attempts in this run. No successful payload-0x1E insertion or AL=0 table-gate sample was captured. The semantic meaning of byte 0xFA remains unassigned.
+
+All reviewed Stage18, Stage17 setter, Stage16 writer, Stage15 producer, queue, dispatch, and alternate-callsite logs contain no warning/error/drop report.

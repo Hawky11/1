@@ -27,7 +27,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 19r | [stage19-bit113-state-map-runtime-evidence](https://github.com/Hawky11/1/tree/stage19-bit113-state-map-runtime-evidence) | `3e75c07c7bdbd0827112f6a488936587a41a1b4b` | Stage19/18/17/16 runtime evidence and matching overlay |
 | 20 | [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace) | `11dde281a08a3481517d0cb60d4752393fa0e578` | Build-verified Stage20 source; real object-bit-2 helper wrapper |
 | 20r | [stage20-bit113-object-bit2-runtime-evidence](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-runtime-evidence) | `08125627bfbb588aff8e735168c51a1083cb06e6` | 33 positive object-guard samples and three payload-0x1E dispatch events |
-| 21 | [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace) | `8b99c75723ef99e0473c53777b39239a1e851bab` | Source-only consumer hooks at EE426/EE446; build/runtime pending |
+| 21 | [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace) | `d210c3540ddd29fff1795ef8da6d3605958d481a` | Source-only consumer hooks at EE426/EE446; build/runtime pending |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -774,13 +774,13 @@ Documentation sync on `main`: latest runtime evidence branch HEAD `08125627bfbb5
 
 ## Stage21 source stage — locate the payload-0x1E consumer (2026-11-08)
 
-Source branch: [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace), HEAD `8b99c75723ef99e0473c53777b39239a1e851bab`. It branches from the immutable Stage20 source snapshot `stage20-bit113-object-bit2-guard-trace`, HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`. Stage20 runtime evidence remains separately preserved in `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`.
+Source branch: [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace), HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. It branches from the immutable Stage20 source snapshot `stage20-bit113-object-bit2-guard-trace`, HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`. Stage20 runtime evidence remains separately preserved in `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`.
 
 ### Static consumer identification
 
 - Corrected the Stage12 address interpretation: dispatcher entry is RVA `0x000EE200`; `callerRVA=0x000EE5CB` is the return address after the dispatcher CALL.
-- In the type-1 branch at `0x004EE200`, the dispatcher calls `0x004E8CF0` at RVA `0x000EE426` with payload in EAX, player in ESI and event type 1 on the stack.
-- For payload `0x1E`, helper `0x004E8CF0` is statically constrained to return `AL=0`: if the intermediate `0x00525860` lookup returns nonzero, the helper's early exit is AL=0; otherwise `0x1E < 0x20`, but `0x1E <= 0x17` is false at the final `SETBE`.
+- In the type-1 branch at `0x004EE200`, the dispatcher calls `0x004E8CF0` at RVA `0x000EE426` with payload in EAX, player in ESI and a literal selector argument 1 on the stack. This selector is distinct from the original dispatch event type in `[dispatcher EBP+8]`.
+- The resolver's byte at result-structure offset `+3` is decoded into EDI; `cmp edi,1` at `0xEE3E1` therefore tests decoded action code 1, not original dispatch event type 1. For payload `0x1E`, helper `0x004E8CF0` is statically constrained to return `AL=0`: if the intermediate `0x00525860` lookup returns nonzero, the helper's early exit is AL=0; otherwise `0x1E < 0x20`, but `0x1E <= 0x17` is false at the final `SETBE`.
 - The subsequent `JE 0x004EE443` selects the fallback call `0x004F7EB0` at RVA `0x000EE446`. The helper writes zero to `DWORD [controllerArray + index*4 + 4]`; the caller supplies index 3 and pointer `player+0x3A3C`, so the exact slot is `[controllerArray+0x10]`. The next instruction clears bit `0x400` in `[controller+8]`.
 - This locates a real consumer-side effect downstream of dispatcher and explains why the unrelated monitored FinalCommand callsite `0xF7C5D` had no payload-`0x1E` record.
 
@@ -795,7 +795,7 @@ Source branch: [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/
 ### Stage21 source overlay
 
 - `Stage21_Overlay/src/AIQueueTrace.cpp` adds two observational CALL wrappers:
-  - `0xEE426 -> 0x4E8CF0`: logs real post-call EAX/AL for type-1/payload-`0x1E`.
+  - `0xEE426 -> 0x4E8CF0`: logs real post-call EAX/AL plus original dispatch type/payload, decoded action code and helper selector argument.
   - `0xEE446 -> 0x4F7EB0`: logs array pointer, index, and slot-3 DWORD before/after the original clear, plus controller flags immediately before the following AND instruction.
 - Both wrappers duplicate the original cdecl arguments, invoke the original helper exactly once, preserve its result/register effects for the original caller, and leave original caller stack cleanup instructions intact. Install-time validation checks the surrounding instruction signatures and decoded helper destinations; installation uses the shared patch mutex and suspends other process threads.
 - `Stage21_Overlay/ArcanaAI.ini` enables `EnableStage21PayloadConsumerTrace=1`. New log: `ArcanaAI_Stage21PayloadConsumerTrace.log`.

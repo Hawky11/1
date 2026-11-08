@@ -51,9 +51,10 @@ Confirmed in this run:
 - Both Stage21 CALL wrappers installed.
 - P1 and P2 type-1 / payload-0x1E events returned actual classifier AL=0 and both executed the fallback helper.
 - A natural Stage20 P1 object-bit-2-clear sample returned AL=0 and was followed 79 QPC ticks later by the direct bit-113 setter call at 0xC6502.
+- Stage16's 7.56 MB writer log contains 14,081 write snapshots and exactly two bit17 transitions: P1 set at RVA 0xFAD2 (`0x01000000 -> 0x01020000`), 361 QPC ticks after the setter; later P1 clear at RVA 0xED1A9 (`0x00020000 -> 0`).
 
 Limitations:
 - Both slot-3 values were already zero before the clear; no nonzero-to-zero transition was seen.
-- The Stage16 write-trace file is empty, so the bit17 post-setter transition is not confirmed.
+- The Stage16 write-trace file is 7,565,612 bytes (14,081 writer records); it confirms the actual bit17 0->1 write 361 QPC ticks after the setter, plus a later clear.
 - Stage18's observer installed but recorded no gate results in this run.
 - The r1 `decodedActionCode` log field is invalid: it sampled EDI after the classifier helper, which repurposed the register. A corrected source-only r2 branch preserves pre-call EDI as `decodedActionCodePreCall`.

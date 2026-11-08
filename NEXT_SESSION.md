@@ -6,6 +6,26 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
+- **Latest runtime evidence:** `stage21-payload-1e-consumer-runtime-evidence`, HEAD `274a58e2b514766ea2ef067c83f3ae321a0908ce`. It contains the exact r1 source/INI overlay, user-supplied Build.log, runtime logs and `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
+- **Tested source:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. Build succeeded at 2026-11-08 21:43:30; eight C++ units compiled; DLL size 222,208 bytes; one non-fatal C4754 warning at AICommandSiteTrace.cpp:785. Both Stage21 wrappers installed.
+- **Corrected but untested source:** `stage21-payload-1e-consumer-trace-r2`, HEAD `28fd26b76c22b9070eabaa33a85c713876234aaf`. It saves EDI before the classifier helper, logs `decodedActionCodePreCall`, and uses build marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`. It has not been built; r1 remains the exact runtime-tested source.
+- Stage21 r1 runtime: P1 and P2 dispatched event type 1 / payload `0x1E`, accepted by queue and reached dispatch. At classifier CALL `0xEE426`, both real helper returns were `EAX=0 / AL=0`; both fallback calls at `0xEE446` executed.
+- Stage21 r1 limitation: slot 3 was already zero before both fallback calls; controller bit `0x400` was also already clear. The fallback was executed, but a non-idempotent state change was not observed.
+- **Stage20 object-guard negative control obtained:** P1 `dword3B70=0x00010440`, bit2 clear, actual helper `AL=0`. Stage17 then recorded setter CALL `0xC6502`, index `0x71`, same player/thread, 79 QPC ticks later. This confirms the direct setter is reached after the negative guard result.
+- Stage16 `ArcanaAI_PlayerBit17WriteTrace.log` is zero bytes; no post-setter bit17 write transition was captured. Stage18 observer installed but its gate log has no result entries in this run. Do not claim a bit17 0→1 transition or same-event Stage18 correlation.
+- R1's `decodedActionCode` field is invalid because EDI was sampled after helper `0x4E8CF0`; the values equal the controller-array pointer. R2 fixes this by saving pre-call EDI. Preserve the r1 evidence unchanged.
+- Stage19 source branch remains `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; Stage18 source branch remains `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. Keep all historical branches unchanged.
+
+## Next actions
+
+1. The Stage21 r1 consumer path and Stage20 AL=0 negative control are now runtime-confirmed. Do not rebuild r1; use the r2 overlay only for a further run that needs a valid decoded-action field.
+2. For a follow-up consumer capture, apply r2's `Stage21_Overlay/src/AIQueueTrace.cpp` and r2 marker to the assembled Stage20 project while keeping all other units unchanged; build Release | Win32 and preserve the full Build.log.
+3. If testing the fallback state mutation further, seek a natural event with nonzero controller-array slot 3 or controller bit `0x400` set before the fallback. The current P1/P2 events had both values already zero.
+4. To close the bit17 question, retain Stage20 object-guard and Stage17 setter logs and obtain a nonempty Stage16 writer log or a direct post-setter read. The latest run confirms setter invocation, not the write result. Do not manually edit the bit or force helper results.
+
+
+- Repository: https://github.com/Hawky11/1
+- Documentation branch: `main`
 - **Current diagnostic-source branch:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. This is a source-only overlay based on immutable Stage20 source HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`.
 - **Latest runtime evidence branch:** `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`. Stage20 wrapper at RVA `0xC64F1` produced 33 actual `AL=1` object-guard records with bit2 set. No natural `AL=0` negative-control sample has been recorded.
 - Stage21 overlay files: `Stage21_Overlay/src/AIQueueTrace.cpp`, `Stage21_Overlay/ArcanaAI.ini`, `Stage21_Overlay/README_STAGE21.md`, and `Stage21_Overlay/STATIC_PAYLOAD_1E_CONSUMER_ANALYSIS.md`.
@@ -133,16 +153,9 @@ Run began 2026-11-08 19:58:47. Stage20 marker/config were present. The observati
 - FinalCommandTrace logged 60 records but no payload `0x1E` at its monitored callsite `0xF7C5D`; this does not negate the separate queue/dispatch evidence.
 - No explicit error/warning/drop/failure records were found in the reviewed logs. The new runtime upload did not include a Build.log file; the successful build transcript was supplied in chat before the test.
 
-### Current task — Stage21 investigation
+### Current task — Stage21 follow-up
 
-Do not patch another hook until the next path is statically mapped. Focus on two independent gaps:
-
-1. **Direct-setter control sample:** collect a natural call with object bit 2 clear so Stage20 records the real `AL=0`; correlate it to Stage18 and a possible Stage17 call at `0xC6502` / Stage16 bit17 transition. No forced memory edits.
-2. **Payload-0x1E consumer:** identify the consumer after the observed type-1/payload-`0x1E` dispatch at caller RVA `0x000EE5CB`. The existing FinalCommand observer at `0x000F7C5D` did not see this payload, so do not assume it is the universal final path.
-
-Also inspect why `F6A68` and `F6A9D` branch probes report taken while bit17=0, but the same parent frame still reaches `F6AD7` and queues payload `0x1E`. Branch labels are probe names, not complete semantic descriptions.
-
-Preserve Stage19 source/evidence and all Stage12–Stage19 historical branches unchanged.
+Stage21 r1 and the Stage20 object-bit-2 negative-control sample have been captured. The two remaining runtime questions are whether a nonzero slot-3 / set controller flag is actually cleared by the payload-`0x1E` fallback, and whether the direct bit-113 setter changes bit17 in the same call. Use the corrected Stage21 r2 source if another consumer capture is needed. Preserve the r1 tested source/evidence and all Stage12–Stage20 historical branches unchanged.
 
 ## Historical branch rules
 

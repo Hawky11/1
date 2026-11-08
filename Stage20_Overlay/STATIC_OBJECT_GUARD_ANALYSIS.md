@@ -65,10 +65,10 @@ The exact AL from the helper is the authoritative branch input. The post-return 
 Stage20 changes only the five-byte CALL at RVA `0x000C64F1`. The wrapper:
 
 1. Receives the original callsite return address and original argument `2`.
-2. Duplicates argument `2` and calls the original helper at `0x00495B00) with the original ECX object pointer.
+2. Duplicates argument `2` and calls the original helper at `0x00495B00` with the original ECX object pointer.
 3. Lets the original helper execute normally, including its own `RET 4` of the duplicated argument.
 4. Saves all returned registers and EFLAGS, records AL/EAX, the original ECX object pointer saved by the wrapper, EBX slot pointer, `[EBX]`, `[object+0x3B70]`, bit-2 state, player fields, QPC and stack context.
-5. Restores the exact helper return registers/flags and executes `RET 4` to consume the original caller argument and return to `0x000C64F6).
+5. Restores the exact helper return registers/flags, uses `LEA ESP,[ESP+4]` to discard saved ECX without modifying EFLAGS, and executes `RET 4` to consume the original caller argument and return to `0x000C64F6`.
 
 The original `TEST AL,AL` at `0xC64F6` and JNE at `0xC64F8` remain byte-for-byte untouched. Stage20 adds no DR0–DR3 watchpoints and does not modify the helper's result or the caller branch.
 
@@ -115,4 +115,4 @@ Do not force-edit object fields or player state to manufacture a branch outcome.
 
 ## Coverage limitation
 
-This wrapper records calls that reach `0xC64F1). A state-table AL=0 path returns before this guard; the Stage18 helper trace remains required to observe table AL=0. Preserve Stage16–Stage19 and all earlier evidence logs for QPC correlation.
+This wrapper records calls that reach `0x000C64F1`. A state-table AL=0 path returns before this guard; the Stage18 helper trace remains required to observe table AL=0. Preserve Stage16–Stage19 and all earlier evidence logs for QPC correlation.

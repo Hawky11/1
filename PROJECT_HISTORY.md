@@ -849,7 +849,7 @@ This confirms the object helper's negative result is followed by the direct bit-
 
 ### Remaining limits and r1 logger defect
 
-- `ArcanaAI_PlayerBit17WriteTrace.log` is **zero bytes**. Although Stage17 logged the setter call and the pre-call `[player+0x3B84]=0x01000000` value has bit17 clear, no Stage16 post-call writer record exists. Do not claim that bit17 changed 0→1.
+- `ArcanaAI_PlayerBit17WriteTrace.log` is 7,565,612 bytes and contains 14,081 writer records. The blob reinspection correction appended below finds exactly two bit17 transitions: one P1 set at RVA `0xFAD2` and one later P1 clear at RVA `0xED1A9`. The P1 set follows the Stage17 setter by 361 QPC ticks; the full transition data and correlation are recorded in the correction section below.
 - Stage18 observer installed but `ArcanaAI_Bit113GateTrace.log` contains no gate result entries. No same-event Stage18 state-table correlation is available for this P1 object-guard sample.
 - Stage19 had 1,320 `STATE_MAP_CALL` entries, but none was correlated to the object guard/setter QPC at 21:45:03.002.
 - The Stage21 r1 field `decodedActionCode` is invalid: it sampled EDI after helper `0x4E8CF0`; the observed values (`0x0E9C59B4` / `0x0E9F06DC`) equal the controller-array pointers in the following slot-clear records. The actual AL and dispatch type/payload fields are valid.
@@ -861,7 +861,7 @@ A separate source branch preserves this correction without rewriting r1: [stage2
 ### Next research questions
 
 1. Capture a natural fallback where slot 3 is nonzero before `0x4F7EB0`, or controller bit `0x400` is set before the following AND, to confirm an actual state transition.
-2. Capture the actual bit17 writer after the P1 direct setter call; this run's Stage16 write log is empty even though the Stage17 CALL was observed.
+2. The direct setter → bit17 write chain is confirmed for this P1 episode. Remaining gaps are a natural fallback with nonzero slot 3 or bit `0x400` set before the helper/AND, and same-event Stage18 gate correlation.
 3. If another Stage21 payload capture is needed, build from r2 to obtain a valid pre-call decoded action code. Do not rewrite or overwrite the r1 evidence branch.
 
 

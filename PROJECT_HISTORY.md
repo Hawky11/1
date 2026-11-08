@@ -21,6 +21,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 16 | [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace) | `58313d8c0f6071bc8099fc5ec04ae04d2974dafd` | Runtime-confirmed bit17 setter/clearer; Stage17 caller verification remains |
 | 17 | [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace) | `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e` | Source-only setter-entry observer for bit index 0x71; awaiting build/runtime test |
 | 17b | [stage17-callsite-init-diagnostics](https://github.com/Hawky11/1/tree/stage17-callsite-init-diagnostics) | `c33317c9b2fa28c339c38f3aaebdcb9a378b73a1` | Diagnostic hardening for the Stage17 direct-callsite observer; build/runtime pending |
+| 18 | [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace) | `de8555f1eb34f647711595493ecee2cec22fb120` | Passive observer of the 0x4F2FD0 state-table gate result; source-only, build/runtime pending |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -444,3 +445,57 @@ The captured low words at player `+0x3A36` were `0x42`, `0x22`, `0x20`, and `0x5
 Stage17 has completed its primary goal: it proves that `0x004C6502` passes bit index 113 to the generic bitset setter and initiates all four captured bit17 set transitions. Together with Stage16's runtime-confirmed setter at `0x0040FAD0`, clearer at `0x004ED19F`, and Stage15's F6A68 branch, the origin and suppression chain are now linked by runtime evidence.
 
 Next investigation should focus on the conditions and branch paths inside caller function RVA `0x000C63B0`, particularly the earlier helper/branch gates and the repeated calls while bit17 is already set. Preserve this runtime branch as an evidence snapshot; put any new instrumentation in a new Stage18 branch.
+
+
+## Stage 18 source overlay — bit-113 state-table gate result observer (2026-11-08)
+
+Source branch: [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace), latest HEAD \`de8555f1eb34f647711595493ecee2cec22fb120\`. Stage17 runtime evidence branch \`stage17-callsite-init-diagnostics\` remains unchanged and remains the latest completed runtime checkpoint.
+
+### Static reconstruction
+
+The uploaded AALib.exe was rechecked directly (PE32, ImageBase \`0x00400000\`, SizeOfImage \`0x0E0EB000\`, SHA-256 \`28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba\`).
+
+At caller RVA \`0x000C63B0\`, the branch relevant to Stage17's confirmed setter call is:
+
+- RVA \`0x000C64A0\`: CALL to helper RVA \`0x000F2FD0\`.
+- The call arguments are pushed as \`push 0x19; push EAX; push ESI\`, where EAX came from \`0x000F6ED0\).
+- RVA \`0x000C64A5\`: \`83 C4 0C 84 C0\` = \`add esp,0x0c; test al,al\`.
+- RVA \`0x000C64AA\`: \`75 41\` = \`jne 0x000C64ED\`.
+
+The four Stage17 calls recorded low words at player \`+0x3A36\` of \`0x42\`, \`0x22\`, \`0x20\`, and \`0x5E\`, not the direct-branch accepted values \`0x1A\`, \`0x18\`, and \`0x19\`. The disassembly shows that the \`0x4F2FD0\` result is the alternate incoming gate: AL=1 takes the JNE to \`0x4C64ED\`, bypassing the direct state comparisons. Stage17 did not log AL, so this remained a strong branch inference rather than a direct runtime observation.
+
+Helper \`0x004F2FD0\`:
+- chooses its table through selector helper \`0x004E6E30\`, player field \`+0x3F20\), and optionally a secondary table;
+- reads a byte at \`table + stateIndex*0x1A + 0x19\`;
+- returns AL=1 iff that byte is not \`0xFF\`.
+
+The special selector helper \`0x004E6E30\` returns true when all three conditions hold:
+1. DWORD \`[player+0x3978] == 0x1D\`;
+2. bit 0 of byte \`[player+0x3B86]\` is set (bit 16 of DWORD \`[player+0x3B84]\`);
+3. bit 28 of DWORD \`[player+0x3B88]\` is set.
+
+It then selects index \`0x16\); otherwise the selector is DWORD \`[player+0x3F20]\`. The primary pointer array is at VA \`0x004C82518\` / RVA \`0x04882518\`. When bit 25 of DWORD \`[player+0x3B80]\` is set, a nonzero matching secondary pointer from VA \`0x004C82C20\` / RVA \`0x04882C20\` overrides the primary pointer.
+
+### Stage18 source changes
+
+The new overlay is under \`Stage18_Overlay/\`; the previous \`Stage17_Overlay/\` snapshot is preserved unchanged in this branch.
+
+- \`src/AITrace.cpp\` adds a passive observer at RVA \`0x000C64A5\`, immediately after the original \`0x4F2FD0\` helper returns.
+- The installer validates the argument push sequence \`6A 19 50 56\`, helper CALL bytes/target \`E8 2B CB 02 00\` → \`0x4F2FD0\`, overwritten bytes \`83 C4 0C 84 C0\`, and following branch \`75 41\`.
+- The hook captures helper AL/EAX, player/state-index/key arguments, parent frame, selector-driving fields, table pointers and the calculated table byte.
+- It removes the observer CALL return plus the original three stack arguments (\`add esp,0x10\`), recreates \`test al,al\`, and resumes at the untouched original JNE. It does not replace the helper result or change the branch decision.
+- Table reads use \`ReadProcessMemory\` and bounded selectors/state indices; the actual helper AL is retained as the authoritative result. The direct comparison route at \`0x4C64B1\` bypasses this observer and remains outside Stage18's coverage.
+- INI keeps Stage16 and Stage17 active and enables \`EnableStage18Bit113GateTrace=1\`. The new output is \`ArcanaAI_Bit113GateTrace.log\`.
+
+### Verification status and next action
+
+This is a **source-only diagnostic stage**. The branch contains the source, matching INI, README and static disassembly notes. No MSVC build, DLL link, hook installation or runtime capture has been performed for Stage18. Do not treat source presence as proof of installation.
+
+Next:
+1. Apply \`Stage18_Overlay/src/AITrace.cpp\` and \`Stage18_Overlay/ArcanaAI.ini\` over the already assembled Stage17 project.
+2. Verify marker \`STAGE18_BIT113_GATE_BUILD=2026-11-08-r1\` in the local source, then build \`Release | Win32\` with MSVC and keep Build.log.
+3. Only after a successful link, back up the currently working game-folder DLL and install the new DLL with the matching INI.
+4. First confirm the Stage18 marker/config/install line in \`ArcanaAI_Bit113GateTrace.log\`; then run a short COM-vs-COM scenario and collect the Stage18, Stage17 and Stage16 logs plus related ProducerCall/AlternateCall/Queue/Dispatch traces.
+5. Correlate Stage18 \`resultAL\` with the derived table byte and Stage17 setter calls/QPCs. Distinguish the helper-gated route from the direct comparison path.
+
+Keep the Stage17 runtime branch immutable. If the Stage18 build fails, fix the source before any runtime test; if the build succeeds but the hook does not install, stop and diagnose from the Stage18-specific log rather than repeating the scenario.

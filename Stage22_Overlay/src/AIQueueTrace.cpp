@@ -802,7 +802,7 @@ namespace
     }
 
     // Reproduce the exact controller-flags AND at EE451 and capture the memory
-    // state on both sides. EFLAGS from the original AND are restored before return.
+    // state on both sides. RET reaches the two patched NOPs at EE456-EE457, then EE458.
     __declspec(naked) void Stage22ControllerFlagsAndHook()
     {
         __asm

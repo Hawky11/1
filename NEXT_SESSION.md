@@ -1,36 +1,36 @@
 # Next session handoff
 
-**Read this file first in a new chat.** Inspect current GitHub branch HEADs and uploaded files before asking the user for anything.
+**Read this file first in a new chat.** Inspect current GitHub branch HEADs and newly uploaded files before asking the user for anything.
 
 ## Repository and current checkpoint
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- **Current source candidate (not built):** [stage22-payload-1e-post-and-trace](https://github.com/Hawky11/1/tree/stage22-payload-1e-post-and-trace), HEAD `27b711d4b3ee8079060bfbab8f8ecc22713ac917`. Based on Stage21 r2, retains `decodedActionCodePreCall` and adds a post-AND observer at `0xEE451` for controller `[+8]` before/after the actual bit-`0x400` clear. Exact bytes are validated; wrapper executes the AND once and restores its EFLAGS.
-- **Latest runtime evidence:** `stage21-payload-1e-consumer-runtime-evidence`, HEAD `150a666f6f61e58aa67766010e6af4300a51d901`. It contains the exact r1 source/INI overlay, user-supplied Build.log, runtime logs and updated `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
-- **Tested source:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. Build succeeded at 2026-11-08 21:43:30; eight C++ units compiled; DLL size 222,208 bytes; one non-fatal C4754 warning at AICommandSiteTrace.cpp:785. Both Stage21 wrappers installed.
-- **Corrected but untested source:** `stage21-payload-1e-consumer-trace-r2`, HEAD `28fd26b76c22b9070eabaa33a85c713876234aaf`. It saves EDI before the classifier helper, logs `decodedActionCodePreCall`, and uses build marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`. It has not been built; r1 remains the exact runtime-tested source.
-- Stage21 r1 runtime: P1 and P2 dispatched event type 1 / payload `0x1E`, were accepted by queue and reached dispatch. At classifier CALL `0xEE426`, both real helper returns were `EAX=0 / AL=0`; both fallback calls at `0xEE446` executed. Slot 3 and controller bit `0x400` were already zero in both events, so the fallback's non-idempotent state mutation remains unobserved.
-- **Full direct-setter chain confirmed for P1:** object `[player+0x3B70]=0x00010440`, bit2 clear, actual object-helper `AL=0`; Stage17 then recorded setter CALL `0xC6502`, index `0x71`, same player/thread, 79 QPC ticks later. Stage16 recorded actual `player+0x3B84` bit17 set `0→1` at RVA `0xFAD2`, 361 QPC ticks after the setter. A later clear `1→0` occurred at RVA `0xED1A9`, 2,701,840 QPC ticks after the set.
-- Stage16 `ArcanaAI_PlayerBit17WriteTrace.log` is **7,565,612 bytes**, contains **14,081** writer records and exactly two bit17 transitions (one P1 set, one P1 clear). Earlier empty-content reads were a retrieval limitation, not an empty file.
-- Stage18 observer installed but recorded no gate results; Stage19 had 1,320 state-map calls but none correlated with the object guard/setter at 21:45:03.002. Do not claim same-event Stage18/19 correlation.
-- R1's `decodedActionCode` field is invalid because EDI was sampled after helper `0x4E8CF0`; the values equal the controller-array pointers. R2 fixes this by saving pre-call EDI. Preserve the r1 evidence unchanged.
-- Stage19 source branch remains `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; Stage18 source branch remains `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. Keep all historical branches unchanged.
+- **Latest tested source:** [stage22-payload-1e-post-and-trace](https://github.com/Hawky11/1/tree/stage22-payload-1e-post-and-trace), HEAD `27b711d4b3ee8079060bfbab8f8ecc22713ac917`. Based on Stage21 r2; contains the post-AND observer at CALL replacement RVA `0xEE451`, exact tested source and INI.
+- **Latest runtime evidence:** [stage22-payload-1e-runtime-evidence](https://github.com/Hawky11/1/tree/stage22-payload-1e-runtime-evidence), HEAD `5b9d1bd83d1324d899f4c5f7f17dcaca136e7453`. Contains Build.log (2026-11-08 23:30:54), the exact Stage22 overlay, the uploaded runtime logs, and `Stage22_Overlay/STAGE22_RUNTIME_ANALYSIS.md`.
+- **Build:** Visual Studio 18 Community / MSVC 14.51.36231 / Win32 x86. All eight C++ translation units compiled; `dinput8.dll` linked at **225,792 bytes**. One non-fatal C4754 warning at `AICommandSiteTrace.cpp:785`.
+- Stage21 r2 classifier + Stage22 post-AND markers are present. Both Stage21 consumer wrappers installed, Stage22 observer at `0xEE451` installed, as did the queue/dispatch, Stage20 object guard, Stage17 setter and Stage18 gate observers.
+- **Payload-0x1E consumer:** three matching events (P2 twice, P1 once) on thread 10804. Each was accepted at `0xF6AD7`, dispatched by `0xEE200`, returned actual classifier `AL=0`, ran fallback `0xEE446`, then reached the Stage22 AND observer. Exact QPC sequence is in the runtime analysis.
+- **Stage22 result:** all three controller flag values were readable; bit `0x400` was `0 → 0` in all three. Stage21 slot 3 was also `0 → 0` in all three. Thus the hooks executed, but no non-idempotent slot or controller-flag mutation was captured.
+- **Stage18/20/17 result:** 11/11 gate calls match object-guard and setter calls one-to-one by side, player, thread, tick, and parent return. Stage18 gate returned `AL=1`, key `0x19`, state index `0x18` or `0x19`; Stage20 saw `[object+0x3B70]=0x640` with bit2 clear and returned `AL=0`; Stage17 then called setter index `0x71` 71–96 QPC ticks later.
+- In five paired setter episodes the first Stage17 entry saw `[player+0x3B84]=0`, while the second saw `0x20000`. This is consistent with bit17 becoming set between the two entries; however Stage16 writer log is **zero bytes**, so the exact write instruction/time is not captured in this run.
+- Stage19 state-map log is also zero bytes.
+- **Stage21 r2 EDI field limitation:** the captured pre-call EDI is still not an action code. P2's `decodedActionCodePreCall=245303004 = 0x0E9F06DC`, exactly the P2 controller-array pointer; P1's `245127604 = 0x0E9C59B4`, exactly the P1 array pointer. Sampling was moved before the helper correctly, but EDI had already been repurposed before CALL `0xEE426`. Do not use it as decoded action.
+- Stage21 r1 source/evidence and all earlier stage branches remain immutable.
 
 ## Next actions
 
-1. Use the Stage22 overlay as the next build candidate: replace the assembled project's `src/AIQueueTrace.cpp` with `Stage22_Overlay/src/AIQueueTrace.cpp`, and replace `ArcanaAI.ini` with `Stage22_Overlay/ArcanaAI.ini`. Preserve the inherited Stage20 sources and project settings.
-2. Build `Release | Win32`; upload the complete `Build.log` before interpreting runtime output. Stage22 is source-only and has not been built.
-3. In a natural COM-vs-COM session, confirm both markers: `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2` and `STAGE22_PAYLOAD_POST_AND_BUILD=2026-11-08-r1`. Confirm the Stage21 classifier/slot wrappers and Stage22 installation at RVA `0xEE451`.
-4. Upload `ArcanaAI_Stage22PayloadPostAndTrace.log`, `ArcanaAI_Stage21PayloadConsumerTrace.log`, `ArcanaAI_EventDispatchTrace.log`, `ArcanaAI_QueueTrace.log`, plus same-run Stage20 object guard, Stage17 setter, Stage16 writer, Stage18 gate and Stage19 state-map logs.
-5. Check whether Stage22 records `bit400Before=1 bit400After=0`. A `0 -> 0` sample proves only that the AND executed; it is not a state transition. Stage21 slot-3 fields still need a natural nonzero pre-value to prove a slot clear.
-6. Keep the separate same-event Stage18 gate correlation question open. Do not claim it was resolved by the Stage22 overlay.
+1. Inspect the exact disassembly/dataflow from the resolver result through the `cmp edi,1` at `0xEE3E1` to CALL `0xEE426`. Identify the instruction that repurposes EDI as the controller-array pointer.
+2. Only if the true decoded action still matters, design a passive logger at the actual resolver-result decode or compare point, capturing both the decoded byte and the later pre-call EDI separately. Do not rename or rewrite the tested Stage22 evidence.
+3. To prove a non-idempotent fallback mutation, capture a natural payload-`0x1E` event with slot 3 nonzero before helper `0xF7EB0`, or bit `0x400` set before the `0xEE451` AND. Do not force either state.
+4. If bit17 writer attribution remains necessary, diagnose why `ArcanaAI_PlayerBit17WriteTrace.log` is empty in this run, then capture Stage16 writes alongside Stage18/20/17. Stage19 mapping also needs a separate working log if state-code mapping remains relevant.
+5. No need to repeat Stage22's build/runtime capture just to reproduce the three already-confirmed `0 → 0` ANDs. Preserve the evidence branch and use a new stage branch for any code change.
 
-Preserve Stage21 r1 source/evidence, Stage21 r2 source, and all earlier stage branches unchanged.
+Preserve Stage21 r1, Stage21 r2, Stage22 source and Stage22 runtime evidence as historical snapshots.
 
 ## Historical build/runtime details
 
-The stage-specific records below are retained for chronology. The current Stage22 source candidate and next build/runtime tasks are in the action list above.
+The stage-specific records below are retained for chronology. The current EDI dataflow and natural nonzero fallback questions are in the action list above.
 
 ## Latest build result — successful
 

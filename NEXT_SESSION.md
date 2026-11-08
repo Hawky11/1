@@ -8,7 +8,7 @@
 - Documentation branch: `main`
 - Latest runtime-tested stage: **Stage15**
 - Current diagnostic implementation branch: `stage16-player-bit17-writer-trace`
-- Stage16 HEAD at last check: `2ca74c4b3e9a815c0a3d2eb14cb98bb071a85cef`
+- Stage16 HEAD at last check: `955fe3bb2baff0822949a40350321f4fb84f8d6f`
 - Stage15 evidence branch / unchanged HEAD: `stage15-postguard-flow-diagnostics` / `4d1e2a049c835a991647cb04565d31d330aeac95`
 - Stage16 instructions: [Stage16_Overlay/README_STAGE16.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/README_STAGE16.md)
 - Stage16 static review: [STATIC_XREF_REVIEW.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/STATIC_XREF_REVIEW.md)
@@ -53,7 +53,7 @@ No immediate `OR [reg+0x3B84],0x00020000` was found. Contextual checks resolved 
 The overlay modifies the existing Stage11 `src/AITrace.cpp` module. It uses write-only 4-byte DR0/DR1 data breakpoints on each exact runtime P1/P2 `[player+0x3B84]` DWORD:
 - DR7 configuration `0x00DD0005` (local DR0/DR1 enable, RW=01 write-only, LEN=11 four bytes).
 - Player object bases derive from the confirmed P1/P2 COM control addresses minus `0x3F2C`; the watched DWORD is then at +`0x3B84`.
-- Only threads with all DR0/DR1 enable and RW/LEN fields clear (`DR7 & 0x00FF000F == 0`) are eligible. Existing DR2/DR3 are preserved. COMvsCOM writer thread is excluded. Threads skipped for occupied slots are logged and not retried.
+- Only threads with DR0 and DR1 address registers both zero and all DR0/DR1 enable and RW/LEN fields clear (`DR7 & 0x00FF000F == 0`) are eligible. Existing DR2/DR3 are preserved. COMvsCOM writer thread is excluded. Threads skipped for occupied slots are logged and not retried.
 - The legacy Stage2 `EnableControlFieldTrace` mode shares DR0/DR1 and must stay disabled. Supplied INI does so and enables `EnablePlayerBit17WriteTrace=1`.
 - The dedicated log is `ArcanaAI_PlayerBit17WriteTrace.log`; it captures EIP-after/RVA-after, 24 code bytes, thread/context, QPC/time, new DWORD and a shadow old DWORD/bit17.
 - The old-value shadow is best-effort. `shadowInitialized=1` only means the startup baseline read succeeded; it does not prove every write was seen. A skipped thread or dropped record may leave it stale. Check all warning and drop records.

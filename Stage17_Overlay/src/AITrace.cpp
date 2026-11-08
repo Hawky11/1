@@ -15,6 +15,31 @@ extern "C"
     volatile DWORD g_Stage17Bit113SetterTarget = 0;
     void __cdecl ArcanaLogStage17Bit113SetterCall(const DWORD* savedContext);
 
+    volatile DWORD g_Stage18Bit113GateContinuation = 0;
+    void __cdecl ArcanaLogStage18Bit113GateResult(const DWORD* savedContext);
+
+    __declspec(naked) void ArcanaStage18Bit113GateResultHook()
+    {
+        __asm
+        {
+            // The original sequence at C64A5 is:
+            // add esp,0x0C; test al,al; jne C64ED.
+            // The observer CALL adds one extra return DWORD; remove 0x10 total,
+            // restore TEST flags from AL, then resume at the original JNE.
+            pushfd
+            pushad
+            mov edx, esp
+            push edx
+            call ArcanaLogStage18Bit113GateResult
+            add esp, 4
+            popad
+            popfd
+            add esp, 10h
+            test al, al
+            jmp dword ptr [g_Stage18Bit113GateContinuation]
+        }
+    }
+
     __declspec(naked) void ArcanaStage17Bit113SetterCallHook()
     {
         __asm
@@ -57,6 +82,19 @@ namespace
     constexpr DWORD kStage17Bit113RecordCapacity = 512u;
     constexpr BYTE kStage17Bit113ExpectedCall[5] = { 0xE8, 0x99, 0x95, 0xF4, 0xFF };
     constexpr char kStage17BuildMarker[] = "STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2";
+
+    constexpr DWORD kStage18Bit113GateObserverRva = 0x000C64A5u;
+    constexpr DWORD kStage18Bit113GateBranchRva = 0x000C64AAu;
+    constexpr DWORD kStage18Bit113GateCallRva = 0x000C64A0u;
+    constexpr DWORD kStage18Bit113GateHelperRva = 0x000F2FD0u;
+    constexpr DWORD kStage18Bit113GateContinuationRva = 0x000C64AAu;
+    constexpr DWORD kStage18PrimaryTableRva = 0x04882518u;
+    constexpr DWORD kStage18SecondaryTableRva = 0x04882C20u;
+    constexpr DWORD kStage18Bit113GateRecordCapacity = 512u;
+    constexpr BYTE kStage18ExpectedHelperCall[5] = { 0xE8, 0x2B, 0xCB, 0x02, 0x00 };
+    constexpr BYTE kStage18ExpectedObserverBytes[5] = { 0x83, 0xC4, 0x0C, 0x84, 0xC0 };
+    constexpr BYTE kStage18ExpectedBranchBytes[2] = { 0x75, 0x41 };
+    constexpr char kStage18BuildMarker[] = "STAGE18_BIT113_GATE_BUILD=2026-11-08-r1";
 
     struct TraceSite
     {
@@ -121,6 +159,53 @@ namespace
     };
 
     struct PlayerBit17WriteRecord
+
+    struct Stage18Bit113GateRecord
+    {
+        volatile LONG State;
+        DWORD Sequence;
+        DWORD Side;
+        DWORD ThreadId;
+        DWORD TickCount;
+        SYSTEMTIME LocalTime;
+        ULONGLONG QpcTicks;
+        DWORD Player;
+        DWORD StateIndex;
+        DWORD Key;
+        DWORD ResultEax;
+        DWORD ResultAl;
+        DWORD HookReturnAddress;
+        DWORD CallerEbp;
+        DWORD ParentEbp;
+        DWORD ParentReturnAddress;
+        DWORD ParentArgument;
+        DWORD Eax;
+        DWORD Ebx;
+        DWORD Ecx;
+        DWORD Edx;
+        DWORD Esi;
+        DWORD Edi;
+        DWORD EspAtHook;
+        DWORD EFlags;
+        DWORD Player3A34;
+        DWORD Player3A36;
+        DWORD Player3978;
+        DWORD Player3B80;
+        DWORD Player3B84;
+        DWORD Player3B88;
+        DWORD Player3F20;
+        DWORD SpecialSelector;
+        DWORD SelectedIndex;
+        DWORD PrimaryTablePointer;
+        DWORD SecondaryTablePointer;
+        DWORD SelectedTablePointer;
+        DWORD TableByteAddress;
+        DWORD TableByteValue;
+        DWORD ReadMask;
+        DWORD UsedSecondary;
+    };
+
+    struct PlayerBit17WriteRecord
     {
         // State: 0 = empty, -1 = owned by producer/consumer, 1 = ready.
         volatile LONG State;
@@ -176,6 +261,13 @@ namespace
     volatile LONG g_stage17Bit113WriteDropped = 0;
     volatile LONG g_stage17Bit113WriteReportedDropped = 0;
     Stage17Bit113SetterRecord g_stage17Bit113Records[kStage17Bit113RecordCapacity]{};
+
+    bool g_stage18Bit113GateTrace = false;
+    volatile LONG g_stage18Bit113GateInstalled = 0;
+    volatile LONG g_stage18Bit113GateSequence = 0;
+    volatile LONG g_stage18Bit113GateDropped = 0;
+    volatile LONG g_stage18Bit113GateReportedDropped = 0;
+    Stage18Bit113GateRecord g_stage18Bit113GateRecords[kStage18Bit113GateRecordCapacity]{};
     volatile LONG g_firstInstallLog = 0;
     volatile LONG g_noThreadInstallLog = 0;
 
@@ -282,6 +374,34 @@ namespace
         const int count = sprintf_s(
             line,
             "[%04u-%02u-%02u %02u:%02u:%02u.%03u] %s\r\n",
+            now.wYear, now.wMonth, now.wDay,
+            now.wHour, now.wMinute, now.wSecond, now.wMilliseconds,
+            message != nullptr ? message : "(empty)");
+        if (count <= 0) return;
+
+        HANDLE file = CreateFileW(
+            logPath, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
+            nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (file == INVALID_HANDLE_VALUE) return;
+        DWORD written = 0;
+        WriteFile(file, line, static_cast<DWORD>(count), &written, nullptr);
+        CloseHandle(file);
+    }
+
+    void AppendStage17Bit113Log(const char* message)
+
+
+    void AppendStage18Bit113GateLog(const char* message)
+    {
+        wchar_t logPath[MAX_PATH + 1]{};
+        if (!GetSiblingPath(logPath, MAX_PATH, L"ArcanaAI_Bit113GateTrace.log"))
+            return;
+
+        SYSTEMTIME now{};
+        GetLocalTime(&now);
+        char line[3072]{};
+        const int count = sprintf_s(
+            line, "[%04u-%02u-%02u %02u:%02u:%02u.%03u] %s\r\n",
             now.wYear, now.wMonth, now.wDay,
             now.wHour, now.wMinute, now.wSecond, now.wMilliseconds,
             message != nullptr ? message : "(empty)");
@@ -420,6 +540,7 @@ namespace
     // The Stage17 recorder uses this helper before its implementation below.
     // Keep the declaration in this anonymous namespace so MSVC sees the signature.
     bool ReadDwordAtAddress(DWORD address, DWORD* value);
+    bool ReadByteAtAddress(DWORD address, BYTE* value);
 
     void QueueStage17Bit113SetterRecord(const DWORD* context)
     {
@@ -612,6 +733,245 @@ namespace
             GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
             value, sizeof(*value), &bytesRead) != FALSE && bytesRead == sizeof(*value);
     }
+    bool ReadDwordAtAddress(DWORD address, DWORD* value)
+    {
+        if (address == 0 || value == nullptr) return false;
+        SIZE_T bytesRead = 0;
+        return ReadProcessMemory(
+            GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
+            value, sizeof(*value), &bytesRead) != FALSE && bytesRead == sizeof(*value);
+    }
+
+
+    bool ReadByteAtAddress(DWORD address, BYTE* value)
+    {
+        if (address == 0 || value == nullptr) return false;
+        SIZE_T bytesRead = 0;
+        return ReadProcessMemory(
+            GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
+            value, sizeof(*value), &bytesRead) != FALSE && bytesRead == sizeof(*value);
+    }
+    bool ReadByteAtAddress(DWORD address, BYTE* value)
+    {
+        if (address == 0 || value == nullptr) return false;
+        SIZE_T bytesRead = 0;
+        return ReadProcessMemory(
+            GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
+            value, sizeof(*value), &bytesRead) != FALSE && bytesRead == sizeof(*value);
+    }
+
+
+    void QueueStage18Bit113GateRecord(const DWORD* context)
+    {
+        if (!g_stage18Bit113GateTrace || context == nullptr)
+            return;
+
+        // Hook-entry stack after CALL: [return][player][stateIndex][0x19].
+        // pushfd/pushad layout matches the Stage17 recorder.
+        const DWORD hookEntryEsp = context[3] + 4u;
+        const DWORD player = context[10];
+        const DWORD stateIndex = context[11];
+        const DWORD key = context[12];
+        const DWORD p1Player = g_gameBase + kP1ControlRva - kPlayerControlOffset;
+        const DWORD p2Player = g_gameBase + kP2ControlRva - kPlayerControlOffset;
+        const DWORD side = player == p1Player ? 1u : (player == p2Player ? 2u : 0u);
+        if (side == 0)
+            return;
+
+        const LONG sequence = InterlockedIncrement(&g_stage18Bit113GateSequence);
+        Stage18Bit113GateRecord& record =
+            g_stage18Bit113GateRecords[(static_cast<DWORD>(sequence - 1)) % kStage18Bit113GateRecordCapacity];
+        if (InterlockedCompareExchange(&record.State, -1, 0) != 0)
+        {
+            InterlockedIncrement(&g_stage18Bit113GateDropped);
+            return;
+        }
+
+        record.Sequence = static_cast<DWORD>(sequence);
+        record.Side = side;
+        record.ThreadId = GetCurrentThreadId();
+        record.TickCount = GetTickCount();
+        GetLocalTime(&record.LocalTime);
+        LARGE_INTEGER qpc{};
+        QueryPerformanceCounter(&qpc);
+        record.QpcTicks = static_cast<ULONGLONG>(qpc.QuadPart);
+        record.Player = player;
+        record.StateIndex = stateIndex;
+        record.Key = key;
+        record.ResultEax = context[7];
+        record.ResultAl = context[7] & 0xFFu;
+        record.HookReturnAddress = context[9];
+        record.CallerEbp = context[2];
+        record.Eax = context[7];
+        record.Ebx = context[4];
+        record.Ecx = context[6];
+        record.Edx = context[5];
+        record.Esi = context[1];
+        record.Edi = context[0];
+        record.EspAtHook = hookEntryEsp;
+        record.EFlags = context[8];
+
+        record.ParentEbp = 0;
+        record.ParentReturnAddress = 0;
+        record.ParentArgument = 0;
+        if (record.CallerEbp != 0)
+        {
+            ReadDwordAtAddress(record.CallerEbp, &record.ParentEbp);
+            ReadDwordAtAddress(record.CallerEbp + 4u, &record.ParentReturnAddress);
+            ReadDwordAtAddress(record.CallerEbp + 8u, &record.ParentArgument);
+        }
+
+        record.Player3A34 = 0;
+        record.Player3A36 = 0;
+        record.Player3978 = 0;
+        record.Player3B80 = 0;
+        record.Player3B84 = 0;
+        record.Player3B88 = 0;
+        record.Player3F20 = 0;
+        DWORD readMask = 0;
+        if (ReadDwordAtAddress(player + 0x3A34u, &record.Player3A34)) readMask |= 0x0001u;
+        if (ReadDwordAtAddress(player + 0x3A36u, &record.Player3A36)) readMask |= 0x0002u;
+        if (ReadDwordAtAddress(player + 0x3978u, &record.Player3978)) readMask |= 0x0004u;
+        if (ReadDwordAtAddress(player + 0x3B80u, &record.Player3B80)) readMask |= 0x0008u;
+        if (ReadDwordAtAddress(player + 0x3B84u, &record.Player3B84)) readMask |= 0x0010u;
+        if (ReadDwordAtAddress(player + 0x3B88u, &record.Player3B88)) readMask |= 0x0020u;
+        if (ReadDwordAtAddress(player + 0x3F20u, &record.Player3F20)) readMask |= 0x0040u;
+
+        record.SpecialSelector =
+            record.Player3978 == 0x1Du &&
+            (record.Player3B84 & 0x00010000u) != 0 &&
+            (record.Player3B88 & 0x10000000u) != 0 ? 1u : 0u;
+        record.SelectedIndex = record.SpecialSelector ? 0x16u : record.Player3F20;
+        record.PrimaryTablePointer = 0;
+        record.SecondaryTablePointer = 0;
+        record.SelectedTablePointer = 0;
+        record.TableByteAddress = 0;
+        record.TableByteValue = 0xFFFFFFFFu;
+        record.UsedSecondary = 0;
+
+        // The helper selects a primary table by selector. When bit 25 of +3B80
+        // is set, a non-null matching secondary-table entry overrides it.
+        const DWORD selector = record.SelectedIndex;
+        const DWORD primarySlotRva = kStage18PrimaryTableRva + selector * sizeof(DWORD);
+        const DWORD secondarySlotRva = kStage18SecondaryTableRva + selector * sizeof(DWORD);
+        if ((readMask & 0x007Cu) == 0x007Cu && selector <= 0xFFu &&
+            g_gameImageSize >= sizeof(DWORD) &&
+            primarySlotRva <= g_gameImageSize - sizeof(DWORD) &&
+            secondarySlotRva <= g_gameImageSize - sizeof(DWORD))
+        {
+            if (ReadDwordAtAddress(g_gameBase + primarySlotRva, &record.PrimaryTablePointer))
+                readMask |= 0x0080u;
+            record.SelectedTablePointer = record.PrimaryTablePointer;
+
+            if ((record.Player3B80 & 0x02000000u) != 0)
+            {
+                if (ReadDwordAtAddress(g_gameBase + secondarySlotRva, &record.SecondaryTablePointer))
+                {
+                    readMask |= 0x0100u;
+                    if (record.SecondaryTablePointer != 0)
+                    {
+                        record.SelectedTablePointer = record.SecondaryTablePointer;
+                        record.UsedSecondary = 1;
+                    }
+                }
+            }
+
+            if (record.SelectedTablePointer != 0 && stateIndex <= 0x1Bu)
+            {
+                const ULONGLONG byteAddress =
+                    static_cast<ULONGLONG>(record.SelectedTablePointer) +
+                    static_cast<ULONGLONG>(stateIndex) * 0x1Au + 0x19u;
+                if (byteAddress <= 0xFFFFFFFFull)
+                {
+                    record.TableByteAddress = static_cast<DWORD>(byteAddress);
+                    BYTE byteValue = 0;
+                    if (ReadByteAtAddress(record.TableByteAddress, &byteValue))
+                    {
+                        record.TableByteValue = byteValue;
+                        readMask |= 0x0200u;
+                    }
+                }
+            }
+        }
+        record.ReadMask = readMask;
+        InterlockedExchange(&record.State, 1);
+    }
+
+    void FlushStage18Bit113GateRecords()
+    {
+        for (DWORD i = 0; i < kStage18Bit113GateRecordCapacity; ++i)
+        {
+            Stage18Bit113GateRecord& record = g_stage18Bit113GateRecords[i];
+            if (InterlockedCompareExchange(&record.State, -1, 1) != 1)
+                continue;
+
+            char message[2048]{};
+            const char* sideName = record.Side == 1 ? "P1" : "P2";
+            sprintf_s(
+                message, sizeof(message),
+                "BIT113_GATE_RESULT seq=%lu side=%s tid=%lu tick=%lu time=%02u:%02u:%02u.%03u "
+                "qpc=0x%08lX%08lX player=0x%08lX stateIndex=0x%08lX key=0x%08lX "
+                "resultAL=%lu resultEAX=0x%08lX hookReturn=0x%08lX "
+                "frame=(EBP:0x%08lX parentEBP:0x%08lX parentReturn:0x%08lX parentArg:0x%08lX) "
+                "regs=(EAX:%08lX EBX:%08lX ECX:%08lX EDX:%08lX ESI:%08lX EDI:%08lX ESP:%08lX EFLAGS:%08lX) "
+                "player=(3A34:%08lX 3A36:%08lX 3978:%08lX 3B80:%08lX 3B84:%08lX 3B88:%08lX 3F20:%08lX) "
+                "table=(special:%lu selector:0x%08lX primary:0x%08lX secondary:0x%08lX selected:0x%08lX usedSecondary:%lu "
+                "byteAddress:0x%08lX byte:0x%08lX readMask:0x%04lX)",
+                static_cast<unsigned long>(record.Sequence), sideName,
+                static_cast<unsigned long>(record.ThreadId), static_cast<unsigned long>(record.TickCount),
+                record.LocalTime.wHour, record.LocalTime.wMinute, record.LocalTime.wSecond, record.LocalTime.wMilliseconds,
+                static_cast<unsigned long>(record.QpcTicks >> 32),
+                static_cast<unsigned long>(record.QpcTicks & 0xFFFFFFFFu),
+                static_cast<unsigned long>(record.Player),
+                static_cast<unsigned long>(record.StateIndex),
+                static_cast<unsigned long>(record.Key),
+                static_cast<unsigned long>(record.ResultAl),
+                static_cast<unsigned long>(record.ResultEax),
+                static_cast<unsigned long>(record.HookReturnAddress),
+                static_cast<unsigned long>(record.CallerEbp),
+                static_cast<unsigned long>(record.ParentEbp),
+                static_cast<unsigned long>(record.ParentReturnAddress),
+                static_cast<unsigned long>(record.ParentArgument),
+                static_cast<unsigned long>(record.Eax),
+                static_cast<unsigned long>(record.Ebx),
+                static_cast<unsigned long>(record.Ecx),
+                static_cast<unsigned long>(record.Edx),
+                static_cast<unsigned long>(record.Esi),
+                static_cast<unsigned long>(record.Edi),
+                static_cast<unsigned long>(record.EspAtHook),
+                static_cast<unsigned long>(record.EFlags),
+                static_cast<unsigned long>(record.Player3A34),
+                static_cast<unsigned long>(record.Player3A36),
+                static_cast<unsigned long>(record.Player3978),
+                static_cast<unsigned long>(record.Player3B80),
+                static_cast<unsigned long>(record.Player3B84),
+                static_cast<unsigned long>(record.Player3B88),
+                static_cast<unsigned long>(record.Player3F20),
+                static_cast<unsigned long>(record.SpecialSelector),
+                static_cast<unsigned long>(record.SelectedIndex),
+                static_cast<unsigned long>(record.PrimaryTablePointer),
+                static_cast<unsigned long>(record.SecondaryTablePointer),
+                static_cast<unsigned long>(record.SelectedTablePointer),
+                static_cast<unsigned long>(record.UsedSecondary),
+                static_cast<unsigned long>(record.TableByteAddress),
+                static_cast<unsigned long>(record.TableByteValue),
+                static_cast<unsigned long>(record.ReadMask));
+            AppendStage18Bit113GateLog(message);
+            InterlockedExchange(&record.State, 0);
+        }
+
+        const LONG dropped = InterlockedCompareExchange(&g_stage18Bit113GateDropped, 0, 0);
+        const LONG reported = InterlockedCompareExchange(&g_stage18Bit113GateReportedDropped, 0, 0);
+        if (dropped > reported)
+        {
+            char warning[192]{};
+            sprintf_s(warning, "WARNING: Stage18 gate ring dropped %ld record(s); capacity=%lu.",
+                static_cast<long>(dropped), static_cast<unsigned long>(kStage18Bit113GateRecordCapacity));
+            AppendStage18Bit113GateLog(warning);
+            InterlockedExchange(&g_stage18Bit113GateReportedDropped, dropped);
+        }
+    }
+
 
     void QueuePlayerBit17WriteRecord(int sideIndex, PCONTEXT context)
     {
@@ -1022,7 +1382,7 @@ namespace
         }
     }
 
-    DWORD SuspendOtherThreadsForStage17(HANDLE* handles, DWORD capacity, bool* safeToPatch)
+    DWORD SuspendOtherThreadsForPatch(HANDLE* handles, DWORD capacity, bool* safeToPatch, DWORD targetAddress, DWORD patchLength)
     {
         if (handles == nullptr || safeToPatch == nullptr || capacity == 0) return 0;
         *safeToPatch = false;
@@ -1075,8 +1435,7 @@ namespace
                                 safe = false;
                             else
                             {
-                                const DWORD targetAddress = g_gameBase + kStage17Bit113SetterCallRva;
-                                if (context.Eip >= targetAddress && context.Eip < targetAddress + 5u)
+                                if (context.Eip >= targetAddress && context.Eip < targetAddress + patchLength)
                                     safe = false; // Do not rewrite a CALL while a thread is inside its five bytes.
                             }
                         }
@@ -1163,8 +1522,9 @@ namespace
 
         HANDLE suspended[512]{};
         bool safeToPatch = false;
-        const DWORD suspendedCount = SuspendOtherThreadsForStage17(
-            suspended, static_cast<DWORD>(sizeof(suspended) / sizeof(suspended[0])), &safeToPatch);
+        const DWORD suspendedCount = SuspendOtherThreadsForPatch(
+            suspended, static_cast<DWORD>(sizeof(suspended) / sizeof(suspended[0])), &safeToPatch,
+            g_gameBase + kStage17Bit113SetterCallRva, 5u);
         if (!safeToPatch)
         {
             ResumeStage17Threads(suspended, suspendedCount);
@@ -1207,26 +1567,154 @@ namespace
     }
 
     DWORD WINAPI FieldTraceThread(void*)
+
+    bool InstallStage18Bit113GateResultHook()
+    {
+        if (InterlockedCompareExchange(&g_stage18Bit113GateInstalled, 0, 0) != 0)
+            return true;
+
+        if (g_gameBase == 0 ||
+            g_gameImageSize < kStage18Bit113GateBranchRva + sizeof(kStage18ExpectedBranchBytes) ||
+            g_gameImageSize < kStage18SecondaryTableRva + 0x100u * sizeof(DWORD))
+        {
+            AppendStage18Bit113GateLog("ERROR: AALib image does not contain the Stage18 gate observer or data-table selector range.");
+            return false;
+        }
+
+        BYTE* callSite = reinterpret_cast<BYTE*>(g_gameBase + kStage18Bit113GateCallRva);
+        if (std::memcmp(callSite, kStage18ExpectedHelperCall, sizeof(kStage18ExpectedHelperCall)) != 0)
+        {
+            AppendStage18Bit113GateLog("ERROR: bytes at RVA 0x000C64A0 do not match the verified CALL-to-0x4F2FD0 signature; refusing to patch.");
+            return false;
+        }
+        std::int32_t helperRelative = 0;
+        std::memcpy(&helperRelative, callSite + 1, sizeof(helperRelative));
+        const std::intptr_t helperDestination =
+            reinterpret_cast<std::intptr_t>(callSite + 5) + helperRelative;
+        if (helperDestination != static_cast<std::intptr_t>(g_gameBase + kStage18Bit113GateHelperRva))
+        {
+            AppendStage18Bit113GateLog("ERROR: RVA 0x000C64A0 no longer calls helper RVA 0x000F2FD0; refusing to patch.");
+            return false;
+        }
+
+        BYTE* observerSite = reinterpret_cast<BYTE*>(g_gameBase + kStage18Bit113GateObserverRva);
+        if (std::memcmp(observerSite, kStage18ExpectedObserverBytes, sizeof(kStage18ExpectedObserverBytes)) != 0)
+        {
+            AppendStage18Bit113GateLog("ERROR: bytes at RVA 0x000C64A5 do not match 'add esp,0x0C; test al,al'; refusing to patch.");
+            return false;
+        }
+        BYTE* branchSite = reinterpret_cast<BYTE*>(g_gameBase + kStage18Bit113GateBranchRva);
+        if (std::memcmp(branchSite, kStage18ExpectedBranchBytes, sizeof(kStage18ExpectedBranchBytes)) != 0)
+        {
+            AppendStage18Bit113GateLog("ERROR: branch at RVA 0x000C64AA is not the verified JNE +0x41; refusing to patch.");
+            return false;
+        }
+
+        BYTE patch[5]{};
+        const std::int64_t relative =
+            static_cast<std::int64_t>(reinterpret_cast<std::uintptr_t>(&ArcanaStage18Bit113GateResultHook)) -
+            (static_cast<std::int64_t>(reinterpret_cast<std::uintptr_t>(observerSite)) + 5);
+        if (relative < INT32_MIN || relative > INT32_MAX)
+        {
+            AppendStage18Bit113GateLog("ERROR: Stage18 hook is outside the rel32 CALL range.");
+            return false;
+        }
+        patch[0] = 0xE8;
+        const std::int32_t rel32 = static_cast<std::int32_t>(relative);
+        std::memcpy(patch + 1, &rel32, sizeof(rel32));
+
+        HANDLE patchMutex = CreateMutexW(nullptr, FALSE, L"Local\\ArcanaAIOverhaul_PatchInstall_Mutex");
+        if (patchMutex == nullptr)
+        {
+            AppendStage18Bit113GateLog("ERROR: could not create the shared patch-install mutex; gate observer was not patched.");
+            return false;
+        }
+        const DWORD mutexWait = WaitForSingleObject(patchMutex, INFINITE);
+        if (mutexWait != WAIT_OBJECT_0 && mutexWait != WAIT_ABANDONED)
+        {
+            AppendStage18Bit113GateLog("ERROR: could not acquire the shared patch-install mutex; gate observer was not patched.");
+            CloseHandle(patchMutex);
+            return false;
+        }
+
+        HANDLE suspended[512]{};
+        bool safeToPatch = false;
+        const DWORD suspendedCount = SuspendOtherThreadsForPatch(
+            suspended, static_cast<DWORD>(sizeof(suspended) / sizeof(suspended[0])), &safeToPatch,
+            g_gameBase + kStage18Bit113GateObserverRva, 5u);
+        if (!safeToPatch)
+        {
+            ResumeStage17Threads(suspended, suspendedCount);
+            ReleaseMutex(patchMutex);
+            CloseHandle(patchMutex);
+            AppendStage18Bit113GateLog("WARNING: could not safely suspend all process threads, or a thread was inside the five-byte observer site; Stage18 hook was not installed.");
+            return false;
+        }
+
+        DWORD oldProtect = 0;
+        if (!VirtualProtect(observerSite, sizeof(patch), PAGE_EXECUTE_READWRITE, &oldProtect))
+        {
+            ResumeStage17Threads(suspended, suspendedCount);
+            ReleaseMutex(patchMutex);
+            CloseHandle(patchMutex);
+            AppendStage18Bit113GateLog("ERROR: VirtualProtect failed for RVA 0x000C64A5.");
+            return false;
+        }
+
+        g_Stage18Bit113GateContinuation = g_gameBase + kStage18Bit113GateContinuationRva;
+        std::memcpy(observerSite, patch, sizeof(patch));
+        FlushInstructionCache(GetCurrentProcess(), observerSite, sizeof(patch));
+        DWORD ignored = 0;
+        VirtualProtect(observerSite, sizeof(patch), oldProtect, &ignored);
+        InterlockedExchange(&g_stage18Bit113GateInstalled, 1);
+
+        ResumeStage17Threads(suspended, suspendedCount);
+        ReleaseMutex(patchMutex);
+        CloseHandle(patchMutex);
+
+        char message[512]{};
+        sprintf_s(message,
+            "Installed Stage18 passive gate-result observer at RVA=0x%08lX after helper CALL RVA=0x%08lX (target helper RVA=0x%08lX, resume RVA=0x%08lX); suspended=%lu thread(s).",
+            static_cast<unsigned long>(kStage18Bit113GateObserverRva),
+            static_cast<unsigned long>(kStage18Bit113GateCallRva),
+            static_cast<unsigned long>(kStage18Bit113GateHelperRva),
+            static_cast<unsigned long>(kStage18Bit113GateContinuationRva),
+            static_cast<unsigned long>(suspendedCount));
+        AppendStage18Bit113GateLog(message);
+        return true;
+    }
+
+    DWORD WINAPI FieldTraceThread(void*)
     {
         // Emit a Stage17-specific startup marker before any validation or early return.
         // Its presence proves that this exact Stage17 AITrace.cpp reached runtime.
         AppendStage17Bit113Log(kStage17BuildMarker);
         AppendStage17Bit113Log("STAGE17_INIT: FieldTraceThread entered.");
+        AppendStage18Bit113GateLog(kStage18BuildMarker);
+        AppendStage18Bit113GateLog("STAGE18_INIT: FieldTraceThread entered.");
 
         const int controlTraceEnabled = ReadIniInt(L"AIResearch", L"EnableControlFieldTrace", 0);
         const int bit17TraceEnabled = ReadIniInt(L"AIResearch", L"EnablePlayerBit17WriteTrace", 0);
         const int stage17SetterEnabled = ReadIniInt(L"AIResearch", L"EnableStage17Bit113SetterCallTrace", 0);
+        const int stage18GateEnabled = ReadIniInt(L"AIResearch", L"EnableStage18Bit113GateTrace", 0);
         g_stage17Bit113SetterTrace = stage17SetterEnabled != 0;
+        g_stage18Bit113GateTrace = stage18GateEnabled != 0;
 
         char configMessage[256]{};
         sprintf_s(configMessage,
             "STAGE17_CONFIG: EnableControlFieldTrace=%d EnablePlayerBit17WriteTrace=%d EnableStage17Bit113SetterCallTrace=%d.",
             controlTraceEnabled, bit17TraceEnabled, stage17SetterEnabled);
         AppendStage17Bit113Log(configMessage);
+        char stage18ConfigMessage[192]{};
+        sprintf_s(stage18ConfigMessage,
+            "STAGE18_CONFIG: EnableStage18Bit113GateTrace=%d EnableStage17Bit113SetterCallTrace=%d EnablePlayerBit17WriteTrace=%d.",
+            stage18GateEnabled, stage17SetterEnabled, bit17TraceEnabled);
+        AppendStage18Bit113GateLog(stage18ConfigMessage);
 
         if (controlTraceEnabled != 0 && bit17TraceEnabled != 0)
         {
             AppendStage17Bit113Log("ERROR: conflicting DR0/DR1 modes; FieldTraceThread is stopping before Stage17 hook installation.");
+            AppendStage18Bit113GateLog("ERROR: conflicting DR0/DR1 modes; FieldTraceThread stopped before Stage18 hook installation.");
             AppendTraceLog("ERROR: EnableControlFieldTrace and EnablePlayerBit17WriteTrace both use DR0/DR1; disable one mode. No DR0/DR1 watchpoints were installed.");
             AppendPlayerBit17TraceLog("ERROR: conflicting DR0/DR1 modes. Set EnableControlFieldTrace=0 and keep EnablePlayerBit17WriteTrace=1.");
             return 0;
@@ -1235,7 +1723,7 @@ namespace
         g_watchDr7Configuration = g_playerBit17WriteTrace
             ? kPlayerBit17WriteTraceDr7 : kControlTraceDr7;
         bool watchpointsEnabled = controlTraceEnabled != 0 || bit17TraceEnabled != 0;
-        const int enabled = watchpointsEnabled || stage17SetterEnabled != 0;
+        const int enabled = watchpointsEnabled || stage17SetterEnabled != 0 || stage18GateEnabled != 0;
         int interval = ReadIniInt(L"AIResearch", L"ThreadScanIntervalMs", static_cast<int>(kDefaultScanIntervalMs));
         if (interval < static_cast<int>(kMinimumScanIntervalMs)) interval = static_cast<int>(kMinimumScanIntervalMs);
         if (interval > static_cast<int>(kMaximumScanIntervalMs)) interval = static_cast<int>(kMaximumScanIntervalMs);
@@ -1246,6 +1734,7 @@ namespace
             AppendTraceLog("AI field trace is disabled in ArcanaAI.ini. No hardware watchpoints were installed.");
             AppendPlayerBit17TraceLog("Stage 16 player bit-17 write trace is disabled in ArcanaAI.ini.");
             AppendStage17Bit113Log("Stage 17 bit-113 setter callsite trace is disabled in ArcanaAI.ini.");
+            AppendStage18Bit113GateLog("Stage 18 bit-113 gate trace is disabled in ArcanaAI.ini.");
             return 0;
         }
 
@@ -1263,6 +1752,7 @@ namespace
             AppendTraceLog("ERROR: AALib.exe was not found; AI field trace stopped.");
             if (g_playerBit17WriteTrace) AppendPlayerBit17TraceLog("ERROR: AALib.exe was not found; Stage16 trace stopped.");
             AppendStage17Bit113Log("ERROR: AALib.exe was not found within the module wait window; Stage17 hook installation was skipped.");
+            AppendStage18Bit113GateLog("ERROR: AALib.exe was not found within the module wait window; Stage18 hook installation was skipped.");
             return 0;
         }
 
@@ -1281,6 +1771,7 @@ namespace
             AppendTraceLog("ERROR: the loaded AALib.exe image does not contain the selected P1/P2 watchpoint RVAs.");
             AppendPlayerBit17TraceLog("ERROR: the loaded AALib.exe image does not contain both player+0x3B84 watchpoint RVAs.");
             AppendStage17Bit113Log("ERROR: loaded AALib.exe image is too small for the configured P1/P2 trace RVAs; Stage17 initialization stopped.");
+            AppendStage18Bit113GateLog("ERROR: loaded AALib.exe image is too small for the configured P1/P2 trace RVAs; Stage18 initialization stopped.");
             return 0;
         }
 
@@ -1295,6 +1786,7 @@ namespace
             {
                 AppendPlayerBit17TraceLog("ERROR: could not read initial P1/P2 player+0x3B84 values; refusing to start because the old-value shadow would be invalid.");
                 AppendStage17Bit113Log("ERROR: initial P1/P2 field read failed; Stage17 initialization stopped before callsite validation.");
+                AppendStage18Bit113GateLog("ERROR: initial P1/P2 field read failed; Stage18 initialization stopped before observer validation.");
                 return 0;
             }
             g_playerBit17InitialValue[0] = initialP1;
@@ -1343,6 +1835,17 @@ namespace
         }
         else
             AppendStage17Bit113Log("Stage17 bit-113 setter callsite trace is disabled in ArcanaAI.ini.");
+
+        if (g_stage18Bit113GateTrace)
+        {
+            if (InstallStage18Bit113GateResultHook())
+                AppendStage18Bit113GateLog("Stage18 trace active. Captures the 0x4F2FD0 AL result, state index/key, player state, and derived state-table byte before resuming at the original JNE.");
+            else
+                AppendStage18Bit113GateLog("ERROR: Stage18 gate-result observer was not installed; inspect the preceding validation/patch message.");
+        }
+        else
+            AppendStage18Bit113GateLog("Stage18 bit-113 gate trace is disabled in ArcanaAI.ini.");
+
 
         char startMessage[768]{};
         if (g_playerBit17WriteTrace && watchpointsEnabled)
@@ -1414,6 +1917,8 @@ namespace
             }
             if (g_stage17Bit113SetterTrace)
                 FlushStage17Bit113SetterRecords();
+            if (g_stage18Bit113GateTrace)
+                FlushStage18Bit113GateRecords();
             Sleep(g_scanIntervalMs);
         }
     }
@@ -1425,6 +1930,7 @@ namespace
         {
             AppendTraceLog("ERROR: failed to create AI field-trace worker thread.");
             AppendStage17Bit113Log("ERROR: failed to create the FieldTraceThread worker; Stage17 did not initialize.");
+            AppendStage18Bit113GateLog("ERROR: failed to create the FieldTraceThread worker; Stage18 did not initialize.");
             return TRUE;
         }
         CloseHandle(thread);
@@ -1435,6 +1941,11 @@ namespace
 extern "C" void __cdecl ArcanaLogStage17Bit113SetterCall(const DWORD* savedContext)
 {
     QueueStage17Bit113SetterRecord(savedContext);
+}
+
+extern "C" void __cdecl ArcanaLogStage18Bit113GateResult(const DWORD* savedContext)
+{
+    QueueStage18Bit113GateRecord(savedContext);
 }
 
 void StartAIFieldTrace(HMODULE proxyModule)

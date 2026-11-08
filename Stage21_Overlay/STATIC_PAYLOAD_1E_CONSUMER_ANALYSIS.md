@@ -173,3 +173,17 @@ Stage21 keeps the Stage20 source/INI configuration active. The existing Stage20 
 - The Stage21 source overlay replaces the assembled project's `src/AIQueueTrace.cpp`; the Stage21 INI overlay replaces the assembled `ArcanaAI.ini`.
 - Preserve the Stage20 `AITrace.cpp` and all earlier source files from the Stage20 source branch.
 - The Stage21 source has been committed, but it has not been compiled or run in this environment. Build and runtime confirmation remain pending.
+
+
+## 8. R2 correction after the first runtime capture
+
+The Stage21 r1 runtime log confirmed the classifier result and fallback path, but its `decodedActionCode` field was invalid: the logger read EDI after the original helper call, and the values matched the subsequent controller-array pointer. The helper repurposes EDI.
+
+Stage21 r2 changes only this capture:
+- The CALL wrapper pushes EDI to a private stack DWORD before calling `0x4E8CF0`.
+- The logger reads the saved pre-call EDI from that private slot, distinct from the helper's post-call register state.
+- The wrapper removes the private DWORD with flag-neutral `LEA ESP,[ESP+4]` after restoring registers/EFLAGS.
+- The new log field is `decodedActionCodePreCall`; expected value at this callsite is `1`, because the dispatcher has already selected this decoded-action branch before reaching `0xEE426`.
+- The new build marker is `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`.
+
+The r2 source is not yet built or runtime-tested. The exact r1 source and its runtime evidence remain preserved separately.

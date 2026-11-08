@@ -555,3 +555,68 @@ There are no later F6A9D or F6AAC branch records, and the F6AD7 alternate queue 
 **Conclusion:** Stage18 confirms that the 0x4F2FD0 state-table gate allowed all three observed target episodes (AL=1, readback 0xFA). Stage17/16 then show bit17 being set, and Stage15 confirms that bit17 is the decisive suppression condition for the target payload-0x1E attempts in this run. No successful payload-0x1E insertion or AL=0 table-gate sample was captured. The semantic meaning of byte 0xFA remains unassigned.
 
 All reviewed Stage18, Stage17 setter, Stage16 writer, Stage15 producer, queue, dispatch, and alternate-callsite logs contain no warning/error/drop report.
+
+
+## Stage19 source overlay — bit-113 state-code mapping (2026-11-08)
+
+Source branch: [stage19-bit113-state-map-trace](https://github.com/Hawky11/1/tree/stage19-bit113-state-map-trace), current HEAD `841142895a976419a9bda197be286e7434993067`. It was branched from the original Stage18 source snapshot [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace), HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. The Stage18 runtime-evidence branch remains separate and unchanged.
+
+### New findings from matching AALib.exe
+
+The original `AALib.exe` from the user's Library archive has SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`, matching the binary identity used by the Stage18 static analysis.
+
+The three Stage18 table-byte readbacks of `0xFA` already exist in the on-disk PE's initialized `.data` image:
+
+| Selector | State index | Preferred VA | Stage18 runtime VA | PE byte |
+|---:|---:|---:|---:|---:|
+| `0x0A` | `0x0E` | `0x04C7DBDD` | `0x0559DBDD` | `0xFA` |
+| `0x17` | `0x19` | `0x04C8073B` | `0x055A073B` | `0xFA` |
+| `0x0A` | `0x18` | `0x04C7DCE1` | `0x0559DCE1` | `0xFA` |
+
+The runtime module base inferred from Stage18's return address is `0x00D20000`, a relocation delta of `+0x00920000` from the preferred `0x00400000` base. The relocation reproduces all three observed runtime addresses exactly. This establishes that the observed initial `0xFA` values are embedded in the PE; it does **not** establish that runtime code can never mutate the writable table.
+
+The primary table pointer array at preferred VA `0x04C82518` maps selector `0x0A` to `0x04C7DA58` and selector `0x17` to `0x04C80498`. Each state row has stride `0x1A`; the gate reads key offset `0x19`.
+
+### State-index conversion path
+
+The wrapper `0x4F6ED0` calls `0x4F6BA0`, which reads `WORD [player+0x3A34]` and the signed raw code `WORD [player+0x3A36]`.
+
+- Raw values `<=0x17` are returned as the state index directly.
+- Raw values `0x18..0x1F` are rejected.
+- Other mapped values pass through `0x4F02C0`, which computes `rawIndex=rawCode-0x20`, checks it against `DWORD [player+0x1220]`, and reads a WORD from `player+0x2B9E+rawIndex*0x14`.
+- Flag priority in the helper is `0x0400→0`, `0x0800→1`, `0x1000→2`, `0x0200→5`, `0x2000→3`, `0x4000→7`, `0x8000→4`, `0x0008→6`; otherwise it returns `0xFFFFFFFF`.
+- `0x4F6BA0` maps helper results `0..4` to indexes `0x18..0x1C`, `5→0x1A`, `6→0x1B`, `7→0x1C`, and `0xFFFFFFFF→-1`. The later caller rejects indexes `>=0x1C`.
+
+This explains the Stage18 observations at the conversion level: P1 raw code `0x20` / stateIndex `0x18` implies helper result 0; P2 raw code `0x5C` / stateIndex `0x19` implies helper result 1. Stage19 is designed to capture these values directly.
+
+For key offset `0x19`, the on-disk primary table's valid `0xFF` rows are:
+
+| Selector | `0xFF` state indexes below `0x1C` |
+|---:|---|
+| P1 selector `0x0A` | `01, 03, 09, 0F, 14, 15, 16, 17` |
+| P2 selector `0x17` | `01, 03, 07, 09, 0D, 0F` |
+
+The mapped rows `0x18..0x1B` are all `0xFA` for these selectors. Thus a naturally reached direct state in the listed rows is the clearest current candidate for Stage18 to record actual `AL=0`. Those direct returns bypass Stage19's converter hook, but they remain covered by the Stage18 gate observer. Stage19 must not force-edit table or player state to manufacture such a sample.
+
+### Stage19 source implementation
+
+The new source overlay adds:
+- `Stage19_Overlay/src/AITrace.cpp`;
+- `Stage19_Overlay/ArcanaAI.ini`;
+- `Stage19_Overlay/README_STAGE19.md`;
+- `Stage19_Overlay/STATIC_STATE_MAP_ANALYSIS.md`.
+
+It installs a passive inline observer at RVA `0x000F6C08`, immediately after the `0x4F02C0` CALL at `0x000F6C03`. The observer replaces six bytes (`ADD ESP,8; CMP EAX,5`) with CALL+NOP, logs the original helper EAX/raw code/WORD flags/derived index/QPC, accounts for its synthetic CALL return address plus the two original cdecl arguments, replays `CMP EAX,5`, and resumes at the untouched `JNE` at `0x000F6C0E`. It does not use DR0–DR3 and does not change the helper result or branch condition. Output is `ArcanaAI_StateMapTrace.log`.
+
+### Verification status and next action
+
+This is a **source-only** stage. Git comparison confirms that the Stage19 branch is six commits ahead of the Stage18 source snapshot, contains only the four new Stage19 overlay files, and has no changes to the Stage18 source or evidence branch. Stage19 has **not** been compiled with MSVC, linked, installed, or runtime-tested.
+
+Next:
+1. Apply Stage19 `AITrace.cpp` and `ArcanaAI.ini` over the assembled Stage18 source.
+2. Build `Release | Win32` with MSVC and upload the complete `Build.log`. Do not install if compilation or linking fails.
+3. Back up the working DLL, install only after a successful build, and confirm the Stage19 build marker/config plus successful hook installation at RVA `0x000F6C08`.
+4. Run a short natural COM-vs-COM session and upload `ArcanaAI_StateMapTrace.log`, `ArcanaAI_Bit113GateTrace.log`, `ArcanaAI_Bit113SetterTrace.log`, `ArcanaAI_PlayerBit17WriteTrace.log`, plus relevant queue/dispatch/producer logs.
+5. Verify the known conversions `0x20→0→0x18` and `0x5C→1→0x19`, compare the helper result with the WORD flags, correlate by player pointer/QPC, and check whether Stage18 observes an actual `AL=0` on a valid `0xFF` row.
+
+Preserve Stage18 runtime evidence and all earlier historical branches unchanged.

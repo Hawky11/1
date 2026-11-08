@@ -6,10 +6,9 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- Latest runtime evidence branch: `stage17-callsite-init-diagnostics`
-- Latest runtime evidence HEAD: `dcfd1efbe221438b1f2b3fae800ca76b1fa87e7d`
 - Latest runtime evidence branch: `stage18-bit113-gate-runtime-evidence`, HEAD `0139152b9eeb778a23ec4f3197c57faff749a78a`; Stage17 runtime evidence remains preserved in `stage17-callsite-init-diagnostics`.
-- Current source-only Stage18 branch: `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`; it is pending MSVC build and runtime verification.
+- Current diagnostic source branch: `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; source-only, awaiting MSVC build and runtime verification.
+- Stage18 source snapshot (parent of Stage19): `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. Its runtime result is documented below and its separate evidence branch remains immutable.
 - Earlier Stage17 pre-fix branch (preserve unchanged): `stage17-bit113-setter-callsite-trace`, HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`.
 - Earlier Stage17 entry-hook source branch (preserve unchanged): `stage17-bit113-setter-caller-trace`, HEAD at last review `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
 - Stage16 baseline evidence branch: `stage16-player-bit17-writer-trace`, HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
@@ -50,17 +49,30 @@ Runtime run: 2026-11-08, initialization at 16:34:05, relevant events 16:34:29–
 - The first setter call in each episode sets bit17; the second repeats the OR when it is already set. QPC deltas are in PROJECT_HISTORY.md and STAGE18_RUNTIME_ANALYSIS.md.
 - Three target Stage15 attempts had EDI=0x1E, bit17=1, ZF=1 and branchTaken=0. No F6A9D/F6AAC or F6AD7 invocation followed. QueueTrace/EventDispatchTrace/FinalCommandTrace each show 27 type-1 records for other payloads and none for 0x1E.
 
-### Next investigation — Stage19
+### Current task — build and runtime-test Stage19
 
-Stage18 has shown that the 0x4F2FD0 table gate did not reject the three target attempts; AL was 1 and the byte read back as 0xFA every time. The decisive target suppression in this run was the later bit17 branch at F6A68.
+Stage19 source branch: [stage19-bit113-state-map-trace](https://github.com/Hawky11/1/tree/stage19-bit113-state-map-trace), HEAD `841142895a976419a9bda197be286e7434993067`. It was created directly from the immutable Stage18 source snapshot `stage18-bit113-gate-condition-trace` (HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`), not from the Stage18 evidence branch.
 
-Recommended Stage19 scope:
-1. Trace the writer/initializer of the selected state-table bytes at table + stateIndex*0x1A + 0x19. Determine why the observed entries are 0xFA and what operation or state changes them to/from the 0xFF sentinel. Do not assign semantic names to 0xFA/0xFF without evidence.
-2. Preserve the two confirmed invocation routes into 0x4C63B0: direct call from 0x4967FC and callback/function-table slot 0x0A dispatched by 0x4CB9C0. Determine under which parent conditions each route invokes the function.
-3. Seek a controlled scenario that yields an actual AL=0 result, so both accepted and rejected table-gate behavior can be compared. Keep the helper's actual AL authoritative; its post-return byte readback is only corroboration.
-4. Keep Stage17 setter and Stage16 bit17 writer traces enabled for correlation. Retain the Stage15 F6A68/F6A9D/F6AAC probes and queue/dispatch traces to verify whether a future payload-0x1E attempt is blocked or proceeds.
+#### New static findings
 
-Create the Stage19 source branch from the Stage18 source snapshot branch, not from the evidence-only branch. Preserve Stage18 runtime evidence and all Stage12–Stage17 historical branches unchanged. Do not repeat a broad test until Stage19 has a narrowly defined byte-writer or AL=0 question.
+- The three Stage18 cells that read back as `0xFA` are already `0xFA` in the matching on-disk PE `.data` image. Their preferred VAs (`0x04C7DBDD`, `0x04C8073B`, `0x04C7DCE1`) relocate by `+0x00920000` to the exact Stage18 runtime addresses. This proves those initial values are present in the PE; it does not prove that writable runtime tables can never change.
+- State index conversion occurs in `0x4F6BA0`, via helper `0x4F02C0`. Raw codes `<=0x17` are returned directly; `0x18..0x1F` are rejected; other mapped codes use the WORD at `player+0x2B9E+(rawCode-0x20)*0x14`.
+- The observed P1 raw code `0x20` mapped to state index `0x18`; P2 raw code `0x5C` mapped to `0x19`. The exact helper return values (expected 0 and 1 respectively) have not yet been captured directly; Stage19 records them.
+- For the observed primary selectors, candidate valid `0xFF` rows at key `0x19` are P1 selector `0x0A`: `01,03,09,0F,14,15,16,17`; P2 selector `0x17`: `01,03,07,09,0D,0F`. The mapped rows `0x18..0x1B` are all `0xFA` for these selectors. Candidate direct states bypass the Stage19 converter hook but remain covered by Stage18's gate observer.
+
+#### Stage19 observer
+
+The new passive hook replaces six bytes at RVA `0x000F6C08` (original `ADD ESP,8; CMP EAX,5`) with a CALL and NOP. It logs the 0x4F02C0 EAX result, raw code, WORD flags, entry count, derived stateIndex, QPC and caller context to `ArcanaAI_StateMapTrace.log`. It removes its synthetic CALL return plus the two original cdecl arguments, recreates `CMP EAX,5`, and resumes at the untouched JNE at `0x000F6C0E`. It does not consume DR0–DR3. Stage16/17/18 remain enabled in the supplied INI.
+
+#### Next actions
+
+1. Apply `Stage19_Overlay/src/AITrace.cpp` and `Stage19_Overlay/ArcanaAI.ini` over the assembled Stage18 project; follow [README_STAGE19.md](https://github.com/Hawky11/1/blob/stage19-bit113-state-map-trace/Stage19_Overlay/README_STAGE19.md).
+2. Build `Release | Win32` with MSVC and upload the complete `Build.log`. This source-only branch has not been compiled or runtime-tested; do not install the DLL unless compilation and linking both succeed.
+3. Back up the working DLL, install the Stage19 build, and first check the Stage19 marker/config and successful six-byte hook installation at RVA `0x000F6C08`.
+4. Run a short natural COM-vs-COM test. Do not force-edit state bytes to manufacture AL=0. Upload `ArcanaAI_StateMapTrace.log`, Stage18 gate, Stage17 setter, Stage16 bit17, and the relevant queue/dispatch/producer logs.
+5. Verify the known conversions (`0x20 -> result 0 -> index 0x18`; `0x5C -> result 1 -> index 0x19`), compare the helper result with the logged WORD flags, and correlate by player pointer/QPC. Use Stage18's actual `resultAL` as the authoritative test for a reachable `0xFF` cell.
+
+Preserve the Stage18 source and runtime-evidence branches and all Stage12–Stage17 historical branches unchanged.
 
 ## Historical branch rules
 

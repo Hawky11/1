@@ -620,3 +620,91 @@ Next:
 5. Verify the known conversions `0x20→0→0x18` and `0x5C→1→0x19`, compare the helper result with the WORD flags, correlate by player pointer/QPC, and check whether Stage18 observes an actual `AL=0` on a valid `0xFF` row.
 
 Preserve Stage18 runtime evidence and all earlier historical branches unchanged.
+
+
+## Stage19 runtime result — state-code mapping confirmed (2026-11-08)
+
+Runtime evidence branch: [stage19-bit113-state-map-runtime-evidence](https://github.com/Hawky11/1/tree/stage19-bit113-state-map-runtime-evidence), HEAD `3e75c07c7bdbd0827112f6a488936587a41a1b4b`. The user-uploaded log files were initially placed at the root of `main`; this companion evidence branch preserves the complete log set, the exact Stage19 overlay, and `Stage19_Overlay/STAGE19_RUNTIME_ANALYSIS.md`. The Stage19 source branch [stage19-bit113-state-map-trace](https://github.com/Hawky11/1/tree/stage19-bit113-state-map-trace), HEAD `841142895a976419a9bda197be286e7434993067`, remains separate and unchanged.
+
+### Installation and limitations
+
+Run initialization: 2026-11-08 19:05:37.
+
+- Stage17 observer at RVA `0x000C6502): installed, 44 threads suspended.
+- Stage18 gate observer at RVA `0x000C64A5): installed, 44 threads suspended.
+- Stage19 state-map observer at RVA `0x000F6C08): installed with six-byte patch, 44 threads suspended.
+- Stage19 marker/config: `STAGE19_BIT113_STATE_MAP_BUILD=2026-11-08-r1`, `EnableStage19StateMapTrace=1`.
+
+**Build.log was not uploaded.** Runtime marker and hook-install line prove the Stage19 DLL code loaded and executed, but do not provide compiler/linker output or final DLL size.
+
+### Stage19 results
+
+`ArcanaAI_StateMapTrace.log` contains **1,235** `STATE_MAP_CALL` records, all with `readMask=0x0F`, and no Stage19 warning/error/drop record.
+
+| Side | Raw code | Helper EAX | WORD flags | Derived index | Count |
+|---|---:|---:|---:|---:|---:|
+| P1 | `0x20` | 0 | `0x0400` | `0x18` | 200 |
+| P1 | `0x22` | 0 | `0x0400` | `0x18` | 190 |
+| P1 | `0x24` | 0 | `0x0400` | `0x18` | 130 |
+| P1 | `0x29` | 0 | `0x0400` | `0x18` | 12 |
+| P1 | `0x4A` | 3 | `0x2000` | `0x1B` | 152 |
+| P2 | `0x58` | 1 | `0x0802` | `0x19` | 82 |
+| P2 | `0x59` | 1 | `0x0982` | `0x19` | 297 |
+| P2 | `0x5C` | 1 | `0x0802` | `0x19` | 56 |
+| P2 | `0x5E` | 3 | `0x2002` | `0x1B` | 116 |
+| **Total** | | | | | **1,235** |
+
+Helper-result totals: 532×0, 435×1, 268×3. The observed flag values agree with the helper's priority checks. Stage18 QPC correlation confirms:
+- 31 P2 raw `0x59) / helper EAX 1 / derived index `0x19) mappings, QPC gaps 67–108 ticks;
+- two P1 raw `0x22) / EAX 0 / index `0x18) mappings, gaps 64–70 ticks;
+- two P1 raw `0x20) / EAX 0 / index `0x18) mappings, gaps 63–71 ticks.
+
+Mapped index `0x1B) from raw P1 `0x4A` and P2 `0x5E` did not appear in Stage18 gate records in this capture; not all calls to the state mapper necessarily enter the bit-113 caller. Direct raw indexes `<=0x17) bypass the Stage19 conversion helper.
+
+### Stage18–Stage15 correlation
+
+- Stage18: 42 gate results, all `AL=1), all post-return byte reads `0xFA). Still no actual `AL=0) sample. Parent returns: 38 direct path (`0x00DB6801`) and four callback path (`0x00DEB9FA`).
+- Stage17: eight setter calls, two in each of four episodes, all from `0x000C6502), index `0x71`.
+- Stage16: 17,361 writes; exactly four bit17 sets at RVA `0x0000FAD2` and four clears at RVA `0x000ED1A9`.
+- Stage15: four payload-`0x1E` attempts; all saw bit17=1 and `branchTaken=0` at F6A68. No F6A9D/F6AAC/F6AD7 call followed, and no payload-`0x1E` record appeared in Queue, EventDispatch or FinalCommand.
+- No diagnostic warning/error/drop reports were found in the reviewed Stage19–Stage15 logs.
+
+**New important observation:** 31 P2 table-gate calls at index `0x19` returned `AL=1` but had no subsequent setter call. Therefore the Stage18 table gate is not a sufficient condition for reaching the bit-113 setter.
+
+## Stage20 source overlay — trace the downstream object bit-2 guard (2026-11-08)
+
+Source branch: [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace), latest HEAD `c46738caf098fe187fdb2dae16310efc4da13390`. Git comparison with `stage19-bit113-state-map-trace` shows the Stage20 branch is ahead with exactly four new files under `Stage20_Overlay/`; it does not modify the Stage19 source or evidence branches.
+
+### Static finding
+
+The matching `AALib.exe` (SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`) has this post-table-gate code:
+
+```asm
+004C64ED  mov ecx,[ebx]
+004C64EF  push 2
+004C64F1  call 00495B00
+004C64F6  test al,al
+004C64F8  jne 004C640B
+004C64FE  push 71h
+004C6500  mov ecx,esi
+004C6502  call 0040FAA0
+```
+
+Helper `0x00495B00` uses argument 2 to make mask `0x4`, reads `[object+0x3B70]), returns AL=1 if bit 2 is set and AL=0 if clear. The subsequent JNE skips the setter on AL=1. This is the evidence-backed next guard to test: 31 P2 state-index-`0x19` table-allowed calls had no setter, while the four setter episodes had Stage17 `OtherObject3B70` values `0x440`, `0x640`, `0x460`, `0x640` (bit 2 clear). The reason for the 31 gate-only calls remains a hypothesis until the helper's actual AL and checked object are captured.
+
+### Stage20 instrumentation contract
+
+The new overlay wraps only the five-byte CALL at RVA `0x000C64F1). It saves original ECX, duplicates argument 2 and executes the real helper. It logs the actual AL/EAX, original ECX object pointer, EBX slot pointer, `[EBX]), `[object+0x3B70]), bit-2 state, player fields, QPC and EBP parent return. It restores helper registers/EFLAGS, discards the saved ECX via flag-neutral `LEA ESP,[ESP+4]), then `RET 4` consumes the original caller argument and returns to `0x000C64F6`. The original `TEST/JNE` remains untouched. No hardware watchpoints are added. Output: `ArcanaAI_Bit113ObjectGuardTrace.log`.
+
+### Verification status and next action
+
+Stage20 is **source-only**; it has not been built with MSVC or runtime-tested. The source includes startup/config markers, signature checks for the callsite and following TEST/JNE, and a wrapper-specific installation log.
+
+Next:
+1. Apply Stage20 `AITrace.cpp` and `ArcanaAI.ini` over the assembled Stage19 source.
+2. Build `Release | Win32` with MSVC and upload the complete `Build.log`. Do not install unless compilation and linking both succeed.
+3. Back up the working DLL, install only after successful build, and verify Stage20 marker/config plus the wrapper installation at RVA `0x000C64F1).
+4. Run a short natural COM-vs-COM test and upload `ArcanaAI_Bit113ObjectGuardTrace.log`, Stage18/17/16/19 logs and Stage15/Queue/Dispatch/FinalCommand logs.
+5. Test whether the 31 P2 index-`0x19` gate-only calls show guard AL=1 and bit 2 set, while the four setter episodes show AL=0 and bit 2 clear. Continue to seek a natural Stage18 AL=0 table-sentinel sample.
+
+Preserve Stage19 source/evidence and all Stage12–Stage19 historical branches unchanged.

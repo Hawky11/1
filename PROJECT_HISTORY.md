@@ -110,7 +110,7 @@ Do not guess writer addresses or install speculative hooks. Validate instruction
 
 ## Stage 16 — player bit-17 writer trace (implementation prepared; runtime pending)
 
-Branch: [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace). Base: exact Stage15 HEAD `4d1e2a049c835a991647cb04565d31d330aeac95`. Stage16 HEAD at the last documentation update: `955fe3bb2baff0822949a40350321f4fb84f8d6f`.
+Branch: [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace). Base: exact Stage15 HEAD `4d1e2a049c835a991647cb04565d31d330aeac95`. Stage16 HEAD at the last documentation update: `590675c3db91ea0b4def838bce91908b7b97c667`.
 
 ### Static review
 
@@ -137,7 +137,7 @@ No immediate `OR [reg+0x3B84],0x00020000` was found. Two dynamic OR sites were r
 - Uses DR0/DR1 write-only 4-byte data watchpoints, DR7 configuration `0x00DD0005`.
 - Requires DR0 and DR1 address registers to be zero and all DR0/DR1 enable and RW/LEN bits to be clear (`DR7 & 0x00FF000F == 0`) before installing in a game thread. It preserves DR2/DR3, excludes the COMvsCOM worker thread, and does not overwrite configured DR0/DR1 slots.
 - Refuses to run this mode together with the legacy `EnableControlFieldTrace` mode, since both share DR0/DR1. Supplied Stage16 INI sets the legacy key to 0 and `EnablePlayerBit17WriteTrace=1`.
-- Records post-write EIP/RVA, side, TID, local time, tick, QPC, old/new DWORD (old as a shadow), bit17 status, registers, EFLAGS, DR6, and 24 code bytes around EIP. A worker flushes a 4096-record buffer to `ArcanaAI_PlayerBit17WriteTrace.log`.
+- Records writes from any user-mode module in the target process, not only AALib.exe. Logs absolute post-write EIP, `inAALib=0/1`, AALib RVA when applicable, side, TID, local time, tick, QPC, old/new DWORD (old as a best-effort shadow), bit17 status, registers, EFLAGS, DR6, and 24 code bytes around EIP. A worker flushes a 4096-record buffer to `ArcanaAI_PlayerBit17WriteTrace.log`.
 - Logs skipped threads and dropped records. If a thread is skipped or a write is missed before a watchpoint is installed, the old-value shadow may be stale; the new value and post-write code context remain the primary evidence.
 
 ### Current status / next operation

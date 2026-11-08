@@ -20,6 +20,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 15 | [stage15-postguard-flow-diagnostics](https://github.com/Hawky11/1/tree/stage15-postguard-flow-diagnostics) | `4d1e2a049c835a991647cb04565d31d330aeac95` | Branch-by-branch flow between F2ED0 and F6AD7 |
 | 16 | [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace) | `58313d8c0f6071bc8099fc5ec04ae04d2974dafd` | Runtime-confirmed bit17 setter/clearer; Stage17 caller verification remains |
 | 17 | [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace) | `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e` | Source-only setter-entry observer for bit index 0x71; awaiting build/runtime test |
+| 17b | [stage17-callsite-init-diagnostics](https://github.com/Hawky11/1/tree/stage17-callsite-init-diagnostics) | `c33317c9b2fa28c339c38f3aaebdcb9a378b73a1` | Diagnostic hardening for the Stage17 direct-callsite observer; build/runtime pending |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -304,3 +305,25 @@ followed by `BIT113_SET_CALL` records if the callsite executes.
 The expected records expose `callRVA=0x000C6502`, `returnRVA=0x000C6507`, `index=0x00000071`, P1/P2 player object, registers, related object fields, stack and QPC. Without this file, the newly tested runtime still does **not** confirm that the three setter calls came from the static candidate at `0x004C6502`; the candidate remains unproven.
 
 Next operation: obtain/upload only `ArcanaAI_Bit113SetterTrace.log` from the same game/output folder as the other ArcanaAI logs. Do not request another build or match unless the file was never created. If it was not created, check the active game-folder `ArcanaAI.ini` for `EnableStage17Bit113SetterCallTrace=1` and confirm the just-built DLL was installed in the game directory before arranging a targeted rerun. Keep this evidence branch immutable.
+
+
+## Stage17 callsite missing-log diagnosis — 2026-11-08
+
+The 2026-11-08 15:40:27–15:41:09 run produced the Stage16 write/branch/queue/dispatch logs but did not produce `ArcanaAI_Bit113SetterTrace.log`. The successful Build.log was pasted in chat (eight translation units, linked DLL size 190,976 bytes), but it is not stored in the evidence branch, and the log does not prove which exact `AITrace.cpp` contents were compiled.
+
+Review of the original callsite-variant source at `stage17-bit113-setter-callsite-trace` HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6` found:
+
+- The Stage17 logger itself was present and the supplied Stage17 INI set `EnableStage17Bit113SetterCallTrace=1`.
+- However, several early exits in `FieldTraceThread` (conflicting DR0/DR1 modes, missing `AALib.exe`, invalid image/ranges, or failed initial P1/P2 reads) returned before writing to the Stage17-specific log. Therefore, absence of the file did not distinguish a stale DLL/source from an initialization failure.
+- `AppendStage17Bit113Log` used a double-escaped `\\r\\n` format sequence, which wrote literal backslash characters instead of normal CRLF separators. This did not explain the missing file, but it was corrected.
+
+A new source-only diagnostic branch was created from that evidence snapshot; the original run branch remains unchanged:
+
+- Branch: [stage17-callsite-init-diagnostics](https://github.com/Hawky11/1/tree/stage17-callsite-init-diagnostics)
+- HEAD: `c33317c9b2fa28c339c38f3aaebdcb9a378b73a1`
+- Source change commit: `fbf466a151ea327a498b19741cda92787ffff46d`
+- README/checklist commit: `c33317c9b2fa28c339c38f3aaebdcb9a378b73a1`
+
+The revised source writes `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1`, a worker-entry marker, and the three relevant INI values before validation. It also records Stage17-specific errors on the former early-return paths and fixes CRLF formatting. The README adds a PowerShell source-marker check before build and requires installing the new DLL and matching INI beside the actual game executable.
+
+**No new MSVC build or runtime test has been performed for this revision.** This change is an observability fix, not evidence that the callsite hook installed. Next, apply the diagnostic overlay after Stage16, verify the marker in the assembled local `src\\AITrace.cpp`, rebuild x86, install the new DLL/INI, and launch the game only long enough to confirm the Stage17 marker/config/install result. If the marker appears and reports the hook installed, run a short COM-vs-COM session and compare `BIT113_SET_CALL` QPCs with Stage16 bit17 writes. If no marker file appears while other ArcanaAI logs are written, stop and verify which proxy DLL the game actually loaded; do not repeat a match blindly.

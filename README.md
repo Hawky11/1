@@ -12,7 +12,7 @@ This repository tracks the staged investigation of the ArcanaAI COM-vs-COM event
 
 - Latest completed runtime stage: **Stage15 — post-guard branch-flow diagnostics**.
 - Current diagnostic implementation: [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace).
-- Stage16 HEAD (source-only; awaiting Windows build/runtime test): `955fe3bb2baff0822949a40350321f4fb84f8d6f`.
+- Stage16 HEAD (source-only; awaiting Windows build/runtime test): `590675c3db91ea0b4def838bce91908b7b97c667`.
 - Stage15 evidence HEAD: `4d1e2a049c835a991647cb04565d31d330aeac95`.
 - Stage16 traces write-only hardware watchpoints on the exact P1/P2 `[player+0x3B84]` DWORDs. No Stage16 Build.log or runtime trace has been received yet.
 - Historical Stage12–Stage15 branches are evidence snapshots. Do not rewrite them.

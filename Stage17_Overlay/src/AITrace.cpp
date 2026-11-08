@@ -1375,7 +1375,8 @@ namespace
                 if (g_playerBit17WriteTrace) AppendPlayerBit17TraceLog(message);
                 InterlockedExchange(&g_firstInstallLog, 1);
             }
-            else if (InterlockedCompareExchange(&g_firstInstallLog, 0, 0) == 0 &&
+            else if (watchpointsEnabled &&
+                InterlockedCompareExchange(&g_firstInstallLog, 0, 0) == 0 &&
                 InterlockedCompareExchange(&g_noThreadInstallLog, 1, 0) == 0)
             {
                 AppendTraceLog("No eligible game thread accepted DR0/DR1 yet. Threads using those debug-register slots are left untouched; scanning will continue.");

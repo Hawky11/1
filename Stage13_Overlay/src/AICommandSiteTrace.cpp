@@ -513,10 +513,11 @@ namespace
             const LONG displacement =
                 -static_cast<LONG>(kAlternateFrameBytesBefore) +
                 static_cast<LONG>(i * sizeof(DWORD));
-            const std::intptr_t addressValue =
-                static_cast<std::intptr_t>(ebpRegister) + displacement;
+            const std::int64_t addressValue =
+                static_cast<std::int64_t>(ebpRegister) + displacement;
             DWORD value = 0;
             if (addressValue > 0 &&
+                addressValue <= 0xFFFFFFFFll &&
                 SafeReadDword(static_cast<DWORD>(addressValue), &value))
             {
                 record.FrameWords[i] = value;
@@ -823,11 +824,13 @@ namespace
                 for (DWORD i = 0; i < kAlternateCodeByteCount &&
                     static_cast<std::size_t>(used) < sizeof(message) - 8; ++i)
                 {
-                    const int written = sprintf_s(
-                        message + used, sizeof(message) - static_cast<std::size_t>(used),
-                        "%s%02X",
-                        record.CodeValid[i] ? "" : "??",
-                        static_cast<unsigned long>(record.CodeBytes[i]));
+                    const int written = record.CodeValid[i]
+                        ? sprintf_s(
+                            message + used, sizeof(message) - static_cast<std::size_t>(used),
+                            "%02X", static_cast<unsigned int>(record.CodeBytes[i]))
+                        : sprintf_s(
+                            message + used, sizeof(message) - static_cast<std::size_t>(used),
+                            "??");
                     if (written <= 0) break;
                     used += written;
                 }

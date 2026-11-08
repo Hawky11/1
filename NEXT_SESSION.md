@@ -7,7 +7,7 @@
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
 - Latest runtime evidence branch: `stage19-bit113-state-map-runtime-evidence`, HEAD `3e75c07c7bdbd0827112f6a488936587a41a1b4b`; contains Stage19/18/17/16/15 logs and the exact Stage19 overlay plus runtime analysis. Build.log was not included.
-- Current diagnostic source branch: `stage20-bit113-object-bit2-guard-trace`, HEAD `c46738caf098fe187fdb2dae16310efc4da13390`; source-only, awaiting MSVC build and runtime verification.
+- Current diagnostic source branch: `stage20-bit113-object-bit2-guard-trace`, HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`; **MSVC build succeeded** on 2026-11-08 at 19:55:42. DLL size 216,576 bytes. Runtime installation/hook behavior pending.
 - Stage19 source snapshot (parent of Stage20): `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; keep separate from the Stage19 evidence branch.
 - Stage18 source snapshot: `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`; Stage18 runtime evidence remains preserved in `stage18-bit113-gate-runtime-evidence`.
 - Earlier Stage17 pre-fix branch (preserve unchanged): `stage17-bit113-setter-callsite-trace`, HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`.
@@ -90,47 +90,37 @@ Helper EAX totals: 532×0, 435×1, 268×3. The observed WORD flags agree with th
 
 No warning/error/drop was found in the reviewed Stage19, Stage18, Stage17, Stage16, Stage15, Queue, Dispatch, FinalCommand or AlternateCall logs.
 
-## Current task — build and runtime-test Stage20
+## Current task — runtime-test Stage20
 
-Source branch: [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace), HEAD `c46738caf098fe187fdb2dae16310efc4da13390`. It branches from the immutable Stage19 source snapshot, not from the evidence branch.
+Source branch: [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace), HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`. It is based on the immutable Stage19 source snapshot, not the Stage19 runtime-evidence branch.
 
-### Why Stage20 targets the object guard
+### Build result — successful
 
-Static disassembly of the matching `AALib.exe` (SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`) confirms the code after the table gate:
+The user supplied the complete build transcript in chat:
+- Started 2026-11-08 19:55:42,91.
+- Visual Studio 18 Community; MSVC 14.51.36231; Win32/x86.
+- All eight C++ translation units compiled, including AITrace.cpp.
+- Link succeeded: build\\dinput8.dll.
+- DLL size: **216,576 bytes**.
+- One non-fatal C4754 warning remains in AICommandSiteTrace.cpp lines 782–785. This warning is in the existing command-site arithmetic comparison and did not prevent linking.
+- The Build.log was pasted in chat and has not been uploaded as a repository file.
 
-```asm
-004C64ED  mov ecx,[ebx]
-004C64EF  push 2
-004C64F1  call 00495B00
-004C64F6  test al,al
-004C64F8  jne 004C640B
-004C64FE  push 71h
-004C6500  mov ecx,esi
-004C6502  call 0040FAA0
-```
+The build result is recorded in the [Stage20 README](https://github.com/Hawky11/1/blob/stage20-bit113-object-bit2-guard-trace/Stage20_Overlay/README_STAGE20.md). Status: **build-verified, runtime-pending**.
 
-Helper `0x00495B00` uses argument 2 to form mask `0x4), checks `[object+0x3B70]`, and returns AL=1 when the bit is set. The JNE skips the setter on AL=1. The four known setter episodes had `OtherObject3B70` values `0x440`, `0x640`, `0x460`, `0x640`, with bit 2 clear. A set bit 2 could explain the 31 P2 index-`0x19` gate-only cases, but this is **not yet runtime-confirmed**.
+### Stage20 runtime objective
 
-### Stage20 observer contract
+Stage20 wraps the original five-byte CALL at RVA 0x000C64F1 to helper 0x00495B00. With argument 2, this helper tests bit 0x4 in [object+0x3B70]; AL=1 causes the original JNE at 0x000C64F8 to skip the bit-113 setter at 0x000C6502.
 
-The new wrapper replaces only the five-byte CALL at RVA `0x000C64F1`. It:
-- saves the original ECX object pointer for logging;
-- duplicates stack argument 2 and calls the real `0x00495B00` helper;
-- lets the real helper return with its own `RET 4);
-- logs the actual AL/EAX, saved original ECX, EBX slot pointer, `[EBX]`, `[object+0x3B70]`, bit-2 state, player fields, EBP parent return and QPC;
-- restores helper return registers/EFLAGS, discards the saved ECX with flag-neutral LEA, and executes `RET 4) for the original caller argument;
-- leaves the original `TEST AL,AL` at `0x000C64F6) and JNE at `0x000C64F8) untouched.
-
-It adds no DR0–DR3 watchpoints. New log: `ArcanaAI_Bit113ObjectGuardTrace.log`. Stage16–Stage19 switches remain enabled.
+The wrapper records actual AL/EAX, the original ECX object pointer, the EBX slot pointer and [EBX], [object+0x3B70], bit-2 state, player fields, parent return and QPC. It calls the original helper with the duplicated original argument, preserves helper return registers/EFLAGS, discards saved ECX with flag-neutral LEA, and returns through the original call stack cleanup. Original TEST/JNE remain untouched; no new DR0–DR3 watchpoints are used.
 
 ### Next actions
 
-1. Apply `Stage20_Overlay/src/AITrace.cpp` and `Stage20_Overlay/ArcanaAI.ini` over the assembled Stage19 project; follow [README_STAGE20.md](https://github.com/Hawky11/1/blob/stage20-bit113-object-bit2-guard-trace/Stage20_Overlay/README_STAGE20.md).
-2. Build `Release | Win32` with MSVC and upload the complete `Build.log`. This is a source-only branch; it has not been built or runtime-tested.
-3. Back up the working DLL. Install only after a successful compile/link, then first verify the Stage20 build marker/config and successful wrapper installation at RVA `0x000C64F1).
-4. Run a short natural COM-vs-COM session. Upload `ArcanaAI_Bit113ObjectGuardTrace.log`, Stage18/17/16/19 logs and the related Stage15/queue/dispatch logs.
-5. Test whether the 31 P2 index-`0x19` gate-only cases show object-guard AL=1 and bit 2 set, while all four setter episodes show AL=0 and bit 2 clear. Do not force-edit object/player memory to manufacture outcomes.
-6. Continue looking for a natural Stage18 `AL=0) on a valid `0xFF` table cell; Stage20 does not cover attempts rejected by the earlier table gate.
+1. Back up the current working DLL and install the newly built 216,576-byte DLL.
+2. Before gameplay, inspect ArcanaAI_Bit113ObjectGuardTrace.log. Confirm the Stage20 build marker, EnableStage20Bit113ObjectGuardTrace=1, and successful wrapper installation at RVA 0x000C64F1 with original helper RVA 0x00095B00. If validation/installation failed, stop before gameplay and inspect the Stage20-specific error.
+3. Once installation is confirmed, run a short natural COM-vs-COM test. Do not force-edit the object fields or player state.
+4. Upload ArcanaAI_Bit113ObjectGuardTrace.log, ArcanaAI_Bit113GateTrace.log, ArcanaAI_Bit113SetterTrace.log, ArcanaAI_StateMapTrace.log, ArcanaAI_PlayerBit17WriteTrace.log, ArcanaAI_ProducerCallTrace.log, ArcanaAI_QueueTrace.log, ArcanaAI_EventDispatchTrace.log, ArcanaAI_FinalCommandTrace.log, and ArcanaAI_AlternateCallTrace.log where available.
+5. Correlate Stage20 results to Stage18/19 by player pointer and QPC. Test whether the 31 P2 state-index-0x19 gate-only cases show guard AL=1 and bit 2 set, and whether the four known setter episodes show AL=0 and bit 2 clear.
+6. Continue seeking a natural Stage18 AL=0 result on a valid 0xFF table cell; Stage20 does not observe calls rejected by the earlier table gate.
 
 Preserve the Stage19 source/evidence branches and all Stage12–Stage19 historical branches unchanged.
 

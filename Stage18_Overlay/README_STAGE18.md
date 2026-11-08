@@ -68,8 +68,9 @@ Start with clean log files. Before gameplay, ArcanaAI_Bit113GateTrace.log must c
 - Installed Stage18 passive gate-result observer at RVA=0x000C64A5 ...
 - Stage18 trace active.
 
-The installer verifies all three original code signatures:
+The installer verifies the original argument setup and all three code signatures:
 
+- helper arguments immediately before 0xC64A0: 6A 19 50 56 (push 0x19 / push EAX / push ESI);
 - CALL at 0xC64A0: E8 2B CB 02 00, decoded target RVA 0xF2FD0;
 - observer bytes at 0xC64A5: 83 C4 0C 84 C0;
 - branch at 0xC64AA: 75 41.

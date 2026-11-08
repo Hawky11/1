@@ -1512,7 +1512,7 @@ namespace
         std::memcpy(&relative, callSite + 1, sizeof(relative));
         const std::intptr_t destination =
             reinterpret_cast<std::intptr_t>(callSite + sizeof(kStage23ResolverCall)) + relative;
-        if (destination != static_cast<std::intptr_t>(resolver))
+        if (destination != reinterpret_cast<std::intptr_t>(resolver))
         {
             AppendStage23ResolverLog("ERROR: RVA 0x000EE273 does not resolve to mapping helper RVA 0x0012EAC0; refusing to patch.");
             return false;
@@ -1564,7 +1564,7 @@ namespace
                 std::memcmp(callSite + sizeof(kStage23ResolverCall),
                     kStage23ResolverCallSuffix, sizeof(kStage23ResolverCallSuffix)) != 0 ||
                 std::memcmp(resolver, kStage23ResolverPrologue, sizeof(kStage23ResolverPrologue)) != 0 ||
-                currentDestination != static_cast<std::intptr_t>(resolver))
+                currentDestination != reinterpret_cast<std::intptr_t>(resolver))
             {
                 AppendStage23ResolverLog("ERROR: Stage23 resolver bytes changed during installation; no patch was applied.");
             }
@@ -1834,7 +1834,7 @@ namespace
         if (stage22PostAndTraceEnabled != 0)
             AppendStage22PayloadLog("STAGE22_PAYLOAD_POST_AND_BUILD=2026-11-08-r1");
         if (stage23ResolverResultTraceEnabled != 0)
-            AppendStage23ResolverLog("STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r1");
+            AppendStage23ResolverLog("STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2");
         if (queueTraceEnabled == 0 && dispatchTraceEnabled == 0 &&
             stage21ConsumerTraceEnabled == 0 && stage22PostAndTraceEnabled == 0 &&
             stage23ResolverResultTraceEnabled == 0)

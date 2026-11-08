@@ -379,7 +379,7 @@ namespace
         char line[1800]{};
         const int count = sprintf_s(
             line,
-            "[%04u-%02u-%02u %02u:%02u:%02u] %s\\r\\n",
+            "[%04u-%02u-%02u %02u:%02u:%02u] %s\r\n",
             now.wYear, now.wMonth, now.wDay,
             now.wHour, now.wMinute, now.wSecond,
             message != nullptr ? message : "(empty)");
@@ -780,8 +780,8 @@ namespace
     {
         __asm
         {
-            // Capture the decoded action code while it is still in EDI.
-            // The classifier helper repurposes EDI, so reading it after the call is invalid.
+            // Preserve EDI at the classifier call boundary for diagnosis only.
+            // Stage22 runtime proved this is already the controller-array pointer, not the resolver byte.
             push edi
 
             // Original argument remains at [esp+8] after the private saved-EDI DWORD.
@@ -1861,6 +1861,8 @@ namespace
             g_gameImageSize != kExpectedImageSize || timestamp != kExpectedTimeDateStamp ||
             kQueueInsertRva + sizeof(kExpectedPrologue) >= g_gameImageSize ||
             kEventDispatchRva + sizeof(kEventDispatchPrologue) >= g_gameImageSize ||
+            kStage23ResolverCallRva + sizeof(kStage23ResolverCall) >= g_gameImageSize ||
+            kStage23ResolverRva + sizeof(kStage23ResolverPrologue) >= g_gameImageSize ||
             kP1ControlRva < kPlayerControlOffset || kP2ControlRva < kPlayerControlOffset)
         {
             AppendQueueLog("ERROR: AALib.exe PE fingerprint does not match the analyzed binary; no code hook was installed.");
@@ -1872,7 +1874,7 @@ namespace
         g_p1Queue = g_playerP1 + kPlayerQueueOffset;
         g_p2Queue = g_playerP2 + kPlayerQueueOffset;
 
-        char start[720]{};
+        char start[1000]{};
         sprintf_s(start,
             "Stage 12/21/22/23 tracing requested. gameBase=0x%08lX; P1 object=0x%08lX queue=0x%08lX; P2 object=0x%08lX queue=0x%08lX; queueInsert=%d; queueDetail=%d; eventDispatch=%d; dispatchDetail=%d; stage21Consumer=%d; stage22PostAnd=%d; stage23ResolverResult=%d; flush=%lu ms. Exact P1/P2 CPU queues only.",
             static_cast<unsigned long>(g_gameBase),
@@ -2002,10 +2004,10 @@ extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedCont
 
     const DWORD dispatcherEbp = savedContext[2];     // EBP of dispatcher 0xEE200
     const DWORD savedEspAfterPushfd = savedContext[3];
-    DWORD decodedActionCode = 0, returnAddress = 0, helperArg = 0;
+    DWORD preCallEdi = 0, returnAddress = 0, helperArg = 0;
     DWORD dispatchType = 0, dispatchPayload = 0;
     // The wrapper's private saved-EDI DWORD is now at savedESP+4.
-    SafeReadDword(savedEspAfterPushfd + 4u, &decodedActionCode);
+    SafeReadDword(savedEspAfterPushfd + 4u, &preCallEdi);
     SafeReadDword(savedEspAfterPushfd + 8u, &returnAddress);
     SafeReadDword(savedEspAfterPushfd + 12u, &helperArg);
     SafeReadDword(dispatcherEbp + 8u, &dispatchType);
@@ -2013,7 +2015,7 @@ extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedCont
     if (dispatchType != 1u || dispatchPayload != kStage21Payload1E ||
         payload != dispatchPayload || helperArg != 1u)
         return;
-    // decodedActionCode was captured from EDI before the real classifier call.
+    // This pre-call EDI is retained as a raw register value; it is not a decoded action code.
 
     DWORD playerMode = 0, controlState = 0, controller = 0, controllerFlags = 0;
     SafeReadDword(player + kPlayerControlOffset, &playerMode);
@@ -2025,7 +2027,7 @@ extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedCont
     QueryPerformanceCounter(&qpc);
     char message[1100]{};
     sprintf_s(message,
-        "STAGE21_CLASSIFIER side=P%lu tid=%lu qpc=%llu callerRVA=0x%08lX player=0x%08lX dispatchType=%lu dispatchPayload=0x%08lX decodedActionCodePreCall=%lu helperArg=%lu helperRVA=0x000E8CF0 resultEAX=0x%08lX resultAL=%lu eflags=0x%08lX playerMode=0x%08lX state3978=0x%08lX controller=0x%08lX controllerFlags=0x%08lX",
+        "STAGE21_CLASSIFIER side=P%lu tid=%lu qpc=%llu callerRVA=0x%08lX player=0x%08lX dispatchType=%lu dispatchPayload=0x%08lX preCallEdi=0x%08lX helperArg=%lu helperRVA=0x000E8CF0 resultEAX=0x%08lX resultAL=%lu eflags=0x%08lX playerMode=0x%08lX state3978=0x%08lX controller=0x%08lX controllerFlags=0x%08lX",
         static_cast<unsigned long>(side),
         static_cast<unsigned long>(GetCurrentThreadId()),
         static_cast<unsigned long long>(qpc.QuadPart),
@@ -2033,7 +2035,7 @@ extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedCont
         static_cast<unsigned long>(player),
         static_cast<unsigned long>(dispatchType),
         static_cast<unsigned long>(dispatchPayload),
-        static_cast<unsigned long>(decodedActionCode),
+        static_cast<unsigned long>(preCallEdi),
         static_cast<unsigned long>(helperArg),
         static_cast<unsigned long>(resultEax),
         static_cast<unsigned long>(resultEax & 0xFFu),

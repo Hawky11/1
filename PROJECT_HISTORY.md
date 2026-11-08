@@ -31,7 +31,9 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 21r | [stage21-payload-1e-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-runtime-evidence) | `150a666f6f61e58aa67766010e6af4300a51d901` | Archived Build.log and runtime logs; P1 object-guard AL=0 → setter → bit17 set/clear chain |
 | 21r2 | [stage21-payload-1e-consumer-trace-r2](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace-r2) | `28fd26b76c22b9070eabaa33a85c713876234aaf` | Source correction captures pre-call EDI; Stage22 runtime shows it is a controller-array pointer, not decoded action code |
 | 22 | [stage22-payload-1e-post-and-trace](https://github.com/Hawky11/1/tree/stage22-payload-1e-post-and-trace) | `27b711d4b3ee8079060bfbab8f8ecc22713ac917` | Build-tested post-AND controller bit-0x400 observer; Stage21 r2-derived consumer overlay |
+| 23 | [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace) | `abaf5bb48d0920632f7b9e1d7c0316eeda3c330d` | Source-only resolver-result observer at dispatcher CALL 0xEE273 -> 0x52EAC0; corrected EDI dataflow |
 | 22r | [stage22-payload-1e-runtime-evidence](https://github.com/Hawky11/1/tree/stage22-payload-1e-runtime-evidence) | `5b9d1bd83d1324d899f4c5f7f17dcaca136e7453` | Stage22 Build.log and runtime logs; 3 post-AND samples and 11/11 Stage18→20→17 correlations |
+| 23r | — | — | Pending: Stage23 build and runtime evidence not yet supplied |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -1000,3 +1002,38 @@ Therefore `decodedActionCodePreCall` is a misleading field name and must not be 
 - No natural precondition with slot 3 nonzero or controller bit `0x400` set before the operation was observed.
 - Next priority: audit the EDI dataflow from resolver output through `cmp edi,1` at `0xEE3E1` to CALL `0xEE426`; add a passive observer at the true decode/compare location only if action-code identity is still required. Preserve all Stage21/22 evidence branches.
 
+
+
+## Stage23 source stage — capture the type-1 resolver result (2026-11-09)
+
+Source branch: [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace), HEAD `abaf5bb48d0920632f7b9e1d7c0316eeda3c330d`. It branches from the completed Stage22 source. The exact Stage22 source snapshot remains preserved in `Stage22_Overlay/src/AIQueueTrace.cpp` on this branch; the new complete replacement is in `Stage23_Overlay/src/AIQueueTrace.cpp`.
+
+### Corrected static dataflow
+
+The archived `AALib.exe` was extracted from the previously uploaded `AALib.zip`; its SHA-256 exactly matches the analyzed executable. Direct disassembly confirms:
+
+- Type-1 resolver CALL: RVA `0x000EE273` -> helper RVA `0x0012EAC0`.
+- The helper returns a pointer to a 12-byte record in EAX. The dispatcher reads bytes `+0x0B`, `+0x04`, `+0x02`, and `+0x03`. Byte `+0x03` is loaded into EDI at `0xEE28D`, then used through the subsequent `MOV EAX,EDI` and helper call at `0xEE306`.
+- At `0xEE30B`, `MOV EDI,[EBP+8]` overwrites EDI with the dispatcher's original event-type argument. The callee `0x4EC4F0` preserves EDI. Therefore `CMP EDI,1` at `0xEE3E1` compares dispatcher event type, not the earlier resolver byte.
+- In the later type-1/payload-`0x1E` path, `LEA EDI,[ESI+0x3A3C]` at `0xEE3FC` repurposes EDI as the controller-array pointer. This explains why Stage21 r2's pre-call EDI sample was the controller-array pointer.
+- The earlier Stage21 static assertion that EDI at `0xEE3E1` still carried the resolver byte is explicitly superseded by this Stage23 binary review.
+
+### Instrumentation
+
+Stage23 wraps the five-byte CALL at `0xEE273`. It makes private copies of the four existing cdecl stack arguments, calls the original resolver exactly once with identical argument values, then records the returned record pointer, all 12 raw bytes, selected byte fields and input arguments. It preserves the original returned EAX, post-call registers and EFLAGS; it restores the private stack area with flag-neutral LEA, returning to the original `0xEE278` continuation with the original caller-owned arguments still in place.
+
+The installer validates:
+- the four-byte prefix `52 53 51 50`;
+- the exact CALL bytes `E8 48 08 04 00`;
+- the seven-byte suffix `0F B6 48 0B 8B 56 04`;
+- resolver prologue `55 8B EC 8B 45 10 83 F8`;
+- the decoded target equals `0x0012EAC0`;
+- PE image size/timestamp.
+
+It uses the shared mutex, suspends other process threads, revalidates the bytes immediately before patching, flushes the instruction cache and restores page protection. The log filters to exact P1/P2 type-1/payload-`0x1E` traffic. Its new output field is deliberately named `resolverByte03`, not an assumed action/attack ID. The inherited Stage21 field has been renamed to raw `preCallEdi` in the Stage23 overlay to avoid repeating the prior semantic mistake.
+
+### Status and next test
+
+**Source-only; not yet compiled or runtime-tested.** No DLL size, hook installation or resolver result is claimed. The expected marker is `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r1`; the new file is `ArcanaAI_Stage23ResolverResultTrace.log`.
+
+Next: apply the complete Stage23 overlay over the assembled Stage22 project, build Release | Win32, review the full Build.log, then run normally and correlate Stage23 resolver records with Stage21 classifier/fallback and Stage22 post-AND logs. Do not interpret `resolverByte03` as an attack ID without runtime evidence.

@@ -24,64 +24,9 @@
 4. For another consumer capture, build from r2 and preserve the full Build.log. Do not alter the r1 source/evidence snapshots.
 
 
-- Repository: https://github.com/Hawky11/1
-- Documentation branch: `main`
-- **Latest runtime evidence:** `stage21-payload-1e-consumer-runtime-evidence`, HEAD `274a58e2b514766ea2ef067c83f3ae321a0908ce`. It contains the exact r1 source/INI overlay, user-supplied Build.log, runtime logs and `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
-- **Tested source:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. Build succeeded at 2026-11-08 21:43:30; eight C++ units compiled; DLL size 222,208 bytes; one non-fatal C4754 warning at AICommandSiteTrace.cpp:785. Both Stage21 wrappers installed.
-- **Corrected but untested source:** `stage21-payload-1e-consumer-trace-r2`, HEAD `28fd26b76c22b9070eabaa33a85c713876234aaf`. It saves EDI before the classifier helper, logs `decodedActionCodePreCall`, and uses build marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`. It has not been built; r1 remains the exact runtime-tested source.
-- Stage21 r1 runtime: P1 and P2 dispatched event type 1 / payload `0x1E`, accepted by queue and reached dispatch. At classifier CALL `0xEE426`, both real helper returns were `EAX=0 / AL=0`; both fallback calls at `0xEE446` executed.
-- Stage21 r1 limitation: slot 3 was already zero before both fallback calls; controller bit `0x400` was also already clear. The fallback was executed, but a non-idempotent state change was not observed.
-- **Stage20 object-guard negative control obtained:** P1 `dword3B70=0x00010440`, bit2 clear, actual helper `AL=0`. Stage17 then recorded setter CALL `0xC6502`, index `0x71`, same player/thread, 79 QPC ticks later. This confirms the direct setter is reached after the negative guard result.
-- Stage16 `ArcanaAI_PlayerBit17WriteTrace.log` is zero bytes; no post-setter bit17 write transition was captured. Stage18 observer installed but its gate log has no result entries in this run. Do not claim a bit17 0→1 transition or same-event Stage18 correlation.
-- R1's `decodedActionCode` field is invalid because EDI was sampled after helper `0x4E8CF0`; the values equal the controller-array pointer. R2 fixes this by saving pre-call EDI. Preserve the r1 evidence unchanged.
-- Stage19 source branch remains `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; Stage18 source branch remains `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. Keep all historical branches unchanged.
+## Historical build/runtime details
 
-## Next actions
-
-1. The Stage21 r1 consumer path and Stage20 AL=0 negative control are now runtime-confirmed. Do not rebuild r1; use the r2 overlay only for a further run that needs a valid decoded-action field.
-2. For a follow-up consumer capture, apply r2's `Stage21_Overlay/src/AIQueueTrace.cpp` and r2 marker to the assembled Stage20 project while keeping all other units unchanged; build Release | Win32 and preserve the full Build.log.
-3. If testing the fallback state mutation further, seek a natural event with nonzero controller-array slot 3 or controller bit `0x400` set before the fallback. The current P1/P2 events had both values already zero.
-4. To close the bit17 question, retain Stage20 object-guard and Stage17 setter logs and obtain a nonempty Stage16 writer log or a direct post-setter read. The latest run confirms setter invocation, not the write result. Do not manually edit the bit or force helper results.
-
-
-- Repository: https://github.com/Hawky11/1
-- Documentation branch: `main`
-- **Current diagnostic-source branch:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. This is a source-only overlay based on immutable Stage20 source HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`.
-- **Latest runtime evidence branch:** `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`. Stage20 wrapper at RVA `0xC64F1` produced 33 actual `AL=1` object-guard records with bit2 set. No natural `AL=0` negative-control sample has been recorded.
-- Stage21 overlay files: `Stage21_Overlay/src/AIQueueTrace.cpp`, `Stage21_Overlay/ArcanaAI.ini`, `Stage21_Overlay/README_STAGE21.md`, and `Stage21_Overlay/STATIC_PAYLOAD_1E_CONSUMER_ANALYSIS.md`.
-- Stage21 adds observational wrappers at `0xEE426 -> 0x4E8CF0` and `0xEE446 -> 0x4F7EB0`, logging actual AL, original dispatch type/payload, decoded action code and helper selector argument, plus the controller-array slot-3 before/after values. New log: `ArcanaAI_Stage21PayloadConsumerTrace.log`.
-- **Stage21 has not been compiled or runtime-tested.** There is no Stage21 Build.log or DLL in the repository. Do not install until the user's Windows/MSVC x86 Release build succeeds and the log confirms both hooks installed.
-- Stage19 source branch remains `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; Stage18 source branch remains `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. Keep all older branches unchanged.
-
-## Stage21 static findings (source-only)
-
-1. Stage12's `callerRVA=0x000EE5CB` is the return site after the call to dispatcher entry `0x000EE200`; it is not the dispatcher's entry or a consumer routine.
-2. In the type-1/payload-`0x1E` branch, `0x4E8CF0` is called at `0xEE426`. Static disassembly shows this helper returns `AL=0` for payload `0x1E` (whether its intermediate lookup rejects the state or the final `payload<=0x17` test fails).
-3. The `JE 0xEE443` path then calls `0x4F7EB0` at `0xEE446`, clearing `DWORD [controllerArray+0x10]` (slot 3). The next instruction clears bit `0x400` in `[controller+8]`.
-4. The bit17 branch at `F6A68` uses `JE F6A9D`: bit17=0 selects the alternate path. The guards at `F6A9D` and `F6AAC` route to common continuation `F6AC8`; the queue call at `F6AD7` is after that convergence. This statically explains why the branch probes may report taken while the payload is still queued.
-5. The new source logs runtime AL and slot mutation. Static analysis is not a substitute for a Stage21 runtime capture.
-
-## Next actions — Stage21 build and runtime
-
-1. Start from the complete assembled Stage20 project. Keep Stage20 `src/AITrace.cpp` and all earlier source files unchanged.
-2. Replace assembled `src/AIQueueTrace.cpp` with `Stage21_Overlay/src/AIQueueTrace.cpp`; replace `ArcanaAI.ini` with `Stage21_Overlay/ArcanaAI.ini`.
-3. Build `Release | Win32` with the existing MSVC/Build.bat pipeline. Upload the complete Build.log. Stop if compilation/linking fails.
-4. After a successful build, back up the current DLL, install the new DLL and run a natural COM-vs-COM session. Confirm marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r1` and successful installation of both CALL wrappers.
-5. Upload `ArcanaAI_Stage21PayloadConsumerTrace.log`, matching `ArcanaAI_EventDispatchTrace.log`, `ArcanaAI_Bit113ObjectGuardTrace.log`, and matching Stage18/17/16/19/15/queue/alternate-call/parent-flow logs.
-6. Verify actual `resultAL=0` at the classifier and a slot-3 value transition to zero. Separately seek a natural Stage20 object-guard `AL=0` sample with `[object+0x3B70] & 4 == 0`; do not edit memory manually or use Cheat Engine to force the result.
-
-
-- Repository: https://github.com/Hawky11/1
-- Documentation branch: `main`
-- Latest runtime evidence branch: `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`; contains the 2026-11-08 19:58:47 runtime logs, exact Stage20 overlay and STAGE20_RUNTIME_ANALYSIS.md. The Stage20 wrapper installed at 0xC64F1; 33 object-guard records matched 33 Stage18 gates, all AL=1 with bit 2 set.
-- Current diagnostic source branch: `stage20-bit113-object-bit2-guard-trace`, HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`; MSVC build succeeded at 19:55:42 with a 216,576-byte DLL. Runtime installation/hook behavior is confirmed in the companion evidence branch.
-- Stage19 source snapshot (parent of Stage20): `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; keep separate from the Stage19 evidence branch.
-- Stage18 source snapshot: `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`; Stage18 runtime evidence remains preserved in `stage18-bit113-gate-runtime-evidence`.
-- Earlier Stage17 pre-fix branch (preserve unchanged): `stage17-bit113-setter-callsite-trace`, HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`.
-- Earlier Stage17 entry-hook source branch (preserve unchanged): `stage17-bit113-setter-caller-trace`, HEAD at last review `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
-- Stage16 baseline evidence branch: `stage16-player-bit17-writer-trace`, HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
-- Stage17 overlay/readme: [Stage17 README](https://github.com/Hawky11/1/blob/stage17-callsite-init-diagnostics/Stage17_Overlay/README_STAGE17.md).
-- Full chronology: [PROJECT_HISTORY.md](PROJECT_HISTORY.md).
+The stage-specific records below are retained for chronology. The current Stage21 status and next tasks are in the checkpoint and action list at the top of this file.
 
 ## Latest build result — successful
 

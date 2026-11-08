@@ -708,3 +708,27 @@ Next:
 5. Test whether the 31 P2 index-`0x19` gate-only calls show guard AL=1 and bit 2 set, while the four setter episodes show AL=0 and bit 2 clear. Continue to seek a natural Stage18 AL=0 table-sentinel sample.
 
 Preserve Stage19 source/evidence and all Stage12–Stage19 historical branches unchanged.
+
+## Stage20 MSVC build result — successful (2026-11-08 19:55:42)
+
+Source branch: [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace), build-verified source snapshot HEAD 11dde281a08a3481517d0cb60d4752393fa0e578. The Stage20 overlay is based directly on the immutable Stage19 source branch stage19-bit113-state-map-trace (HEAD 841142895a976419a9bda197be286e7434993067). Stage19 runtime evidence remains separate in stage19-bit113-state-map-runtime-evidence (HEAD 3e75c07c7bdbd0827112f6a488936587a41a1b4b).
+
+The user supplied the build transcript in chat:
+- Build started: 2026-11-08 19:55:42,91.
+- Visual Studio: 18 Community.
+- MSVC toolset: 14.51.36231.
+- Architecture: x86 / Win32.
+- All eight C++ sources compiled, including AITrace.cpp.
+- Link step succeeded and produced build\\dinput8.dll.
+- DLL size: **216,576 bytes**.
+- One non-fatal C4754 warning remains in AICommandSiteTrace.cpp lines 782–785; the compiler notes an arithmetic comparison branch that cannot execute and suggests a 64-bit cast. The build succeeded despite this warning.
+
+The Build.log was pasted in chat and is not present as a file in the repository. Do not claim to have an archived Build.log.
+
+### Current status
+
+**Stage20 is build-verified, runtime-pending.** The successful build does not prove that the Stage20 wrapper installed in the game process. The next run must first confirm the STAGE20_BIT113_OBJECT_BIT2_GUARD_BUILD=2026-11-08-r1 marker, config value EnableStage20Bit113ObjectGuardTrace=1, and the successful observational wrapper installation at RVA 0x000C64F1, targeting original helper RVA 0x00095B00. Stop before gameplay if validation or installation fails.
+
+After installation is confirmed, run a short natural COM-vs-COM test and upload ArcanaAI_Bit113ObjectGuardTrace.log plus the Stage18/17/16/19 and relevant Stage15/queue/dispatch logs. The target correlation remains: do the 31 P2 state-index-0x19 gate-only calls show object-helper AL=1 and bit 2 set, while the four known setter episodes show AL=0 and bit 2 clear? This remains a hypothesis, not a runtime conclusion.
+
+Preserve all Stage12–Stage19 source and evidence branches unchanged.

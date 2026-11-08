@@ -10,13 +10,13 @@ This repository tracks the staged investigation of the ArcanaAI COM-vs-COM event
 
 ## Current checkpoint
 
-- Latest runtime-evidenced stage: **Stage16 — bit17 setter and clearer confirmed**.
-- Latest runtime evidence branch: [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace), HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
-- Current source/diagnostic implementation: [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace), HEAD `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
-- Stage16 confirmed five bit17 0→1 transitions through the generic setter at RVA `0xFAD0`, and five 1→0 clears at RVA `0xED19F`. Five of six sampled type-1/`0x1E` events were stopped at F6A68 while bit17=1; the one event with bit17=0 reached the alternate queue and EventDispatch.
-- Stage17 adds a filtered entry observer at setter RVA `0xFAA0` for bit index `0x71`, with caller return-address and CALL-target decoding. The first MSVC x86 build attempt failed in `AITrace.cpp` with C3861 (`ReadDwordAtAddress` not found); Stage17 now carries an explicit forward declaration and a pre-build source-copy check. Rebuild/runtime validation is still pending.
-- Stage16 `Build.log` was not uploaded, so its compiler transcript remains unavailable even though runtime logs confirmed the module and watchpoints were active.
-- Historical Stage12–Stage16 branches are evidence snapshots. Do not rewrite them.
+- Latest runtime evidence branch: [stage17-bit113-setter-callsite-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-callsite-trace), HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`.
+- Stage17 callsite implementation in that branch hooks the direct CALL at `AALib.exe+0xC6502`, expected to pass bit index `0x71` to the generic setter at `0xFAA0`. This is a different implementation snapshot from the earlier `stage17-bit113-setter-caller-trace` entry-hook branch; keep both branches intact.
+- **Build succeeded** on 2026-11-08 with VS 2026 18.9.1 / MSVC 14.51.36231 x86. All eight C++ translation units compiled and `build\\dinput8.dll` linked (190,976 bytes). One non-fatal C4754 warning remains in `AICommandSiteTrace.cpp` lines 782–785, in the 64-bit stack-address bounds calculation.
+- Runtime logs from about 15:40:27–15:41:09 contain 22,739 Stage16 write records, 60 game-thread watchpoint installations, and no warning/error/drop reports in the reviewed write/producer/queue/dispatch logs.
+- Six matched Stage15 events again split exactly by bit17: three with bit17=1 did not take the F6A68 JZ and did not reach F6A9D/F6AD7; three with bit17=0 took the JZ, reached the alternate writer at F6AD7, were accepted by QueueTrace, and were observed by EventDispatchTrace. The three set/clear pairs again use the confirmed setter at RVA `0xFAD0` and clearer at RVA `0xED19F`.
+- **Stage17 caller attribution is still pending.** `ArcanaAI_Bit113SetterTrace.log` is absent from the uploaded branch, so the callsite hook's install/validation result and its `BIT113_SET_CALL` records have not been reviewed. The Build.log was supplied in chat but is not present in the branch tree.
+- Historical Stage12–Stage16 evidence branches remain unchanged. Do not rewrite them.
 
 ## Repository workflow
 

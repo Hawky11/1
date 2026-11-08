@@ -7,8 +7,11 @@
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
 - Latest runtime-evidenced stage: **Stage16 — player bit17 setter/clearer trace**
-- Current diagnostic/evidence branch: `stage16-player-bit17-writer-trace`
-- Stage16 HEAD at this handoff: `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`
+- Latest runtime-evidence branch: `stage16-player-bit17-writer-trace` (HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`)
+- Current source/diagnostic branch: `stage17-bit113-setter-caller-trace`
+- Stage17 HEAD at this handoff: `46a84d2286e94ba66fd46fb11454d1189b36b526`
+- Stage17 overlay instructions: [Stage17_Overlay/README_STAGE17.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/README_STAGE17.md)
+- Stage17 static caller review: [Stage17_Overlay/STATIC_CALLER_REVIEW.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/STATIC_CALLER_REVIEW.md)
 - Previous evidence branch (unchanged): `stage15-postguard-flow-diagnostics`, HEAD `4d1e2a049c835a991647cb04565d31d330aeac95`
 - Full Stage16 analysis: [Stage16_Overlay/RUNTIME_ANALYSIS.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/RUNTIME_ANALYSIS.md)
 - Stage16 overlay instructions: [Stage16_Overlay/README_STAGE16.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/README_STAGE16.md)
@@ -126,11 +129,15 @@ FinalCommandTrace has no matching payload `0x1E` entry because this successful e
 
 This strongly ties temporary bit17=1 to suppression of this particular type-1/`0x1E` branch in the six sampled events. Do not generalize beyond the observed sample or declare the full semantic meaning of bit113 solved yet.
 
-## Next task: Stage17 — verify who calls the bit113 setter
+## Next task: build and run the prepared Stage17 overlay
 
-Recommended branch name: `stage17-bit113-setter-caller-trace`, based on the current Stage16 HEAD above after rechecking it.
+Stage17 source has been prepared in `stage17-bit113-setter-caller-trace`, based on the exact Stage16 evidence snapshot. It adds the passive generic-setter entry trace at VA `0x0040FAA0`, filtering to input bit index `0x71`. The hook validates the original seven-byte prologue, preserves the incoming flags/registers, replays the original prologue, and logs the caller return address plus decoded E8 target.
 
-Add a passive, narrowly scoped trace to the generic setter at VA `0x0040FAA0` (or to the candidate call at `0x004C6502`) that records only calls with bit index `0x71`. Capture:
+Read [Stage17_Overlay/README_STAGE17.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/README_STAGE17.md) and [STATIC_CALLER_REVIEW.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/STATIC_CALLER_REVIEW.md). The expected static candidate is VA `0x004C6502` / RVA `0x000C6502`, return VA `0x004C6507` / RVA `0x000C6507`, decoded target `0x0040FAA0`. This must be confirmed from runtime logs, not assumed.
+
+The next user-side operation is to apply overlays Stage12 through Stage17, build with MSVC x86, retain `Build.log`, run a short COM-vs-COM session and upload fresh logs, especially `ArcanaAI_Bit113SetterTrace.log`.
+
+The Stage17 trace records:
 - caller return address;
 - ECX/player object;
 - stack bit-index argument (expected `0x71`);

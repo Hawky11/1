@@ -1123,9 +1123,9 @@ namespace
         }
 
         BYTE patch[5]{};
-        const std::intptr_t relative =
-            reinterpret_cast<std::intptr_t>(&ArcanaStage17Bit113SetterCallHook) -
-            (reinterpret_cast<std::intptr_t>(target) + 5);
+        const std::int64_t relative =
+            static_cast<std::int64_t>(reinterpret_cast<std::uintptr_t>(&ArcanaStage17Bit113SetterCallHook)) -
+            (static_cast<std::int64_t>(reinterpret_cast<std::uintptr_t>(target)) + 5);
         if (relative < INT32_MIN || relative > INT32_MAX)
         {
             AppendStage17Bit113Log("ERROR: Stage17 hook is outside the rel32 CALL range.");
@@ -1333,7 +1333,7 @@ namespace
             AppendPlayerBit17TraceLog(startMessage);
             AppendPlayerBit17TraceLog("Each record is a post-write hardware-breakpoint snapshot. EIP/RVA is after the writing instruction; bytes_at_EIP_minus_16 allows offline instruction decoding. oldValue is a best-effort shadow of the last observed field value; shadowInitialized=1 means only that the initial baseline read succeeded, not that no write was missed on an uninstrumented thread.");
         }
-        else
+        else if (watchpointsEnabled)
         {
             sprintf_s(
                 startMessage,
@@ -1346,6 +1346,10 @@ namespace
                 static_cast<unsigned long>(g_scanIntervalMs),
                 static_cast<unsigned long>(comThreadId));
             AppendTraceLog(startMessage);
+        }
+        else
+        {
+            AppendTraceLog("DR0/DR1 field watchpoints are disabled or unavailable; Stage17 callsite observer may still run independently.");
         }
 
         if (g_playerBit17WriteTrace && !watchpointsEnabled)

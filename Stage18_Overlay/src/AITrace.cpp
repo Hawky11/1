@@ -89,6 +89,7 @@ namespace
     constexpr DWORD kStage18PrimaryTableRva = 0x04882518u;
     constexpr DWORD kStage18SecondaryTableRva = 0x04882C20u;
     constexpr DWORD kStage18Bit113GateRecordCapacity = 512u;
+    constexpr BYTE kStage18ExpectedHelperArguments[4] = { 0x6A, 0x19, 0x50, 0x56 };
     constexpr BYTE kStage18ExpectedHelperCall[5] = { 0xE8, 0x2B, 0xCB, 0x02, 0x00 };
     constexpr BYTE kStage18ExpectedObserverBytes[5] = { 0x83, 0xC4, 0x0C, 0x84, 0xC0 };
     constexpr BYTE kStage18ExpectedBranchBytes[2] = { 0x75, 0x41 };
@@ -849,11 +850,11 @@ namespace
                 }
             }
 
-            if (record.SelectedTablePointer != 0 && stateIndex <= 0x1Bu)
+            if (record.SelectedTablePointer != 0 && stateIndex <= 0x1Bu && key <= 0x1Au)
             {
                 const ULONGLONG byteAddress =
                     static_cast<ULONGLONG>(record.SelectedTablePointer) +
-                    static_cast<ULONGLONG>(stateIndex) * 0x1Au + 0x19u;
+                    static_cast<ULONGLONG>(stateIndex) * 0x1Au + key;
                 if (byteAddress <= 0xFFFFFFFFull)
                 {
                     record.TableByteAddress = static_cast<DWORD>(byteAddress);
@@ -1552,6 +1553,12 @@ namespace
         }
 
         BYTE* helperCall = reinterpret_cast<BYTE*>(g_gameBase + kStage18Bit113GateCallRva);
+        BYTE* helperArguments = helperCall - sizeof(kStage18ExpectedHelperArguments);
+        if (std::memcmp(helperArguments, kStage18ExpectedHelperArguments, sizeof(kStage18ExpectedHelperArguments)) != 0)
+        {
+            AppendStage18Bit113GateLog("ERROR: argument setup before RVA 0x000C64A0 does not match push 0x19 / push EAX / push ESI; refusing to patch.");
+            return false;
+        }
         if (std::memcmp(helperCall, kStage18ExpectedHelperCall, sizeof(kStage18ExpectedHelperCall)) != 0)
         {
             AppendStage18Bit113GateLog("ERROR: bytes at RVA 0x000C64A0 do not match the verified CALL-to-0x4F2FD0 signature; refusing to patch.");

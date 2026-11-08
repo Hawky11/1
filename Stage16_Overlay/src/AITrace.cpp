@@ -59,6 +59,7 @@ namespace
         ULONGLONG QpcTicks;
         DWORD EipAfter;
         DWORD RvaAfter;
+        DWORD EipInAalib;
         DWORD PlayerObject;
         DWORD FieldAddress;
         DWORD OldValue;
@@ -289,6 +290,29 @@ namespace
         }
     }
 
+    void CaptureAnyCodeWindow(DWORD eipAfter, BYTE output[24])
+    {
+        std::memset(output, 0, 24);
+        if (eipAfter < 0x10010u) return;
+
+        const DWORD start = eipAfter - 16;
+        MEMORY_BASIC_INFORMATION info{};
+        if (VirtualQuery(reinterpret_cast<const void*>(start), &info, sizeof(info)) != sizeof(info))
+            return;
+        if (info.State != MEM_COMMIT || (info.Protect & PAGE_GUARD) != 0 ||
+            (info.Protect & 0xFF) == PAGE_NOACCESS)
+            return;
+
+        const auto regionStart = reinterpret_cast<std::uintptr_t>(info.BaseAddress);
+        const auto regionEnd = regionStart + info.RegionSize;
+        const auto copyStart = static_cast<std::uintptr_t>(start);
+        const std::size_t available = copyStart < regionEnd
+            ? static_cast<std::size_t>(regionEnd - copyStart) : 0;
+        const std::size_t length = available < 24 ? available : 24;
+        if (length != 0)
+            std::memcpy(output, reinterpret_cast<const void*>(start), length);
+    }
+
     void AddTraceSite(int fieldIndex, PCONTEXT context)
     {
         if (fieldIndex < 0 || fieldIndex > 1 || context == nullptr)
@@ -380,7 +404,8 @@ namespace
         QueryPerformanceCounter(&qpc);
         record.QpcTicks = static_cast<ULONGLONG>(qpc.QuadPart);
         record.EipAfter = context->Eip;
-        record.RvaAfter = context->Eip >= g_gameBase ? context->Eip - g_gameBase : 0;
+        record.EipInAalib = IsGameImageAddress(context->Eip) ? 1u : 0u;
+        record.RvaAfter = record.EipInAalib != 0 ? context->Eip - g_gameBase : 0;
         record.PlayerObject = fieldAddress - kPlayerBit17Offset;
         record.FieldAddress = fieldAddress;
         record.OldValue = oldKnown != 0 ? static_cast<DWORD>(oldValue) : newValue;
@@ -396,7 +421,7 @@ namespace
         record.Ebp = context->Ebp;
         record.Esp = context->Esp;
         record.EFlags = context->EFlags;
-        CaptureCodeWindow(context->Eip, record.CodeWindow);
+        CaptureAnyCodeWindow(context->Eip, record.CodeWindow);
         InterlockedExchange(&record.State, 1);
     }
 
@@ -420,7 +445,7 @@ namespace
             sprintf_s(
                 message, sizeof(message),
                 "PLAYER_BIT17_WRITE seq=%lu side=P%lu tid=%lu tick=%lu time=%02u:%02u:%02u.%03u qpc=0x%08lX%08lX "
-                "eipAfter=0x%08lX rvaAfter=0x%08lX player=0x%08lX field=0x%08lX old=0x%08lX new=0x%08lX "
+                "eipAfter=0x%08lX inAALib=%lu rvaAfter=0x%08lX player=0x%08lX field=0x%08lX old=0x%08lX new=0x%08lX "
                 "shadowInitialized=%lu oldBit17=%s newBit17=%lu shadowBit17Changed=%lu dr6=0x%08lX "
                 "EAX=%08lX EBX=%08lX ECX=%08lX EDX=%08lX ESI=%08lX EDI=%08lX EBP=%08lX ESP=%08lX EFLAGS=%08lX "
                 "bytes_at_EIP_minus_16=%s",
@@ -433,6 +458,7 @@ namespace
                 static_cast<unsigned long>(record.QpcTicks >> 32),
                 static_cast<unsigned long>(record.QpcTicks & 0xFFFFFFFFu),
                 static_cast<unsigned long>(record.EipAfter),
+                static_cast<unsigned long>(record.EipInAalib),
                 static_cast<unsigned long>(record.RvaAfter),
                 static_cast<unsigned long>(record.PlayerObject),
                 static_cast<unsigned long>(record.FieldAddress),
@@ -492,9 +518,10 @@ namespace
         // Clear only the status bits belonging to our two data watchpoints.
         context->Dr6 &= ~0x3u;
 
-        // Keep only accesses executed by AALib.exe itself. This excludes our
-        // COMvsCOM writer and operating-system routines from the trace.
-        if (!IsGameImageAddress(context->Eip))
+        // The legacy control-field mode retains its original AALib-only filter.
+        // Stage16 records writes from any user-mode module in the target process;
+        // the COMvsCOM worker is excluded before watchpoint installation.
+        if (!g_playerBit17WriteTrace && !IsGameImageAddress(context->Eip))
         {
             return EXCEPTION_CONTINUE_EXECUTION;
         }

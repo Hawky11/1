@@ -91,6 +91,7 @@ namespace
     bool g_playerBit17WriteTrace = false;
     volatile LONG g_playerBit17ShadowValue[2]{};
     volatile LONG g_playerBit17ShadowValid[2]{};
+    DWORD g_playerBit17InitialValue[2]{};
     volatile LONG g_playerBit17WriteSequence = 0;
     volatile LONG g_playerBit17WriteDropped = 0;
     volatile LONG g_playerBit17WriteReportedDropped = 0;
@@ -200,7 +201,7 @@ namespace
         char line[2048]{};
         const int count = sprintf_s(
             line,
-            "[%04u-%02u-%02u %02u:%02u:%02u.%03u] %s\\r\\n",
+            "[%04u-%02u-%02u %02u:%02u:%02u.%03u] %s\r\n",
             now.wYear, now.wMonth, now.wDay,
             now.wHour, now.wMinute, now.wSecond, now.wMilliseconds,
             message != nullptr ? message : "(empty)");
@@ -800,6 +801,8 @@ namespace
                 AppendPlayerBit17TraceLog("ERROR: could not read initial P1/P2 player+0x3B84 values; refusing to start because the old-value shadow would be invalid.");
                 return 0;
             }
+            g_playerBit17InitialValue[0] = initialP1;
+            g_playerBit17InitialValue[1] = initialP2;
             InterlockedExchange(&g_playerBit17ShadowValue[0], static_cast<LONG>(initialP1));
             InterlockedExchange(&g_playerBit17ShadowValue[1], static_cast<LONG>(initialP2));
             InterlockedExchange(&g_playerBit17ShadowValid[0], 1);
@@ -843,9 +846,9 @@ namespace
                 "P1=0x%08lX (RVA 0x%08lX, initial=0x%08lX), P2=0x%08lX (RVA 0x%08lX, initial=0x%08lX). "
                 "DR7 config=0x%08lX; scan=%lu ms; COMvsCOM writer TID=%lu excluded; external DR0/DR1 owners are not overwritten.",
                 static_cast<unsigned long>(g_watchP1), static_cast<unsigned long>(p1WatchRva),
-                static_cast<unsigned long>(initialP1),
+                static_cast<unsigned long>(g_playerBit17InitialValue[0]),
                 static_cast<unsigned long>(g_watchP2), static_cast<unsigned long>(p2WatchRva),
-                static_cast<unsigned long>(initialP2),
+                static_cast<unsigned long>(g_playerBit17InitialValue[1]),
                 static_cast<unsigned long>(g_watchDr7Configuration),
                 static_cast<unsigned long>(g_scanIntervalMs), static_cast<unsigned long>(comThreadId));
             AppendPlayerBit17TraceLog(startMessage);

@@ -826,7 +826,8 @@ namespace
             popad
             popfd
 
-            add esp, 8
+            // LEA is flag-neutral; do not overwrite the original AND's EFLAGS.
+            lea esp, [esp + 8]
             ret
         }
     }

@@ -1030,7 +1030,12 @@ namespace
         bool safe = true;
         THREADENTRY32 entry{};
         entry.dwSize = sizeof(entry);
-        if (Thread32First(snapshot, &entry))
+        if (!Thread32First(snapshot, &entry))
+        {
+            CloseHandle(snapshot);
+            *safeToPatch = false;
+            return 0;
+        }
         {
             do
             {
@@ -1099,7 +1104,9 @@ namespace
         if (InterlockedCompareExchange(&g_stage17Bit113SetterInstalled, 0, 0) != 0)
             return true;
 
-        if (g_gameBase == 0 || g_gameImageSize < kStage17Bit113SetterCallRva + 5u)
+        if (g_gameBase == 0 ||
+            g_gameImageSize < kStage17Bit113SetterCallRva + 5u ||
+            kStage17Bit113HelperRva >= g_gameImageSize)
         {
             AppendStage17Bit113Log("ERROR: AALib image does not contain callsite RVA 0x000C6502.");
             return false;

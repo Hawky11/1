@@ -6,10 +6,10 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- **Current diagnostic-source branch:** `stage21-payload-1e-consumer-trace`, HEAD `8b99c75723ef99e0473c53777b39239a1e851bab`. This is a source-only overlay based on immutable Stage20 source HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`.
+- **Current diagnostic-source branch:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. This is a source-only overlay based on immutable Stage20 source HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`.
 - **Latest runtime evidence branch:** `stage20-bit113-object-bit2-runtime-evidence`, HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`. Stage20 wrapper at RVA `0xC64F1` produced 33 actual `AL=1` object-guard records with bit2 set. No natural `AL=0` negative-control sample has been recorded.
 - Stage21 overlay files: `Stage21_Overlay/src/AIQueueTrace.cpp`, `Stage21_Overlay/ArcanaAI.ini`, `Stage21_Overlay/README_STAGE21.md`, and `Stage21_Overlay/STATIC_PAYLOAD_1E_CONSUMER_ANALYSIS.md`.
-- Stage21 adds observational wrappers at `0xEE426 -> 0x4E8CF0` and `0xEE446 -> 0x4F7EB0`, logging the classifier's actual AL for type 1/payload `0x1E` and the controller-array slot-3 before/after values. New log: `ArcanaAI_Stage21PayloadConsumerTrace.log`.
+- Stage21 adds observational wrappers at `0xEE426 -> 0x4E8CF0` and `0xEE446 -> 0x4F7EB0`, logging actual AL, original dispatch type/payload, decoded action code and helper selector argument, plus the controller-array slot-3 before/after values. New log: `ArcanaAI_Stage21PayloadConsumerTrace.log`.
 - **Stage21 has not been compiled or runtime-tested.** There is no Stage21 Build.log or DLL in the repository. Do not install until the user's Windows/MSVC x86 Release build succeeds and the log confirms both hooks installed.
 - Stage19 source branch remains `stage19-bit113-state-map-trace`, HEAD `841142895a976419a9bda197be286e7434993067`; Stage18 source branch remains `stage18-bit113-gate-condition-trace`, HEAD `520eec4cd216795e8ffbaa8738b3602b5e40d39a`. Keep all older branches unchanged.
 

@@ -703,8 +703,12 @@ namespace
     {
         __asm
         {
-            // Original stack: [return EE42B][arg=1]. Duplicate the cdecl argument.
-            mov edx, dword ptr [esp + 4]
+            // Capture the decoded action code while it is still in EDI.
+            // The classifier helper repurposes EDI, so reading it after the call is invalid.
+            push edi
+
+            // Original argument remains at [esp+8] after the private saved-EDI DWORD.
+            mov edx, dword ptr [esp + 8]
             push edx
             call dword ptr [g_stage21PayloadClassifierTarget]
             add esp, 4
@@ -718,6 +722,9 @@ namespace
             add esp, 4
             popad
             popfd
+
+            // Discard the private saved-EDI DWORD without changing the helper's flags.
+            lea esp, [esp + 4]
             ret
         }
     }
@@ -1471,7 +1478,7 @@ namespace
         g_flushIntervalMs = static_cast<DWORD>(flushMs);
 
         if (stage21ConsumerTraceEnabled != 0)
-            AppendStage21ConsumerLog("STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r1");
+            AppendStage21ConsumerLog("STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2");
         if (queueTraceEnabled == 0 && dispatchTraceEnabled == 0 && stage21ConsumerTraceEnabled == 0)
         {
             AppendQueueLog("CPU queue and event-dispatch traces are disabled in ArcanaAI.ini. No code hook was installed.");
@@ -1625,15 +1632,18 @@ extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedCont
 
     const DWORD dispatcherEbp = savedContext[2];     // EBP of dispatcher 0xEE200
     const DWORD savedEspAfterPushfd = savedContext[3];
-    DWORD returnAddress = 0, helperArg = 0, dispatchType = 0, dispatchPayload = 0;
-    SafeReadDword(savedEspAfterPushfd + 4u, &returnAddress);
-    SafeReadDword(savedEspAfterPushfd + 8u, &helperArg);
+    DWORD decodedActionCode = 0, returnAddress = 0, helperArg = 0;
+    DWORD dispatchType = 0, dispatchPayload = 0;
+    // The wrapper's private saved-EDI DWORD is now at savedESP+4.
+    SafeReadDword(savedEspAfterPushfd + 4u, &decodedActionCode);
+    SafeReadDword(savedEspAfterPushfd + 8u, &returnAddress);
+    SafeReadDword(savedEspAfterPushfd + 12u, &helperArg);
     SafeReadDword(dispatcherEbp + 8u, &dispatchType);
     SafeReadDword(dispatcherEbp + 0x0Cu, &dispatchPayload);
     if (dispatchType != 1u || dispatchPayload != kStage21Payload1E ||
         payload != dispatchPayload || helperArg != 1u)
         return;
-    const DWORD decodedActionCode = savedContext[0];  // EDI returned by 0x52EAC0
+    // decodedActionCode was captured from EDI before the real classifier call.
 
     DWORD playerMode = 0, controlState = 0, controller = 0, controllerFlags = 0;
     SafeReadDword(player + kPlayerControlOffset, &playerMode);
@@ -1645,7 +1655,7 @@ extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedCont
     QueryPerformanceCounter(&qpc);
     char message[1100]{};
     sprintf_s(message,
-        "STAGE21_CLASSIFIER side=P%lu tid=%lu qpc=%llu callerRVA=0x%08lX player=0x%08lX dispatchType=%lu dispatchPayload=0x%08lX decodedActionCode=%lu helperArg=%lu helperRVA=0x000E8CF0 resultEAX=0x%08lX resultAL=%lu eflags=0x%08lX playerMode=0x%08lX state3978=0x%08lX controller=0x%08lX controllerFlags=0x%08lX",
+        "STAGE21_CLASSIFIER side=P%lu tid=%lu qpc=%llu callerRVA=0x%08lX player=0x%08lX dispatchType=%lu dispatchPayload=0x%08lX decodedActionCodePreCall=%lu helperArg=%lu helperRVA=0x000E8CF0 resultEAX=0x%08lX resultAL=%lu eflags=0x%08lX playerMode=0x%08lX state3978=0x%08lX controller=0x%08lX controllerFlags=0x%08lX",
         static_cast<unsigned long>(side),
         static_cast<unsigned long>(GetCurrentThreadId()),
         static_cast<unsigned long long>(qpc.QuadPart),

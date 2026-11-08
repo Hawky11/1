@@ -40,4 +40,4 @@ Keep same-run Stage18 gate, Stage20 guard, Stage17 setter, Stage16 bit17 writer 
 
 ## Status
 
-Build status: the first user-side compile attempt stopped in `AIQueueTrace.cpp` at the two resolver pointer conversions (C2440). Both are corrected in r2; this revision still needs a fresh Release | Win32 build and runtime test. No DLL size or hook installation is claimed yet. Confirm the r2 marker and successful hook installation line before interpreting new records.
+**Verified Stage23 r2 result:** Release | Win32 build succeeded on 2026-11-09; all eight C++ translation units compiled and `build/dinput8.dll` linked at 229,376 bytes. The only warning was non-fatal C4754 at `AICommandSiteTrace.cpp:785`. Runtime marker `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2` is present, and the resolver observer installed at `0x000EE273 -> 0x0012EAC0` (40 threads suspended). Three readable resolver records were captured and correlated through queue acceptance, dispatch, Stage21 classifier/fallback and Stage22 post-AND. Full results: `STAGE23_RUNTIME_ANALYSIS.md`.

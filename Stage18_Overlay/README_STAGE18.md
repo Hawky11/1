@@ -105,3 +105,8 @@ For each Stage18 result, compare:
 5. resultAL=0 records with early returns and later Stage15/QueueTrace observations.
 
 Important: the Stage18 observer covers the helper-gated branch through 0x4F2FD0, not the direct 0x4C64B1 comparison route. Keep Stage17 enabled; it remains the proof of the actual setter callsite.
+
+
+## Runtime result — verified
+
+The 2026-11-08 18:00 run completed both Stage18 and Stage17 hook installation and recorded six gate/setter pairs. The full correlation and the matching Stage15 payload-0x1E suppression are in [STAGE18_RUNTIME_ANALYSIS.md](STAGE18_RUNTIME_ANALYSIS.md). Build.log was not part of the uploaded file set; runtime markers and successful installation messages are present.

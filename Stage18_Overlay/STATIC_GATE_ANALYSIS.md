@@ -43,7 +43,7 @@ The function receives three stack parameters:
 - [EBP+0x0C]: state index
 - [EBP+0x10]: byte/key offset, passed as 0x19
 
-It selects a state table, calculates table + stateIndex*0x1A + key, and returns AL=1 iff the byte at that location is not 0xFF:
+It selects a state table, calculates table + stateIndex*0x1A + key (the caller pushes key 0x19), and returns AL=1 iff the byte at that location is not 0xFF:
 
     004F3041  mov ecx,[ebp+0Ch]
     004F3044  mov edx,[ebp+10h]

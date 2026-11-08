@@ -92,3 +92,14 @@ For the two selectors seen in Stage18, the on-disk key-`0x19` table has these `0
 These are direct state indices (`0x00..0x17`), so they bypass the new Stage19 converter hook. Stage18 still observes their subsequent `0x4F2FD0` gate call and will record the actual `AL=0` if one occurs. In contrast, mapped rows `0x18..0x1B` are all `0xFA` for these two known selectors.
 
 No semantic names are assigned to raw codes, WORD flags, table selectors or bytes without evidence.
+
+
+## Runtime verification — 2026-11-08 19:05
+
+The runtime logs are preserved at the repository root on this evidence branch. They confirm the Stage19 marker, config and successful six-byte installation at RVA `0x000F6C08` with 44 suspended threads. The run produced 1,235 state-map records. Stage18 recorded 42 gate results; all were AL=1 with table-byte readback 0xFA. Stage17/16 correlated four bit-17 set/clear episodes and Stage15 confirmed four suppressed payload-0x1E attempts.
+
+See [STAGE19_RUNTIME_ANALYSIS.md](STAGE19_RUNTIME_ANALYSIS.md) for the complete QPC correlation and next diagnostic target.
+
+**Build.log was not included** in the upload. Runtime execution proves the DLL containing the Stage19 observer loaded and its hook installed, but the compiler/linker transcript and final DLL size are unavailable.
+
+This runtime evidence branch is an immutable test snapshot. Continue new source work from `stage19-bit113-state-map-trace`, not from this evidence branch.

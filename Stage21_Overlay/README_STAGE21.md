@@ -5,7 +5,7 @@ Stage21 follows the Stage20 source branch `stage20-bit113-object-bit2-guard-trac
 ## What changed
 
 - `src/AIQueueTrace.cpp`: replacement source for the assembled project. Adds two validated CALL-site wrappers inside `AALib.exe+0xEE200`:
-  - `0xEE426 -> 0x4E8CF0`: records the original helper's real EAX/AL.
+  - `0xEE426 -> 0x4E8CF0`: records real EAX/AL and distinguishes original dispatcher type/payload, decoded action code, and the helper's selector argument.
   - `0xEE446 -> 0x4F7EB0`: records the control-array slot-3 value before and after the original helper clears it.
 - `ArcanaAI.ini`: enables `EnableStage21PayloadConsumerTrace=1`.
 - `STATIC_PAYLOAD_1E_CONSUMER_ANALYSIS.md`: static control-flow and data-effect analysis.
@@ -28,7 +28,7 @@ The log should contain:
 
 - `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r1`.
 - An installation line naming both callsite wrappers.
-- `STAGE21_CLASSIFIER ... eventType=1 payload=0x0000001E ... resultAL=0`.
+- `STAGE21_CLASSIFIER ... dispatchType=1 dispatchPayload=0x0000001E decodedActionCode=1 helperArg=1 ... resultAL=0`.
 - `STAGE21_FALLBACK_SLOT_CLEAR ... index=3 ... slotValueBefore=... slotValueAfter=0x00000000`.
 
 Correlate those lines with the existing `ArcanaAI_EventDispatchTrace.log` records by side, player, thread ID, and QPC. Send the new Stage21 log, the matching EventDispatch log, and the complete build log.

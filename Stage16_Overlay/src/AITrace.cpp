@@ -63,7 +63,7 @@ namespace
         DWORD FieldAddress;
         DWORD OldValue;
         DWORD NewValue;
-        DWORD OldValueKnown;
+        DWORD ShadowInitialized;
         DWORD Dr6;
         DWORD Eax;
         DWORD Ebx;
@@ -385,7 +385,7 @@ namespace
         record.FieldAddress = fieldAddress;
         record.OldValue = oldKnown != 0 ? static_cast<DWORD>(oldValue) : newValue;
         record.NewValue = newValue;
-        record.OldValueKnown = oldKnown != 0 ? 1u : 0u;
+        record.ShadowInitialized = oldKnown != 0 ? 1u : 0u;
         record.Dr6 = context->Dr6;
         record.Eax = context->Eax;
         record.Ebx = context->Ebx;
@@ -421,7 +421,7 @@ namespace
                 message, sizeof(message),
                 "PLAYER_BIT17_WRITE seq=%lu side=P%lu tid=%lu tick=%lu time=%02u:%02u:%02u.%03u qpc=0x%08lX%08lX "
                 "eipAfter=0x%08lX rvaAfter=0x%08lX player=0x%08lX field=0x%08lX old=0x%08lX new=0x%08lX "
-                "oldKnown=%lu oldBit17=%s newBit17=%lu changed=%lu dr6=0x%08lX "
+                "shadowInitialized=%lu oldBit17=%s newBit17=%lu shadowBit17Changed=%lu dr6=0x%08lX "
                 "EAX=%08lX EBX=%08lX ECX=%08lX EDX=%08lX ESI=%08lX EDI=%08lX EBP=%08lX ESP=%08lX EFLAGS=%08lX "
                 "bytes_at_EIP_minus_16=%s",
                 static_cast<unsigned long>(record.Sequence),
@@ -438,10 +438,10 @@ namespace
                 static_cast<unsigned long>(record.FieldAddress),
                 static_cast<unsigned long>(record.OldValue),
                 static_cast<unsigned long>(record.NewValue),
-                static_cast<unsigned long>(record.OldValueKnown),
-                record.OldValueKnown != 0 ? (oldBit17 != 0 ? "1" : "0") : "NA",
+                static_cast<unsigned long>(record.ShadowInitialized),
+                record.ShadowInitialized != 0 ? (oldBit17 != 0 ? "1" : "0") : "NA",
                 static_cast<unsigned long>(newBit17),
-                static_cast<unsigned long>(record.OldValueKnown != 0 && oldBit17 != newBit17),
+                static_cast<unsigned long>(record.ShadowInitialized != 0 && oldBit17 != newBit17),
                 static_cast<unsigned long>(record.Dr6),
                 static_cast<unsigned long>(record.Eax),
                 static_cast<unsigned long>(record.Ebx),
@@ -787,6 +787,7 @@ namespace
         if (g_gameModule == nullptr)
         {
             AppendTraceLog("ERROR: AALib.exe was not found; AI field trace stopped.");
+            if (g_playerBit17WriteTrace) AppendPlayerBit17TraceLog("ERROR: AALib.exe was not found; Stage16 trace stopped.");
             return 0;
         }
 
@@ -842,6 +843,7 @@ namespace
         if (comThreadId == 0)
         {
             AppendTraceLog("ERROR: COMvsCOM worker thread ID was not published; tracer stopped to avoid watching its own writer.");
+            if (g_playerBit17WriteTrace) AppendPlayerBit17TraceLog("ERROR: COMvsCOM worker thread ID was not published; Stage16 stopped before installing watchpoints.");
             return 0;
         }
 
@@ -852,6 +854,7 @@ namespace
         if (g_vectoredHandler == nullptr)
         {
             AppendTraceLog("ERROR: AddVectoredExceptionHandler failed; AI field trace stopped.");
+            if (g_playerBit17WriteTrace) AppendPlayerBit17TraceLog("ERROR: AddVectoredExceptionHandler failed; Stage16 stopped before installing watchpoints.");
             return 0;
         }
 
@@ -870,7 +873,7 @@ namespace
                 static_cast<unsigned long>(g_watchDr7Configuration),
                 static_cast<unsigned long>(g_scanIntervalMs), static_cast<unsigned long>(comThreadId));
             AppendPlayerBit17TraceLog(startMessage);
-            AppendPlayerBit17TraceLog("Each record is a post-write hardware-breakpoint snapshot. EIP/RVA is after the writing instruction; bytes_at_EIP_minus_16 allows offline instruction decoding. oldValue is a shadow of the last observed field value and is marked oldKnown=1 only when a baseline was initialized.");
+            AppendPlayerBit17TraceLog("Each record is a post-write hardware-breakpoint snapshot. EIP/RVA is after the writing instruction; bytes_at_EIP_minus_16 allows offline instruction decoding. oldValue is a best-effort shadow of the last observed field value; shadowInitialized=1 means only that the initial baseline read succeeded, not that no write was missed on an uninstrumented thread.");
         }
         else
         {

@@ -13,6 +13,7 @@
 extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedContext);
 extern "C" void __cdecl ArcanaLogStage21PayloadSlotClear(const DWORD* savedContext);
 extern "C" void __cdecl ArcanaLogStage22PayloadPostAnd(const DWORD* savedContext);
+extern "C" void __cdecl ArcanaLogStage23ResolverResult(const DWORD* savedContext);
 
 namespace
 {
@@ -54,6 +55,16 @@ namespace
     constexpr DWORD kStage22ControllerFlagsAndRva = 0x000EE451u;
     constexpr BYTE kStage22ControllerFlagsAndPrefix[6] = { 0x8B, 0x76, 0x04, 0x83, 0xC4, 0x08 };
     constexpr BYTE kStage22ControllerFlagsAndInstruction[7] = { 0x81, 0x66, 0x08, 0xFF, 0xFB, 0xFF, 0xFF };
+
+    // Stage23 wraps the type-1 mapping call at dispatcher RVA EE273.
+    // The resolver returns a record pointer in EAX; byte +3 is consumed later,
+    // before EDI is repurposed as the dispatcher event type / controller array.
+    constexpr DWORD kStage23ResolverCallRva = 0x000EE273u;
+    constexpr DWORD kStage23ResolverRva = 0x0012EAC0u;
+    constexpr BYTE kStage23ResolverCallPrefix[4] = { 0x52, 0x53, 0x51, 0x50 };
+    constexpr BYTE kStage23ResolverCall[5] = { 0xE8, 0x48, 0x08, 0x04, 0x00 };
+    constexpr BYTE kStage23ResolverCallSuffix[7] = { 0x0F, 0xB6, 0x48, 0x0B, 0x8B, 0x56, 0x04 };
+    constexpr BYTE kStage23ResolverPrologue[8] = { 0x55, 0x8B, 0xEC, 0x8B, 0x45, 0x10, 0x83, 0xF8 };
 
     constexpr DWORD kSiteCapacity = 512;
     constexpr DWORD kDetailCapacity = 1024;
@@ -215,6 +226,9 @@ namespace
     volatile LONG g_stage21PayloadConsumerInstalled = 0;
     volatile LONG g_stage22PayloadPostAndInstalled = 0;
     volatile LONG g_stage22PayloadPostAndSequence = 0;
+    volatile DWORD g_stage23ResolverTarget = 0;
+    volatile LONG g_stage23ResolverInstalled = 0;
+    volatile LONG g_stage23ResolverSequence = 0;
 
     SRWLOCK g_detailLock = SRWLOCK_INIT;
     QueueEventDetailRecord g_detailRecords[kDetailCapacity]{};
@@ -339,6 +353,33 @@ namespace
         const int count = sprintf_s(
             line,
             "[%04u-%02u-%02u %02u:%02u:%02u] %s\r\n",
+            now.wYear, now.wMonth, now.wDay,
+            now.wHour, now.wMinute, now.wSecond,
+            message != nullptr ? message : "(empty)");
+        if (count <= 0) return;
+
+        HANDLE file = CreateFileW(
+            logPath, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
+            nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (file == INVALID_HANDLE_VALUE) return;
+
+        DWORD written = 0;
+        WriteFile(file, line, static_cast<DWORD>(count), &written, nullptr);
+        CloseHandle(file);
+    }
+
+    void AppendStage23ResolverLog(const char* message)
+    {
+        wchar_t logPath[MAX_PATH + 1]{};
+        if (!GetSiblingPath(logPath, MAX_PATH, L"ArcanaAI_Stage23ResolverResultTrace.log"))
+            return;
+
+        SYSTEMTIME now{};
+        GetLocalTime(&now);
+        char line[1800]{};
+        const int count = sprintf_s(
+            line,
+            "[%04u-%02u-%02u %02u:%02u:%02u] %s\\r\\n",
             now.wYear, now.wMonth, now.wDay,
             now.wHour, now.wMinute, now.wSecond,
             message != nullptr ? message : "(empty)");
@@ -830,6 +871,50 @@ namespace
             // Restore EAX unchanged by the original AND; LEA keeps its EFLAGS intact.
             mov eax, dword ptr [esp + 4]
             lea esp, [esp + 12]
+            ret
+        }
+    }
+
+    // Stage23 wraps the four-argument type-1 mapping resolver at EE273.
+    // Keep the caller's four arguments untouched; call the resolver once with
+    // identical values, then log its returned record before the dispatcher reads it.
+    __declspec(naked) void Stage23ResolverResultHook()
+    {
+        __asm
+        {
+            // Private locals: [esp+0..0x0C] = copies of original resolver args 1..4.
+            // At entry [esp]=return EE278 and original args start at [esp+4].
+            sub esp, 10h
+            mov eax, dword ptr [esp + 14h]
+            mov dword ptr [esp], eax
+            mov eax, dword ptr [esp + 18h]
+            mov dword ptr [esp + 4], eax
+            mov eax, dword ptr [esp + 1Ch]
+            mov dword ptr [esp + 8], eax
+            mov eax, dword ptr [esp + 20h]
+            mov dword ptr [esp + 0Ch], eax
+
+            // Rebuild the original cdecl arg list in reverse order.
+            // The moving ESP keeps each next original local at [esp+0x0C].
+            push dword ptr [esp + 0Ch]
+            push dword ptr [esp + 0Ch]
+            push dword ptr [esp + 0Ch]
+            push dword ptr [esp + 0Ch]
+            call dword ptr [g_stage23ResolverTarget]
+            lea esp, [esp + 10h]
+
+            // Preserve the resolver's actual return registers and EFLAGS around logging.
+            pushfd
+            pushad
+            mov edx, esp
+            push edx
+            call ArcanaLogStage23ResolverResult
+            add esp, 4
+            popad
+            popfd
+
+            // Flag-neutral removal of private locals; RET reaches original EE278.
+            lea esp, [esp + 10h]
             ret
         }
     }
@@ -1405,6 +1490,117 @@ namespace
         return false;
     }
 
+    bool InstallStage23ResolverResultHook()
+    {
+        BYTE* callSite = reinterpret_cast<BYTE*>(
+            static_cast<std::uintptr_t>(g_gameBase + kStage23ResolverCallRva));
+        BYTE* resolver = reinterpret_cast<BYTE*>(
+            static_cast<std::uintptr_t>(g_gameBase + kStage23ResolverRva));
+
+        if (std::memcmp(callSite - sizeof(kStage23ResolverCallPrefix),
+                kStage23ResolverCallPrefix, sizeof(kStage23ResolverCallPrefix)) != 0 ||
+            std::memcmp(callSite, kStage23ResolverCall, sizeof(kStage23ResolverCall)) != 0 ||
+            std::memcmp(callSite + sizeof(kStage23ResolverCall),
+                kStage23ResolverCallSuffix, sizeof(kStage23ResolverCallSuffix)) != 0 ||
+            std::memcmp(resolver, kStage23ResolverPrologue, sizeof(kStage23ResolverPrologue)) != 0)
+        {
+            AppendStage23ResolverLog("ERROR: resolver callsite/context or helper prologue signature mismatch; no Stage23 patch was applied.");
+            return false;
+        }
+
+        std::int32_t relative = 0;
+        std::memcpy(&relative, callSite + 1, sizeof(relative));
+        const std::intptr_t destination =
+            reinterpret_cast<std::intptr_t>(callSite + sizeof(kStage23ResolverCall)) + relative;
+        if (destination != static_cast<std::intptr_t>(resolver))
+        {
+            AppendStage23ResolverLog("ERROR: RVA 0x000EE273 does not resolve to mapping helper RVA 0x0012EAC0; refusing to patch.");
+            return false;
+        }
+
+        BYTE patch[5]{};
+        if (!MakeRelativeCall(callSite,
+                reinterpret_cast<const void*>(&Stage23ResolverResultHook), patch))
+        {
+            AppendStage23ResolverLog("ERROR: Stage23 wrapper is outside rel32 CALL range; no patch was applied.");
+            return false;
+        }
+
+        HANDLE patchMutex = CreateMutexW(nullptr, FALSE, L"Local\\ArcanaAIOverhaul_PatchInstall_Mutex");
+        if (patchMutex == nullptr)
+        {
+            AppendStage23ResolverLog("ERROR: could not create shared patch-install mutex.");
+            return false;
+        }
+        const DWORD wait = WaitForSingleObject(patchMutex, INFINITE);
+        if (wait != WAIT_OBJECT_0 && wait != WAIT_ABANDONED)
+        {
+            CloseHandle(patchMutex);
+            AppendStage23ResolverLog("ERROR: could not acquire shared patch-install mutex.");
+            return false;
+        }
+
+        HANDLE suspended[512]{};
+        const DWORD suspendedCount = SuspendOtherProcessThreads(
+            suspended, static_cast<DWORD>(sizeof(suspended) / sizeof(suspended[0])));
+
+        DWORD oldProtect = 0;
+        bool protectedTarget = false;
+        bool ok = false;
+        if (!VirtualProtect(callSite, sizeof(patch), PAGE_EXECUTE_READWRITE, &oldProtect))
+        {
+            AppendStage23ResolverLog("ERROR: VirtualProtect failed for RVA 0x000EE273.");
+        }
+        else
+        {
+            protectedTarget = true;
+            std::int32_t currentRelative = 0;
+            std::memcpy(&currentRelative, callSite + 1, sizeof(currentRelative));
+            const std::intptr_t currentDestination =
+                reinterpret_cast<std::intptr_t>(callSite + sizeof(kStage23ResolverCall)) + currentRelative;
+            if (std::memcmp(callSite - sizeof(kStage23ResolverCallPrefix),
+                    kStage23ResolverCallPrefix, sizeof(kStage23ResolverCallPrefix)) != 0 ||
+                std::memcmp(callSite, kStage23ResolverCall, sizeof(kStage23ResolverCall)) != 0 ||
+                std::memcmp(callSite + sizeof(kStage23ResolverCall),
+                    kStage23ResolverCallSuffix, sizeof(kStage23ResolverCallSuffix)) != 0 ||
+                std::memcmp(resolver, kStage23ResolverPrologue, sizeof(kStage23ResolverPrologue)) != 0 ||
+                currentDestination != static_cast<std::intptr_t>(resolver))
+            {
+                AppendStage23ResolverLog("ERROR: Stage23 resolver bytes changed during installation; no patch was applied.");
+            }
+            else
+            {
+                g_stage23ResolverTarget = g_gameBase + kStage23ResolverRva;
+                std::memcpy(callSite, patch, sizeof(patch));
+                FlushInstructionCache(GetCurrentProcess(), callSite, sizeof(patch));
+                InterlockedExchange(&g_stage23ResolverInstalled, 1);
+                ok = true;
+            }
+        }
+
+        if (protectedTarget)
+        {
+            DWORD ignored = 0;
+            VirtualProtect(callSite, sizeof(patch), oldProtect, &ignored);
+        }
+        ResumeThreads(suspended, suspendedCount);
+        ReleaseMutex(patchMutex);
+        CloseHandle(patchMutex);
+
+        if (ok)
+        {
+            char message[512]{};
+            sprintf_s(message,
+                "Installed Stage23 resolver-result observer at callsite RVA 0x%08lX -> helper RVA 0x%08lX; original four cdecl arguments are replayed once; result registers/EFLAGS and caller-owned stack are preserved; suspended=%lu thread(s).",
+                static_cast<unsigned long>(kStage23ResolverCallRva),
+                static_cast<unsigned long>(kStage23ResolverRva),
+                static_cast<unsigned long>(suspendedCount));
+            AppendStage23ResolverLog(message);
+            return true;
+        }
+        return false;
+    }
+
     void FlushQueueSites()
     {
         for (DWORD i = 0; i < kSiteCapacity; ++i)
@@ -1625,6 +1821,7 @@ namespace
         const int dispatchDetailTraceEnabled = ReadIniInt(L"AIResearch", L"EnableCpuEventDispatchDetailTrace", 1);
         const int stage21ConsumerTraceEnabled = ReadIniInt(L"AIResearch", L"EnableStage21PayloadConsumerTrace", 0);
         const int stage22PostAndTraceEnabled = ReadIniInt(L"AIResearch", L"EnableStage22PayloadPostAndTrace", 0);
+        const int stage23ResolverResultTraceEnabled = ReadIniInt(L"AIResearch", L"EnableStage23ResolverResultTrace", 0);
         InterlockedExchange(&g_detailTraceEnabled, queueDetailTraceEnabled != 0 ? 1 : 0);
         InterlockedExchange(&g_dispatchDetailTraceEnabled, dispatchDetailTraceEnabled != 0 ? 1 : 0);
         int flushMs = ReadIniInt(L"AIResearch", L"QueueTraceFlushIntervalMs", kDefaultFlushIntervalMs);
@@ -1636,8 +1833,11 @@ namespace
             AppendStage21ConsumerLog("STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2");
         if (stage22PostAndTraceEnabled != 0)
             AppendStage22PayloadLog("STAGE22_PAYLOAD_POST_AND_BUILD=2026-11-08-r1");
+        if (stage23ResolverResultTraceEnabled != 0)
+            AppendStage23ResolverLog("STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r1");
         if (queueTraceEnabled == 0 && dispatchTraceEnabled == 0 &&
-            stage21ConsumerTraceEnabled == 0 && stage22PostAndTraceEnabled == 0)
+            stage21ConsumerTraceEnabled == 0 && stage22PostAndTraceEnabled == 0 &&
+            stage23ResolverResultTraceEnabled == 0)
         {
             AppendQueueLog("CPU queue and event-dispatch traces are disabled in ArcanaAI.ini. No code hook was installed.");
             return 0;
@@ -1674,7 +1874,7 @@ namespace
 
         char start[720]{};
         sprintf_s(start,
-            "Stage 12/21 tracing requested. gameBase=0x%08lX; P1 object=0x%08lX queue=0x%08lX; P2 object=0x%08lX queue=0x%08lX; queueInsert=%d; queueDetail=%d; eventDispatch=%d; dispatchDetail=%d; stage21Consumer=%d; stage22PostAnd=%d; flush=%lu ms. Exact P1/P2 CPU queues only.",
+            "Stage 12/21/22/23 tracing requested. gameBase=0x%08lX; P1 object=0x%08lX queue=0x%08lX; P2 object=0x%08lX queue=0x%08lX; queueInsert=%d; queueDetail=%d; eventDispatch=%d; dispatchDetail=%d; stage21Consumer=%d; stage22PostAnd=%d; stage23ResolverResult=%d; flush=%lu ms. Exact P1/P2 CPU queues only.",
             static_cast<unsigned long>(g_gameBase),
             static_cast<unsigned long>(g_playerP1),
             static_cast<unsigned long>(g_p1Queue),
@@ -1686,6 +1886,7 @@ namespace
             dispatchDetailTraceEnabled != 0 ? 1 : 0,
             stage21ConsumerTraceEnabled != 0 ? 1 : 0,
             stage22PostAndTraceEnabled != 0 ? 1 : 0,
+            stage23ResolverResultTraceEnabled != 0 ? 1 : 0,
             static_cast<unsigned long>(g_flushIntervalMs));
         AppendQueueLog(start);
         AppendDispatchLog(start);
@@ -1706,10 +1907,15 @@ namespace
         {
             AppendStage22PayloadLog("ERROR: Stage22 post-AND observer was not installed; inspect the preceding validation/patch message.");
         }
+        if (stage23ResolverResultTraceEnabled != 0 && !InstallStage23ResolverResultHook())
+        {
+            AppendStage23ResolverLog("ERROR: Stage23 resolver-result observer was not installed; inspect the preceding validation/patch message.");
+        }
         if (InterlockedCompareExchange(&g_hookInstalled, 0, 0) == 0 &&
             InterlockedCompareExchange(&g_dispatchHookInstalled, 0, 0) == 0 &&
             InterlockedCompareExchange(&g_stage21PayloadConsumerInstalled, 0, 0) == 0 &&
-            InterlockedCompareExchange(&g_stage22PayloadPostAndInstalled, 0, 0) == 0)
+            InterlockedCompareExchange(&g_stage22PayloadPostAndInstalled, 0, 0) == 0 &&
+            InterlockedCompareExchange(&g_stage23ResolverInstalled, 0, 0) == 0)
         {
             AppendQueueLog("ERROR: no Stage 5 trace hook was installed.");
             return 0;
@@ -1960,6 +2166,86 @@ extern "C" void __cdecl ArcanaLogStage22PayloadPostAnd(const DWORD* savedContext
         static_cast<unsigned long>(afterReadable ? 1u : 0u),
         static_cast<unsigned long>(savedContext[8]));
     AppendStage22PayloadLog(message);
+}
+
+extern "C" void __cdecl ArcanaLogStage23ResolverResult(const DWORD* savedContext)
+{
+    if (savedContext == nullptr) return;
+
+    const DWORD player = savedContext[1];       // ESI: dispatcher player object.
+    const DWORD payload = savedContext[4];     // EBX: original dispatcher payload.
+    const DWORD resolverRecord = savedContext[7]; // EAX: resolver return pointer.
+    if (player != g_playerP1 && player != g_playerP2) return;
+
+    const DWORD side = player == g_playerP1 ? 1u : 2u;
+    const DWORD dispatcherEbp = savedContext[2];
+    const DWORD savedEsp = savedContext[3];    // ESP after PUSHFD, before PUSHAD.
+    DWORD dispatchType = 0, dispatchPayload = 0;
+    DWORD arg1 = 0, arg2 = 0, arg3 = 0, arg4 = 0, returnAddress = 0;
+
+    // Stage23 wrapper locals occupy [savedEsp+4..+16], then the caller return at +20.
+    SafeReadDword(savedEsp + 4u, &arg1);
+    SafeReadDword(savedEsp + 8u, &arg2);
+    SafeReadDword(savedEsp + 12u, &arg3);
+    SafeReadDword(savedEsp + 16u, &arg4);
+    SafeReadDword(savedEsp + 20u, &returnAddress);
+    SafeReadDword(dispatcherEbp + 8u, &dispatchType);
+    SafeReadDword(dispatcherEbp + 0x0Cu, &dispatchPayload);
+
+    // Limit the trace to the exact type-1 / payload-0x1E path already correlated at Stage21/22.
+    if (dispatchType != 1u || dispatchPayload != kStage21Payload1E || payload != dispatchPayload)
+        return;
+
+    DWORD recordDword0 = 0, recordDword1 = 0, recordDword2 = 0;
+    const bool recordReadable = resolverRecord != 0 &&
+        SafeReadDword(resolverRecord, &recordDword0) &&
+        SafeReadDword(resolverRecord + 4u, &recordDword1) &&
+        SafeReadDword(resolverRecord + 8u, &recordDword2);
+
+    const DWORD resolverByte02 = (recordDword0 >> 16) & 0xFFu;
+    const DWORD resolverByte03 = (recordDword0 >> 24) & 0xFFu;
+    const DWORD resolverByte04 = recordDword1 & 0xFFu;
+    const DWORD resolverByte0B = (recordDword2 >> 24) & 0xFFu;
+
+    DWORD state3978 = 0, state3F20 = 0, state1224 = 0;
+    SafeReadDword(player + 0x3978u, &state3978);
+    SafeReadDword(player + 0x3F20u, &state3F20);
+    SafeReadDword(player + 0x1224u, &state1224);
+
+    LARGE_INTEGER qpc{};
+    QueryPerformanceCounter(&qpc);
+    const LONG sequence = InterlockedIncrement(&g_stage23ResolverSequence);
+
+    char message[1600]{};
+    sprintf_s(message,
+        "STAGE23_RESOLVER_RESULT seq=%ld side=P%lu tid=%lu tick=%lu qpc=%I64u callReturnRVA=0x%08lX player=0x%08lX dispatchType=%lu dispatchPayload=0x%08lX resolverRVA=0x0012EAC0 resolverRecord=0x%08lX resolverArgs=(%08lX,%08lX,%08lX,%08lX) recordReadable=%lu recordDwords=(%08lX,%08lX,%08lX) resolverByte02=%lu resolverByte03=%lu resolverByte04=%lu resolverByte0B=%lu playerState3978=0x%08lX playerState3F20=0x%08lX playerField1224=0x%08lX eflagsAfterResolver=0x%08lX",
+        static_cast<long>(sequence),
+        static_cast<unsigned long>(side),
+        static_cast<unsigned long>(GetCurrentThreadId()),
+        static_cast<unsigned long>(GetTickCount()),
+        static_cast<unsigned long long>(qpc.QuadPart),
+        static_cast<unsigned long>(returnAddress >= g_gameBase ? returnAddress - g_gameBase : 0),
+        static_cast<unsigned long>(player),
+        static_cast<unsigned long>(dispatchType),
+        static_cast<unsigned long>(dispatchPayload),
+        static_cast<unsigned long>(resolverRecord),
+        static_cast<unsigned long>(arg1),
+        static_cast<unsigned long>(arg2),
+        static_cast<unsigned long>(arg3),
+        static_cast<unsigned long>(arg4),
+        static_cast<unsigned long>(recordReadable ? 1u : 0u),
+        static_cast<unsigned long>(recordDword0),
+        static_cast<unsigned long>(recordDword1),
+        static_cast<unsigned long>(recordDword2),
+        static_cast<unsigned long>(resolverByte02),
+        static_cast<unsigned long>(resolverByte03),
+        static_cast<unsigned long>(resolverByte04),
+        static_cast<unsigned long>(resolverByte0B),
+        static_cast<unsigned long>(state3978),
+        static_cast<unsigned long>(state3F20),
+        static_cast<unsigned long>(state1224),
+        static_cast<unsigned long>(savedContext[8]));
+    AppendStage23ResolverLog(message);
 }
 
 void StartAIQueueTrace(HMODULE proxyModule)

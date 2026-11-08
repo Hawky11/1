@@ -9,7 +9,7 @@
 - Latest runtime evidence branch: `stage17-bit113-setter-callsite-trace` (preserved historical snapshot)
 - Runtime evidence branch HEAD: `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`
 - Current diagnostic-source branch: `stage17-callsite-init-diagnostics`
-- Diagnostic-source branch HEAD: `34fbf14975b3e5d1b9dd6bdec0c3d6c8756bc25f`
+- Diagnostic-source branch HEAD: `ebabe7faa0521115425e56d9b6880b76e1a48806`
 - Earlier Stage17 entry-hook source branch (preserve unchanged): `stage17-bit113-setter-caller-trace`, HEAD at last review `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
 - Stage16 baseline evidence branch (preserve unchanged): `stage16-player-bit17-writer-trace`, HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
 - Stage17 callsite overlay README: [Stage17_Overlay/README_STAGE17.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-callsite-trace/Stage17_Overlay/README_STAGE17.md).
@@ -42,7 +42,7 @@ A diagnostic-source revision is now available in branch `stage17-callsite-init-d
 The revised `AITrace.cpp`:
 
 - declares `ReadDwordAtAddress` before its first use;
-- writes marker `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1` and a worker-entry line before validation;
+- writes marker `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2` and a worker-entry line before validation;
 - logs `EnableControlFieldTrace`, `EnablePlayerBit17WriteTrace`, and `EnableStage17Bit113SetterCallTrace`;
 - records Stage17-specific messages for the former early-return paths;
 - fixes the logger's CRLF formatting.
@@ -52,7 +52,7 @@ The revised `AITrace.cpp`:
 1. Start from the Stage11 source archive and apply the overlays in order through Stage16, then apply `Stage17_Overlay/src/AITrace.cpp` and `Stage17_Overlay/ArcanaAI.ini` from `stage17-callsite-init-diagnostics`.
 2. Before compiling, run this PowerShell check from the project root; it must find the marker:
    ```powershell
-   Select-String -Path .\\src\\AITrace.cpp -SimpleMatch 'STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1'
+   Select-String -Path .\\src\\AITrace.cpp -SimpleMatch 'STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2'
    ```
 3. Build Win32/x86 and retain the full Build.log. A successful build must still show `AITrace.cpp` being compiled, but the source-marker check proves the correct overlay was present before the build.
 4. Install the newly built `dinput8.dll` **and** this branch's `ArcanaAI.ini` beside the actual game executable / `AALib.exe`. Keep the previous working DLL backed up.
@@ -61,7 +61,7 @@ The revised `AITrace.cpp`:
 
 If the other ArcanaAI logs are written but the new marker file is still absent, stop: verify the path of the DLL actually loaded by the game and compare it with the newly built binary. Do not run another match merely to recreate logs.
 
-The original callsite candidate remains unconfirmed until runtime records show `callRVA=0x000C6502`, `returnRVA=0x000C6507`, `index=0x00000071`, and the correct P1/P2 player pointer correlated with the Stage16 writer events. The r1 build failed before link with C3861; the current r2 source correction has not yet been rebuilt or runtime-tested.
+The original callsite candidate remains unconfirmed until runtime records show `callRVA=0x000C6502`, `returnRVA=0x000C6507`, `index=0x00000071`, and the correct P1/P2 player pointer correlated with the Stage16 writer events. The r1 build failed before link with C3861. The corrected r2 source has a distinct r2 marker and has not yet been rebuilt or runtime-tested.
  
 ## Historical branch rules
 

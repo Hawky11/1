@@ -89,14 +89,14 @@ The diagnostic revision on branch `stage17-callsite-init-diagnostics` adds a sta
 After copying this overlay into the assembled Stage11 project, verify the exact source revision before building:
 
 ```powershell
-Select-String -Path .\\src\\AITrace.cpp -SimpleMatch 'STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1'
+Select-String -Path .\\src\\AITrace.cpp -SimpleMatch 'STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2'
 ```
 
 A match is required. The Stage11 project already compiles `AITrace.cpp`; no separate translation unit or project-file entry is needed. Build with MSVC x86, retain Build.log, and install the newly built `dinput8.dll` plus this overlay's `ArcanaAI.ini` beside the actual game executable / `AALib.exe`.
 
 With clean logs, the first entries in `ArcanaAI_Bit113SetterTrace.log` should contain:
 
-- `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1`
+- `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2`
 - `STAGE17_INIT: FieldTraceThread entered.`
 - `STAGE17_CONFIG:` including values read from the INI beside the loaded proxy DLL.
 
@@ -108,7 +108,7 @@ The file should now be created even when the callsite is disabled or validation 
 
 The first r1 build with the source marker present exposed a C++ declaration-order error: `QueueStage17Bit113SetterRecord` called `ReadDwordAtAddress` before the compiler had seen its declaration (MSVC C3861 at lines 466–485).
 
-The r2 source now declares:
+The r2 source now uses a distinct build marker and declares:
 
 ```cpp
 bool ReadDwordAtAddress(DWORD address, DWORD* value);
@@ -116,7 +116,7 @@ bool ReadDwordAtAddress(DWORD address, DWORD* value);
 
 inside the same anonymous namespace, immediately before `QueueStage17Bit113SetterRecord`. The existing implementation remains later in that namespace; no function behavior or hook logic was changed.
 
-After copying r2, run the marker check again, then build. The marker remains `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1`; it identifies the diagnostic source family, while the Git commit identifies the corrected r2 source. A build is still pending until a fresh Build.log confirms compile and link success.
+After copying r2, run the marker check again, then build. The marker remains `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2`; it identifies the diagnostic source family, while the Git commit identifies the corrected r2 source. A build is still pending until a fresh Build.log confirms compile and link success.
 
 ---
 

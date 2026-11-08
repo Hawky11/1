@@ -27,7 +27,9 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 19r | [stage19-bit113-state-map-runtime-evidence](https://github.com/Hawky11/1/tree/stage19-bit113-state-map-runtime-evidence) | `3e75c07c7bdbd0827112f6a488936587a41a1b4b` | Stage19/18/17/16 runtime evidence and matching overlay |
 | 20 | [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace) | `11dde281a08a3481517d0cb60d4752393fa0e578` | Build-verified Stage20 source; real object-bit-2 helper wrapper |
 | 20r | [stage20-bit113-object-bit2-runtime-evidence](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-runtime-evidence) | `08125627bfbb588aff8e735168c51a1083cb06e6` | 33 positive object-guard samples and three payload-0x1E dispatch events |
-| 21 | [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace) | `d210c3540ddd29fff1795ef8da6d3605958d481a` | Source-only consumer hooks at EE426/EE446; build/runtime pending |
+| 21 | [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace) | `d210c3540ddd29fff1795ef8da6d3605958d481a` | Exact r1 source snapshot used for the successful build and runtime test |
+| 21r | [stage21-payload-1e-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-runtime-evidence) | `274a58e2b514766ea2ef067c83f3ae321a0908ce` | Archived Build.log, Stage21 consumer logs and Stage20 AL=0 → Stage17 setter correlation |
+| 21r2 | [stage21-payload-1e-consumer-trace-r2](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace-r2) | `28fd26b76c22b9070eabaa33a85c713876234aaf` | Unbuilt correction: save decoded action EDI before classifier helper |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -811,3 +813,53 @@ Stage21 is **source-only**. No MSVC build, DLL, runtime hook installation or Sta
 4. Confirm runtime classifier `AL=0` and slot-`3` pre/post clear. Separately continue the natural Stage20 object-bit-2-clear experiment to obtain the missing object-guard `AL=0) sample. Never force the object bit or helper return value.
 
 Stage21 is a source snapshot only; Stage20 source/evidence and all earlier historical branches remain unchanged.
+
+
+## Stage21 runtime result — consumer fallback confirmed; object-guard negative control captured (2026-11-08 21:43–21:45)
+
+Runtime evidence branch: [stage21-payload-1e-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-runtime-evidence), HEAD `274a58e2b514766ea2ef067c83f3ae321a0908ce`. This branch starts from the uploaded runtime snapshot commit `e7f3faf33c5e37f49896ed4f0375b12c2b853daa` and preserves the runtime logs, the exact Stage21 r1 overlay and the user-supplied Build.log transcript. Full analysis: `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
+
+Tested source branch: [stage21-payload-1e-consumer-trace](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace), HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. It is the exact source version built and loaded in this run.
+
+### Build and installation
+
+- Build started 2026-11-08 21:43:30,49 using Visual Studio 18 Community / MSVC 14.51.36231 x86.
+- All eight C++ translation units compiled and `build\\dinput8.dll` linked successfully at **222,208 bytes**.
+- One non-fatal C4754 warning remains in `AICommandSiteTrace.cpp` lines 782–785.
+- Stage21 marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r1` is present.
+- Both Stage21 CALL wrappers installed: `0xEE426 -> 0x4E8CF0` and `0xEE446 -> 0x4F7EB0`, with 40 process threads suspended during installation.
+- Stage20 object guard at `0xC64F1`, Stage17 setter observer at `0xC6502`, and Stage18 observer at `0xC64A5` also installed.
+
+### Payload-0x1E consumer runtime
+
+Two events were traced, one P1 and one P2, on thread 23660:
+- The alternate producer at `0xF6AD7` queued type 1 / payload `0x1E`; QueueTrace reported `ACCEPTED_BY_QUEUE` and stored `(0001,001E)`.
+- EventDispatch at `0xEE200` recorded the same arguments with `beforeMatches=1` and `afterMatches=1`.
+- Stage21 classifier CALL at `0xEE426` returned real `EAX=0 / AL=0` for both P1 and P2.
+- Both then reached fallback CALL `0xEE446` to helper `0x4F7EB0`, index 3.
+- The slot DWORD was zero before and after both fallback helper calls. The controller flags read before the subsequent AND were also zero. Thus fallback execution is confirmed, but neither sample proves an actual nonzero→zero slot change or a set bit-`0x400` clear.
+
+### Stage20 object-bit-2 negative control and Stage17 setter
+
+This same run finally recorded a natural P1 object guard with bit 2 clear:
+- `[object+0x3B70]=0x00010440), `bit2Set=0), helper argument 2, real `AL=0`, `readMask=0x3F`.
+- 79 QPC ticks later, Stage17 recorded the direct setter CALL at `0xC6502`, index `0x71`, same P1 pointer `0x0E9C1F78), same thread 23660, and the same `other3B70=0x00010440`.
+
+This confirms the object helper's negative result is followed by the direct bit-113 setter call in this sample; the original JNE is not taken and execution falls through to `0xC6502`.
+
+### Remaining limits and r1 logger defect
+
+- `ArcanaAI_PlayerBit17WriteTrace.log` is **zero bytes**. Although Stage17 logged the setter call and the pre-call `[player+0x3B84]=0x01000000` value has bit17 clear, no Stage16 post-call writer record exists. Do not claim that bit17 changed 0→1.
+- Stage18 observer installed but `ArcanaAI_Bit113GateTrace.log` contains no gate result entries. No same-event Stage18 state-table correlation is available for this P1 object-guard sample.
+- Stage19 had 1,320 `STATE_MAP_CALL` entries, but none was correlated to the object guard/setter QPC at 21:45:03.002.
+- The Stage21 r1 field `decodedActionCode` is invalid: it sampled EDI after helper `0x4E8CF0`; the observed values (`0x0E9C59B4` / `0x0E9F06DC`) equal the controller-array pointers in the following slot-clear records. The actual AL and dispatch type/payload fields are valid.
+
+### Corrected Stage21 r2 source candidate
+
+A separate source branch preserves this correction without rewriting r1: [stage21-payload-1e-consumer-trace-r2](https://github.com/Hawky11/1/tree/stage21-payload-1e-consumer-trace-r2), HEAD `28fd26b76c22b9070eabaa33a85c713876234aaf`. It saves EDI on the stack before calling the original classifier helper and logs `decodedActionCodePreCall`; it uses marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`. This branch is **not yet built or runtime-tested**. The Stage21 r1 source/evidence branches remain immutable.
+
+### Next research questions
+
+1. Capture a natural fallback where slot 3 is nonzero before `0x4F7EB0`, or controller bit `0x400` is set before the following AND, to confirm an actual state transition.
+2. Capture the actual bit17 writer after the P1 direct setter call; this run's Stage16 write log is empty even though the Stage17 CALL was observed.
+3. If another Stage21 payload capture is needed, build from r2 to obtain a valid pre-call decoded action code. Do not rewrite or overwrite the r1 evidence branch.

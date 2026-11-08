@@ -491,11 +491,6 @@ namespace
 
         // Clear only the status bits belonging to our two data watchpoints.
         context->Dr6 &= ~0x3u;
-        if (commandTraceHits != 0)
-        {
-            // Let AICommandTrace consume its DR2/DR3 hit in the next VEH handler.
-            return EXCEPTION_CONTINUE_SEARCH;
-        }
 
         // Keep only accesses executed by AALib.exe itself. This excludes our
         // COMvsCOM writer and operating-system routines from the trace.
@@ -513,6 +508,13 @@ namespace
         {
             if (g_playerBit17WriteTrace) QueuePlayerBit17WriteRecord(1, context);
             else AddTraceSite(1, context);
+        }
+
+        if (commandTraceHits != 0)
+        {
+            // Stage16 has already recorded any simultaneous DR0/DR1 data hit.
+            // Pass the still-pending DR2/DR3 execution hit to AICommandTrace.
+            return EXCEPTION_CONTINUE_SEARCH;
         }
 
         return EXCEPTION_CONTINUE_EXECUTION;
@@ -620,6 +622,7 @@ namespace
         const DWORD comVsComThreadId = GetComVsComThreadId();
         DWORD newlyInstalled = 0;
         DWORD newlyInspected = 0;
+        DWORD newlySkipped = 0;
         PruneTrackedThreads();
 
         HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
@@ -659,6 +662,10 @@ namespace
                                 {
                                     ++newlyInstalled;
                                 }
+                                else
+                                {
+                                    ++newlySkipped;
+                                }
                                 break;
                             }
                         }
@@ -678,10 +685,21 @@ namespace
         }
 
         CloseHandle(snapshot);
+        if (newlySkipped != 0)
+        {
+            char warning[256]{};
+            sprintf_s(warning,
+                "WARNING: %lu newly inspected game thread(s) were not given DR0/DR1 because those slots were occupied or unavailable; these threads are tracked but will not be retried.",
+                static_cast<unsigned long>(newlySkipped));
+            AppendTraceLog(warning);
+            if (g_playerBit17WriteTrace) AppendPlayerBit17TraceLog(warning);
+        }
         if (newlyInspected != 0 && newlyInstalled == 0 &&
             InterlockedCompareExchange(&g_noThreadInstallLog, 1, 0) == 0)
         {
             AppendTraceLog("Threads were inspected, but DR0/DR1 were unavailable or could not be set. Existing debug-register owners were left untouched.");
+            if (g_playerBit17WriteTrace)
+                AppendPlayerBit17TraceLog("ERROR: no newly inspected game thread accepted the P1/P2 write watchpoints; external DR0/DR1 owners were left untouched.");
         }
         return newlyInstalled;
     }
@@ -872,16 +890,21 @@ namespace
         for (;;)
         {
             const DWORD newlyInstalled = InstallWatchpointsOnCurrentThreads();
-            if (newlyInstalled != 0 && InterlockedCompareExchange(&g_firstInstallLog, 1, 0) == 0)
+            if (newlyInstalled != 0)
             {
                 char message[256]{};
-                sprintf_s(message, "Hardware watchpoints installed on %lu existing game thread(s); new threads will be checked automatically.",
+                sprintf_s(message, "Hardware watchpoint install batch: %lu new game thread(s).",
                     static_cast<unsigned long>(newlyInstalled));
                 AppendTraceLog(message);
+                if (g_playerBit17WriteTrace) AppendPlayerBit17TraceLog(message);
+                InterlockedExchange(&g_firstInstallLog, 1);
             }
-            else if (newlyInstalled == 0 && InterlockedCompareExchange(&g_noThreadInstallLog, 1, 0) == 0)
+            else if (InterlockedCompareExchange(&g_firstInstallLog, 0, 0) == 0 &&
+                InterlockedCompareExchange(&g_noThreadInstallLog, 1, 0) == 0)
             {
                 AppendTraceLog("No eligible game thread accepted DR0/DR1 yet. Threads using those debug-register slots are left untouched; scanning will continue.");
+                if (g_playerBit17WriteTrace)
+                    AppendPlayerBit17TraceLog("WARNING: no eligible game thread has accepted the P1/P2 write watchpoints yet.");
             }
 
             if (g_playerBit17WriteTrace)

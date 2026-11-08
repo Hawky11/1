@@ -1,174 +1,53 @@
 # Next session handoff
 
-**Read this file first in a new chat.** The user may provide only the repository link. Inspect the current branch HEAD and files before asking for material; the user has already uploaded Stage16 runtime logs.
+**Read this file first in a new chat.** Inspect current GitHub branch HEADs and uploaded files before asking the user for anything.
 
 ## Repository and current checkpoint
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- Latest runtime-evidenced stage: **Stage16 — player bit17 setter/clearer trace**
-- Latest runtime-evidence branch: `stage16-player-bit17-writer-trace` (HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`)
-- Current source/diagnostic branch: `stage17-bit113-setter-caller-trace`
-- Stage17 HEAD at this handoff: `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`
-- Stage17 overlay instructions: [Stage17_Overlay/README_STAGE17.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/README_STAGE17.md)
-- Stage17 static caller review: [Stage17_Overlay/STATIC_CALLER_REVIEW.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/STATIC_CALLER_REVIEW.md)
-- Previous evidence branch (unchanged): `stage15-postguard-flow-diagnostics`, HEAD `4d1e2a049c835a991647cb04565d31d330aeac95`
-- Full Stage16 analysis: [Stage16_Overlay/RUNTIME_ANALYSIS.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/RUNTIME_ANALYSIS.md)
-- Stage16 overlay instructions: [Stage16_Overlay/README_STAGE16.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/README_STAGE16.md)
-- Static reference review: [Stage16_Overlay/STATIC_XREF_REVIEW.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/STATIC_XREF_REVIEW.md)
-- Full chronology: [PROJECT_HISTORY.md](PROJECT_HISTORY.md)
+- Latest runtime evidence branch: `stage17-bit113-setter-callsite-trace`
+- Latest runtime branch HEAD: `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`
+- Earlier Stage17 entry-hook source branch (preserve unchanged): `stage17-bit113-setter-caller-trace`, HEAD at last review `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
+- Stage16 baseline evidence branch (preserve unchanged): `stage16-player-bit17-writer-trace`, HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
+- Stage17 callsite overlay README: [Stage17_Overlay/README_STAGE17.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-callsite-trace/Stage17_Overlay/README_STAGE17.md).
+- Full chronology: [PROJECT_HISTORY.md](PROJECT_HISTORY.md).
 
-Always re-check the remote branch HEAD and changed files first. If the user has uploaded a newer Stage16 or Stage17 run, inspect those changes before continuing. Stage12–Stage15 historical branches must remain unchanged.
+## Latest build result — successful
 
-## What Stage15 established
+The user supplied Build.log dated 2026-11-08 15:39:59. Visual Studio 2026 18.9.1 / MSVC 14.51.36231 x86 initialized successfully. All eight C++ translation units compiled and `build\\dinput8.dll` linked successfully; DLL size 190,976 bytes. One non-fatal C4754 warning occurred in `AICommandSiteTrace.cpp` lines 782–785 for the stack snapshot address calculation. Do not describe this build as failed. Build.log was pasted in conversation but is absent from the GitHub branch tree.
 
-The event of interest is type `1`, payload `0x1E`, produced in the parent routine at `AALib.exe+0xF69F0`.
+## Runtime findings already established
 
-In the last Stage15 analysis, the route from the parent routine through the alternate writer at `AALib.exe+0xF6AD7` was instrumented at five branch points. The uploaded Stage15 run found that bit17 in `[player+0x3B84]` determined whether the original JZ at F6A68 was taken. This was the hypothesis Stage16 was built to test.
+Run: approximately 15:40:27–15:41:09 on 2026-11-08.
 
-## Stage16 runtime findings (2026-11-08)
+- `ArcanaAI_PlayerBit17WriteTrace.log`: 22,739 write records, 60 game-thread watchpoint installs, six actual bit17 transitions (three set, three clear), and no warnings/errors/drops in the file.
+- All three set operations used generic bitfield setter VA `0x0040FAD0` post-EIP `0xFAD2`, with EAX equal to the exact P1/P2 field address and EDX=`0x00020000`.
+- All three clears used VA `0x004ED19F` post-EIP `0xED1A9`.
+- Six Stage15 F6A68 events were recorded: three with bit17=1 and JZ not taken; three with bit17=0 and JZ taken. The three set events align by QPC with bit17=1 at F6A68 and a subsequent clear. The three bit17=0 events reached F6AD7.
+- The three F6AD7 type-1/payload-`0x1E` writes were accepted by QueueTrace and observed by EventDispatchTrace.
+- All six matching parent events had F2F50 return EAX=`0x11E`, F2ED0 return AL=0, and EDI=`0x1E`.
+- Reviewed producer, queue, dispatcher and write logs show no warnings/errors/drops.
 
-Run window: `13:02:27.719`–`13:03:18.651`.
+This is a second independent six-event confirmation of the bit17/F6A68 correlation.
 
-Uploaded files include:
-- `ArcanaAI_PlayerBit17WriteTrace.log` — 30,114 write records.
-- `ArcanaAI_ProducerCallTrace.log` — Stage14 and Stage15 probes.
-- `ArcanaAI_AlternateCallTrace.log`
-- `ArcanaAI_QueueTrace.log`
-- `ArcanaAI_EventDispatchTrace.log`
-- `ArcanaAI_FinalCommandTrace.log`
-- `ArcanaAI_ParentFlowTrace.log`
-- `ArcanaAI_ProducerContextTrace.log`
+## Only immediate missing item: Stage17 caller log
 
-### Instrumentation coverage
+The uploaded branch does not contain `ArcanaAI_Bit113SetterTrace.log`. The active Stage17 callsite source in `stage17-bit113-setter-callsite-trace` hooks the direct CALL at RVA `0x000C6502`, expected target RVA `0x0000FAA0`. Its supplied INI key is `EnableStage17Bit113SetterCallTrace=1`.
 
-Stage16 startup confirms:
-- P1 player `0x0E9C1F78`; watched field `0x0E9C5AFC` (AALib RVA `0x0DCA5AFC`).
-- P2 player `0x0E9ECCA0`; watched field `0x0E9F0824` (AALib RVA `0x0DCD0824`).
-- Both initial values were `0x00000000`.
-- DR7 configuration `0x00DD0005` (local, write-only, four-byte DR0/DR1 watchpoints).
-- Eight installation batches recorded 60 game-thread watchpoint installations.
-- The Stage16 log contains no skipped-thread, dropped-record, or warning/error entries.
+The separate Stage17 log should contain either an install/validation result or an error, and if the site executes, `BIT113_SET_CALL` entries with:
+- `callRVA=0x000C6502`
+- `returnRVA=0x000C6507`
+- `index=0x00000071`
+- player identity, registers, related-object values, stack and QPC.
 
-**Build.log was not uploaded.** Runtime records prove the Stage16 module ran and installed watchpoints, but the compiler transcript, warnings, and exact build command were not independently reviewed.
+**Ask for/upload only this missing log first.** Do not ask the user to rebuild or rerun yet. If the file exists in the same folder as the other ArcanaAI logs, upload it. If it was never created, then verify the actual game-folder `ArcanaAI.ini` contains `EnableStage17Bit113SetterCallTrace=1` and that the newly built `dinput8.dll` was installed beside the game executable; only then decide whether a short targeted rerun is needed.
 
-### Confirmed bit17 setter
+Until the Stage17 log is reviewed, do not claim the runtime setter calls have been attributed to RVA `0x000C6502`. The bit17 setter/clearer instructions and their branch/queue relationship are confirmed; the caller remains unconfirmed.
 
-All five observed bit17 0→1 transitions came from:
-- VA `0x0040FAD0` / RVA `0x0000FAD0`:
-  `or dword ptr [eax], edx`
-- EAX was the exact P1/P2 watched field address.
-- EDX was `0x00020000`.
+## Historical branch rules
 
-This instruction is inside a generic player bitfield setter at VA `0x0040FAA0` / RVA `0x0000FAA0`. It accepts a bit index:
-- Bitfield base is `player+0x3B78`.
-- Bit index `0x71` (113) maps to DWORD `player+0x3B84`.
-- 113 modulo 32 is 17, so the mask is `0x00020000`.
-
-The same helper had 85 observed writes: 10 with EDX=`0x00020000` (five real 0→1 transitions and five repeated 1→1 writes), and 75 with EDX=`0x00400000` (bit 22, not bit17).
-
-### Strong static caller candidate, not yet runtime-proven
-
-Among 129 direct call references to the generic helper `0x0040FAA0`, one passes literal index `0x71`, at VA `0x004C6502`:
-
-```asm
-004C64ED  mov ecx, dword ptr [ebx]
-004C64EF  push 2
-004C64F1  call 00495B00
-004C64F6  test al, al
-004C64F8  jne 004C640B
-004C64FE  push 0x71
-004C6500  mov ecx, esi
-004C6502  call 0040FAA0
-```
-
-The preceding helper tests bit index 2 in the `+0x3B70` bitfield of the object in ECX. When it returns `AL=0`, this caller sets bit113 on the player object in ESI.
-
-This is the only direct call reference found with an immediate `push 0x71`, making it the strongest static candidate. **Stage16 did not record the generic setter's return address**, so do not state that runtime setter invocations have been proven to originate at `0x004C6502`. A different call site could theoretically supply 113 dynamically.
-
-### Confirmed bit17 clearer
-
-All five observed bit17 1→0 transitions came from VA `0x004ED19F` / RVA `0x000ED19F`:
-
-```asm
-004ED188  push 0x1E
-004ED18A  lea eax, [esi+0x3A2C]
-004ED190  push 1
-004ED192  push eax
-004ED193  call 004F2ED0
-004ED198  add esp, 0x0C
-004ED19B  test al, al
-004ED19D  jne 004ED1A9
-004ED19F  and dword ptr [esi+0x3B84], 0xFFF9FFFF
-004ED1A9  mov eax, [esi+0x3978]
-```
-
-For every transition, ESI matched the exact watched P1/P2 player object. The preceding F2ED0 helper returned `AL=0`; the mask clears bits 17 and 18. The clear instruction was observed 597 times, but only five executions changed bit17 1→0.
-
-### Correlation with the parent branch and queue
-
-Six matching parent events were recorded in this Stage16 session. For all six:
-- F2F50 returned EAX=`0x11E`.
-- F2ED0 returned `AL=0`.
-- EDI=`0x1E` passed the payload comparison.
-
-Five events:
-1. Generic setter changed bit17 from 0 to 1 before F6A68.
-2. F6A68 observed bit17=1; original JZ was not taken.
-3. The event did not reach F6A9D/F6AD7.
-4. RVA `0xED19F` then cleared bit17.
-
-The sixth event (P1, `13:03:12.258`) arrived at F6A68 with bit17=0:
-1. F6A68 took its JZ.
-2. F6A9D was reached.
-3. F6AD7 queued type `1`, payload `0x1E`.
-4. QueueTrace reported `ACCEPTED_BY_QUEUE`.
-5. EventDispatchTrace observed the same event.
-
-FinalCommandTrace has no matching payload `0x1E` entry because this successful event used the alternate writer at F6AD7, not the F7C5D/F7C62 callsite.
-
-This strongly ties temporary bit17=1 to suppression of this particular type-1/`0x1E` branch in the six sampled events. Do not generalize beyond the observed sample or declare the full semantic meaning of bit113 solved yet.
-
-## Latest Stage17 build attempt — blocked before linking
-
-The user supplied a fresh Build.log from 2026-11-08. Visual Studio 2026 18.9.1 / MSVC 14.51.36231 initialized x86 successfully, but compilation stopped in `src/AITrace.cpp` with repeated C3861 errors: `ReadDwordAtAddress` was not declared (14 call sites). No successful DLL exists; do not install or run this build.
-
-The tracked `Stage16_Overlay/src/AITrace.cpp` on Stage17 matches the Stage16 branch blob and already contains the helper implementation before the call sites. The error therefore points to a different/stale/partially merged local source file, although the exact local mismatch cannot be confirmed without seeing it. Stage17 HEAD is now `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`; it adds a forward declaration and updates the README with a safe replacement/check command.
-
-### Next task: rebuild with the exact Stage16 AITrace overlay
-
-
-
-Stage17 source has been prepared in `stage17-bit113-setter-caller-trace`, based on the exact Stage16 evidence snapshot. It adds the passive generic-setter entry trace at VA `0x0040FAA0`, filtering to input bit index `0x71`. The hook validates the original seven-byte prologue, preserves the incoming flags/registers, replays the original prologue, and logs the caller return address plus decoded E8 target.
-
-Read [Stage17_Overlay/README_STAGE17.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/README_STAGE17.md) and [STATIC_CALLER_REVIEW.md](https://github.com/Hawky11/1/blob/stage17-bit113-setter-caller-trace/Stage17_Overlay/STATIC_CALLER_REVIEW.md). The expected static candidate is VA `0x004C6502` / RVA `0x000C6502`, return VA `0x004C6507` / RVA `0x000C6507`, decoded target `0x0040FAA0`. This must be confirmed from runtime logs, not assumed.
-
-First copy the current `Stage16_Overlay/src/AITrace.cpp` over the extracted project's `src/AITrace.cpp`, following the PowerShell instructions in `Stage17_Overlay/README_STAGE17.md`. Verify both the `ReadDwordAtAddress` forward declaration and implementation are present, then rebuild with MSVC x86 and retain a fresh `Build.log`. Only after a successful compile/link should the user install the DLL, run a short COM-vs-COM session, and upload fresh runtime logs, especially `ArcanaAI_Bit113SetterTrace.log`. If C3861 persists, obtain the exact local `src/AITrace.cpp` before making further source changes.
-
-The Stage17 trace records:
-- caller return address;
-- ECX/player object;
-- stack bit-index argument (expected `0x71`);
-- EBP and outer caller/frame context;
-- registers and timestamp/QPC.
-
-The target is to verify whether the runtime setter calls actually come from `0x004C6502`, identify the caller above `0x4C63B0` (static callers include `0x4967FC` and `0x4F6FD0`), and expose the condition that sets bit113. Preserve the original helper arguments, return value, flags, and behavior exactly. Use the same PE fingerprint and byte/target validation as previous probes, coordinate code patch installation with the shared patch mutex, and do not overwrite occupied debug-register ownership.
-
-A useful refinement is to log the preceding `0x00495B00` test result / the branch condition at `0x4C64F6`, but the mere presence of the call at `0x4C6502` already demonstrates that the test returned AL=0.
-
-After Stage17 is prepared:
-1. Update the Stage17 README with exact source overlay/build steps.
-2. Do not modify Stage16 or Stages12–15; keep them as historical evidence.
-3. Ask the user to build/run only after the source overlay and safety validation are ready.
-4. Require fresh Build.log and runtime logs before claiming Stage17 instrumentation succeeded.
-5. After upload, correlate setter caller records with bit17 watch events and Stage15 branch/QPC records.
-6. Append actual results to PROJECT_HISTORY.md and refresh this handoff and README.
-
-## Rules for future sessions
-
-- Inspect repository files and existing Library uploads before requesting anything from the user.
-- Never modify Stage12–Stage16 historical evidence branches after a run has been analyzed.
-- Never infer build/compiler success from runtime logs; report the missing Stage16 Build.log limitation accurately.
-- Distinguish proven writer instructions from static caller hypotheses.
-- Never invent hook installation, build results, or log contents.
-- Keep the next task clear; do not ask for information already present in the repository or conversation.
+- Do not rewrite Stage12–Stage16 evidence branches.
+- Keep `stage17-bit113-setter-caller-trace` and `stage17-bit113-setter-callsite-trace` distinct; they use different Stage17 hook placements.
+- Append each completed analysis to `PROJECT_HISTORY.md`, update this handoff, and keep `README.md` as the entry point.
+- Distinguish successful compilation from hook installation; only runtime log evidence proves the latter.

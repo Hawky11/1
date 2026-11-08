@@ -77,7 +77,8 @@ extern "C"
             // After logging, RET 4 reproduces the original helper's stack cleanup.
             // AL/EAX and EFLAGS from the real helper are preserved; original TEST/JNE
             // at 0x000C64F6/0x000C64F8 remain untouched.
-            mov edx, dword ptr [esp+4]
+            push ecx
+            mov edx, dword ptr [esp+8]
             push edx
             call dword ptr [g_Stage20Bit113ObjectGuardTarget]
             pushfd
@@ -88,6 +89,7 @@ extern "C"
             add esp, 4
             popad
             popfd
+            add esp, 4
             ret 4
         }
     }
@@ -159,7 +161,7 @@ namespace
     constexpr BYTE kStage19ExpectedBranchBytes[2] = { 0x75, 0x0A };
     constexpr char kStage19BuildMarker[] = "STAGE19_BIT113_STATE_MAP_BUILD=2026-11-08-r1";
     constexpr DWORD kStage20ObjectGuardCallRva = 0x000C64F1u;
-    constexpr DWORD kStage20ObjectGuardHelperRva = 0x000095B00u;
+    constexpr DWORD kStage20ObjectGuardHelperRva = 0x00095B00u;
     constexpr DWORD kStage20ObjectGuardContinuationRva = 0x000C64F6u;
     constexpr DWORD kStage20ObjectGuardTestRva = 0x000C64F6u;
     constexpr DWORD kStage20ObjectGuardBranchRva = 0x000C64F8u;
@@ -1208,7 +1210,7 @@ namespace
         record.Edx = context[5];
         record.Esi = context[1];
         record.Edi = context[0];
-        record.EspAtHook = context[3] + 4u;
+        record.EspAtHook = context[3] + 8u;
         record.EFlags = context[8];
 
         // Exact post-0x4F02C0 mapping in 0x4F6BA0:
@@ -1351,12 +1353,11 @@ namespace
         if (!g_stage20ObjectGuardTrace || context == nullptr)
             return;
 
-        // The original CALL at 0xC64F1 passes ECX=[EBX], stack argument 2.
-        // Our wrapper duplicates arg 2 for the real helper, so at this observer
-        // context[9] is the wrapper's continuation and context[10] is original arg 2.
+        // The wrapper saves the original ECX immediately before calling the helper.
+        // Saved-context stack: context[9]=saved ECX, [10]=wrapper return, [11]=original arg 2.
         const DWORD player = context[1]; // Caller ESI; same player used by Stage17 setter.
-        const DWORD objectSlotPointer = context[4]; // Caller EBX before helper; [EBX] is the object.
-        const DWORD objectPassed = context[6]; // Caller ECX, the value passed to helper.
+        const DWORD objectSlotPointer = context[4]; // EBX is preserved by the helper; [EBX] is the object slot.
+        const DWORD objectPassed = context[9]; // Original ECX saved by the wrapper before helper call.
         const DWORD p1Player = g_gameBase + kP1ControlRva - kPlayerControlOffset;
         const DWORD p2Player = g_gameBase + kP2ControlRva - kPlayerControlOffset;
         const DWORD side = player == p1Player ? 1u : (player == p2Player ? 2u : 0u);
@@ -1386,11 +1387,11 @@ namespace
         record.ObjectPassed = objectPassed;
         record.ObjectFromSlot = 0;
         record.Object3B70 = 0xFFFFFFFFu;
-        record.HelperArgument = context[10];
+        record.HelperArgument = context[11];
         record.ResultEax = context[7];
         record.ResultAl = context[7] & 0xFFu;
         record.Bit2Set = 0xFFFFFFFFu;
-        record.HookReturnAddress = context[9];
+        record.HookReturnAddress = context[10];
         record.Ebp = context[2];
         record.ParentReturnAddress = 0;
         if (record.Ebp != 0)
@@ -2347,14 +2348,13 @@ namespace
             return false;
         }
 
-        BYTE* helperArguments = reinterpret_cast<BYTE*>(g_gameBase + kStage20ObjectGuardCallRva) - 2;
-        if (std::memcmp(helperArguments - 2, kStage20ExpectedArgumentSetup, sizeof(kStage20ExpectedArgumentSetup)) != 0)
+        BYTE* callSite = reinterpret_cast<BYTE*>(g_gameBase + kStage20ObjectGuardCallRva);
+        if (std::memcmp(callSite - sizeof(kStage20ExpectedArgumentSetup), kStage20ExpectedArgumentSetup, sizeof(kStage20ExpectedArgumentSetup)) != 0)
         {
             AppendStage20ObjectGuardLog("ERROR: setup before RVA 0x000C64F1 does not match MOV ECX,[EBX]; PUSH 2; refusing to patch.");
             return false;
         }
 
-        BYTE* callSite = reinterpret_cast<BYTE*>(g_gameBase + kStage20ObjectGuardCallRva);
         if (std::memcmp(callSite, kStage20ExpectedHelperCall, sizeof(kStage20ExpectedHelperCall)) != 0)
         {
             AppendStage20ObjectGuardLog("ERROR: CALL at RVA 0x000C64F1 does not match the verified 0x00495B00 helper; refusing to patch.");

@@ -28,7 +28,8 @@ Stage16 extends the existing `src/AITrace.cpp` hardware-watchpoint module alread
 - P1 player object RVA is derived from the already-confirmed P1 COM control field RVA minus `0x3F2C`; the Stage16 watched address is player RVA plus `0x3B84`. The same derivation is used for P2.
 - DR0 and DR1 watch those exact 4-byte DWORD addresses.
 - DR7 uses `0x00DD0005`: local enable for DR0/DR1, write-only access (`RW=01`), 4-byte length (`LEN=11`). The address is DWORD-aligned.
-- The handler records post-write snapshots: side, thread ID, tick, local time, QPC, EIP-after, RVA-after, P1/P2 field and player addresses, DR6, all general-purpose registers, EFLAGS, and 24 code bytes around EIP (16 bytes before EIP, 8 bytes from EIP).
+- The handler records writes from **any user-mode module in the target process**, not just AALib.exe. It logs absolute EIP-after plus `inAALib=0/1`; RVA-after is populated only when EIP lies inside AALib.exe. This keeps writes performed through a helper in another loaded module from being silently filtered out.
+- Each record includes side, thread ID, tick, local time, QPC, EIP-after, RVA-after (when applicable), P1/P2 field and player addresses, DR6, all general-purpose registers, EFLAGS, and 24 code bytes around EIP (16 bytes before EIP, 8 bytes from EIP).
 - It reads the post-write DWORD and tracks the last observed value in a per-player shadow to estimate old/new transitions. `shadowInitialized=1` means only that the initial value was read successfully. It does **not** guarantee that every earlier write was observed: a write from an uninstrumented thread or a full record buffer can make the old shadow stale. The new DWORD and the EIP-after/code bytes are the primary evidence.
 - Records are buffered in a 4096-entry fixed array and flushed by the worker thread. The log reports dropped records.
 - A thread is eligible only when DR0 and DR1 address registers are both zero and all DR0/DR1 enable and RW/LEN bits are clear (`DR7 & 0x00FF000F == 0`). Existing active or dormant DR0/DR1 owners are not overwritten. Threads with occupied slots are tracked but skipped and are not retried; their writes will not be captured. Stage16 logs skipped thread counts.
@@ -78,7 +79,7 @@ Keep `ArcanaAI_ParentFlowTrace.log` and `ArcanaAI_ProducerContextTrace.log` when
 - Confirm one or more `Hardware watchpoint install batch` records in the Stage16 log.
 - Investigate every warning about skipped game threads or dropped records before interpreting the absence of writes.
 - Confirm that records include both P1 and P2 sides where relevant.
-- Disassemble each `eipAfter` from the saved code window. The writer instruction starts before EIP; do not treat EIP-after itself as the write instruction address.
+- Disassemble each `eipAfter` from the saved code window. The writer instruction starts before EIP; do not treat EIP-after itself as the write instruction address. For `inAALib=0`, use the absolute EIP and byte window to identify the external in-process module/helper.
 - Build a QPC/timestamp timeline and compare the write records with Stage15's F6A68 bit17 branch, F6A9D branch, F6AD7 call, QueueTrace, and EventDispatchTrace.
 - For each write, compare the full DWORD and bit17 state. Distinguish a write that leaves bit17 unchanged from a true 0->1 or 1->0 transition.
 - Confirm whether the statically known `0xED19F` path actually writes either watched player address, and whether other code sites set bit17.

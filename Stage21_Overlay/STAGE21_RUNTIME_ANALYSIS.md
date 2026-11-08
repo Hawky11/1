@@ -82,18 +82,51 @@ This is a natural runtime sample, not a forced memory edit.
 - `ECX=this=ESI=0x0E9C1F78`.
 - `other3B70=0x00010440`, matching the object guard record.
 
-The QPC values are:
+The correlated QPC values are:
 - Object guard: `0x00000764133B9CC6`.
 - Setter call: `0x00000764133B9D15`.
-- Delta: **79 QPC ticks**.
+- Actual bit17 set write: `0x00000764133B9E7E`.
+- Later bit17 clear write: `0x000007641364D88E`.
+- Object guard → setter: **79 QPC ticks**.
+- Setter → bit17 set: **361 QPC ticks**.
+- Object guard → bit17 set: **440 QPC ticks**.
+- Bit17 set → later clear: **2,701,840 QPC ticks**.
 
-Thus, for this observed P1 call, the actual object-helper result `AL=0` is followed 79 QPC ticks later by the direct setter call passing index `0x71` for the same player. This is strong event-level runtime evidence that the original `JNE` after the object helper falls through to `0xC6502` when bit 2 is clear. It confirms the direct setter call was reached; it does not, by itself, prove the setter changed the player's bit17 DWORD.
+### Confirmed Stage16 bit17 writer result
 
-### What remains unproven about bit17
+The ordinary `fetch_file` path returned no text for this 7.56 MB log; that was a retrieval limitation, not an empty file. Fetching the Git blob directly yielded the full writer trace:
+- File size: **7,565,612 bytes**.
+- Total lines: **14,089**.
+- `PLAYER_BIT17_WRITE` records: **14,081**.
+- Actual bit17 transitions in this capture: **exactly two** — one P1 set and one P1 clear.
 
-`ArcanaAI_PlayerBit17WriteTrace.log` exists in the upload but is **zero bytes**. The general `ArcanaAI_Trace.log` shows five watchpoint-install batches (39, 16, 1, 1 and 2 newly discovered threads), but no bit17 write record is available.
+The bit17 set record is:
+```
+PLAYER_BIT17_WRITE seq=11981 side=P1 tid=23660 time=21:45:03.002
+qpc=0x00000764133B9E7E eipAfter=0x00D2FAD2 rvaAfter=0x0000FAD2
+player=0x0E9C1F78 field=0x0E9C5AFC
+old=0x01000000 new=0x01020000
+oldBit17=0 newBit17=1 shadowInitialized=1 shadowBit17Changed=1
+```
 
-The Stage17 setter record captures pre-call state, including `[player+0x3B84]=0x01000000`; the Stage20 object-guard record also reads that value. Bit17 (mask `0x00020000`) is clear in that pre-call DWORD. No post-call value or Stage16 write transition was captured, so the observed setter call must not be described as a confirmed bit17 0->1 transition.
+The watched field address `0x0E9C5AFC` is exactly `player+0x3B84`. The write at RVA `0x0000FAD2` sets mask `0x00020000`; the old/new DWORDs prove the bit transition `0→1`. This record is on the same player and thread as the Stage20 object guard and Stage17 setter. The setter-to-write QPC gap is 361 ticks.
+
+The later bit17 clear record is:
+```
+PLAYER_BIT17_WRITE seq=12178 side=P1 tid=23660 time=21:45:03.273
+qpc=0x000007641364D88E eipAfter=0x00E0D1A9 rvaAfter=0x000ED1A9
+player=0x0E9C1F78 field=0x0E9C5AFC
+old=0x00020000 new=0x00000000
+oldBit17=1 newBit17=0 shadowInitialized=1 shadowBit17Changed=1
+```
+
+This is the expected clear path at RVA `0x000ED1A9`.
+
+The full P1 chain is now runtime-confirmed:
+
+`object bit2 clear → original guard AL=0 → setter(index 0x71) → player bit17 0→1`.
+
+The observed bit17 set followed the setter by only 361 QPC ticks. This is direct evidence for this tested P1 episode; it does not prove every bit17 set in every game state must originate at this callsite.
 
 ## 5. Stage18 / Stage19 coverage
 
@@ -123,7 +156,7 @@ No Stage21 install failure is recorded. The Stage21 log contains the startup mar
 
 ### Stage21 result
 
-**Stage21 r1 is build-verified and runtime-verified for hook installation and the type-1 / payload-0x1E fallback path.** It proves actual classifier `AL=0` for P1 and P2 and confirms both fallback calls execute. The same runtime also closes the Stage20 object-bit-2 negative-control gap: natural bit2-clear / real `AL=0` is followed by a same-player direct bit-113 setter call within 79 QPC ticks.
+**Stage21 r1 is build-verified and runtime-verified for hook installation and the type-1 / payload-0x1E fallback path.** It proves actual classifier `AL=0` for P1 and P2 and confirms both fallback calls execute. The Stage16 blob also closes the direct-setter question for the observed P1 episode: natural bit2-clear / real `AL=0` is followed by the same-player setter call after 79 QPC ticks, then an actual bit17 0→1 write 361 QPC ticks after the setter.
 
 Not yet proven:
 1. A nonzero slot-3 value being cleared by the fallback.

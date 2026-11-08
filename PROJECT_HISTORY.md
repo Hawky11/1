@@ -1037,3 +1037,18 @@ It uses the shared mutex, suspends other process threads, revalidates the bytes 
 **Source-only; not yet compiled or runtime-tested.** No DLL size, hook installation or resolver result is claimed. The expected marker is `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r1`; the new file is `ArcanaAI_Stage23ResolverResultTrace.log`.
 
 Next: apply the complete Stage23 overlay over the assembled Stage22 project, build Release | Win32, review the full Build.log, then run normally and correlate Stage23 resolver records with Stage21 classifier/fallback and Stage22 post-AND logs. Do not interpret `resolverByte03` as an attack ID without runtime evidence.
+
+
+## Stage23 r2 compiler correction — resolver pointer casts (2026-11-09 00:33)
+
+The first user-side Stage23 build attempt stopped in `src/AIQueueTrace.cpp`. Visual Studio 2026 Developer Command Prompt 18.9.1 initialized MSVC 14.51.36231 for x86 successfully. Project checks and the compiler/linker path checks passed; `Proxy.cpp`, `ComVsCom.cpp`, `AITrace.cpp`, and `AICommandTrace.cpp` compiled before the build stopped.
+
+MSVC reported two C2440 errors:
+- line 1515: `static_cast` could not convert `BYTE*` to `intptr_t`;
+- line 1567: the same invalid pointer-to-integer conversion.
+
+No final link occurred, and no Stage23 DLL was produced by this attempt. The cause was the same expression in two resolver-target comparisons: `static_cast<std::intptr_t>(resolver)`. The code already treats the neighboring callsite address as an integer through `reinterpret_cast<std::intptr_t>`, so the two helper-pointer conversions have now been changed to `reinterpret_cast<std::intptr_t>(resolver)`. This changes only the pointer-to-address representation conversion; it does not change the target RVA, signature checks, resolver arguments, wrapper execution, or hook placement.
+
+Corrected source branch: [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace), current HEAD `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`. The Stage23 build marker is now `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2`. The updated source is `Stage23_Overlay/src/AIQueueTrace.cpp`; the Stage23 README and static analysis record the same correction.
+
+**Status:** corrected source committed, rebuild pending. Do not claim successful compilation, DLL size, hook installation, or runtime records until a fresh Release | Win32 Build.log and same-run installation log are reviewed. The next user action is to reapply the Stage23 r2 source and INI over the assembled Stage22 project, rebuild, and upload the complete Build.log.

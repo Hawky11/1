@@ -21,7 +21,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 16 | [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace) | `58313d8c0f6071bc8099fc5ec04ae04d2974dafd` | Runtime-confirmed bit17 setter/clearer; Stage17 caller verification remains |
 | 17 | [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace) | `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e` | Source-only setter-entry observer for bit index 0x71; awaiting build/runtime test |
 | 17b | [stage17-callsite-init-diagnostics](https://github.com/Hawky11/1/tree/stage17-callsite-init-diagnostics) | `c33317c9b2fa28c339c38f3aaebdcb9a378b73a1` | Diagnostic hardening for the Stage17 direct-callsite observer; build/runtime pending |
-| 18 | [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace) | `de8555f1eb34f647711595493ecee2cec22fb120` | Passive observer of the 0x4F2FD0 state-table gate result; source-only, build/runtime pending |
+| 18 | [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace) | `520eec4cd216795e8ffbaa8738b3602b5e40d39a` | Passive observer of the 0x4F2FD0 state-table gate result; source-only, build/runtime pending |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -449,7 +449,7 @@ Next investigation should focus on the conditions and branch paths inside caller
 
 ## Stage 18 source overlay — bit-113 state-table gate result observer (2026-11-08)
 
-Source branch: [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace), latest HEAD \`de8555f1eb34f647711595493ecee2cec22fb120\`. Stage17 runtime evidence branch \`stage17-callsite-init-diagnostics\` remains unchanged and remains the latest completed runtime checkpoint.
+Source branch: [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace), latest HEAD \`520eec4cd216795e8ffbaa8738b3602b5e40d39a\`. Stage17 runtime evidence branch \`stage17-callsite-init-diagnostics\` remains unchanged and remains the latest completed runtime checkpoint.
 
 ### Static reconstruction
 

@@ -1,83 +1,106 @@
 # Next session handoff
 
-**Read this file first when opening the repository in a new chat.** The user intends to provide only the repository link, so this file must contain the current working state and the next concrete task.
+**Read this file first in a new chat.** The user may provide only the repository link. Continue from the exact active diagnostic branch and its README; do not ask for files already present in the repository or Library.
 
 ## Repository and current checkpoint
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- Latest completed evidence branch: `stage15-postguard-flow-diagnostics`
-- Stage15 HEAD at the last review: `4d1e2a049c835a991647cb04565d31d330aeac95`
-- Stage15 overlay README: [Stage15_Overlay/README_STAGE15.md](https://github.com/Hawky11/1/blob/stage15-postguard-flow-diagnostics/Stage15_Overlay/README_STAGE15.md)
-- Full chronology: [PROJECT_HISTORY.md](PROJECT_HISTORY.md)
+- Latest runtime-tested stage: **Stage15**
+- Current diagnostic implementation branch: `stage16-player-bit17-writer-trace`
+- Stage16 HEAD at last check: `2ca74c4b3e9a815c0a3d2eb14cb98bb071a85cef`
+- Stage15 evidence branch / unchanged HEAD: `stage15-postguard-flow-diagnostics` / `4d1e2a049c835a991647cb04565d31d330aeac95`
+- Stage16 instructions: [Stage16_Overlay/README_STAGE16.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/README_STAGE16.md)
+- Stage16 static review: [STATIC_XREF_REVIEW.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/STATIC_XREF_REVIEW.md)
+- Full history: [PROJECT_HISTORY.md](PROJECT_HISTORY.md)
 
-Always re-check the remote branch HEAD before beginning. If it has moved, inspect the new commit and update this handoff rather than relying blindly on the SHA above.
+Always re-check the remote branch HEAD and changed files first. Stage16 HEAD may have moved if the user uploads build/runtime logs or further source fixes.
 
-## What the investigation established
+## Stage15 evidence to retain
 
-The event of interest is type `1`, payload `0x1E`, produced in the parent routine at `AALib.exe+0xF69F0`.
+The event under investigation is type `1`, payload `0x1E`, produced in the parent routine at `AALib.exe+0xF69F0`.
 
-Stage15 instrumented five branch sites. In the latest reviewed run:
-
+In the latest reviewed Stage15 run:
 1. Four invocations returned `0x11E` from F2F50.
 2. F2ED0 returned `AL=0` in all four.
 3. `EDI=0x1E` passed in all four.
 4. Three events had bit17=1 in `[player+0x3B84]` and did not reach F6AD7.
 5. One event (P2 at 12:16:45.020) had bit17=0, passed through F6A9D and reached F6AD7.
-6. The P2 event was accepted by QueueTrace and subsequently observed by EventDispatchTrace with the same `(type=1,payload=0x1E)` pair.
+6. The P2 event was accepted by QueueTrace and observed by EventDispatchTrace with `(type=1,payload=0x1E)`.
 
-This makes bit17 the current primary lead. It does **not** yet tell us which routine writes the field, nor prove that the four-event pattern is universal.
+Stage15 installed its five probes (5/5); 13 Stage15 records had `fieldsMask=0x0FFF` and `localRead=(1,1)`. The Stage15 upload did not include Build.log. The four-event pattern is a lead, not a universal rule.
 
-Stage15 installation was reported as 5/5 probes; 13 Stage15 records had `fieldsMask=0x0FFF` and `localRead=(1,1)`. The uploaded Stage15 set did not include `Build.log`, so do not claim the compiler output was reviewed.
+## Stage16: source-only writer tracing prepared
 
-## Next task: Stage16 — trace writers of player bit17
+Stage16 was created from the exact Stage15 HEAD above. Historical Stages12–15 remain unchanged.
 
-Create a new branch, preferably named:
+### Static binary finding
 
-`stage16-player-bit17-writer-trace`
+The user's Library file `AALib.zip` was used; SHA-256 for `AALib.exe` is `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. It is PE32 i386, ImageBase `0x00400000`, SizeOfImage `0x0E0EB000`.
 
-Base it on the exact latest Stage15 branch HEAD (re-check first). Do not modify the Stage12, Stage13, Stage14, or Stage15 branches.
+The static xref scan found 107 direct references with displacement `+0x3B84`, including 60 write-like RMW operations. The most relevant direct clear is VA `0x004ED19F` / RVA `0x000ED19F`:
 
-### Research steps
+```asm
+and dword ptr [esi+3B84h], 0xFFF9FFFF
+```
 
-1. Inspect the Stage15 overlay and the actual source archive used to build the DLL. Preserve the staged overlay application order documented in `Stage15_Overlay/README_STAGE15.md`: clean Stage11 source base, then Stage12, Stage13, Stage14, Stage15. Add the new Stage16 overlay last.
-2. Disassemble the relevant code and find all credible writes to `[player+0x3B84]` (including partial-width writes, bit operations, and writes through computed pointers). Do not assume the field is written only as a full DWORD.
-3. Determine which write sites can be safely instrumented. Validate original instruction bytes, effective destination, and the semantics of each instruction before patching.
-4. Implement passive Stage16 probes around validated writer sites. Capture old/new value and bit17 transition, player pointer, writer RVA, caller/return RVA, thread/QPC/time, and useful registers/call context. If a reliable broad write observer is not feasible, use validated per-site hooks rather than a speculative global patch.
-5. Preserve the original write exactly once and do not force the flag, alter AI decisions, event type/payload, or queue contents.
-6. Keep Stage12–Stage15 tracing enabled for correlation, especially Stage15 branch records, alternate callsite, QueueTrace, and EventDispatchTrace.
-7. Add `Stage16_Overlay/README_STAGE16.md` with exact hook sites, byte checks, install behavior, overlay/build steps, required uploads, and limitations.
-8. Build using the project's MSVC x86 toolchain. Retain the complete `Build.log`. Back up the known-working DLL and INI; do not install a failed build.
-9. Run a short COM-vs-COM test, close the game normally, and upload the fresh logs to the Stage16 branch.
+This clears bits 17 and 18. The same routine immediately before it calls `AALib.exe+0x4F2ED0` with type=1 and payload=`0x1E`; the clear occurs only when the helper returns `AL=0`. This is only a candidate until Stage16 confirms the effective address is the P1/P2 player field and the instruction runs during the scenario.
 
-### Required files after the Stage16 run
+No immediate `OR [reg+0x3B84],0x00020000` was found. Contextual checks resolved `0x004F7BD4` as OR with EAX=1 (bit 0) and `0x005BF48C/0x005BF495` as OR with EAX=`0x00800000` (bit 23). See the static xref review for the full writer list.
 
+### Stage16 implementation
+
+The overlay modifies the existing Stage11 `src/AITrace.cpp` module. It uses write-only 4-byte DR0/DR1 data breakpoints on each exact runtime P1/P2 `[player+0x3B84]` DWORD:
+- DR7 configuration `0x00DD0005` (local DR0/DR1 enable, RW=01 write-only, LEN=11 four bytes).
+- Player object bases derive from the confirmed P1/P2 COM control addresses minus `0x3F2C`; the watched DWORD is then at +`0x3B84`.
+- Only threads with all DR0/DR1 enable and RW/LEN fields clear (`DR7 & 0x00FF000F == 0`) are eligible. Existing DR2/DR3 are preserved. COMvsCOM writer thread is excluded. Threads skipped for occupied slots are logged and not retried.
+- The legacy Stage2 `EnableControlFieldTrace` mode shares DR0/DR1 and must stay disabled. Supplied INI does so and enables `EnablePlayerBit17WriteTrace=1`.
+- The dedicated log is `ArcanaAI_PlayerBit17WriteTrace.log`; it captures EIP-after/RVA-after, 24 code bytes, thread/context, QPC/time, new DWORD and a shadow old DWORD/bit17.
+- The old-value shadow is best-effort. `shadowInitialized=1` only means the startup baseline read succeeded; it does not prove every write was seen. A skipped thread or dropped record may leave it stale. Check all warning and drop records.
+
+### Critical current status
+
+**Stage16 has not been compiled, installed, or runtime-tested in this environment.** There is no Stage16 Build.log or fresh Stage16 runtime log yet. Do not claim the watchpoints installed or that the candidate writer fired.
+
+## Next concrete task: obtain and analyze the Stage16 run
+
+The Stage16 overlay instructions are authoritative: [README_STAGE16.md](https://github.com/Hawky11/1/blob/stage16-player-bit17-writer-trace/Stage16_Overlay/README_STAGE16.md).
+
+User-side steps:
+1. Start with a clean extraction of `ArcanaAIOverhaul_Stage11_Source.zip`.
+2. Apply Stages12, 13, 14, and 15 in the exact order described in the existing READMEs.
+3. Apply Stage16 last: replace `src/AITrace.cpp` and `ArcanaAI.ini`.
+4. Build with the Stage12 Build.bat and MSVC x86. Retain the full `Build.log`; do not replace the known-working DLL if the build fails.
+5. Start with clean runtime logs, run a short COM-vs-COM match, and close normally so buffers flush.
+6. Upload fresh files to the Stage16 branch.
+
+Required Stage16 upload:
 - `Build.log`
-- `ArcanaAI_ProducerCallTrace.log` (Stage14/15 and any Stage16 records configured there)
+- `ArcanaAI_PlayerBit17WriteTrace.log`
+- `ArcanaAI_ProducerCallTrace.log`
 - `ArcanaAI_AlternateCallTrace.log`
 - `ArcanaAI_QueueTrace.log`
 - `ArcanaAI_EventDispatchTrace.log`
 - `ArcanaAI_FinalCommandTrace.log`
 
-Keep ParentFlow and ProducerContext logs when available; they may be useful to connect flag writes to parent/helper activity.
+Keep `ArcanaAI_ParentFlowTrace.log` and `ArcanaAI_ProducerContextTrace.log` when available.
 
-## How to review the next upload
+### How to review the uploaded run
 
-- Check the Stage16 branch HEAD and list changed/new files first.
-- A source archive, overlay, README, or DLL by itself is not a new runtime run. Look for fresh runtime logs, and especially `Build.log`.
-- Compare the new run against Stage15 and earlier traces. Do not just summarize the new log in isolation.
-- Confirm exact hook-install counts and any rejected byte fingerprints.
-- Correlate writer events to Stage15 using QPC/timestamps, player pointer, thread ID, and P1/P2 context.
-- Build a timeline for every observed bit17 transition and determine whether it precedes the relevant F6A68 branch.
-- Distinguish facts from hypotheses. In particular, do not say the bit17 writer is identified until the Stage16 evidence identifies an actual write site and shows its old/new value.
-- Report missing logs explicitly; never imply that a missing Build.log or runtime trace was checked.
-- After completing the analysis, append a dated Stage16 entry to `PROJECT_HISTORY.md`, update this file with the new checkpoint and next task, and add the new links/commit SHA to the root README if appropriate.
+1. Re-check Stage16 branch HEAD and list the changed files. A source/README/INI-only upload is not a runtime test; require Build.log and fresh runtime logs.
+2. Read Build.log for successful x86 build and warnings/errors.
+3. In `ArcanaAI_PlayerBit17WriteTrace.log`, confirm Stage16 startup addresses, initial values, `DR7=0x00DD0005`, and one or more `Hardware watchpoint install batch` records.
+4. Inspect every skipped-thread warning and dropped-record warning. If any relevant writer thread was skipped, do not claim complete write coverage.
+5. Analyze `PLAYER_BIT17_WRITE` entries. The logged EIP/RVA is **after** the write; disassemble the 24-byte code window to identify the writer instruction. Correlate side, address, thread ID, QPC, timestamp, registers, full DWORD and bit17 transitions.
+6. Check whether VA `0x004ED19F` / RVA `0x000ED19F` actually fires for P1/P2. Do not assume ESI is a player base until the watched effective address and player object match the logged target.
+7. Correlate bit17 writes with Stage15 F6A68/F6A9D/F6AD7, AlternateCallTrace, QueueTrace and EventDispatchTrace. Establish whether a transition precedes or follows the parent branch and event insertion.
+8. Separate observed facts from hypotheses. The one clear path at 0xED19F does not prove it is the only writer.
+9. After analysis, append a dated Stage16 runtime entry to `PROJECT_HISTORY.md`, update this handoff, and refresh `README.md` with the current Stage16 HEAD. Create a Stage17 branch only if evidence justifies a new diagnostic question.
 
-## Working rules for future chats
+## Rules for future sessions
 
-- The user expects direct repository inspection and log analysis, not a request to re-upload files that are already present in the linked branch.
-- Do not change Stage12–Stage15 historical branches.
-- Never treat an uploaded source archive or README as runtime evidence.
-- Do not invent symbol names, addresses, hook counts, build success, or log contents.
-- Keep all conclusions traceable to a branch, commit, file, and preferably specific record/time/QPC.
-- The user's next chat may contain only this repository URL: https://github.com/Hawky11/1 . Start by reading this handoff and the project history.
+- Inspect repository files and existing Library uploads before requesting anything from the user.
+- Never modify Stage12–Stage15 historical branches.
+- Never infer a runtime test from source code or README uploads.
+- Never invent build results, hook installation, or log contents.
+- Keep the user's next action clear and avoid asking for information already present in the repo or conversation.

@@ -732,3 +732,36 @@ The Build.log was pasted in chat and is not present as a file in the repository.
 After installation is confirmed, run a short natural COM-vs-COM test and upload ArcanaAI_Bit113ObjectGuardTrace.log plus the Stage18/17/16/19 and relevant Stage15/queue/dispatch logs. The target correlation remains: do the 31 P2 state-index-0x19 gate-only calls show object-helper AL=1 and bit 2 set, while the four known setter episodes show AL=0 and bit 2 clear? This remains a hypothesis, not a runtime conclusion.
 
 Preserve all Stage12–Stage19 source and evidence branches unchanged.
+## Stage20 runtime result — object guard confirmed; alternate payload path observed (2026-11-08 19:58:47)
+
+Runtime evidence branch: [stage20-bit113-object-bit2-runtime-evidence](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-runtime-evidence). It starts from uploaded runtime snapshot commit `3bd72139fa658bb60e0a3a3a30b63af7cd7519b8` and preserves all logs plus the exact Stage20 overlay. The Stage20 source branch remains [stage20-bit113-object-bit2-guard-trace](https://github.com/Hawky11/1/tree/stage20-bit113-object-bit2-guard-trace), HEAD `11dde281a08a3481517d0cb60d4752393fa0e578`.
+
+### Stage20 wrapper installation
+
+Runtime log confirms marker `STAGE20_BIT113_OBJECT_BIT2_GUARD_BUILD=2026-11-08-r1`, config `EnableStage20Bit113ObjectGuardTrace=1`, and successful wrapper installation at CALL RVA `0x000C64F1` to original helper RVA `0x00095B00`, resume RVA `0x000C64F6`, with 40 suspended threads. The original TEST/JNE were left untouched.
+
+### Direct object-guard result
+
+Stage20 recorded 33 object-helper calls, all P2. All 33 returned actual helper `AL=1` / `EAX=1`; the checked DWORD `[object+0x3B70]` was `0x0000004C` and bit `0x4` was set in every record. All 33 had `readMask=0x3F`. All matched the 33 Stage18 gate records one-to-one by side, player pointer and QPC, with Stage20 following Stage18 by 129–173 QPC ticks. All Stage18 records returned AL=1 and used table key `0x19`; the separate `stateIndex` values were 0x0A (4), 0x04 (2), 0x14 (25), and 0x10 (2).
+
+Per the statically verified caller, this nonzero helper result makes the original JNE skip the direct setter call at `0x000C6502`. The Stage17 passive observer at that site installed but logged zero setter calls in this run. Stage16 produced 28,043 writer snapshots; every one had `oldBit17=0` and `newBit17=0`, with zero bit17 transitions. This is consistent with the object-guard result. No AL=0 / bit-2-clear control sample was obtained, so the opposite case remains unverified.
+
+Stage19 mapping recorded 2,974 helper calls, including 240 P2 mappings rawCode `0x5C` -> expected index `0x19` (mapResult 1), 570 rawCode `0x60` -> `0x1B` (result 3), 158 rawCode `0x63` -> `0x1C` (result 7), and P2 calls mapping to `0x18`. These are not a direct one-to-one match for the 33 Stage18 table-gate records; keep the mapper's `expectedStateIndex`, Stage18's `stateIndex`, and its table `key` distinct.
+
+### Alternate payload path
+
+Three alternate callsite events at RVA `0x000F6AD7` carried payload `0x1E` (P2 once, P1 twice). The matching queue details show type 1/payload `0x1E` accepted and stored `(0001,001E)`; the matching EventDispatch details show the same type/payload with `beforeMatches=1` and `afterMatches=1`. All three episodes have Stage15 bit17=0 and a taken F6A68 branch; F6AD7 follows the corresponding F6A9D probe by 311–426 QPC ticks and F6A68 by 620–851 ticks, in the same thread/parent frame. This demonstrates that the observed alternate queue/dispatch path runs while bit17=0; it is distinct from the direct setter branch at `0xC6502`.
+
+FinalCommandTrace captured 60 records and no payload `0x1E` at its monitored callsite RVA `0x000F7C5D`. Treat this as a scope-limited no-hit, not proof the dispatched event was unhandled.
+
+No explicit warning/error/drop/failure records were found in the reviewed runtime logs. The user's successful Build.log was pasted in chat before the test and is not present as a file in the runtime upload.
+
+### Next research questions
+
+1. Obtain a natural object-bit-2-clear Stage20 call and correlate actual AL=0 with Stage18 and the direct Stage17 setter/Stage16 bit17 transition.
+2. Statically locate the consumer after dispatch of type 1 / payload `0x1E` at caller RVA `0x000EE5CB`; do not assume the `0x000F7C5D` FinalCommand hook observes this path.
+3. Resolve why F6A68/F6A9D report taken branches with bit17 zero while F6AD7 is still reached. Avoid assigning branch semantics from probe labels alone.
+
+See `Stage20_Overlay/STAGE20_RUNTIME_ANALYSIS.md` on the evidence branch for detailed counts and correlations. Preserve all Stage12–Stage19 historical branches unchanged.
+
+Documentation sync on `main`: latest runtime evidence branch HEAD `08125627bfbb588aff8e735168c51a1083cb06e6`; current Stage20 source remains `11dde281a08a3481517d0cb60d4752393fa0e578`.

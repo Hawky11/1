@@ -807,11 +807,12 @@ namespace
     {
         __asm
         {
-            // Private locals: [esp]=controller pointer, [esp+4]=DWORD before AND.
-            sub esp, 8
+            // Private locals: [esp]=controller, [esp+4]=original EAX, [esp+8]=DWORD before AND.
+            sub esp, 12
             mov dword ptr [esp], esi
-            mov eax, dword ptr [esi + 8]
             mov dword ptr [esp + 4], eax
+            mov eax, dword ptr [esi + 8]
+            mov dword ptr [esp + 8], eax
 
             // Execute the original 7-byte instruction exactly once.
             and dword ptr [esi + 8], 0FFFFFBFFh
@@ -826,8 +827,9 @@ namespace
             popad
             popfd
 
-            // LEA is flag-neutral; do not overwrite the original AND's EFLAGS.
-            lea esp, [esp + 8]
+            // Restore EAX unchanged by the original AND; LEA keeps its EFLAGS intact.
+            mov eax, dword ptr [esp + 4]
+            lea esp, [esp + 12]
             ret
         }
     }
@@ -1905,10 +1907,11 @@ extern "C" void __cdecl ArcanaLogStage22PayloadPostAnd(const DWORD* savedContext
     DWORD dispatchType = 0, dispatchPayload = 0;
 
     // Private locals created by the naked wrapper:
-    // savedEsp+4 = controller pointer; savedEsp+8 = flags before the AND.
+    // savedEsp+4 = controller pointer; +8 = original EAX; +12 = flags before AND.
+    // The CALL return address is at savedEsp+16 (EE456, followed by two NOPs).
     SafeReadDword(savedEsp + 4u, &controller);
-    SafeReadDword(savedEsp + 8u, &flagsBefore);
-    SafeReadDword(savedEsp + 12u, &returnAddress);
+    SafeReadDword(savedEsp + 12u, &flagsBefore);
+    SafeReadDword(savedEsp + 16u, &returnAddress);
     SafeReadDword(dispatcherEbp + 8u, &dispatchType);
     SafeReadDword(dispatcherEbp + 0x0Cu, &dispatchPayload);
     if (dispatchType != 1u || dispatchPayload != kStage21Payload1E)

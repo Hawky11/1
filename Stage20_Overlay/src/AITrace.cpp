@@ -2367,7 +2367,7 @@ namespace
             reinterpret_cast<std::intptr_t>(callSite + 5) + helperRelative;
         if (helperDestination != static_cast<std::intptr_t>(g_gameBase + kStage20ObjectGuardHelperRva))
         {
-            AppendStage20ObjectGuardLog("ERROR: RVA 0x000C64F1 no longer calls helper RVA 0x000095B00; refusing to patch.");
+            AppendStage20ObjectGuardLog("ERROR: RVA 0x000C64F1 no longer calls helper RVA 0x00095B00; refusing to patch.");
             return false;
         }
 

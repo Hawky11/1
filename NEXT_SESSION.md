@@ -33,9 +33,9 @@ Run: approximately 15:40:27–15:41:09 on 2026-11-08.
 
 This is a second independent six-event confirmation of the bit17/F6A68 correlation.
 
-## Immediate next task: build and verify Stage17 initialization diagnostics
+## Immediate next task: install and verify the successfully built Stage17 r2 DLL
 
-The 2026-11-08 15:40:27–15:41:09 runtime run did not create `ArcanaAI_Bit113SetterTrace.log`. Do **not** immediately request another match. The original callsite source had early-return paths that exited before writing any Stage17-specific line, so the missing file did not identify the failure stage.
+The 2026-11-08 15:40:27–15:41:09 runtime run did not create `ArcanaAI_Bit113SetterTrace.log`. The corrected Stage17 r2 source has now been successfully built, so the next step is runtime installation and startup verification—not another build. Do **not** immediately run a full match.
 
 A diagnostic-source revision is now available in branch `stage17-callsite-init-diagnostics`, current HEAD `34fbf14975b3e5d1b9dd6bdec0c3d6c8756bc25f`. It is based on the prior runtime-evidence branch; that original branch is unchanged. The first build with the r1 marker present exposed 14 MSVC C3861 errors because `ReadDwordAtAddress` was used before declaration in the Stage17 recorder. This has been fixed in the current branch: a forward declaration now appears immediately before `QueueStage17Bit113SetterRecord`, and the implementation remains later in the same anonymous namespace.
 
@@ -49,20 +49,18 @@ The revised `AITrace.cpp`:
 
 ### Required procedure
 
-1. Start from the Stage11 source archive and apply the overlays in order through Stage16, then apply `Stage17_Overlay/src/AITrace.cpp` and `Stage17_Overlay/ArcanaAI.ini` from `stage17-callsite-init-diagnostics`.
-2. Before compiling, run this PowerShell check from the project root; it must find the marker:
-   ```powershell
-   Select-String -Path .\\src\\AITrace.cpp -SimpleMatch 'STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2'
-   ```
-3. Build Win32/x86 and retain the full Build.log. A successful build must still show `AITrace.cpp` being compiled, but the source-marker check proves the correct overlay was present before the build.
-4. Install the newly built `dinput8.dll` **and** this branch's `ArcanaAI.ini` beside the actual game executable / `AALib.exe`. Keep the previous working DLL backed up.
-5. Launch the game and check for `ArcanaAI_Bit113SetterTrace.log` before doing another full test. Its first lines must include the build marker, `STAGE17_INIT`, and `STAGE17_CONFIG`. The config line should report `EnableStage17Bit113SetterCallTrace=1`.
-6. If that file appears, inspect its install/validation message. Only when it reports the hook installed should a short COM-vs-COM session be used to collect `BIT113_SET_CALL` entries. Then upload the Stage17 log, Build.log and fresh Stage16/Stage15 correlation logs.
+1. Back up the previously installed proxy DLL, then copy the new `build\\dinput8.dll` (198,144 bytes) and the matching `ArcanaAI.ini` from the diagnostic Stage17 overlay beside the actual game executable / `AALib.exe`.
+2. Launch the game. Before a full COM-vs-COM match, check whether `ArcanaAI_Bit113SetterTrace.log` is created.
+3. Its first lines must include:
+   - `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2`
+   - `STAGE17_INIT: FieldTraceThread entered.`
+   - `STAGE17_CONFIG:` with `EnableControlFieldTrace=0`, `EnablePlayerBit17WriteTrace=1`, and `EnableStage17Bit113SetterCallTrace=1`.
+4. Inspect the next Stage17 line. It should report the validated passive observer installed at callsite RVA `0x000C6502`, return RVA `0x000C6507`, helper RVA `0x0000FAA0`, and suspended-thread count. If there is a validation/patch error, stop and inspect it before running a match.
+5. Only after successful hook installation, run a short COM-vs-COM session and upload `ArcanaAI_Bit113SetterTrace.log` with fresh Stage16/Stage15 correlation logs. The relevant records must show `callRVA=0x000C6502`, `returnRVA=0x000C6507`, `index=0x00000071`, and the matching P1/P2 player pointer.
+6. If the other ArcanaAI logs are written but no Stage17 marker file appears, stop and verify the actual loaded DLL/INI paths. Do not repeat a full test blindly.
 
-If the other ArcanaAI logs are written but the new marker file is still absent, stop: verify the path of the DLL actually loaded by the game and compare it with the newly built binary. Do not run another match merely to recreate logs.
+The successful r2 build proves the corrected source compiles and links; it does **not** prove the DLL has been installed/loaded or the hook has been installed. Do not claim runtime caller attribution until the Stage17 records correlate with Stage16 writer events.
 
-The original callsite candidate remains unconfirmed until runtime records show `callRVA=0x000C6502`, `returnRVA=0x000C6507`, `index=0x00000071`, and the correct P1/P2 player pointer correlated with the Stage16 writer events. The r1 build failed before link with C3861. The corrected r2 source has a distinct r2 marker and has not yet been rebuilt or runtime-tested.
- 
 ## Historical branch rules
 
 - Do not rewrite Stage12–Stage16 evidence branches.

@@ -327,3 +327,24 @@ A new source-only diagnostic branch was created from that evidence snapshot; the
 The revised source writes `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1`, a worker-entry marker, and the three relevant INI values before validation. It also records Stage17-specific errors on the former early-return paths and fixes CRLF formatting. The README adds a PowerShell source-marker check before build and requires installing the new DLL and matching INI beside the actual game executable.
 
 **No new MSVC build or runtime test has been performed for this revision.** This change is an observability fix, not evidence that the callsite hook installed. Next, apply the diagnostic overlay after Stage16, verify the marker in the assembled local `src\\AITrace.cpp`, rebuild x86, install the new DLL/INI, and launch the game only long enough to confirm the Stage17 marker/config/install result. If the marker appears and reports the hook installed, run a short COM-vs-COM session and compare `BIT113_SET_CALL` QPCs with Stage16 bit17 writes. If no marker file appears while other ArcanaAI logs are written, stop and verify which proxy DLL the game actually loaded; do not repeat a match blindly.
+
+
+## Stage17 diagnostic build error and source correction — 2026-11-08
+
+The user verified the r1 source marker in `D:\\INCUBATOR\\ArcanaAIOverhaul\\src\\AITrace.cpp`, proving the correct diagnostic source had been copied into the assembled project. The subsequent MSVC x86 build stopped in `AITrace.cpp` with 14 C3861 errors: `ReadDwordAtAddress` was called at lines 466–485 before any declaration was visible.
+
+The exact r1 source inspection confirmed:
+- first uses were inside `QueueStage17Bit113SetterRecord` (around line 466);
+- the actual definition was later in the same anonymous namespace (around line 603);
+- the implementation signature is `bool ReadDwordAtAddress(DWORD address, DWORD* value)`.
+
+A minimal source-only correction was committed to `stage17-callsite-init-diagnostics`:
+- forward declaration `bool ReadDwordAtAddress(DWORD address, DWORD* value);` inserted immediately before `QueueStage17Bit113SetterRecord`, inside the existing anonymous namespace;
+- existing implementation left unchanged;
+- no hook logic, callsite bytes, logger behavior, or runtime tracing semantics changed.
+
+Current branch HEAD: `34fbf14975b3e5d1b9dd6bdec0c3d6c8756bc25f` (source fix commit `1da019d543be29df58f158cf9aecc8ecfc7eb85e`; README clarification commit `34fbf14975b3e5d1b9dd6bdec0c3d6c8756bc25f`). Source inspection confirms declaration at line 422 and implementation at line 607, with all earlier calls now following the declaration.
+
+The user's reported build failed before link. Do not install any DLL from this attempt and do not treat it as a Stage17 build. The local build script deletes its project-local `build\\dinput8.dll` before compilation; the previously installed game-folder DLL is not thereby replaced.
+
+**Next:** copy the corrected `Stage17_Overlay/src/AITrace.cpp` from this branch into the assembled project, verify the existing marker again, rerun Build.bat, and provide the new Build.log. Do not run another game test until a successful link. The current corrected source has not yet been compiled in MSVC in this environment.

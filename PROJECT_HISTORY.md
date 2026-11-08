@@ -19,7 +19,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 14 | [stage14-producer-call-diagnostics](https://github.com/Hawky11/1/tree/stage14-producer-call-diagnostics) | `dcd036d1b3cead45f8400fd8545dff41d0d59131` | Parent/helper call context and return values |
 | 15 | [stage15-postguard-flow-diagnostics](https://github.com/Hawky11/1/tree/stage15-postguard-flow-diagnostics) | `4d1e2a049c835a991647cb04565d31d330aeac95` | Branch-by-branch flow between F2ED0 and F6AD7 |
 | 16 | [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace) | `58313d8c0f6071bc8099fc5ec04ae04d2974dafd` | Runtime-confirmed bit17 setter/clearer; Stage17 caller verification remains |
-| 17 | [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace) | `46a84d2286e94ba66fd46fb11454d1189b36b526` | Source-only setter-entry observer for bit index 0x71; awaiting build/runtime test |
+| 17 | [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace) | `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e` | Source-only setter-entry observer for bit index 0x71; awaiting build/runtime test |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -194,7 +194,7 @@ Next diagnostic question: which runtime caller supplies bit index `0x71` to `0x0
 
 ## Stage 17 — bit-113 setter caller trace (source prepared; runtime pending)
 
-Branch: [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace), created from the Stage16 runtime-evidence branch at HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`. Stage17 HEAD at this documentation update: `46a84d2286e94ba66fd46fb11454d1189b36b526`.
+Branch: [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace), created from the Stage16 runtime-evidence branch at HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`. Stage17 HEAD at this documentation update: `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
 
 ### Why Stage17 is needed
 
@@ -221,3 +221,22 @@ The candidate should produce call RVA `0x000C6502`, return RVA `0x000C6507`, dec
 Stage17 is **source-only**. It has not been compiled with MSVC, installed, or runtime-tested. The Stage16 runtime logs are still the latest evidence; no Stage17 `Build.log` or setter-caller trace exists yet.
 
 Use `Stage17_Overlay/README_STAGE17.md` for the exact overlay order and install procedure. Build with the existing x86 toolchain, retain `Build.log`, then run a short COM-vs-COM session and upload the fresh `ArcanaAI_Bit113SetterTrace.log` together with Stage16/Stage15 correlation logs. Only claim the static candidate is confirmed if a runtime record reports the expected return RVA and `callTargetVerified=1`.
+
+
+## Stage 17 build attempt — 2026-11-08 (compile blocked)
+
+The first reported MSVC x86 build used Visual Studio 2026 18.9.1 / MSVC 14.51.36231 and stopped while compiling `src/AITrace.cpp`. It emitted repeated C3861 errors stating that `ReadDwordAtAddress` was not declared, at 14 call sites (reported around source lines 465–484). Compilation did not reach a successful link; no Stage17 DLL should be installed from this attempt.
+
+### Source comparison
+
+The current Stage17 branch's `Stage16_Overlay/src/AITrace.cpp` is byte-for-byte the same Git blob as the Stage16 evidence branch's corresponding file (blob `2a40bfabc2cfe6b3a39ba67ccbf5257deac389a2`). That tracked file contains both the `ReadDwordAtAddress(DWORD, DWORD*)` implementation and its call sites, with the implementation in the same anonymous namespace before the uses. Therefore the pasted diagnostics do not match compilation of the tracked Stage16 overlay as currently published; a stale, partially merged, or otherwise different local `src/AITrace.cpp` is the leading explanation. This is a source comparison, not proof of the exact local mismatch because the local file was not included with the log.
+
+### Corrective source revision
+
+Stage17 was updated without modifying Stage16 or any earlier evidence branch:
+
+- Stage17 branch HEAD: `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
+- Added an explicit forward declaration for `ReadDwordAtAddress(DWORD, DWORD*)` near the start of the anonymous namespace in `Stage16_Overlay/src/AITrace.cpp`; the existing implementation remains in place.
+- Expanded `Stage17_Overlay/README_STAGE17.md` with the exact overlay-copy requirement and a PowerShell check that verifies the local `src/AITrace.cpp` contains both the declaration and implementation.
+
+This is a defensive source fix and build-path clarification, **not a verified build fix**. Stage17 remains uncompiled and untested until a fresh MSVC x86 Build.log shows a successful compile/link. If the same C3861 errors remain after copying the current Stage16 overlay, inspect the exact local `src/AITrace.cpp` rather than changing hook logic blindly.

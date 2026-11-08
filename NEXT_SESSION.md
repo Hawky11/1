@@ -8,6 +8,7 @@
 - Documentation branch: `main`
 - Latest runtime evidence branch: `stage17-callsite-init-diagnostics`
 - Latest runtime evidence HEAD: `dcfd1efbe221438b1f2b3fae800ca76b1fa87e7d`
+- Current source-only Stage18 branch: `stage18-bit113-gate-condition-trace`, HEAD `de8555f1eb34f647711595493ecee2cec22fb120`; it is pending MSVC build and runtime verification.
 - Earlier Stage17 pre-fix branch (preserve unchanged): `stage17-bit113-setter-callsite-trace`, HEAD `0c2411187c47e56a6cb675b597eeb8a754f8f8a6`.
 - Earlier Stage17 entry-hook source branch (preserve unchanged): `stage17-bit113-setter-caller-trace`, HEAD at last review `6b04b0a9ad272aecf8dcb481b5c52edfe5acfe1e`.
 - Stage16 baseline evidence branch: `stage16-player-bit17-writer-trace`, HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`.
@@ -33,20 +34,45 @@ Runtime run: 2026-11-08, initialization at 16:34:05, relevant events 16:34:29–
 
 **Conclusion:** the candidate direct caller at `AALib.exe+0xC6502` is runtime-confirmed as the origin of all four bit17 set transitions observed in this run. This does not prove it is the only possible setter path for every game state. Preserve the current evidence branch unchanged.
 
-## Next investigation — caller conditions (Stage18)
+## Stage18 source-only status — build and runtime validation are next
 
-The remaining question is why/under which state path caller function RVA `0x000C63B0` invokes the bit-113 setter.
+- Source branch: [stage18-bit113-gate-condition-trace](https://github.com/Hawky11/1/tree/stage18-bit113-gate-condition-trace), HEAD \`de8555f1eb34f647711595493ecee2cec22fb120\`.
+- The Stage17 runtime evidence branch remains unchanged and remains the latest completed runtime test.
+- Stage18 adds a passive observer at RVA \`0x000C64A5\`, immediately after helper \`0x000F2FD0\` returns to caller \`0x000C63B0\`.
+- New overlay files: \`Stage18_Overlay/src/AITrace.cpp\`, \`Stage18_Overlay/ArcanaAI.ini\`, \`README_STAGE18.md\`, and \`STATIC_GATE_ANALYSIS.md\`.
+- Stage18 output: \`ArcanaAI_Bit113GateTrace.log\`.
+- **No Stage18 MSVC build, DLL link, hook installation, or runtime test has been done.** Do not install or run until a successful local build is confirmed.
 
-Useful observations from Stage17 records:
-- `otherObject` equals the player pointer; `other3B70` is `0x650` or `0x640`, both with bit index 2 clear. This is consistent with the final `0x495B00` guard permitting the call.
-- At the callsite, the low word captured at player `+0x3A36` is `0x42`, `0x22`, `0x20`, or `0x5E`, not the `0x1A/0x18/0x19` values in the documented straight-line comparison sequence. Reconstruct earlier incoming branches and determine whether an alternate branch reaches the final block or an intervening helper changes the field. This is an open question, not a reason to reject the proven callsite.
-- The five repeated setter calls while bit17 was already set should be related to their parent-frame/branch context; do not assume they are additional state transitions.
+### Why this probe exists
 
-Recommended Stage18 workflow:
-1. Reinspect the complete function at `0x004C63B0` from the verified AALib.exe and map every branch target that can reach the final call at `0x004C6502`.
-2. Correlate Stage17 `EBP/EBX/ESI`, player fields, and `other3B70` with the earlier helper calls (`0x00401F30`, `0x004F6ED0`, `0x004F2FD0`, `0x00495B00`). First determine statically which branch sites are decisive; only add narrow runtime probes where static review cannot settle the path.
-3. Keep the instrumentation passive and validate each original byte sequence/target before patching. Preserve Stage17 r2 logs and source branch intact; create a new Stage18 branch for any new probes.
-4. Continue using Stage15/16/17 QPC/player-pointer correlation to verify any new hypothesis. Avoid another broad run until the Stage18 trace has a specific unanswered question.
+The Stage17 callsite records' player+0x3A36 low words were 0x42 / 0x22 / 0x20 / 0x5E, not the direct-check values 0x1A / 0x18 / 0x19. Static disassembly shows the alternate path calls 0x4F2FD0 with player, state index from 0x4F6ED0, and key 0x19. Helper 0x4F2FD0 returns AL=1 exactly when its selected table byte at table + stateIndex*0x1A + 0x19 is not 0xFF. AL drives the JNE at RVA 0xC64AA.
+
+The Stage18 observer logs actual AL/EAX, arguments, caller frame, selector-driving player fields, selected table pointers and the corresponding byte. It uses the original helper result, restores the original branch semantics, and performs bounded diagnostic reads only. It does not observe the alternative direct-check route at RVA 0xC64B1; Stage17 remains enabled to identify the actual setter caller.
+
+### Exact next operation
+
+1. Open the Stage18 branch README and apply the Stage18 overlay files over the already assembled Stage17 project. Preserve the exact historical Stage17 branch and logs.
+2. Verify the marker in the assembled source:
+   \`STAGE18_BIT113_GATE_BUILD=2026-11-08-r1\`.
+3. Build **Release | Win32 (x86)** with MSVC. Keep the full Build.log. Do not install or launch the game if compilation or linking fails; upload Build.log for source correction.
+4. After a successful build only, back up the currently installed game-folder dinput8.dll, install the newly linked DLL and matching Stage18 ArcanaAI.ini beside the actual game executable / AALib.exe.
+5. Before gameplay, verify ArcanaAI_Bit113GateTrace.log contains the Stage18 marker, config with EnableStage18Bit113GateTrace=1, and successful installation at RVA 0xC64A5. If validation fails, stop.
+6. Run a short COM-vs-COM test covering the same scenario and close the game normally.
+
+### Files to upload after the run
+
+Build.log, ArcanaAI_Bit113GateTrace.log, ArcanaAI_Bit113SetterTrace.log, ArcanaAI_PlayerBit17WriteTrace.log, ArcanaAI_ProducerCallTrace.log, ArcanaAI_AlternateCallTrace.log, ArcanaAI_QueueTrace.log, and ArcanaAI_EventDispatchTrace.log. Keep FinalCommandTrace, ParentFlowTrace and ProducerContextTrace as supporting logs when available.
+
+### Analysis target
+
+For each Stage18 record:
+- Compare resultAL with whether the corresponding derived state-table byte is not 0xFF.
+- Match player and stateIndex to a Stage17 BIT113_SET_CALL.
+- Correlate QPC against the Stage16 0→1 write at player+0x3B84.
+- Separate AL=1 records followed by the final 0x495B00 related-object guard/setter from AL=0 early returns.
+- Look for repeated AL=1 invocations while bit17 is already set.
+
+The four Stage17 QPC correlations (367, 520, 396, 353 ticks) and the suppression-side Stage15 evidence remain the runtime baseline. No semantic name should be assigned to table indices or bytes without additional evidence.
 
 ## Historical branch rules
 

@@ -26,6 +26,19 @@ Primary table pointer array: preferred VA `0x04C82518`. Its selector `0x0A` entr
 
 This establishes that the three observed `0xFA` values are present in the file's initialized `.data` image and are then observed at their relocated runtime addresses. It does **not** prove that the writable runtime tables can never be modified later. Stage19 therefore does not claim to have identified every possible writer. It changes the immediate question from "who wrote these three FA bytes?" to "which raw player states map to which table rows, and can a reachable row contain the `0xFF` sentinel?"
 
+### Candidate AL=0 rows in the two observed selectors
+
+A byte-by-byte read of the on-disk primary tables for key offset `0x19`, restricted to the state indices that can pass the caller's `<0x1C` check, gives:
+
+| Selector | `0xFF` rows (valid indices `0x00..0x1B`) |
+|---:|---|
+| `0x0A` (observed P1) | `01, 03, 09, 0F, 14, 15, 16, 17` |
+| `0x17` (observed P2) | `01, 03, 07, 09, 0D, 0F` |
+
+All key-`0x19` cells at mapped rows `0x18..0x1B` are `0xFA` for these two primary-table selectors. Therefore, assuming the runtime table has not been changed, a genuine `AL=0` for the two observed selectors is most directly expected from a *direct* state index in the listed `0x00..0x17` rows, not from the mapped results `0x18..0x1B`.
+
+The Stage19 hook at `0x4F6C08` only sees calls through the `0x4F02C0` conversion path. Direct raw-state returns (`<=0x17`) do not pass that hook. Stage18's gate observer at `0xC64A5` does observe the subsequent `0x4F2FD0` call for those direct states, so keep Stage18 enabled and use its actual `resultAL` as the authoritative AL=0 evidence.
+
 ## Caller and mapping helper
 
 The state-index wrapper is `0x004F6BA0`, called through `0x004F6ED0`. It reads:

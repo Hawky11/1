@@ -1623,11 +1623,17 @@ extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedCont
     else if (player == g_playerP2) side = 2;
     else return;
 
+    const DWORD dispatcherEbp = savedContext[2];     // EBP of dispatcher 0xEE200
     const DWORD savedEspAfterPushfd = savedContext[3];
-    DWORD returnAddress = 0, eventTypeArg = 0;
+    DWORD returnAddress = 0, helperArg = 0, dispatchType = 0, dispatchPayload = 0;
     SafeReadDword(savedEspAfterPushfd + 4u, &returnAddress);
-    SafeReadDword(savedEspAfterPushfd + 8u, &eventTypeArg);
-    if (eventTypeArg != 1u) return;
+    SafeReadDword(savedEspAfterPushfd + 8u, &helperArg);
+    SafeReadDword(dispatcherEbp + 8u, &dispatchType);
+    SafeReadDword(dispatcherEbp + 0x0Cu, &dispatchPayload);
+    if (dispatchType != 1u || dispatchPayload != kStage21Payload1E ||
+        payload != dispatchPayload || helperArg != 1u)
+        return;
+    const DWORD decodedActionCode = savedContext[0];  // EDI returned by 0x52EAC0
 
     DWORD playerMode = 0, controlState = 0, controller = 0, controllerFlags = 0;
     SafeReadDword(player + kPlayerControlOffset, &playerMode);
@@ -1639,14 +1645,16 @@ extern "C" void __cdecl ArcanaLogStage21PayloadClassifier(const DWORD* savedCont
     QueryPerformanceCounter(&qpc);
     char message[1100]{};
     sprintf_s(message,
-        "STAGE21_CLASSIFIER side=P%lu tid=%lu qpc=%llu callerRVA=0x%08lX player=0x%08lX eventType=%lu payload=0x%08lX helperRVA=0x000E8CF0 resultEAX=0x%08lX resultAL=%lu eflags=0x%08lX playerMode=0x%08lX state3978=0x%08lX controller=0x%08lX controllerFlags=0x%08lX",
+        "STAGE21_CLASSIFIER side=P%lu tid=%lu qpc=%llu callerRVA=0x%08lX player=0x%08lX dispatchType=%lu dispatchPayload=0x%08lX decodedActionCode=%lu helperArg=%lu helperRVA=0x000E8CF0 resultEAX=0x%08lX resultAL=%lu eflags=0x%08lX playerMode=0x%08lX state3978=0x%08lX controller=0x%08lX controllerFlags=0x%08lX",
         static_cast<unsigned long>(side),
         static_cast<unsigned long>(GetCurrentThreadId()),
         static_cast<unsigned long long>(qpc.QuadPart),
         static_cast<unsigned long>(returnAddress >= g_gameBase ? returnAddress - g_gameBase : 0),
         static_cast<unsigned long>(player),
-        static_cast<unsigned long>(eventTypeArg),
-        static_cast<unsigned long>(payload),
+        static_cast<unsigned long>(dispatchType),
+        static_cast<unsigned long>(dispatchPayload),
+        static_cast<unsigned long>(decodedActionCode),
+        static_cast<unsigned long>(helperArg),
         static_cast<unsigned long>(resultEax),
         static_cast<unsigned long>(resultEax & 0xFFu),
         static_cast<unsigned long>(savedContext[8]),
@@ -1670,13 +1678,19 @@ extern "C" void __cdecl ArcanaLogStage21PayloadSlotClear(const DWORD* savedConte
     else if (player == g_playerP2) side = 2;
     else return;
 
+    const DWORD dispatcherEbp = savedContext[2];     // EBP of dispatcher 0xEE200
     const DWORD savedEspAfterPushfd = savedContext[3];
     DWORD slotBefore = 0, returnAddress = 0, arrayPointer = 0, slotIndex = 0;
+    DWORD dispatchType = 0, dispatchPayload = 0;
     SafeReadDword(savedEspAfterPushfd + 4u, &slotBefore);      // private pre-call local
     SafeReadDword(savedEspAfterPushfd + 8u, &returnAddress);
     SafeReadDword(savedEspAfterPushfd + 12u, &arrayPointer);
     SafeReadDword(savedEspAfterPushfd + 16u, &slotIndex);
-    if (slotIndex != 3u) return;
+    SafeReadDword(dispatcherEbp + 8u, &dispatchType);
+    SafeReadDword(dispatcherEbp + 0x0Cu, &dispatchPayload);
+    if (slotIndex != 3u || dispatchType != 1u ||
+        dispatchPayload != kStage21Payload1E || payload != dispatchPayload)
+        return;
 
     DWORD slotAfter = 0;
     const DWORD slotAddress = arrayPointer + slotIndex * 4u + 4u;
@@ -1689,12 +1703,14 @@ extern "C" void __cdecl ArcanaLogStage21PayloadSlotClear(const DWORD* savedConte
     QueryPerformanceCounter(&qpc);
     char message[1100]{};
     sprintf_s(message,
-        "STAGE21_FALLBACK_SLOT_CLEAR side=P%lu tid=%lu qpc=%llu callerRVA=0x%08lX player=0x%08lX payload=0x%08lX helperRVA=0x000F7EB0 array=0x%08lX index=%lu slotAddress=0x%08lX slotValueBefore=0x%08lX slotValueAfter=0x%08lX afterReadable=%lu controller=0x%08lX controllerFlagsBeforeFollowingAND=0x%08lX nextInstruction=AND [controller+0x08],0xFFFFFBFF",
+        "STAGE21_FALLBACK_SLOT_CLEAR side=P%lu tid=%lu qpc=%llu callerRVA=0x%08lX player=0x%08lX dispatchType=%lu dispatchPayload=0x%08lX payloadRegister=0x%08lX helperRVA=0x000F7EB0 array=0x%08lX index=%lu slotAddress=0x%08lX slotValueBefore=0x%08lX slotValueAfter=0x%08lX afterReadable=%lu controller=0x%08lX controllerFlagsBeforeFollowingAND=0x%08lX nextInstruction=AND [controller+0x08],0xFFFFFBFF",
         static_cast<unsigned long>(side),
         static_cast<unsigned long>(GetCurrentThreadId()),
         static_cast<unsigned long long>(qpc.QuadPart),
         static_cast<unsigned long>(returnAddress >= g_gameBase ? returnAddress - g_gameBase : 0),
         static_cast<unsigned long>(player),
+        static_cast<unsigned long>(dispatchType),
+        static_cast<unsigned long>(dispatchPayload),
         static_cast<unsigned long>(payload),
         static_cast<unsigned long>(arrayPointer),
         static_cast<unsigned long>(slotIndex),

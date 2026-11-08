@@ -67,7 +67,7 @@ Stage20 changes only the five-byte CALL at RVA `0x000C64F1`. The wrapper:
 1. Receives the original callsite return address and original argument `2`.
 2. Duplicates argument `2` and calls the original helper at `0x00495B00) with the original ECX object pointer.
 3. Lets the original helper execute normally, including its own `RET 4` of the duplicated argument.
-4. Saves all returned registers and EFLAGS, records AL/EAX, ECX object pointer, EBX slot pointer, `[EBX]`, `[object+0x3B70]`, bit-2 state, player fields, QPC and stack context.
+4. Saves all returned registers and EFLAGS, records AL/EAX, the original ECX object pointer saved by the wrapper, EBX slot pointer, `[EBX]`, `[object+0x3B70]`, bit-2 state, player fields, QPC and stack context.
 5. Restores the exact helper return registers/flags and executes `RET 4` to consume the original caller argument and return to `0x000C64F6).
 
 The original `TEST AL,AL` at `0xC64F6` and JNE at `0xC64F8` remain byte-for-byte untouched. Stage20 adds no DR0–DR3 watchpoints and does not modify the helper's result or the caller branch.
@@ -96,7 +96,7 @@ The log must contain:
 
 - `STAGE20_BIT113_OBJECT_BIT2_GUARD_BUILD=2026-11-08-r1`;
 - `STAGE20_CONFIG: EnableStage20Bit113ObjectGuardTrace=1 ...`;
-- successful wrapper installation at RVA `0x000C64F1`, original helper RVA `0x000095B00`;
+- successful wrapper installation at RVA `0x000C64F1`, original helper RVA `0x00095B00`;
 - `Stage20 trace active`.
 
 Upload Build.log plus:

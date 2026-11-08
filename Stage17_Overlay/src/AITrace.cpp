@@ -22,10 +22,9 @@ extern "C"
     {
         __asm
         {
-            // The original sequence at C64A5 is:
-            // add esp,0x0C; test al,al; jne C64ED.
-            // The observer CALL adds one extra return DWORD; remove 0x10 total,
-            // restore TEST flags from AL, then resume at the original JNE.
+            // Replaces add esp,0x0C; test al,al at RVA 0xC64A5.
+            // The observer CALL adds one stack DWORD, so clean 0x10 total.
+            // Recreate TEST flags and resume at the original JNE at 0xC64AA.
             pushfd
             pushad
             mov edx, esp
@@ -82,7 +81,6 @@ namespace
     constexpr DWORD kStage17Bit113RecordCapacity = 512u;
     constexpr BYTE kStage17Bit113ExpectedCall[5] = { 0xE8, 0x99, 0x95, 0xF4, 0xFF };
     constexpr char kStage17BuildMarker[] = "STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2";
-
     constexpr DWORD kStage18Bit113GateObserverRva = 0x000C64A5u;
     constexpr DWORD kStage18Bit113GateBranchRva = 0x000C64AAu;
     constexpr DWORD kStage18Bit113GateCallRva = 0x000C64A0u;
@@ -95,6 +93,7 @@ namespace
     constexpr BYTE kStage18ExpectedObserverBytes[5] = { 0x83, 0xC4, 0x0C, 0x84, 0xC0 };
     constexpr BYTE kStage18ExpectedBranchBytes[2] = { 0x75, 0x41 };
     constexpr char kStage18BuildMarker[] = "STAGE18_BIT113_GATE_BUILD=2026-11-08-r1";
+
 
     struct TraceSite
     {
@@ -157,8 +156,6 @@ namespace
         DWORD Stack[12];
         BYTE CodeWindow[24];
     };
-
-    struct PlayerBit17WriteRecord
 
     struct Stage18Bit113GateRecord
     {
@@ -261,7 +258,6 @@ namespace
     volatile LONG g_stage17Bit113WriteDropped = 0;
     volatile LONG g_stage17Bit113WriteReportedDropped = 0;
     Stage17Bit113SetterRecord g_stage17Bit113Records[kStage17Bit113RecordCapacity]{};
-
     bool g_stage18Bit113GateTrace = false;
     volatile LONG g_stage18Bit113GateInstalled = 0;
     volatile LONG g_stage18Bit113GateSequence = 0;
@@ -387,9 +383,6 @@ namespace
         WriteFile(file, line, static_cast<DWORD>(count), &written, nullptr);
         CloseHandle(file);
     }
-
-    void AppendStage17Bit113Log(const char* message)
-
 
     void AppendStage18Bit113GateLog(const char* message)
     {
@@ -733,15 +726,6 @@ namespace
             GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
             value, sizeof(*value), &bytesRead) != FALSE && bytesRead == sizeof(*value);
     }
-    bool ReadDwordAtAddress(DWORD address, DWORD* value)
-    {
-        if (address == 0 || value == nullptr) return false;
-        SIZE_T bytesRead = 0;
-        return ReadProcessMemory(
-            GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
-            value, sizeof(*value), &bytesRead) != FALSE && bytesRead == sizeof(*value);
-    }
-
 
     bool ReadByteAtAddress(DWORD address, BYTE* value)
     {
@@ -751,23 +735,14 @@ namespace
             GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
             value, sizeof(*value), &bytesRead) != FALSE && bytesRead == sizeof(*value);
     }
-    bool ReadByteAtAddress(DWORD address, BYTE* value)
-    {
-        if (address == 0 || value == nullptr) return false;
-        SIZE_T bytesRead = 0;
-        return ReadProcessMemory(
-            GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
-            value, sizeof(*value), &bytesRead) != FALSE && bytesRead == sizeof(*value);
-    }
-
 
     void QueueStage18Bit113GateRecord(const DWORD* context)
     {
         if (!g_stage18Bit113GateTrace || context == nullptr)
             return;
 
-        // Hook-entry stack after CALL: [return][player][stateIndex][0x19].
-        // pushfd/pushad layout matches the Stage17 recorder.
+        // At hook entry: [CALL continuation][player][stateIndex][0x19].
+        // context[3]+4 restores the hook-entry ESP after pushfd/pushad.
         const DWORD hookEntryEsp = context[3] + 4u;
         const DWORD player = context[10];
         const DWORD stateIndex = context[11];
@@ -849,8 +824,6 @@ namespace
         record.TableByteValue = 0xFFFFFFFFu;
         record.UsedSecondary = 0;
 
-        // The helper selects a primary table by selector. When bit 25 of +3B80
-        // is set, a non-null matching secondary-table entry overrides it.
         const DWORD selector = record.SelectedIndex;
         const DWORD primarySlotRva = kStage18PrimaryTableRva + selector * sizeof(DWORD);
         const DWORD secondarySlotRva = kStage18SecondaryTableRva + selector * sizeof(DWORD);
@@ -971,7 +944,6 @@ namespace
             InterlockedExchange(&g_stage18Bit113GateReportedDropped, dropped);
         }
     }
-
 
     void QueuePlayerBit17WriteRecord(int sideIndex, PCONTEXT context)
     {
@@ -1566,8 +1538,6 @@ namespace
         return true;
     }
 
-    DWORD WINAPI FieldTraceThread(void*)
-
     bool InstallStage18Bit113GateResultHook()
     {
         if (InterlockedCompareExchange(&g_stage18Bit113GateInstalled, 0, 0) != 0)
@@ -1577,20 +1547,20 @@ namespace
             g_gameImageSize < kStage18Bit113GateBranchRva + sizeof(kStage18ExpectedBranchBytes) ||
             g_gameImageSize < kStage18SecondaryTableRva + 0x100u * sizeof(DWORD))
         {
-            AppendStage18Bit113GateLog("ERROR: AALib image does not contain the Stage18 gate observer or data-table selector range.");
+            AppendStage18Bit113GateLog("ERROR: AALib image does not contain the Stage18 observer or state-table selector range.");
             return false;
         }
 
-        BYTE* callSite = reinterpret_cast<BYTE*>(g_gameBase + kStage18Bit113GateCallRva);
-        if (std::memcmp(callSite, kStage18ExpectedHelperCall, sizeof(kStage18ExpectedHelperCall)) != 0)
+        BYTE* helperCall = reinterpret_cast<BYTE*>(g_gameBase + kStage18Bit113GateCallRva);
+        if (std::memcmp(helperCall, kStage18ExpectedHelperCall, sizeof(kStage18ExpectedHelperCall)) != 0)
         {
             AppendStage18Bit113GateLog("ERROR: bytes at RVA 0x000C64A0 do not match the verified CALL-to-0x4F2FD0 signature; refusing to patch.");
             return false;
         }
         std::int32_t helperRelative = 0;
-        std::memcpy(&helperRelative, callSite + 1, sizeof(helperRelative));
+        std::memcpy(&helperRelative, helperCall + 1, sizeof(helperRelative));
         const std::intptr_t helperDestination =
-            reinterpret_cast<std::intptr_t>(callSite + 5) + helperRelative;
+            reinterpret_cast<std::intptr_t>(helperCall + 5) + helperRelative;
         if (helperDestination != static_cast<std::intptr_t>(g_gameBase + kStage18Bit113GateHelperRva))
         {
             AppendStage18Bit113GateLog("ERROR: RVA 0x000C64A0 no longer calls helper RVA 0x000F2FD0; refusing to patch.");
@@ -1839,13 +1809,12 @@ namespace
         if (g_stage18Bit113GateTrace)
         {
             if (InstallStage18Bit113GateResultHook())
-                AppendStage18Bit113GateLog("Stage18 trace active. Captures the 0x4F2FD0 AL result, state index/key, player state, and derived state-table byte before resuming at the original JNE.");
+                AppendStage18Bit113GateLog("Stage18 trace active. Captures the 0x4F2FD0 AL result, state index/key, player fields and derived state-table byte before resuming at the original JNE.");
             else
                 AppendStage18Bit113GateLog("ERROR: Stage18 gate-result observer was not installed; inspect the preceding validation/patch message.");
         }
         else
             AppendStage18Bit113GateLog("Stage18 bit-113 gate trace is disabled in ArcanaAI.ini.");
-
 
         char startMessage[768]{};
         if (g_playerBit17WriteTrace && watchpointsEnabled)

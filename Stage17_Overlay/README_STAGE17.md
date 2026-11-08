@@ -106,3 +106,29 @@ Keep `ArcanaAI_ParentFlowTrace.log` and `ArcanaAI_ProducerContextTrace.log` when
 ## Status
 
 Stage17 source overlay is prepared but has **not been compiled or runtime-tested**. Stage16 is the latest runtime-evidenced stage. Do not claim Stage17 installed until its new log confirms the hook was applied.
+
+
+## Build blocker found on 2026-11-08
+
+The first MSVC x86 build attempt (VS 2026 18.9.1, MSVC 14.51.36231) stopped while compiling `src/AITrace.cpp` with C3861, `ReadDwordAtAddress: identifier not found`, at multiple call sites. No DLL was produced; do not install or run this build.
+
+This is not a diagnostic from the new Stage17 setter hook: the errors are in the Stage16 hardware-watchpoint source. The Stage17 overlay intentionally does **not** contain its own `AITrace.cpp`; the build must use `Stage16_Overlay/src/AITrace.cpp` as the replacement for the base project's `src/AITrace.cpp`.
+
+The Stage17 branch now includes an explicit forward declaration for `ReadDwordAtAddress(DWORD, DWORD*)` near the top of the anonymous namespace, in addition to the implementation later in that same file. This is a defensive source-order guarantee; the local build must still use this exact Stage16 overlay file rather than an older or partially merged copy.
+
+Before rebuilding, copy the Stage16 file into the extracted project (adjust the overlay path to the local clone location):
+
+```powershell
+$projectRoot = 'D:\INCUBATOR\ArcanaAIOverhaul'
+$stage16Overlay = 'D:\PATH\TO\Hawky11-1\Stage16_Overlay'
+Copy-Item -LiteralPath (Join-Path $stage16Overlay 'src\AITrace.cpp') -Destination (Join-Path $projectRoot 'src\AITrace.cpp') -Force
+
+$readerDeclarations = Select-String -Path (Join-Path $projectRoot 'src\AITrace.cpp') -Pattern 'bool ReadDwordAtAddress\(DWORD address, DWORD\* value\)'
+$readerDeclarations | Select-Object LineNumber, Line
+if ($readerDeclarations.Count -lt 2) {
+    throw 'Wrong AITrace.cpp: expected the ReadDwordAtAddress forward declaration and implementation from Stage16.'
+}
+```
+
+The expected file has both the forward declaration and the implementation. Re-run the existing MSVC x86 build and retain the complete fresh `Build.log`. If C3861 remains after this exact replacement, upload the local `src/AITrace.cpp` (not only Build.log); do not proceed to runtime testing until compilation and linking succeed.
+

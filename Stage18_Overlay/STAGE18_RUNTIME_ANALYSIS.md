@@ -52,7 +52,7 @@ For each episode, Stage17 records a second helper-gated call and a second setter
 Stage18's caller-frame records split consistently into two parent return addresses:
 
 - Sequences 1, 3, and 5: parent return 0x00DB6801 (RVA 0x00096801; static AALib VA 0x00496801). The verified disassembly shows a direct CALL 0x004C63B0 at VA 0x004967FC, followed by return address 0x00496801.
-- Sequences 2, 4, and 6: parent return 0x00DEB9FA (RVA 0x000CB9FA; static AALib VA 0x004CB9FA). The verified disassembly shows this is the return address after CALL EDX at VA 0x004CB9F8 inside a function beginning at 0x004CB9C0. That function dispatches through a function-pointer table at 0x0428AEF0.
+- Sequences 2, 4, and 6: parent return 0x00DEB9FA (RVA 0x000CB9FA; static AALib VA 0x004CB9FA). The verified disassembly shows this is the return address after CALL EDX at VA 0x004CB9F8 inside a function beginning at 0x004CB9C0. That function dispatches through a function-pointer table at 0x0428AEF0. Static inspection of the actual table confirms that entry 0x0A is at VA 0x0428AF18 and contains pointer 0x004C63B0. Thus the callback route selects function-table slot 10 and dispatches to the same caller.
 
 Both call paths invoke the same caller function at 0x004C63B0, which runs the 0x4F2FD0 gate and reaches the 0xC6502 bit-113 setter. This explains the two calls in each episode: one direct invocation and one invocation through the function-pointer callback path. The second invocation is not a second 0→1 state transition.
 

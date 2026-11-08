@@ -417,6 +417,10 @@ namespace
             std::memcpy(output, reinterpret_cast<const void*>(start), length);
     }
 
+    // The Stage17 recorder uses this helper before its implementation below.
+    // Keep the declaration in this anonymous namespace so MSVC sees the signature.
+    bool ReadDwordAtAddress(DWORD address, DWORD* value);
+
     void QueueStage17Bit113SetterRecord(const DWORD* context)
     {
         if (!g_stage17Bit113SetterTrace || context == nullptr)

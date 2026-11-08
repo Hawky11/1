@@ -104,6 +104,22 @@ The file should now be created even when the callsite is disabled or validation 
 
 ---
 
+### Compile correction r2
+
+The first r1 build with the source marker present exposed a C++ declaration-order error: `QueueStage17Bit113SetterRecord` called `ReadDwordAtAddress` before the compiler had seen its declaration (MSVC C3861 at lines 466–485).
+
+The r2 source now declares:
+
+```cpp
+bool ReadDwordAtAddress(DWORD address, DWORD* value);
+```
+
+inside the same anonymous namespace, immediately before `QueueStage17Bit113SetterRecord`. The existing implementation remains later in that namespace; no function behavior or hook logic was changed.
+
+After copying r2, run the marker check again, then build. The marker remains `STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1`; it identifies the diagnostic source family, while the Git commit identifies the corrected r2 source. A build is still pending until a fresh Build.log confirms compile and link success.
+
+---
+
 ## Required upload
 
 - `Build.log`

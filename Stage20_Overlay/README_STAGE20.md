@@ -28,7 +28,7 @@ Before gameplay, ArcanaAI_Bit113ObjectGuardTrace.log must show:
 
 - STAGE20_BIT113_OBJECT_BIT2_GUARD_BUILD=2026-11-08-r1
 - STAGE20_INIT and STAGE20_CONFIG with EnableStage20Bit113ObjectGuardTrace=1
-- successful wrapper installation at RVA 0x000C64F1 with original helper RVA 0x000095B00
+- successful wrapper installation at RVA 0x000C64F1 with original helper RVA 0x00095B00
 - Stage20 trace active
 
 The installer validates:

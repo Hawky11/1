@@ -99,7 +99,7 @@ The observer is placed at the return site 0x004C64A5, not inside 0x4F2FD0. It re
 
 It independently reproduces the original stack cleanup (ADD ESP,0x0C) plus the observer CALL's extra return address (ADD ESP,0x10), then executes TEST AL,AL and jumps to the original JNE at 0x4C64AA. The hook does not synthesize or modify AL, the table byte, or the branch result.
 
-The table-byte read is diagnostic only. It is bounded to selector values 0–255 and state indices 0–27, and uses ReadProcessMemory; a failed or out-of-range read is represented by byte=0xFFFFFFFF / an incomplete readMask. The helper's actual AL remains the authoritative runtime result.
+The table-byte read is diagnostic only. It is bounded to selector values 0–255 and state indices 0–27, and uses ReadProcessMemory; a failed or out-of-range read is represented by byte=0xFFFFFFFF / an incomplete readMask. These selector fields and the table byte are reread after the helper returns, not captured inside the helper at the exact compare instruction. If the game mutates the selector or table concurrently, the diagnostic readback can differ from the byte the helper actually compared. The helper's actual AL remains the authoritative runtime result; treat the readback as corroboration, not as a replacement for AL.
 
 ## Coverage limitation
 

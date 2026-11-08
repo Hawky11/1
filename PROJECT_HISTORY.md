@@ -19,6 +19,7 @@ The staged instrumentation is intended to be observational: it should preserve o
 | 14 | [stage14-producer-call-diagnostics](https://github.com/Hawky11/1/tree/stage14-producer-call-diagnostics) | `dcd036d1b3cead45f8400fd8545dff41d0d59131` | Parent/helper call context and return values |
 | 15 | [stage15-postguard-flow-diagnostics](https://github.com/Hawky11/1/tree/stage15-postguard-flow-diagnostics) | `4d1e2a049c835a991647cb04565d31d330aeac95` | Branch-by-branch flow between F2ED0 and F6AD7 |
 | 16 | [stage16-player-bit17-writer-trace](https://github.com/Hawky11/1/tree/stage16-player-bit17-writer-trace) | `58313d8c0f6071bc8099fc5ec04ae04d2974dafd` | Runtime-confirmed bit17 setter/clearer; Stage17 caller verification remains |
+| 17 | [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace) | `46a84d2286e94ba66fd46fb11454d1189b36b526` | Source-only setter-entry observer for bit index 0x71; awaiting build/runtime test |
 
 Commit dates for these snapshots are 2026-11-08 (GitHub commit metadata, UTC). Verify branch HEADs again before relying on the index.
 
@@ -189,3 +190,34 @@ This run therefore confirms the bit17 set/clear instructions and strongly correl
 No `Build.log` was uploaded. Runtime logs prove that the module was active and its watchpoints installed, but compiler output and build warnings were not independently reviewed.
 
 Next diagnostic question: which runtime caller supplies bit index `0x71` to `0x0040FAA0`? Stage17 should observe entry to the generic setter, record its caller return address, ECX/player, stack bit-index argument and relevant surrounding state, and verify or reject the static candidate at `0x004C6502`. Preserve the Stage16 and Stage12–Stage15 branches as evidence snapshots.
+
+
+## Stage 17 — bit-113 setter caller trace (source prepared; runtime pending)
+
+Branch: [stage17-bit113-setter-caller-trace](https://github.com/Hawky11/1/tree/stage17-bit113-setter-caller-trace), created from the Stage16 runtime-evidence branch at HEAD `58313d8c0f6071bc8099fc5ec04ae04d2974dafd`. Stage17 HEAD at this documentation update: `46a84d2286e94ba66fd46fb11454d1189b36b526`.
+
+### Why Stage17 is needed
+
+Stage16 confirmed that all five observed 0→1 changes to player bit17 executed the final OR at VA `0x0040FAD0` with EAX equal to the exact watched P1/P2 `player+0x3B84` field and EDX=`0x00020000`. The instruction belongs to a generic bitfield setter at VA `0x0040FAA0` / RVA `0x0000FAA0`; its input bit index `0x71` (113) maps to player+0x3B84, bit 17.
+
+The strongest static caller candidate is VA `0x004C6502` / RVA `0x000C6502`. It performs a helper test and, on AL=0, pushes `0x71`, moves the player into ECX, and calls `0x0040FAA0`. The expected return address is VA `0x004C6507` / RVA `0x000C6507`. The call-site evidence is documented in `Stage17_Overlay/STATIC_CALLER_REVIEW.md`. This candidate was not runtime-proven by Stage16 because Stage16 did not capture the setter's caller return address.
+
+### Prepared instrumentation
+
+`Stage17_Overlay/src/AICommandSiteTrace.cpp` adds a narrowly filtered entry hook to the existing Stage14/15 probe module:
+
+- Validates the exact seven-byte prologue at RVA `0xFAA0`: `55 8B EC 56 8B 75 08`. Refuses to patch if bytes differ.
+- At entry, PUSHFD occurs before checking the bit-index argument. Only calls with stack argument `0x71` invoke probe 11.
+- Preserves EFLAGS/registers, replays the original seven-byte prologue and continues at RVA `0xFAA7`.
+- Interprets ECX as the player object; records player fields, CPU control, registers, EFLAGS/ZF, caller frame, original return address and bit-index argument.
+- Reads the preceding five bytes as the caller CALL, decodes the E8 rel32 destination and emits `callTargetVerified=1` only when the destination equals the verified setter entry.
+- Installs the setter hook before enabling the Stage14/15 parent-path probes to reduce the chance of missing the first relevant call.
+- Reuses the existing bounded Stage14 probe ring; Stage17 entries route to `ArcanaAI_Bit113SetterTrace.log`. The worker flushes this ring even when Stage14 itself is disabled and reports ring drops to the Stage17 log.
+
+The candidate should produce call RVA `0x000C6502`, return RVA `0x000C6507`, decoded target `0x0040FAA0`, bit index `0x71`, and entry ZF=1 if the preceding AL=0 branch condition is the one that led to the setter. Do not assume that candidate is the only caller.
+
+### Current status / next operation
+
+Stage17 is **source-only**. It has not been compiled with MSVC, installed, or runtime-tested. The Stage16 runtime logs are still the latest evidence; no Stage17 `Build.log` or setter-caller trace exists yet.
+
+Use `Stage17_Overlay/README_STAGE17.md` for the exact overlay order and install procedure. Build with the existing x86 toolchain, retain `Build.log`, then run a short COM-vs-COM session and upload the fresh `ArcanaAI_Bit113SetterTrace.log` together with Stage16/Stage15 correlation logs. Only claim the static candidate is confirmed if a runtime record reports the expected return RVA and `callTargetVerified=1`.

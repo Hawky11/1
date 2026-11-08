@@ -104,3 +104,37 @@ The addresses below are VAs (subtract `0x00400000` for RVA). A mask is shown whe
 ```
 
 Static review is a lead for interpreting Stage16 events, not a substitute for runtime observation.
+
+
+## Stage16 runtime confirmation — bit index 113 setter
+
+The Stage16 write watchpoints confirmed that the bit-17 setter is not a direct `OR [reg+0x3B84]` instruction. It is a generic bitfield helper.
+
+VA `0x0040FAA0` / RVA `0x0000FAA0` accepts a bit index in `[EBP+8]`, computes a DWORD address from the player bitfield base `+0x3B78`, creates a one-bit mask, then writes:
+
+```asm
+0040FAD0  or dword ptr [eax], edx
+```
+
+For index `0x71` (113), the helper computes:
+- DWORD index: `113 / 32 = 3`, so target offset `0x3B78 + 3*4 = 0x3B84`.
+- Bit remainder: `113 % 32 = 17`, so mask `0x00020000`.
+
+Stage16 runtime records at EIP-after `0x00D2FAD2` have EAX equal to the exact watched P1/P2 field address and EDX=`0x00020000` on every observed 0→1 bit17 transition.
+
+Static search of the 129 direct calls to VA `0x0040FAA0` found one callsite with the literal bit index `0x71`, at VA `0x004C6502`:
+
+```asm
+004C64ED  mov ecx, dword ptr [ebx]
+004C64EF  push 2
+004C64F1  call 00495B00
+004C64F6  test al, al
+004C64F8  jne 004C640B
+004C64FE  push 0x71
+004C6500  mov ecx, esi
+004C6502  call 0040FAA0
+```
+
+The helper at `0x00495B00` tests bit index 2 in the `+0x3B70` bitfield of the object in ECX. If it returns `AL=0`, this caller sets bit 113 on the player object in ESI. This is a strong static caller candidate, not yet a runtime-proven callsite: Stage16 did not record the setter's return address.
+
+The matching clearer remains the direct masked AND at RVA `0xED19F`, gated by a zero AL return from `0x4F2ED0`. See `RUNTIME_ANALYSIS.md` for the full five-pair timeline, branch correlation, counts, and Build.log limitation.

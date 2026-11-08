@@ -6,7 +6,7 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- **Latest runtime evidence:** `stage21-payload-1e-consumer-runtime-evidence`, HEAD `fe96faadaf1cea2ab559a5f0e0c2346eca9cc802`. It contains the exact r1 source/INI overlay, user-supplied Build.log, runtime logs and updated `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
+- **Latest runtime evidence:** `stage21-payload-1e-consumer-runtime-evidence`, HEAD `150a666f6f61e58aa67766010e6af4300a51d901`. It contains the exact r1 source/INI overlay, user-supplied Build.log, runtime logs and updated `Stage21_Overlay/STAGE21_RUNTIME_ANALYSIS.md`.
 - **Tested source:** `stage21-payload-1e-consumer-trace`, HEAD `d210c3540ddd29fff1795ef8da6d3605958d481a`. Build succeeded at 2026-11-08 21:43:30; eight C++ units compiled; DLL size 222,208 bytes; one non-fatal C4754 warning at AICommandSiteTrace.cpp:785. Both Stage21 wrappers installed.
 - **Corrected but untested source:** `stage21-payload-1e-consumer-trace-r2`, HEAD `28fd26b76c22b9070eabaa33a85c713876234aaf`. It saves EDI before the classifier helper, logs `decodedActionCodePreCall`, and uses build marker `STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2`. It has not been built; r1 remains the exact runtime-tested source.
 - Stage21 r1 runtime: P1 and P2 dispatched event type 1 / payload `0x1E`, were accepted by queue and reached dispatch. At classifier CALL `0xEE426`, both real helper returns were `EAX=0 / AL=0`; both fallback calls at `0xEE446` executed. Slot 3 and controller bit `0x400` were already zero in both events, so the fallback's non-idempotent state mutation remains unobserved.

@@ -56,6 +56,7 @@ namespace
     constexpr DWORD kStage17Bit113Index = 0x71u;
     constexpr DWORD kStage17Bit113RecordCapacity = 512u;
     constexpr BYTE kStage17Bit113ExpectedCall[5] = { 0xE8, 0x99, 0x95, 0xF4, 0xFF };
+    constexpr char kStage17BuildMarker[] = "STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r1";
 
     struct TraceSite
     {
@@ -305,7 +306,7 @@ namespace
         GetLocalTime(&now);
         char line[2048]{};
         const int count = sprintf_s(
-            line, "[%04u-%02u-%02u %02u:%02u:%02u.%03u] %s\\r\\n",
+            line, "[%04u-%02u-%02u %02u:%02u:%02u.%03u] %s\r\n",
             now.wYear, now.wMonth, now.wDay,
             now.wHour, now.wMinute, now.wSecond, now.wMilliseconds,
             message != nullptr ? message : "(empty)");
@@ -1203,12 +1204,25 @@ namespace
 
     DWORD WINAPI FieldTraceThread(void*)
     {
+        // Emit a Stage17-specific startup marker before any validation or early return.
+        // Its presence proves that this exact Stage17 AITrace.cpp reached runtime.
+        AppendStage17Bit113Log(kStage17BuildMarker);
+        AppendStage17Bit113Log("STAGE17_INIT: FieldTraceThread entered.");
+
         const int controlTraceEnabled = ReadIniInt(L"AIResearch", L"EnableControlFieldTrace", 0);
         const int bit17TraceEnabled = ReadIniInt(L"AIResearch", L"EnablePlayerBit17WriteTrace", 0);
         const int stage17SetterEnabled = ReadIniInt(L"AIResearch", L"EnableStage17Bit113SetterCallTrace", 0);
         g_stage17Bit113SetterTrace = stage17SetterEnabled != 0;
+
+        char configMessage[256]{};
+        sprintf_s(configMessage,
+            "STAGE17_CONFIG: EnableControlFieldTrace=%d EnablePlayerBit17WriteTrace=%d EnableStage17Bit113SetterCallTrace=%d.",
+            controlTraceEnabled, bit17TraceEnabled, stage17SetterEnabled);
+        AppendStage17Bit113Log(configMessage);
+
         if (controlTraceEnabled != 0 && bit17TraceEnabled != 0)
         {
+            AppendStage17Bit113Log("ERROR: conflicting DR0/DR1 modes; FieldTraceThread is stopping before Stage17 hook installation.");
             AppendTraceLog("ERROR: EnableControlFieldTrace and EnablePlayerBit17WriteTrace both use DR0/DR1; disable one mode. No DR0/DR1 watchpoints were installed.");
             AppendPlayerBit17TraceLog("ERROR: conflicting DR0/DR1 modes. Set EnableControlFieldTrace=0 and keep EnablePlayerBit17WriteTrace=1.");
             return 0;
@@ -1244,6 +1258,7 @@ namespace
         {
             AppendTraceLog("ERROR: AALib.exe was not found; AI field trace stopped.");
             if (g_playerBit17WriteTrace) AppendPlayerBit17TraceLog("ERROR: AALib.exe was not found; Stage16 trace stopped.");
+            AppendStage17Bit113Log("ERROR: AALib.exe was not found within the module wait window; Stage17 hook installation was skipped.");
             return 0;
         }
 
@@ -1261,6 +1276,7 @@ namespace
         {
             AppendTraceLog("ERROR: the loaded AALib.exe image does not contain the selected P1/P2 watchpoint RVAs.");
             AppendPlayerBit17TraceLog("ERROR: the loaded AALib.exe image does not contain both player+0x3B84 watchpoint RVAs.");
+            AppendStage17Bit113Log("ERROR: loaded AALib.exe image is too small for the configured P1/P2 trace RVAs; Stage17 initialization stopped.");
             return 0;
         }
 
@@ -1274,6 +1290,7 @@ namespace
             if (!p1Read || !p2Read)
             {
                 AppendPlayerBit17TraceLog("ERROR: could not read initial P1/P2 player+0x3B84 values; refusing to start because the old-value shadow would be invalid.");
+                AppendStage17Bit113Log("ERROR: initial P1/P2 field read failed; Stage17 initialization stopped before callsite validation.");
                 return 0;
             }
             g_playerBit17InitialValue[0] = initialP1;
@@ -1403,6 +1420,7 @@ namespace
         if (thread == nullptr)
         {
             AppendTraceLog("ERROR: failed to create AI field-trace worker thread.");
+            AppendStage17Bit113Log("ERROR: failed to create the FieldTraceThread worker; Stage17 did not initialize.");
             return TRUE;
         }
         CloseHandle(thread);

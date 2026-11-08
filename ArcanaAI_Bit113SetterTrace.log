@@ -1,5 +1,6 @@
-[2026-11-08 19:58:47.883] STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2
-[2026-11-08 19:58:47.883] STAGE17_INIT: FieldTraceThread entered.
-[2026-11-08 19:58:47.891] STAGE17_CONFIG: EnableControlFieldTrace=0 EnablePlayerBit17WriteTrace=1 EnableStage17Bit113SetterCallTrace=1.
-[2026-11-08 19:58:48.505] Installed Stage17 passive callsite observer at RVA=0x000C6502; return RVA=0x000C6507; original helper RVA=0x0000FAA0; suspended=40 thread(s). The hook tail-calls the original helper with the unchanged stack/return address.
-[2026-11-08 19:58:48.505] Stage17 trace active. Captures the original bit index, player/context registers, related object and nearby player fields, caller stack, QPC and code bytes before tail-calling the original setter.
+[2026-11-08 21:44:33.325] STAGE17_CALLSITE_DIAG_BUILD=2026-11-08-r2
+[2026-11-08 21:44:33.325] STAGE17_INIT: FieldTraceThread entered.
+[2026-11-08 21:44:33.332] STAGE17_CONFIG: EnableControlFieldTrace=0 EnablePlayerBit17WriteTrace=1 EnableStage17Bit113SetterCallTrace=1.
+[2026-11-08 21:44:33.885] Installed Stage17 passive callsite observer at RVA=0x000C6502; return RVA=0x000C6507; original helper RVA=0x0000FAA0; suspended=40 thread(s). The hook tail-calls the original helper with the unchanged stack/return address.
+[2026-11-08 21:44:33.885] Stage17 trace active. Captures the original bit index, player/context registers, related object and nearby player fields, caller stack, QPC and code bytes before tail-calling the original setter.
+[2026-11-08 21:45:03.105] BIT113_SET_CALL seq=1 side=P1 tid=23660 tick=812632671 time=21:45:03.002 qpc=0x00000764133B9D15 callRVA=0x000C6502 returnRVA=0x000C6507 return=0x00DE6507 index=0x00000071 player=0x0E9C1F78 this=0x0E9C1F78 regs=(EAX:00000000 EBX:007FF74C ECX:0E9C1F78 EDX:00000000 ESI:0E9C1F78 EDI:2A1A1020 EBP:007FF734 ESP:007FF720 EFLAGS:00000246) otherObject=0x0E9C1F78 other3B70=0x00010440 player=(3A34:00180001 3A36:00000018 3B70:00010440 3B78:00008380 3B80:00000000 3B84:01000000 3B88:00000000 3F20:0000000A 3F30:00000000 3F50:00000002 3F58:00000000) stack=S+00=00DE6507  codeBytes=C0 0F 85 0D FF FF FF 6A 71 8B CE E8 E9 04 CF 50 8B 0B 8B 81 70 3B 00 00 

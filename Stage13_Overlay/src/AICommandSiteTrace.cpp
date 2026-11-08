@@ -223,6 +223,7 @@ namespace
     volatile LONG g_alternateHookInstalled = 0;
     volatile LONG g_alternateWriteIndex = 0;
     volatile LONG g_alternateReadIndex = 0;
+    DWORD g_alternateFlushIntervalMs = kDefaultFlushIntervalMs;
     volatile LONG g_alternateDroppedRecords = 0;
     volatile LONG g_alternateReportedDroppedRecords = 0;
     AlternateCallRecord g_alternateRecords[kAlternateRecordCapacity]{};
@@ -516,7 +517,6 @@ namespace
                 static_cast<std::intptr_t>(ebpRegister) + displacement;
             DWORD value = 0;
             if (addressValue > 0 &&
-                addressValue <= static_cast<std::intptr_t>(0xFFFFFFFFu) &&
                 SafeReadDword(static_cast<DWORD>(addressValue), &value))
             {
                 record.FrameWords[i] = value;
@@ -1055,6 +1055,16 @@ namespace
         if (flushMs > static_cast<int>(kMaxFlushIntervalMs)) flushMs = kMaxFlushIntervalMs;
         g_flushIntervalMs = static_cast<DWORD>(flushMs);
 
+        const int alternateEnabled = ReadIniInt(
+            L"AIResearch", L"EnableAlternateCallsiteTrace", 0);
+        int alternateFlushMs = ReadIniInt(
+            L"AIResearch", L"AlternateCallsiteTraceFlushIntervalMs", kDefaultFlushIntervalMs);
+        if (alternateFlushMs < static_cast<int>(kMinFlushIntervalMs))
+            alternateFlushMs = kMinFlushIntervalMs;
+        if (alternateFlushMs > static_cast<int>(kMaxFlushIntervalMs))
+            alternateFlushMs = kMaxFlushIntervalMs;
+        g_alternateFlushIntervalMs = static_cast<DWORD>(alternateFlushMs);
+
         if (enabled == 0)
         {
             AppendLog("Final-command trace is disabled in ArcanaAI.ini. No code hook was installed.");
@@ -1112,19 +1122,28 @@ namespace
         }
 
         const bool installed = InstallFinalCommandCallHook();
-        const bool alternateInstalled = installed ? InstallAlternateQueueCallHook() : false;
+        const bool alternateInstalled =
+            installed && alternateEnabled != 0 ? InstallAlternateQueueCallHook() : false;
         ReleaseMutex(patchMutex);
         CloseHandle(patchMutex);
         if (!installed)
             return 0;
-        if (!alternateInstalled)
+        if (alternateEnabled == 0)
+            AppendAlternateLog("Stage 13 alternate callsite trace is disabled in ArcanaAI.ini; no F6AD7 patch was installed.");
+        else if (!alternateInstalled)
             AppendAlternateLog("WARNING: Stage 13 alternate callsite hook was not installed; the existing final-command hook remains active.");
 
+        DWORD lastAlternateFlushTick = GetTickCount();
         for (;;)
         {
             Sleep(g_flushIntervalMs);
             FlushReadyRecords();
-            FlushAlternateReadyRecords();
+            const DWORD currentTick = GetTickCount();
+            if (currentTick - lastAlternateFlushTick >= g_alternateFlushIntervalMs)
+            {
+                FlushAlternateReadyRecords();
+                lastAlternateFlushTick = currentTick;
+            }
 
             const LONG alternateDropped = InterlockedCompareExchange(&g_alternateDroppedRecords, 0, 0);
             const LONG alternateReported = InterlockedCompareExchange(&g_alternateReportedDroppedRecords, 0, 0);

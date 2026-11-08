@@ -5,10 +5,10 @@ Stage23 follows the corrected Stage22 source and captures the result returned by
 - Hook site: `AALib.exe+0x000EE273`
 - Original helper: `AALib.exe+0x0012EAC0`
 - Exact executable: SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`
-- Marker: `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r1`
+- Marker: `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2`
 - Log: `ArcanaAI_Stage23ResolverResultTrace.log`
 
-The observer filters to P1/P2, dispatcher type 1 and payload `0x1E`. It records the resolver's four original stack arguments, returned 12-byte record, and bytes `+2`, `+3`, `+4`, `+0x0B`. It does not call the resolver more than once, change its arguments, or write game data.
+The observer filters to P1/P2, dispatcher type 1 and payload `0x1E`. Revision r2 fixes two MSVC C2440 errors in the resolver-address comparisons by using `reinterpret_cast<std::intptr_t>(resolver)`; this changes only pointer-to-integer conversion, not the checked address or hook behavior. It records the resolver's four original stack arguments, returned 12-byte record, and bytes `+2`, `+3`, `+4`, `+0x0B`. It does not call the resolver more than once, change its arguments, or write game data.
 
 ## Important dataflow correction
 
@@ -40,4 +40,4 @@ Keep same-run Stage18 gate, Stage20 guard, Stage17 setter, Stage16 bit17 writer 
 
 ## Status
 
-Source-only: this overlay has not been compiled or runtime-tested. Confirm the Stage23 marker and successful hook installation line before interpreting its new records.
+Build status: the first user-side compile attempt stopped in `AIQueueTrace.cpp` at the two resolver pointer conversions (C2440). Both are corrected in r2; this revision still needs a fresh Release | Win32 build and runtime test. No DLL size or hook installation is claimed yet. Confirm the r2 marker and successful hook installation line before interpreting new records.

@@ -33,13 +33,13 @@ The log should contain:
 
 Correlate those lines with the existing `ArcanaAI_EventDispatchTrace.log` records by side, player, thread ID, and QPC. Send the new Stage21 log, the matching EventDispatch log, and the complete build log.
 
-## Direct-setter negative control remains open
+## Direct-setter negative control — initial source-stage plan
 
-Stage20's real object-guard trace stays enabled in the inherited INI. Keep a copy of `ArcanaAI_Bit113ObjectGuardTrace.log` from the same run. The required sample is a natural object DWORD at `player+0x3B70` with bit2 clear, producing actual helper `AL=0`. Do not manually edit this value. Stage21 does not yet close that separate experiment.
+This was the pending requirement when the source overlay was authored. The r1 runtime subsequently captured a natural P1 sample with `[object+0x3B70]=0x00010440`, bit2 clear, and actual helper `AL=0`; Stage17 then called the setter with index `0x71` 79 QPC ticks later. The Stage16 writer confirmed bit17 `0→1` 361 QPC ticks after that setter. See `STAGE21_RUNTIME_ANALYSIS.md`.
 
 ## Scope
 
-Stage21 does not alter any AI helper result or game state beyond the original game helper effects. The only in-game code changes are observational CALL wrappers, and both original callees are invoked once. The code has not yet been compiled or runtime-tested; those checks are pending the user's Windows/MSVC build and fresh in-game run.
+Stage21 does not alter any AI helper result or game state beyond the original game helper effects. The only in-game code changes are observational CALL wrappers, and both original callees are invoked once. The preceding Scope paragraph describes the original source-only overlay. The r1 build and runtime test were subsequently completed; results and remaining limitations are documented below.
 
 
 ## Runtime result (r1, 2026-11-08)

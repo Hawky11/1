@@ -1052,3 +1052,82 @@ No final link occurred, and no Stage23 DLL was produced by this attempt. The cau
 Corrected source branch: [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace), current HEAD `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`. The Stage23 build marker is now `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2`. The updated source is `Stage23_Overlay/src/AIQueueTrace.cpp`; the Stage23 README and static analysis record the same correction.
 
 **Status:** corrected source committed, rebuild pending. Do not claim successful compilation, DLL size, hook installation, or runtime records until a fresh Release | Win32 Build.log and same-run installation log are reviewed. The next user action is to reapply the Stage23 r2 source and INI over the assembled Stage22 project, rebuild, and upload the complete Build.log.
+
+
+## Stage23 runtime result — resolver mapping captured (2026-11-09 00:39–00:40)
+
+Source branch: [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace), HEAD `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`.  
+Runtime evidence branch: [stage23-resolver-result-runtime-evidence](https://github.com/Hawky11/1/tree/stage23-resolver-result-runtime-evidence), HEAD `8e2d025ca60def5103206250a71929fa5d9329bd`. It preserves the exact uploaded run logs, the user-pasted Build.log, and `Stage23_Overlay/STAGE23_RUNTIME_ANALYSIS.md`.
+
+### Build and hook installation
+
+- Build began 2026-11-09 00:39:38,25 with Visual Studio 18 Community / MSVC 14.51.36231 x86.
+- All eight translation units compiled: Proxy.cpp, ComVsCom.cpp, AITrace.cpp, AICommandTrace.cpp, AIQueueTrace.cpp, AICommandSiteTrace.cpp, AIProducerContextTrace.cpp and AIParentFlowTrace.cpp.
+- `build\\dinput8.dll` linked successfully at **229,376 bytes**.
+- Only warning: non-fatal C4754 in `AICommandSiteTrace.cpp:785`, associated with the bounds calculation around line 782. No compile/link errors.
+- Runtime initialization was 2026-11-09 00:40:04. The marker `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2` is present.
+- Stage23 observer installed at resolver CALL RVA `0x000EE273` -> helper RVA `0x0012EAC0`; installation reported 40 suspended threads. Three readable resolver records were captured.
+
+### Resolver output for payload 0x1E
+
+All three records are thread 11360, dispatcher type 1 / payload `0x1E`:
+
+| Side | Tick | Resolver QPC | Record pointer | Args (arg1,arg2,arg3,arg4) |
+|---|---:|---:|---|---|
+| P2 | 823151515 | 8231589249280 | `0x063FDCA0` | `(0x17,0x17,0x1E,0x38)` |
+| P1 | 823158406 | 8231658248588 | `0x05FDF490` | `(0x0A,0x0A,0x1E,0x26)` |
+| P1 | 823166531 | 8231739431884 | `0x05FDF490` | `(0x0A,0x0A,0x1E,0x26)` |
+
+Every result was readable and all three contained the same twelve bytes:
+
+`60 FF 03 1F 12 00 00 05 13 24 03 00`
+
+DWORD view: `(0x1F03FF60, 0x05000012, 0x00032413)`. Selected bytes: +2=`0x03`, +3=`0x1F`, +4=`0x12`, +0x0B=`0x00`. The P2 args agree with player fields +0x3978 / +0x3F20 = `0x17`, +0x1224 = `0x38`; the two P1 records agree with corresponding values `0x0A`, `0x0A`, `0x26`. The P1 pointer is reused for both P1 events; P2 has a distinct pointer, but the returned bytes match.
+
+### End-to-end event correlation
+
+All three Stage23 resolver records match Stage13 ALT_CALLSITE, QueueTrace, EventDispatchTrace, Stage21 and Stage22 using side/player/thread/tick/QPC:
+
+| Side | ALT_CALLSITE QPC | Resolver QPC | Classifier QPC | Fallback QPC | Post-AND QPC |
+|---|---:|---:|---:|---:|---:|
+| P2 | 8231589249194 | 8231589249280 | 8231589253347 | 8231589256114 | 8231589257163 |
+| P1 | 8231658248530 | 8231658248588 | 8231658251710 | 8231658252447 | 8231658252837 |
+| P1 | 8231739431782 | 8231739431884 | 8231739434850 | 8231739435766 | 8231739436176 |
+
+- ALT_CALLSITE is the alternate producer call at RVA `0xF6AD7`, type 1 / payload `0x1E`.
+- QueueTrace logged `ACCEPTED_BY_QUEUE` at return RVA `0xF6ADC`; all three stored type `0x0001` / payload `0x001E`.
+- EventDispatch logged all three at caller RVA `0xEE5CB`; queue history matched the dispatch args.
+- Stage21 classifier helper `0xE8CF0` returned `AL=0` for all three.
+- Stage21 fallback helper `0xF7EB0` ran with index 3 for all three.
+- Stage22 post-AND observer at RVA `0xEE451` ran for all three.
+
+Slot 3 was readable and zero before and after all three fallback helper calls. Controller flags before the AND were zero; Stage22 post-AND confirmed bit `0x400` remained `0 -> 0` in all three. The run proves the fallback and AND execute, but does not capture an actual nonzero-to-zero clear.
+
+Stage21's `preCallEdi` values still equal the controller-array pointer (P2 `0x0E9F06DC`, P1 `0x0E9C59B4`); keep that field as raw EDI, not an action-code interpretation.
+
+### Stage18 / Stage20 / Stage17 cross-check
+
+- Stage18 and Stage20 each logged 27 records. Pairing by side, player, thread, tick and parent return produced **27/27** matches; each matched object-guard QPC followed its gate result by 124–204 ticks.
+- All 27 Stage18 results returned `AL=1`, key `0x19`, table byte `0xFA`.
+- Stage20 object helper returned `AL=1` in 25 records. Two P1 records at tick 823152734 had `AL=0`, object DWORD `0x58`, and bit2 clear.
+- Stage17 logged two P1 setter calls at RVA `0xC6502`, index `0x71`, 76 and 73 QPC ticks after the two corresponding AL=0 guard results. First snapshot saw `player+0x3B84=0`; second saw `0x20000`. This is consistent with the bit becoming set between calls, but the exact write is not independently confirmed because the Stage16 writer log is zero bytes.
+- StateMapTrace and ProducerCallTrace are also zero bytes. FinalCommandTrace has no payload-`0x1E` record at its monitored RVA `0xF7C5D`; this does not negate the confirmed separate alternate queue/dispatch route.
+- No ERROR/WARNING/DROP/OVERFLOW/FAILED markers were found in the nonempty uploaded runtime logs.
+
+### Resolver byte +3: downstream role established, semantic name still open
+
+The runtime establishes byte +3 = `0x1F` in both P1 and P2 samples. Static disassembly of the same AALib binary shows it is passed as arg2 to helper `0x004F57D0` at CALL RVA `0x000EE306`. At that callsite:
+- arg1 = pointer to `player+0x3A08`;
+- arg2 = resolver byte +3 (selector `0x1F`);
+- arg3 = resolver byte +2 (`0x03`);
+- arg4 = resolver byte +4 (`0x12`).
+
+The helper uses arg2/ESI as an index into a three-byte-per-entry mapping table at `0x04DDF188 + selector*3`: one flag byte and two mapped selector bytes. It stores the index in the output structure's first DWORD and uses the mapped bytes to set bits in the following DWORDs; flag bits may change initialization and trigger a secondary helper. The table is in writable `.data` and may be initialized at runtime. Therefore the strongest supported current description is **resolver mapping selector/index 0x1F**. Its high-level semantic category (attack, command, animation, etc.) is not established.
+
+### Remaining evidence gaps and next stage
+
+- `ArcanaAI_PlayerBit17WriteTrace.log`, `ArcanaAI_StateMapTrace.log`, and `ArcanaAI_ProducerCallTrace.log` were zero bytes.
+- No actual nonzero-to-zero transition of fallback slot 3 or controller bit `0x400` was captured.
+- Exact instruction that changes player bit17 is still absent from this run.
+
+Next: Stage24 should add a passive observer at CALL RVA `0x000EE306` -> helper RVA `0x000F57D0`, without changing Stage23. Capture the four incoming args, the three runtime table bytes at `0x04DDF188 + 0x1F*3`, and the three DWORDs at `player+0x3A08` before/after the helper. Confirm whether the flag byte selects a secondary helper path. Preserve original args, return registers/EFLAGS and caller cleanup; never write table/player state.

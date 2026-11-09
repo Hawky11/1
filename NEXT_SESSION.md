@@ -1,5 +1,18 @@
 # Next session handoff
 
+## Current handoff — Stage35 static verified and passive controller-consumer source ready (2026-11-10)
+
+- [Stage35 source-only branch](https://github.com/Hawky11/1/tree/stage35-controller-consumer-trace), with [original PE study](https://github.com/Hawky11/1/blob/stage35-controller-consumer-trace/Stage35_Analysis/STATIC_ANALYSIS.md) and [runtime/install guide](https://github.com/Hawky11/1/blob/stage35-controller-consumer-trace/Stage35_Overlay/README_STAGE35_RU.md). Original exact SHA `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` from ChatGPT Library `/AALib.zip`, static verifier PASS **19 signatures, 7 direct calls**.
+- Stage34 evidence is COMPLETE for observed type0 payload 0/1/4 (109/109 net-effect joins; 33/33 Stage31 queue→EE200; payload5 not naturally observed). Preserve the evidence branch `stage34-type0-variant-runtime-evidence` @ `ad801c2278f81cdb997d5773207efecb4211af65` and source branch `stage34-type0-variant-state-trace` @ `803e3ae15f43370dc0fe7969b0ec6242320124d7`.
+- New verified controller consumer route: main path `A1106→ACA90`, `ACABE→F60C0` timer update of slot11 `P+3A6C` (`F611C→F7ED0` subtracts **current P+3A3C header value**), then `ACAC4→F5BD0` flags/object updater (`F5F4C` compares slot11, conditional OR `P+3B78` bit7). Another reader `EB7D9→F58E0` tests bitmap `P+3A0C/10` with index `0x1E`. These read/decision boundaries are real but not proof of visible attack/hit/movement.
+- Stage35 overlays 3 files: `Stage35_Overlay/src/AIQueueTrace.cpp`, **new** `Stage35_Overlay/src/Stage35ConsumerTrace.inl`, `Stage35_Overlay/ArcanaAI.ini`. Keep installed Stage29 `src/AITrace.cpp`; replace only these Stage35 files. New INI `EnableStage35ControllerConsumerTrace=1`. Two passive x86 callsite wrappers `ACABE` and `ACAC4`, original cdecl helpers once, validated original bytes and rel32 targets, P1/P2 raw 12-field before/after read masks and QPC, buffered worker output `ArcanaAI_Stage35ControllerConsumerTrace.log`.
+- **Stage35 Windows x86 compile/install/runtime NOT YET VERIFIED.** User must run `D:\INCUBATOR\ArcanaAIOverhaul\Build.bat` with x86 MSVC, install DLL+INI, archive old logs, perform natural COM-vs-COM and allow >=2 sec flush; upload Build.log, Stage35 log, EventDispatchTrace, Stage31, Stage29, QueueTrace and ProducerCallTrace. First check Build.log warnings/errors, Stage35 build marker and both hooks installed, no dropped/overflow, full read masks, and same-side/player/TID QPC sequence Stage34 EE200 exit → Stage35 TIMER → FLAGS.
+- Interpret `P+3A6C=0xF00` as **3840 raw timer units at a writer boundary**, NOT 32 observed frames, attack, or controller input opcode. Stage35 TIMER compares f3 raw slot with f8 current header; FLAGS compares derived f4/f10/f11. Bit7 output alone cannot identify exact internal instruction executed. If needed later, instrument exact `F5F4C` compare/branch or `F58E0` return after proving safe invariants. Never synthesize payload5 or type1/0x1E.
+- On new session review this handoff + Stage35 report, check updated GitHub head, and consult ChatGPT Library for original binary (no reupload needed). Update PROJECT_HISTORY after successful runtime, preserving earlier entries.
+
+---
+
+
 ## Current handoff — Stage34 runtime complete; Stage35 downstream controller/action consumer analysis next (2026-11-09)
 
 ## Stage34 — real x86 runtime confirms native payload1 and payload4 consumers (2026-11-09)

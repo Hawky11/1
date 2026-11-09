@@ -71,7 +71,7 @@ Each table entry contains three bytes:
 - byte +1: first mapped selector;
 - byte +2: second mapped selector.
 
-The source reads a DWORD for safe bounded access but only reports the first three bytes. The fourth byte belongs to the next record and is not interpreted.
+The source reads a DWORD for safe bounded access but only reports the first three bytes. The fourth byte belongs to the next record and is not interpreted. This is a snapshot immediately before entering the primary helper. Static control flow shows the primary helper first makes an unconditional call to `0x0049EEA0` before it reads the table entry. The current observer does not instrument that internal call or the exact table-load instruction, so if `0x0049EEA0` were to modify the table, the logged entry bytes could differ from the bytes subsequently consumed. Treat the field as `tableBytesBeforeHelper`, not as a direct capture of the internal load.
 
 ## 3. Helper behavior confirmed by static disassembly
 

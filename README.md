@@ -1,6 +1,18 @@
 # ArcanaAI / COM vs COM diagnostic research
 
-## Latest checkpoint — Stage27 0x97970 CALL/tail-JMP control flow verified (2026-11-09)
+## Latest checkpoint — Stage28 original game EXE analyzed, 2026-11-09
+
+- **Immutable Stage28 analysis:** [stage28-original-pe-state-lifecycle](https://github.com/Hawky11/1/tree/stage28-original-pe-state-lifecycle), HEAD `6a210f4be510ab264ddefcadd8d740bfe923cfa4`. [Detailed static findings](https://github.com/Hawky11/1/blob/stage28-original-pe-state-lifecycle/Stage28_Analysis/STATIC_STAGE28_ANALYSIS.md), SHA256-pinned verifier `tools/verify_stage28.py`, 6 tests and machine-readable summary. Stage28 is **offline-only**; no new DLL/game hook, no user game run.
+- Found the user's `AALib.zip` in ChatGPT Library (not GitHub); exact original `AALib.exe` size 175,556,608 bytes, SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` verified. Original EXE/zip **not committed or shared**. Disassembled complete ~2.87MB `.text` plus targeted call graph. Local verifier passed 26 signatures, 16 direct CALL targets and one tail JMP; 6 Python tests passed including the actual local PE.
+- **New finding:** the `0x978B0` function invoked after Stage27's state1 clear and on state0 can start state1 using `0x97830`. A bit1-set route at object+0xC8 (player+0xF8) clears bit1 and compares selected fighter's `(type,code)` header against `(0,0x13)`, `(0,0x14)`, `(0,0x15)` via `0xF2ED0`; if none match, it directly calls 0x97830. Otherwise a state0/countdown route checks object+0xC4 bit0, object+0xCC bit1, state=0; `0x991E0` decrements a countdown and returns its **old** value; a nonpositive old value also allows 0x97830.
+- `0x97830` writes object state1, `0x97870` writes state2 and clears bit0; the two helpers share calls but differ in mode 0 vs1. **Important:** `0xF2ED0` is a tuple-comparison predicate, **not** queue insertion `0xF2DE0`. No causal connection to COM-vs-COM producer bit17 or fallback proven.
+- Rechecked Stage26 full-DWORD values: all 140 captured records are exactly 70 `0→1` and 70 `1→0`; bit1=0 **at those observation points**. Because Stage26 `Stage26TransitionsOnly=1` filters writes that leave bit0 unchanged, the runtime sample does **not** disprove transient bit1 activity. Do not claim the special bit1 path was executed or never executed.
+- **Next handoff:** Stage29 should refocus on original COM-vs-COM problem: producer bit17 gate at `0xF6A68`, accepted P1/P2 alternate queue insertion, and why the `0x1E` dispatcher runs classifier AL0/fallback. Use existing captured Stage15–26 data to pose a bounded question before adding probes. Keep Stage25–28 branches immutable.
+
+---
+
+
+## Previous checkpoint — Stage27 0x97970 CALL/tail-JMP control flow verified (2026-11-09)
 
 - **Complete original PE analysis:** [stage27-bit0-tailjump-verified](https://github.com/Hawky11/1/tree/stage27-bit0-tailjump-verified), commit `78e48cdcef7a67fcdf64a50dfa95228357eedbe6`, descended from previous static evidence branch `stage27-verified-static-callgraph`. It contains the *exact* original 4,257-byte user-uploaded `Stage27_CallFlow_97970.txt` (Git blob `d5d8c9f90665baf1c625bb65515910c2984b7a64`) and [verified annotated disassembly](https://github.com/Hawky11/1/blob/stage27-bit0-tailjump-verified/Stage27_CompleteCallGraph/VERIFIED_97970_BRANCH.md).
 - **Both pathways to primary bit0 clearer RVA0x97870 confirmed** in the SHA256-pinned original AALib.exe. `0x97609 CALL 0x97970`; when `[object+0xD4]==1`, and guard passes, `0x979CC CALL 0x97870` (34 Stage26 clear records, stack return0x979D1), then calls `0x978B0`. When `[object+0xD4]==2`, same guard leads to `0x979AC JMP 0x97870` *after* POP ESI/EBP (20 records, original return0x9760E preserved). State0 calls `0x978B0` without this clear, others/failed guards return.

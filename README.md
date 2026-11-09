@@ -1,6 +1,17 @@
 # ArcanaAI / COM vs COM diagnostic research
 
-## Current checkpoint — Stage26 runtime complete (2026-11-09)
+## Latest checkpoint — Stage27 offline lifecycle/caller analysis complete (2026-11-09)
+
+- **Stage27 analysis-only branch:** [stage27-bit0-lifecycle-callers](https://github.com/Hawky11/1/tree/stage27-bit0-lifecycle-callers), commit `b490f87892791d45f0b0841a47e70d60329ec457`, based on preserved Stage26 runtime evidence. [Full Stage27 findings](https://github.com/Hawky11/1/blob/stage27-bit0-lifecycle-callers/Stage27_Analysis/STAGE27_LIFECYCLE_ANALYSIS.md), `cycles_stage26.csv` (70 matched pairs), `stage27_summary.json`, reproducible standard-library Python parser and 5 unit tests. No new hook, no changed DLL, no new runtime.
+- All Stage26 P1/P2 bit0 sets and clears pair 70/70; main clearing helper at game RVA `0x97870` accounts for 54 clears. Its first instructions are `PUSH EDI; MOV EDI,EAX; AND [EDI+0xC8],0xFFFFFFF2`. From the known stack layout, two dynamic caller-return candidates were observed: RVA `0x979D1` (34, P1 16/P2 18) and `0x9760E` (20, P1 12/P2 8). All 34 nested records additionally carry `0x9760E` deeper on the stack.
+- Other clear writers: instruction RVAs `0x975A6` (7), `0x95F55` (8), `0x97031` (1). The only two bit0 setters with EBX=`0x1E` were Stage26 seq1/seq87 (P2→P1); both cleared by 0x97873 through the 0x979D1 caller context.
+- **Pending exact static check:** full `AALib.exe` not present in Git. Optional Python `--binary` mode verifies pinned SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`, writer bytes and possible E8 CALL instructions at `0x979CC`/`0x97609`. Only after such verification may the dynamic caller-return inference be called a confirmed static call graph.
+- **Next:** run Stage27 offline script against exact original local game EXE, share/export its short `Stage27_AALib_StaticReport.txt`; do not upload the entire proprietary game binary to GitHub. Python tests are supplied but not executed in the assistant environment. No MSVC/game build necessary for Stage27; Stage26 source/evidence remain immutable.
+
+---
+
+
+## Previous checkpoint — Stage26 runtime complete (2026-11-09)
 
 - **Stage26 built and tested.** User's 17:27:39 chat Build.log: MSVC 14.51.36231 x86, all eight C++ translation units compiled, `dinput8.dll` 240,640 bytes. Nonfatal C4456 in `AITrace.cpp:1671` (inner variable `reported` shadows another) and previously known C4754 in `AICommandSiteTrace.cpp:785`. No compiler errors.
 - Immutable source: [stage26-object-bit0-write-trace](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-trace) at `a249f452353c340fe8f1dab23375a8a932b079b4`. Complete runtime archive: [stage26-object-bit0-write-runtime-evidence](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-runtime-evidence) at `4b7564ff71664fedd5745e3bcfc4210d74540075` with all 21 root-uploaded Git log blobs (one stale Stage16 artifact), Build.log copied from chat and [Stage26 analysis](https://github.com/Hawky11/1/blob/stage26-object-bit0-write-runtime-evidence/Stage26_Overlay/STAGE26_RUNTIME_ANALYSIS.md).

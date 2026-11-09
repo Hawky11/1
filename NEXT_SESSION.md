@@ -1,6 +1,21 @@
 # Next session handoff
 
-## Current handoff — Stage26 verified; Stage27 investigation next (2026-11-09)
+## Current handoff — Stage27 offline analysis complete; verify static CALL chain next (2026-11-09)
+
+- **Newest branch** [stage27-bit0-lifecycle-callers](https://github.com/Hawky11/1/tree/stage27-bit0-lifecycle-callers), HEAD `b490f87892791d45f0b0841a47e70d60329ec457`. Parent: Stage26 runtime evidence HEAD `4b7564ff71664fedd5745e3bcfc4210d74540075`. Contains `Stage27_Analysis/STAGE27_LIFECYCLE_ANALYSIS.md`, `Stage27_Analysis/README_STAGE27.md`, `Stage27_Analysis/cycles_stage26.csv`, `Stage27_Analysis/stage27_summary.json`, `Stage27_Analysis/tools/analyze_bit0_lifecycle.py`, `Stage27_Analysis/tests/test_stage27.py`. Stage27 is **analysis-only**, no new C++ source, no in-game hook or build.
+- Stage26 original source is `stage26-object-bit0-write-trace` HEAD `a249f452353c340fe8f1dab23375a8a932b079b4`; complete successful MSVC/runtime evidence remains immutable at `stage26-object-bit0-write-runtime-evidence` HEAD `4b7564ff71664fedd5745e3bcfc4210d74540075`.
+- From 140 Stage26 events: 70 per-side exact set→clear cycles, no open/unpaired/repeated setter. 54 clears by instruction RVA `0x97873` in apparent helper entry `0x97870`: `push edi; mov edi,eax; and dword ptr [edi+0xC8],0xFFFFFFF2`. Since saved old EDI is at stack[0], stack[1] appears to be return address. **Two dynamic caller-return groups:** `0x979D1` 34 (P1 16/P2 18) and `0x9760E` 20 (P1 12/P2 8); all 34 first-group samples also show `0x9760E` deeper at stack[4]. Candidate E8 CALL starting RVAs `0x979CC` and `0x97609`, still **unverified** without exact PE.
+- Other clears: RVA`0x975A6` 7 P1, RVA`0x95F55` 8 P1/P2, RVA`0x97031` 1 P1. Observed setter post-EIP in Stage25 DLL wrapper `0x50B0C267`, original AALib writer RVA`0xF58C9`. EBX varied; EBX0x1E precisely two setter records seq1/seq87, both P2 source, P1 target and return path `0x979D1`. EBX not independently proved payload in all contexts.
+- **Next concrete investigation (optional binary):** run standard-lib script on exact local AALib.exe to verify recorded SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`, four writer bytes, helper entry and relative E8 call sites. Example commands:
+  `py -3 Stage27_Analysis\tools\analyze_bit0_lifecycle.py --log ArcanaAI_Stage26ObjectBit0WriteTrace.log --binary "PATH\TO\AALib.exe" --static-report Stage27_AALib_StaticReport.txt`
+  `py -3 -m unittest discover -s Stage27_Analysis\tests -p test_stage27.py -v`.
+  Share only the resulting **text report**, not copyrighted game EXE, and keep it in a new evidence branch rather than overwriting previous ones.
+- Validated Stage27 archived CSV/summary against Stage26 140 input records and 70 cycles using independent same-session JS analysis; **Python unit tests not yet executed**. If the binary validates candidate calls, investigate preceding branch conditions/call graph to understand *why* bit0 clears; don't equate bit0 to event suppression without evidence. Stage28 hooks are not yet warranted or implemented. Preserve all Stage25–Stage27 source/evidence histories.
+
+---
+
+
+## Previous handoff — Stage26 verified; Stage27 investigation next (2026-11-09)
 
 - **Latest completed stage** Stage26: [source branch](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-trace) `a249f452353c340fe8f1dab23375a8a932b079b4`; [full runtime evidence](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-runtime-evidence) `4b7564ff71664fedd5745e3bcfc4210d74540075`, including exact 21 uploaded log blobs, chat Build.log text and `Stage26_Overlay/STAGE26_RUNTIME_ANALYSIS.md`. Main upload commit `8c6edc82d3146c11b3dd23d964471c31ba3fe816`. **Do not rewrite source/evidence branches.**
 - Build: 2026-11-09 17:27:39 MSVC x86 14.51.36231, 8 files compiled, linked `dinput8.dll` 240,640 bytes, C4456 in new `AITrace.cpp:1671` due to shadowed `reported` local, existing C4754 in `AICommandSiteTrace.cpp:785`. Both non-fatal.

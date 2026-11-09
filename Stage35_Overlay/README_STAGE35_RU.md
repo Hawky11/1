@@ -56,7 +56,7 @@ STAGE35_CONSUMER seq=... phase=FLAGS side=P1 player=0x... tid=... qpcBefore=... 
 
 ### Checking natural runtime
 
-Compare `Stage34 EE200 exit` to subsequent `Stage35 phase=TIMER` and `FLAGS` with same P1/P2 + QPC. Verify actual TIMER f3 transitions: values may decrement, clear immediately or remain unchanged when branch conditions skip the update. Evaluate FLAGS f4/f10/f11 changes but **do not** infer that F5F55 branch ran from f4 alone: `F5BD0+F5C0C` already ORs `0x380`, which contains bit7. Neither f3 nor flags are a proven visible attack, move or hit result.
+Compare `Stage34 EE200 exit` to subsequent `Stage35 phase=TIMER` and `FLAGS` with same P1/P2 + QPC. Verify actual TIMER f3 transitions: values may decrement by the **current header DWORD f8 (`P+3A3C`)**, clear immediately or remain unchanged when branch conditions skip the update. Evaluate FLAGS f4/f10/f11 changes but **do not** infer that F5F55 branch ran from f4 alone: `F5C0C` first ORs `0x380` but `F5C71` later clears bit7 before `F5F4C` on the linear path; other branches/writes can also influence the final flags. Neither f3 nor flags are a proven visible attack, move or hit result.
 
 For true per-branch evidence in the next stage, consider a carefully validated observer at `F5F4C` and, independently, `F58E0` bitmap reads (e.g. `EB7D9` call), **only after** interpreting Stage35 runtime. No reason to change AI gameplay semantics yet.
 

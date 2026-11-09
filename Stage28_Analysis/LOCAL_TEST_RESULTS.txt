@@ -1,0 +1,19 @@
+Stage28 local verification — 2026-11-09
+Original Library item: AALib.zip (extract: AALib.exe, 175556608 bytes)
+PE SHA256 confirmed: 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba
+
+Pinned-original verifier:
+PASS pinned PE: 26 signatures, 16 CALLs, 1 JMPs
+
+Python stdlib regression tests (locally executed against equivalent verifier implementation):
+test_expected_code_markers ... ok
+test_read_pe_section_and_bounds ... ok
+test_real_binary ... ok
+test_relative_call ... ok
+test_relative_jump ... ok
+test_wrong_machine_refused ... ok
+
+Ran 6 tests in 0.214s
+OK
+
+Note: exact GitHub copy uses the same signature/call table but was independently static-reviewed after upload; no Windows runtime execution or DLL patch in Stage28.

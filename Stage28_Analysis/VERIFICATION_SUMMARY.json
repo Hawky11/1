@@ -1,0 +1,26 @@
+{
+  "stage": "Stage28",
+  "kind": "offline-original-PE",
+  "originalExeBytes": 175556608,
+  "originalExeSha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "signatures": 26,
+  "calls": 16,
+  "tailJumps": 1,
+  "testsPassed": 6,
+  "functions": {
+    "stateDispatcher": "0x97970",
+    "primaryClearer": "0x97870",
+    "pendingStateRearm": "0x978B0",
+    "state1Setter": "0x97830",
+    "pairPredicate": "0xF2ED0",
+    "counterMutator": "0x991E0"
+  },
+  "observedStage26": {
+    "records": 140,
+    "fullDwordSet70": "00000000->00000001",
+    "fullDwordClear70": "00000001->00000000",
+    "bit1AtObservedBoundaries": 0,
+    "filteringCaveat": "Stage26TransitionsOnly=1 can hide unchanged-bit0 writes"
+  },
+  "causalBit17QueueLink": "not established"
+}

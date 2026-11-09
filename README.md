@@ -1,6 +1,17 @@
 # ArcanaAI / COM vs COM diagnostic research
 
-## Current checkpoint — Stage25 prepared, Stage24 follow-up complete
+## Current checkpoint — Stage25 runtime complete (2026-11-09)
+
+- **Build/runtime verified:** MSVC x86 Build.log pasted in chat: compiled successfully, `dinput8.dll` 237,568 bytes; one pre-existing C4754 at `AICommandSiteTrace.cpp:785`. Stage25 build marker, observer installation at `0xF58C9`, and one runtime event are present.
+- **Immutable evidence snapshot:** [stage25-secondary-object-flag-runtime-evidence](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-runtime-evidence) at `b426a8f74764b7606ce3b5da075bb3a61d3698b`, with all 20 uploaded runtime logs, chat Build.log text, and [complete analysis](https://github.com/Hawky11/1/blob/stage25-secondary-object-flag-runtime-evidence/Stage25_Overlay/STAGE25_RUNTIME_ANALYSIS.md).
+- **Confirmed:** P1 payload `0x1E` is enqueued/dispatched. Stage25 OR at RVA `0xF58C9` executes inside Stage24 helper: P1 is source, P2 is target, `[P2+0xF8]=0x1→0x1`; it did **not** set bit0 in this sample. QPC sequence: Stage23 resolver `292602968420` → Stage25 OR `292602971617` → Stage24 helper completion `292602973136`.
+- Large logs checked completely: Stage16 24,176 write records and Stage14 11,383 producer records, complete sequence ranges without gaps/duplicates; no explicit errors/drop/overflow. Stage16 shows one P1 and one P2 bit17 set/clear cycle, unrelated to `[player+0xF8]`.
+- **Next investigation (Stage26 not implemented):** discover the initial setter and lifecycle of bit0 at P1/P2+`0xF8`, ideally via static writer xrefs first, then passive writes-only observation if necessary. Preserve Stage25 source/evidence branches and existing game-state semantics. Update `NEXT_SESSION.md` when a safe implementation is prepared.
+
+---
+
+
+## Previous checkpoint — Stage25 prepared, Stage24 follow-up complete
 
 - Source-only Stage25: [stage25-secondary-object-flag-trace](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-trace), commit `3f034550f9d1254cc136452dde363657f913a91c`. Apply `Stage25_Overlay/src/AIQueueTrace.cpp` and `Stage25_Overlay/ArcanaAI.ini` to the working Stage24 project. No project-file change.
 - [Follow-up analysis](https://github.com/Hawky11/1/blob/stage25-secondary-object-flag-trace/Stage25_Overlay/STAGE24_FOLLOWUP_AND_STAGE25_STATIC.md) completes the two previously unread large Stage24 logs and corrects the argument dataflow using the fingerprinted EXE.

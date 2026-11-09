@@ -1,6 +1,26 @@
 # Next session handoff
 
-## Current checkpoint — Stage25 prepared, Stage24 follow-up complete
+## Current handoff — Stage25 runtime complete, plan Stage26 (2026-11-09)
+
+- Latest **build/runtime-tested** observer: Stage25 source [stage25-secondary-object-flag-trace](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-trace), source HEAD `3f034550f9d1254cc136452dde363657f913a91c`. Successful chat Build.log on 2026-11-09 16:50:57: MSVC x86, DLL 237,568 bytes, C4754 warning only.
+- New preserved evidence: [stage25-secondary-object-flag-runtime-evidence](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-runtime-evidence), HEAD `b426a8f74764b7606ce3b5da075bb3a61d3698b`. Includes original Git blobs for all 20 uploaded logs, complete analysis, normalized Build.log transcript from chat (not a separately uploaded Build.log). Keep the source and evidence branches unchanged.
+- Stage25 installer marker at 16:51:44 `STAGE25_SECONDARY_OBJECT_FLAG_BUILD=2026-11-09-r1`; the observer installed at `0xF58C9`. One target event recorded 16:52:07, source P1 `0x0E251F78`, target P2 `0x0E27CCA0`, field P2+`0xF8=0x0E27CD98` before/after `0x1→0x1`; selector31, args3/4 `0/0`, both field reads successful.
+- Same P1/type1/payload0x1E dispatch sequence: ALT `292602968311`, queue `292602968399`, Stage23 resolver `292602968420`, **Stage25 OR `292602971617`**, Stage24 consumer completion `292602973136`, Stage21 classifier `292602975570` (AL0), fallback `292602976845` (slot3 0→0), Stage22 AND `292602977325` (bit400 0→0), dispatcher finish `292602977883`. Correct ordering: Stage25 happens *inside* Stage24 helper.
+- Full Stage16 write trace: 24,176 records, no duplicate/missing sequence IDs, P1 bit17 set/clear and P2 bit17 set/clear. Full Stage14 producer trace: 11,383 records without duplicate/missing IDs; 10 Stage15 branch samples, including accepted P1 bit17=0 case. No explicit ERROR/WARNING/DROPPED/OVERFLOW in either large log.
+- The result **does not** establish who set P2 `+0xF8 bit0` before the OR, nor the gameplay meaning. Do not confuse `+0xF8 bit0` with `+0x3B84 bit17`.
+
+### Next task — design Stage26 bit0 writer/lifetime observation
+
+1. Inspect the fingerprinted AALib.exe for direct/indirect writers to the P1/P2 object field `+0xF8`, and inspect current Stage16 hardware watchpoint design before choosing instrumentation.
+2. If a source change is warranted, create a new *source* branch based on preserved Stage25 commit; use passive diagnostics only. Capture the initial P1/P2 `+0xF8` values and observed writer EIP/RVA, thread, QPC, old/new DWORD, bit0 transitions and call attribution for the first set and later clears. Avoid perturbing game writes/flags.
+3. Stage16 reserves DR0/DR1; do not overwrite existing breakpoint owners. DR2/DR3 may also be owned: check per thread and preserve all original debug state; disabling other probes may be safer than unsound concurrent instrumentation.
+4. Use an unmistakable Stage26 marker, unique log, source/INI validation and reproducible assembly tests. Runtime observations require user MSVC Build.log and in-game marker/hook installation. At least one event where bit0 transitions `0→1` is necessary before attributing the initial setter; a single `1→1` OR is insufficient.
+5. Preserve all Stage21–Stage25 source/evidence snapshots. Append Stage26 results to `PROJECT_HISTORY.md`, update `NEXT_SESSION.md` and README after completion.
+
+---
+
+
+## Previous checkpoint — Stage25 prepared, Stage24 follow-up complete
 
 - Source-only Stage25: [stage25-secondary-object-flag-trace](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-trace), commit `3f034550f9d1254cc136452dde363657f913a91c`. Apply `Stage25_Overlay/src/AIQueueTrace.cpp` and `Stage25_Overlay/ArcanaAI.ini` to the working Stage24 project. No project-file change.
 - [Follow-up analysis](https://github.com/Hawky11/1/blob/stage25-secondary-object-flag-trace/Stage25_Overlay/STAGE24_FOLLOWUP_AND_STAGE25_STATIC.md) completes the two previously unread large Stage24 logs and corrects the argument dataflow using the fingerprinted EXE.

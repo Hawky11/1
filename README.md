@@ -1,6 +1,16 @@
 # ArcanaAI / COM vs COM diagnostic research
 
-## Latest — Stage27 exact-PE static CALL verification (2026-11-09)
+## Latest checkpoint — Stage27 0x97970 CALL/tail-JMP control flow verified (2026-11-09)
+
+- **Complete original PE analysis:** [stage27-bit0-tailjump-verified](https://github.com/Hawky11/1/tree/stage27-bit0-tailjump-verified), commit `78e48cdcef7a67fcdf64a50dfa95228357eedbe6`, descended from previous static evidence branch `stage27-verified-static-callgraph`. It contains the *exact* original 4,257-byte user-uploaded `Stage27_CallFlow_97970.txt` (Git blob `d5d8c9f90665baf1c625bb65515910c2984b7a64`) and [verified annotated disassembly](https://github.com/Hawky11/1/blob/stage27-bit0-tailjump-verified/Stage27_CompleteCallGraph/VERIFIED_97970_BRANCH.md).
+- **Both pathways to primary bit0 clearer RVA0x97870 confirmed** in the SHA256-pinned original AALib.exe. `0x97609 CALL 0x97970`; when `[object+0xD4]==1`, and guard passes, `0x979CC CALL 0x97870` (34 Stage26 clear records, stack return0x979D1), then calls `0x978B0`. When `[object+0xD4]==2`, same guard leads to `0x979AC JMP 0x97870` *after* POP ESI/EBP (20 records, original return0x9760E preserved). State0 calls `0x978B0` without this clear, others/failed guards return.
+- **Guard:** `[object+0xC4]&1==0`, `[object+0xCC]&7==0`, `[object+0xC8]&1==1`. Here `object=player+0x30` for captured records. The clearer masks `[player+0xF8]` with `0xFFFFFFF2`, sets `[player+0x104]=2`, and ORs `[player+0xF4]` with 0x400, besides helper calls. Exactly 54 clears observed: P1 28/P2 26. Both captured source-P2/payload0x1E events followed the state1 nested CALL path.
+- **Stage27 complete as static/control-flow attribution**: no new DLL, game run, hook or build required. Remaining game-level semantics and any causal connection to COM-vs-COM suppression are *not proven*. Suggested next investigation is the `0x978B0` helper and its state-dependent effects, initially via offline byte windows rather than another runtime patch. Historical branches remain unchanged.
+
+---
+
+
+## Previous — Stage27 exact-PE static CALL verification (2026-11-09)
 
 - User supplied `Stage27_AALib_StaticReport.txt` from the exact original local AALib.exe. SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` confirmed; all four bit0 clearer signatures and `0x97870` entry matched. **Exact 2,389-byte uploaded TXT** preserved in [stage27-verified-static-callgraph](https://github.com/Hawky11/1/tree/stage27-verified-static-callgraph), commit `2e08b356fa9923e57b0c78c08c70adbf8e1015c1`, blob `7e3dc3a77f602fde1e82ca9fe70903d4d29dd9c7`.
 - **Corrected CALL graph:** `AALib RVA 0x979CC → 0x97870` (return `0x979D1`) is a verified direct E8 CALL, while `0x97609 → 0x97970` (return `0x9760E`) is a verified CALL to another function. Stage27's older prediction that both call directly into `0x97870` was wrong; its 34+20 dynamic stack counts remain unchanged. The transfer from `0x97970` to `0x97870` for the remaining 20 captures has **not** been disassembled yet.

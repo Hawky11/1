@@ -25,9 +25,11 @@ For each matching call, the wrapper captures the original four cdecl arguments. 
 | arg3 | `0x03` | resolver record byte +2 |
 | arg4 | `0x12` | resolver record byte +4 |
 
-Immediately before calling the original helper, it reads:
-- the three table bytes at `g_gameBase + 0x049DF188 + selector*3`;
+Immediately before calling the original helper, it snapshots:
+- the three table bytes at `g_gameBase + 0x049DF188 + selector*3` (labelled `tableBytesBeforeHelper`);
 - the three DWORDs at `player+0x3A08`.
+
+Static flow shows the primary helper makes an unconditional call to `0x0049EEA0` before it loads the mapping bytes. Stage24 does not hook that internal call or the exact table-load instruction. Therefore the recorded table bytes are the pre-entry snapshot; if the internal call were to modify the table, those bytes could differ from the values later consumed.
 
 Immediately after the original helper returns, it reads the same three output DWORDs again. Read masks distinguish successful reads from zero values.
 

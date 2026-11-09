@@ -1,21 +1,22 @@
 # Next session handoff
 
-## Current checkpoint — Stage24 runtime, 2026-11-09 16:35
+## Current checkpoint — Stage25 prepared, Stage24 follow-up complete
 
-- Tested source: [stage24-resolver-consumer-trace](https://github.com/Hawky11/1/tree/stage24-resolver-consumer-trace), commit `0bca8a6d8e851990563b281c517f01bd1a0c81a2`.
-- Evidence: [stage24-resolver-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage24-resolver-consumer-runtime-evidence), commit `983a7f4f205c99cd1c8f44814c58cc09ed76f0c8`. See [full analysis](https://github.com/Hawky11/1/blob/stage24-resolver-consumer-runtime-evidence/Stage24_Overlay/STAGE24_RUNTIME_ANALYSIS.md).
-- User uploaded logs to Stage23 branch at `96464289b7c41c4f62402b75ad1081d191ae999b`; this is a Stage24 r1 run despite the branch name. Do not treat that branch HEAD as the old Stage23 source snapshot; old Stage23 r2 source remains at `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`.
-- Build 16:35:12: eight units compile, DLL233984 bytes, only C4754 at AICommandSiteTrace.cpp:785. Marker and hook EE306->F57D0 confirmed.
-- Two P1 events: selector0x1F, actual arg3=0/arg4=0, table pre-entry bytes03,00,10; output (6,0x1002,0)->(0x1F,0x10001,0) and (4,0x11,0)->(0x1F,0x10001,0). All reads successful. Both correlate to Stage23 and queue/dispatch/classifier/fallback/AND. Slot3 and bit0x400 stay zero.
-- **Correction:** previous predictions arg3=3/arg4=18 were not confirmed. Resolver bytes remain3/18; full intervening dispatcher dataflow needs review. Wrapper argument-copy/replay/log offsets were reviewed without finding an overwrite.
-- Flags3 suggest both static flag paths; secondary-helper execution is not directly captured. Higher-level selector semantics remain unknown.
-- All19 log blobs and pasted Build.log preserved. Read17 logs fully without explicit error/drop/overflow markers. Two large logs (PlayerBit17WriteTrace and ProducerCallTrace) could not be read with available connector transport; do not describe them as empty or claim their write transitions were verified.
-- Next: retrieve those two large logs; inspect full EE278..EE306 disassembly to explain zero arguments before selecting Stage25 instrumentation. No Stage25 code has been created.
+- Source-only Stage25: [stage25-secondary-object-flag-trace](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-trace), commit `3f034550f9d1254cc136452dde363657f913a91c`. Apply `Stage25_Overlay/src/AIQueueTrace.cpp` and `Stage25_Overlay/ArcanaAI.ini` to the working Stage24 project. No project-file change.
+- [Follow-up analysis](https://github.com/Hawky11/1/blob/stage25-secondary-object-flag-trace/Stage25_Overlay/STAGE24_FOLLOWUP_AND_STAGE25_STATIC.md) completes the two previously unread large Stage24 logs and corrects the argument dataflow using the fingerprinted EXE.
+- Both large files fully retrieved and exact Git blob hashes verified. Write trace:21886 records, no missing/duplicate sequence IDs, blocks can appear out of order. Producer trace:10463 ordered records without gaps. No explicit errors/drops/overflow markers.
+- P2 setter->bit17 OR confirmed: Stage17 QPC0x41E9BA1075 -> write seq15206 QPC0x41E9BA11CE, delta345. Clear seq15215 at ED19F uses **0xFFF9FFFF**, not the previously stated0xFFFDFFFF; it clears bits17/18, with observed0x30000->0x10000.
+- **Argument issue resolved:** EE2F0 reloads ECX from player+3F34 (arg4); EE2F6 reloads EDX from player+3F30 (arg3). Resolver bytes3/18 are not the final arguments. Zero/zero in Stage24 is correct for those fields.
+- **Secondary-path correction:** F58C1 calls9EF00(primary arg3,-1), not arg4. With arg3=0 it selects slot1; Stage24 returned EAX matches P2. Stage25 observes the original OR[target+F8],1 at F58C9 directly.
+- Stage25 log:`ArcanaAI_Stage25SecondaryObjectFlagTrace.log`; marker:`STAGE25_SECONDARY_OBJECT_FLAG_BUILD=2026-11-09-r1`. Records source/target player, selector/args, before/after field and QPC. Original OR executes once; no extra game-state writes.
+- Validation: exact PE SHA256 and patch signatures; extracted x86 wrapper assembled and compared with original OR in128 randomized Unicorn cases (registers, ESP, EFLAGS, output, logger context). **Not compiled with MSVC and not tested in-game yet.**
+- Next: inspect user's new Build.log, then Stage25 marker/hook installation and records. Correlate Stage25 QPC between Stage23 and Stage24 records. Establish whether target bit0 transitions0->1 or is already1; gameplay semantics remain unknown.
+- Stage24 evidence remains immutable at `983a7f4f205c99cd1c8f44814c58cc09ed76f0c8`. Its initial transport limitation is superseded by this follow-up; no old logs or historical source branches were rewritten.
 
 
 ---
 
-The checkpoint sections below predate this Stage24 run and are retained as historical context.
+The checkpoint sections below predate this Stage25 handoff and are retained as historical context.
 
 
 **Read this file first in a new chat.** Inspect current GitHub branch HEADs and newly uploaded files before asking the user for anything.

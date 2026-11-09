@@ -144,7 +144,7 @@ __declspec(naked) void Stage35TimerHook()
         fxsave [edi]
         fninit
         cld
-        push Stage35TimerPhase
+        push 1
         push ebx
         call Stage35Begin
         add esp, 8
@@ -164,7 +164,7 @@ __declspec(naked) void Stage35TimerHook()
         fxsave [edi]
         fninit
         cld
-        push Stage35TimerPhase
+        push 1
         call Stage35End
         add esp, 4
         fxrstor [edi]
@@ -186,7 +186,7 @@ __declspec(naked) void Stage35FlagsHook()
         fxsave [edi]
         fninit
         cld
-        push Stage35FlagsPhase
+        push 2
         push ebx
         call Stage35Begin
         add esp, 8
@@ -206,7 +206,7 @@ __declspec(naked) void Stage35FlagsHook()
         fxsave [edi]
         fninit
         cld
-        push Stage35FlagsPhase
+        push 2
         call Stage35End
         add esp, 4
         fxrstor [edi]

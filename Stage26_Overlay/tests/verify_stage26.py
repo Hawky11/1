@@ -27,7 +27,7 @@ for token in (
     "TraceExceptionHandler",
     "GetThreadContext",
     "SetThreadContext",
-    "Stage26 active.",
+    "STAGE26 active.",
 ):
     need(token)
 

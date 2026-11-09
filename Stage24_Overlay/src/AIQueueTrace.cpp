@@ -2572,7 +2572,7 @@ extern "C" void __cdecl ArcanaLogStage24ResolverConsumer(const DWORD* savedConte
 
     char message[1900]{};
     sprintf_s(message,
-        "STAGE24_RESOLVER_CONSUMER seq=%ld side=P%lu tid=%lu tick=%lu qpc=%I64u callReturnRVA=0x%08lX player=0x%08lX dispatchType=1 dispatchPayload=0x0000001E outputPtr=0x%08lX selector=%lu arg3=%lu arg4=%lu tableAddress=0x%08lX tableReadable=%lu tableBytes=(%02lX,%02lX,%02lX) flagBit0ClearOutputExpected=%lu flagBit1SecondaryCallExpected=%lu outputBefore=(%08lX,%08lX,%08lX) outputBeforeReadMask=0x%X outputAfter=(%08lX,%08lX,%08lX) outputAfterReadMask=0x%X helperResultEAX=0x%08lX eflagsAfterHelper=0x%08lX",
+        "STAGE24_RESOLVER_CONSUMER seq=%ld side=P%lu tid=%lu tick=%lu qpc=%I64u callReturnRVA=0x%08lX player=0x%08lX dispatchType=1 dispatchPayload=0x0000001E outputPtr=0x%08lX selector=%lu arg3=%lu arg4=%lu tableAddress=0x%08lX tableReadable=%lu tableBytesBeforeHelper=(%02lX,%02lX,%02lX) flagBit0ClearOffsets4And8Expected=%lu flagBit1SecondaryCallExpected=%lu outputBefore=(%08lX,%08lX,%08lX) outputBeforeReadMask=0x%X outputAfter=(%08lX,%08lX,%08lX) outputAfterReadMask=0x%X helperResultEAX=0x%08lX eflagsAfterHelper=0x%08lX",
         static_cast<long>(sequence),
         static_cast<unsigned long>(side),
         static_cast<unsigned long>(GetCurrentThreadId()),

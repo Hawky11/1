@@ -1,4 +1,16 @@
 # ArcanaAI / COM vs COM diagnostic research
+## Stage35 — Windows x86 build and downstream runtime confirmed (2026-11-10)
+
+- **Completed evidence:** [stage35-controller-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage35-controller-consumer-runtime-evidence) (archive commit `4044426a`, [full Stage35 analysis](https://github.com/Hawky11/1/blob/stage35-controller-consumer-runtime-evidence/Stage35_Runtime/RUNTIME_ANALYSIS.md), [33 slot11 transition rows](https://github.com/Hawky11/1/blob/stage35-controller-consumer-runtime-evidence/Stage35_Runtime/stage35_slot11_timer_transitions.csv), [24 queue→dispatch matches](https://github.com/Hawky11/1/blob/stage35-controller-consumer-runtime-evidence/Stage35_Runtime/stage31_to_stage35_run_dispatch_pairs.csv)). **23 exact newly uploaded Git blobs** (22 logs + Build.log) archived unchanged. Earlier Stage35 source-only branch `stage35-controller-consumer-trace` @ `3ce68f5` stays immutable.
+- **Build:** user's Windows MSVC x86 Build.bat **SUCCEEDED** 2026-11-10 00:22:58, `dinput8.dll` 257024 bytes; one previous nonfatal C4754 warning (`AICommandSiteTrace.cpp:785`), no compiler/link errors. `STAGE35_CONTROLLER_CONSUMER_BUILD=2026-11-10-r1` and **both callsite observers installed** (`ACABE→F60C0` TIMER, `ACAC4→F5BD0` FLAGS).
+- **Stage35 integrity:** **9280/9280** consecutive `STAGE35_CONSUMER` seq, **4640 TIMER + 4640 FLAGS**; exactly **4640/4640** adjacent same-side/TID/player TIMER→FLAGS pairs, all 9280 `preMask=postMask=0xFFF`. Game TID8204, balanced P1/P2. No explicit positive dropped/overflow/errors in core logs.
+- **Downstream proof:** native `F60C0` actually consumed Stage34's `P+3A6C=0xF00`: natural P1 payload4 EE200 seq90/92/93, two writes/reset to `0xF00` and **33 timer decrements by 0x78 (120)** to zero, each with `P+3A3C=0x78`. Timer sequences captured in Stage35 CSV. **This proves slot consumption, not an attack or movement.**
+- **Prior path integrity:** Stage32 `EVENT_DISPATCH_DETAIL` seq1..125: type0 payload0=69, payload1=13, payload4=3, payload5=0, plus 40 type1; **85/85** type0 matched Stage33/34 net-effect with masks valid. Stage31: 4 scoped episodes, **24/24** queue→EE200 exact-side/TID/payload matches, Δ5..299 QPC ticks. Stage29: 4 bit17 set/clear cycles; clears inside dispatch seq14,54,95,121, post-RVA ED1A9.
+- **Major action-semantic caveat:** Subsequent `FLAGS` bit7 (`P+3B78 & 0x80`) set in 32/33 positive-slot cases, **but also in 3989/4607 zero-slot cases**. The flag is not a unique action/payload4 indicator; snapshots cannot prove exact `F5F4C→F5F55` branch or rendered game outcome. No gameplay defect established.
+- **Next Stage36:** read-only static discovery of the actual command/animation/action issuance boundary downstream of the timer/flags/bitmap predicates, using existing original SHA-pinned `AALib.exe` in ChatGPT Library `/AALib.zip`. If justified, validate and add a bounded passive branch/return observer for `F5F4C` or `F58E0` (known `EB7D9` consumer) with P1/P2/QPC correlations. **Do not force payload5, change bit17 or synthesize type1/0x1E.** Preserve Stage29 `AITrace.cpp` and all historical stages.
+
+---
+
 
 ## Stage35 — passive downstream controller consumers: source prepared (2026-11-10)
 

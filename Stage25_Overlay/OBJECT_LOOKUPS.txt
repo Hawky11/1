@@ -1,0 +1,80 @@
+
+/tmp/aalib/AALib.exe:     file format pei-i386
+
+
+Disassembly of section .text:
+
+0049eea0 <.text+0x9dea0>:
+  49eea0:	55                   	push   ebp
+  49eea1:	8b ec                	mov    ebp,esp
+  49eea3:	8b 4d 08             	mov    ecx,DWORD PTR [ebp+0x8]
+  49eea6:	83 f9 01             	cmp    ecx,0x1
+  49eea9:	77 43                	ja     0x49eeee
+  49eeab:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  49eeae:	83 f8 ff             	cmp    eax,0xffffffff
+  49eeb1:	74 32                	je     0x49eee5
+  49eeb3:	80 3d c2 19 0a 0e 00 	cmp    BYTE PTR ds:0xe0a19c2,0x0
+  49eeba:	75 09                	jne    0x49eec5
+  49eebc:	39 04 8d 44 1b 0a 0e 	cmp    DWORD PTR [ecx*4+0xe0a1b44],eax
+  49eec3:	7e 20                	jle    0x49eee5
+  49eec5:	85 c0                	test   eax,eax
+  49eec7:	78 25                	js     0x49eeee
+  49eec9:	39 04 8d 44 1b 0a 0e 	cmp    DWORD PTR [ecx*4+0xe0a1b44],eax
+  49eed0:	7e 1c                	jle    0x49eeee
+  49eed2:	8d 0c 89             	lea    ecx,[ecx+ecx*4]
+  49eed5:	8d 04 48             	lea    eax,[eax+ecx*2]
+  49eed8:	69 c0 84 44 00 00    	imul   eax,eax,0x4484
+  49eede:	05 78 1f 0a 0e       	add    eax,0xe0a1f78
+  49eee3:	5d                   	pop    ebp
+  49eee4:	c3                   	ret
+  49eee5:	8b 04 8d 54 1b 0a 0e 	mov    eax,DWORD PTR [ecx*4+0xe0a1b54]
+  49eeec:	5d                   	pop    ebp
+  49eeed:	c3                   	ret
+  49eeee:	33 c0                	xor    eax,eax
+  49eef0:	5d                   	pop    ebp
+  49eef1:	c3                   	ret
+  49eef2:	cc                   	int3
+  49eef3:	cc                   	int3
+  49eef4:	cc                   	int3
+  49eef5:	cc                   	int3
+  49eef6:	cc                   	int3
+  49eef7:	cc                   	int3
+  49eef8:	cc                   	int3
+  49eef9:	cc                   	int3
+  49eefa:	cc                   	int3
+  49eefb:	cc                   	int3
+  49eefc:	cc                   	int3
+  49eefd:	cc                   	int3
+  49eefe:	cc                   	int3
+  49eeff:	cc                   	int3
+  49ef00:	55                   	push   ebp
+  49ef01:	8b ec                	mov    ebp,esp
+  49ef03:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  49ef06:	83 f8 01             	cmp    eax,0x1
+  49ef09:	77 35                	ja     0x49ef40
+  49ef0b:	8b 4d 0c             	mov    ecx,DWORD PTR [ebp+0xc]
+  49ef0e:	83 f9 ff             	cmp    ecx,0xffffffff
+  49ef11:	75 1b                	jne    0x49ef2e
+  49ef13:	40                   	inc    eax
+  49ef14:	25 01 00 00 80       	and    eax,0x80000001
+  49ef19:	79 05                	jns    0x49ef20
+  49ef1b:	48                   	dec    eax
+  49ef1c:	83 c8 fe             	or     eax,0xfffffffe
+  49ef1f:	40                   	inc    eax
+  49ef20:	83 f8 01             	cmp    eax,0x1
+  49ef23:	77 1b                	ja     0x49ef40
+  49ef25:	8b 04 85 54 1b 0a 0e 	mov    eax,DWORD PTR [eax*4+0xe0a1b54]
+  49ef2c:	5d                   	pop    ebp
+  49ef2d:	c3                   	ret
+  49ef2e:	51                   	push   ecx
+  49ef2f:	50                   	push   eax
+  49ef30:	e8 6b ff ff ff       	call   0x49eea0
+  49ef35:	83 c4 08             	add    esp,0x8
+  49ef38:	85 c0                	test   eax,eax
+  49ef3a:	74 04                	je     0x49ef40
+  49ef3c:	8b 00                	mov    eax,DWORD PTR [eax]
+  49ef3e:	5d                   	pop    ebp
+  49ef3f:	c3                   	ret
+  49ef40:	33 c0                	xor    eax,eax
+  49ef42:	5d                   	pop    ebp
+  49ef43:	c3                   	ret

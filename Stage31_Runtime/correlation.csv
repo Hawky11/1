@@ -1,0 +1,7 @@
+episode,side,player,stage29_set_seq,stage29_clear_seq,stage15_seq,stage31_begin_qpc,set_delta_qpc,stage15_delta_qpc,type0_delta_qpc,end_delta_qpc,clear_delta_qpc,begin_flags3B84,end_flags3B84,type0_payload,queue_guard_before,queue_active_before,queue_guard_after,queue_active_after,queue_stored_type_after,queue_stored_payload_after,complete_masks
+1,P2,0E27CCA0,1,2,890,470765652687,-2556,-327,200,631,1187,00020000,00030000,0,0,0,0,0,0,0,true
+2,P1,0E251F78,3,4,6163,470856876521,-3098,-386,229,697,1349,00020000,00030000,0,0,0,0,0,0,0,true
+3,P2,0E27CCA0,5,6,8604,470898926260,-2457,-315,177,494,1024,00020000,00030000,0,0,0,0,0,0,0,true
+4,P1,0E251F78,7,8,13685,470989746201,-2567,-322,199,411,949,00020000,00030000,0,0,0,0,0,0,0,true
+5,P2,0E27CCA0,9,10,14581,471005167785,-3075,-392,219,391,1026,00020000,00030000,0,0,0,0,0,0,0,true
+6,P1,0E251F78,11,12,18261,471070552451,-2730,-349,206,574,1169,00020000,00030000,0,0,0,0,0,0,0,true

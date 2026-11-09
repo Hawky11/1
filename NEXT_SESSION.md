@@ -6,51 +6,49 @@
 
 - Repository: https://github.com/Hawky11/1
 - Documentation branch: `main`
-- **Latest source candidate (Stage23 r2):** [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace), HEAD `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`.
-- **Latest tested runtime evidence:** [stage23-resolver-result-runtime-evidence](https://github.com/Hawky11/1/tree/stage23-resolver-result-runtime-evidence), HEAD `8e2d025ca60def5103206250a71929fa5d9329bd`. This branch preserves the exact uploaded logs, the user-pasted Build.log, and `Stage23_Overlay/STAGE23_RUNTIME_ANALYSIS.md`.
-- **Latest build:** 2026-11-09 00:39:38, Visual Studio 18 Community / MSVC 14.51.36231 x86. All eight C++ translation units compiled; `build\\dinput8.dll` linked successfully at **229,376 bytes**. The only diagnostic is the non-fatal C4754 warning in `AICommandSiteTrace.cpp:785`.
-- The initial Stage23 r2 compile attempt failed at two pointer casts in `AIQueueTrace.cpp`; both were fixed using `reinterpret_cast<std::intptr_t>(resolver)`. The subsequent r2 build succeeded, and the successful DLL was exercised in-game.
-- **Stage23 runtime installation:** the log contains `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2` and confirms the observer installed at resolver CALL RVA `0x000EE273` -> helper RVA `0x0012EAC0`; `suspended=40`.
-- Three type-1 / payload-`0x1E` resolver records were captured, all `recordReadable=1`, all on thread 11360. The resolver args were P2 `(0x17,0x17,0x1E,0x38)` and P1 twice `(0x0A,0x0A,0x1E,0x26)`. All returned the same 12 bytes `60 FF 03 1F 12 00 00 05 13 24 03 00`; DWORDs `(0x1F03FF60,0x05000012,0x00032413)`; fields +2=`0x03`, +3=`0x1F`, +4=`0x12`, +0x0B=`0x00`.
-- All three samples correlate one-to-one by side/player/thread/tick/QPC with Stage13 ALT_CALLSITE at `0xF6AD7`, accepted queue insertion at `0xF6ADC`, EventDispatch at `0xEE5CB`, Stage21 classifier/fallback and Stage22 post-AND. Classifier helper `0xE8CF0` returned AL=0; fallback helper `0xF7EB0` ran with index 3; post-AND observer ran.
-- Slot 3 was readable and `0 -> 0` before/after all three fallback calls. Controller flags were 0 before the AND and bit `0x400` remained `0 -> 0` for all three. This confirms execution, not a nonzero-to-zero mutation.
-- Stage18 and Stage20 each captured 27 records, paired 27/27 by side/player/thread/tick/parent return. Stage18 gate AL=1, key `0x19`, table byte `0xFA` for all 27. Stage20 object helper returned AL=1 in 25; two P1 samples at tick 823152734 had AL=0 with object DWORD `0x58` and bit2 clear. Stage17 then recorded two P1 calls to setter caller RVA `0xC6502`, index `0x71`, 76 and 73 QPC ticks later. First setter snapshot saw player+`0x3B84`=0, second `0x20000`; bit17 likely set between them, but exact write is not independently verified because Stage16 writer log was empty.
-- `ArcanaAI_StateMapTrace.log`, `ArcanaAI_PlayerBit17WriteTrace.log`, and `ArcanaAI_ProducerCallTrace.log` were zero bytes. `ArcanaAI_FinalCommandTrace.log` had no payload-`0x1E` at its monitored callsite `0xF7C5D`; that does not contradict the separately observed alternate-callsite queue/dispatch path at `0xF6AD7`. No ERROR/WARNING/DROP/OVERFLOW/FAILED markers were found in nonempty uploaded logs.
-- Stage21 `preCallEdi` continues to equal the controller-array pointer, not the resolver byte; retain it as raw register data only. Do not revive the old decoded-action interpretation.
+- **Latest tested source:** [stage23-resolver-result-trace](https://github.com/Hawky11/1/tree/stage23-resolver-result-trace), HEAD `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`.
+- **Latest runtime evidence:** [stage23-resolver-result-runtime-evidence-run2](https://github.com/Hawky11/1/tree/stage23-resolver-result-runtime-evidence-run2), HEAD `0e6ed619a4e812687e615b00535ef17e54118b5b`. This branch stores the second Stage23 r2 run's exact 18 runtime logs, pasted Build.log, and `Stage23_Overlay/STAGE23_RUNTIME_ANALYSIS_RUN2.md`. The first Stage23 r2 capture remains preserved at [stage23-resolver-result-runtime-evidence](https://github.com/Hawky11/1/tree/stage23-resolver-result-runtime-evidence), HEAD `306b006a2230c1226a49ab93b9b8b74722fd1683`.
+- **Latest build:** 2026-11-09 09:04:32, Visual Studio 18 Community / MSVC 14.51.36231 x86. All eight C++ translation units compiled; `build\\dinput8.dll` linked successfully at **229,376 bytes**. Only diagnostic: non-fatal C4754 at `AICommandSiteTrace.cpp:785`.
+- The first Stage23 r2 compile attempt failed at two pointer casts in `AIQueueTrace.cpp`; r2 fixed both with `reinterpret_cast<std::intptr_t>(resolver)`. The successful r2 binary has been built and tested in two separate captures.
+- **Important stage identification:** the new 09:06 upload is still a Stage23 r2 run, **not Stage24**. It contains marker `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2`, Stage23 resolver installation at `0x000EE273 -> 0x0012EAC0`, and the header `Stage 12/21/22/23 tracing requested`. There is no Stage24 marker/log and no installation at CALL RVA `0x000EE306`.
+- **Stage23 runtime:** three type-1 / payload-`0x1E` resolver records were captured, all readable and all on thread 16252:
+  | Side | Tick | Resolver QPC | Args (arg1,arg2,arg3,arg4) | Record pointer |
+  |---|---:|---:|---|---|
+  | P2 | 1331046 | 13310813095 | `(0x17,0x17,0x1E,0x38)` | `0x05C8DCA0` |
+  | P1 | 1332312 | 13323424234 | `(0x0A,0x0A,0x1E,0x26)` | `0x0586F490` |
+  | P1 | 1350156 | 13501860595 | `(0x0A,0x0A,0x1E,0x26)` | `0x0586F490` |
+- All three resolver records again contain `60 FF 03 1F 12 00 00 05 13 24 03 00`; byte +3 is selector `0x1F`. All correlate to ALT_CALLSITE RVA `0xF6AD7`, accepted insertion at `0xF6ADC`, EventDispatch at `0xEE5CB`, Stage21 classifier/fallback and Stage22 post-AND.
+- For each of the three `0x1E` events, classifier helper `0xE8CF0` returned AL=0, fallback helper `0xF7EB0` ran with index 3, and the Stage22 post-AND observer ran. Slot 3 stayed `0 -> 0`; bit `0x400` stayed `0 -> 0`. No nonzero-to-zero fallback clear was captured.
+- **New Stage18/20/17 sample:** eight Stage18 gate records and eight Stage20 object-guard records (all P2) correlate sequentially 8/8 by side/player/thread/tick/stack/QPC. Each object check followed its gate by 121–175 QPC ticks. All eight gate results were AL=1, key `0x19`, table byte `0xFA`. First six object helper results were AL=1 with object DWORD `0x4C`; last two were AL=0 with object DWORD `0x58` (bit2 clear), both at tick 1353484.
+- Those last two AL=0 guards match two Stage17 setter calls at CALL RVA `0xC6502`, both index `0x71`, same P2 player and same EBP/stack frames. Guard #7 QPC `0x326C2BD8E` → setter #1 `0x326C2BDD6` = 72 ticks; guard #8 `0x326C2C03B` → setter #2 `0x326C2C081` = 70 ticks. The `player+0x3B84` snapshots show 0 at the first pair and `0x20000` at the second pair. This is strong correlation consistent with the first call setting bit17, but the exact store is not directly confirmed: `ArcanaAI_PlayerBit17WriteTrace.log` is empty.
+- Empty logs: `ArcanaAI_PlayerBit17WriteTrace.log`, `ArcanaAI_StateMapTrace.log`, `ArcanaAI_ProducerCallTrace.log`. `FinalCommandTrace` has 45 records but no payload-`0x1E` at monitored RVA `0xF7C5D`; this does not contradict the separately confirmed `0xF6AD7` route. No ERROR/WARNING/DROP/OVERFLOW/FAILED markers were found in nonempty uploaded logs.
+- Stage21 `preCallEdi` still equals the controller-array pointer, not resolver byte +3. Retain it as raw EDI only.
 
-## Static interpretation and next task — Stage24
+## Next task — Stage24 resolver consumer observer
 
-The Stage23 resolver byte +3 is `0x1F` in all three runtime samples. Static disassembly confirms this byte is passed as argument 2 to helper `0x004F57D0` at CALL RVA `0x000EE306`. The helper treats it as a selector/index into a three-byte-per-index mapping table at base `0x04DDF188`, using address `0x04DDF188 + selector*3`:
-
-- table byte +0: flags;
-- table byte +1 and +2: mapped selectors used to set bits in the output structure;
-- output pointer: `player+0x3A08`;
-- arg2 / selector: resolver byte +3 (0x1F);
-- arg3: resolver byte +2 (0x03);
-- arg4: resolver byte +4 (0x12).
-
-The helper stores the selector in the output structure's first DWORD and builds the following DWORDs using the mapped bytes. Some flag bits alter initialization and may trigger a secondary helper call. The table lives in writable `.data` and may be initialized at runtime. **Do not infer that selector 0x1F is an attack ID, command ID, or animation ID.** Its exact high-level meaning remains unknown.
+Stage23 static analysis and both runtime runs establish resolver byte +3 = `0x1F`. Static disassembly shows this byte is passed as argument 2 to helper `0x004F57D0` at CALL RVA `0x000EE306`. The helper treats it as a selector into a three-byte mapping table at `0x04DDF188 + selector*3`; it builds a three-DWORD output structure at `player+0x3A08`. The three table bytes are one flags byte and two mapped selectors. High-level semantics such as attack/action/command/animation are not established.
 
 ### Stage24 implementation target
 
-Create a new source branch from the Stage23 r2 source HEAD `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`; do not modify either Stage23 source or runtime-evidence branch. Add a passive observational wrapper at CALL RVA `0x000EE306` -> helper RVA `0x000F57D0`. Validate the original callsite bytes/context and helper prologue against the same exact AALib.exe fingerprint. The observer should:
+Create a new source branch from the unchanged Stage23 r2 source HEAD `6e5f53da1e6959db840a84bbb9bebaad8894bd4b`. Do not modify either Stage23 source branch or either Stage23 runtime-evidence branch. Add a passive observational wrapper at CALL RVA `0x000EE306` -> helper RVA `0x000F57D0`, validating exact callsite bytes/context and helper prologue against the same AALib.exe fingerprint.
 
-1. Copy and replay the four original helper arguments exactly once, preserving caller-owned stack layout and original cleanup.
-2. Capture the output pointer and selector/other input arguments; for the three target payload-`0x1E` events, verify selector=0x1F, arg3=3, arg4=0x12.
-3. Safely capture the three table bytes at `0x04DDF188 + selector*3` immediately before the helper call.
-4. Capture the three output DWORDs at `player+0x3A08` both before and after the original helper executes.
-5. Record whether the flag byte selected any additional initialization / secondary helper path. Do not add an intrusive hook unless the static control flow proves it is necessary; first trace the primary helper.
-6. Preserve the original returned registers/EFLAGS and caller stack. Use read-only diagnostics only; never write the table or player structure.
+Capture:
+1. The four original helper arguments; expected target values are output pointer `player+0x3A08`, selector `0x1F`, arg3 `0x03`, arg4 `0x12`.
+2. The three runtime mapping bytes at `0x04DDF188 + selector*3` immediately before the helper call.
+3. The three output DWORDs at `player+0x3A08` immediately before and after the original helper call.
+4. Whether table flags select an initialization/secondary-helper path; first inspect the primary helper's control flow and do not add another intrusive hook unless necessary.
 
-Correlate Stage24 output records with Stage23 resolver QPC, Stage21 fallback and Stage22 post-AND for the same side/player/thread/tick. The target is to understand how selector 0x1F populates the player structure, not to alter behavior.
+Replay the original args exactly once; preserve original returned registers/EFLAGS, caller-owned stack and cleanup. Diagnostics must be read-only; never write the table or output structure. Correlate Stage24 QPC with Stage23 resolver, Stage21 fallback and Stage22 post-AND for the same side/player/thread/tick.
+
+**Make Stage24 unmistakable:** add `STAGE24_RESOLVER_CONSUMER_BUILD=...` and a dedicated `ArcanaAI_Stage24ResolverConsumerTrace.log`. Do not reuse Stage23's marker or filename. A successful compile alone is not runtime evidence; require both Build.log and the Stage24 runtime marker/installation line.
 
 ## Preservation rules
 
-- Keep Stage21 r1/r2, Stage22 source/runtime evidence and Stage23 source/runtime evidence immutable.
-- A source branch must not be described as tested until both a successful Build.log and runtime marker/hook-installation log exist.
-- A completed run should preserve the exact source/INI, Build.log, all uploaded logs and a concise runtime analysis in its stage evidence branch.
+- Keep Stage21 r1/r2, Stage22 source/runtime evidence, Stage23 source, and both Stage23 runtime captures immutable.
+- A source branch must not be described as tested until a successful Build.log and runtime marker/hook-installation log both exist.
+- A completed run must preserve the exact source/INI, Build.log, all uploaded logs and concise runtime analysis in its evidence branch.
 - Keep `main` as documentation index and append-only history; update README, NEXT_SESSION and PROJECT_HISTORY after each completed stage.
-- Distinguish a confirmed read/call/branch from a semantic interpretation that is still a hypothesis.
+- Distinguish confirmed calls/reads/branches from semantic interpretations that remain hypotheses.
 
 ## Historical build/runtime details
 

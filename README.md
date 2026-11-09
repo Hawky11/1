@@ -1,5 +1,17 @@
 # ArcanaAI / COM vs COM diagnostic research
 
+## Latest — Stage29 bit17 producer correlation source prepared (2026-11-09)
+
+- **Source-only Stage29 branch:** [stage29-bit17-producer-correlation](https://github.com/Hawky11/1/tree/stage29-bit17-producer-correlation), HEAD `ad78d4668bd4ca14fc471289037bd6ef9ed62f0b`. Contents: `Stage29_Overlay/src/AITrace.cpp`, `Stage29_Overlay/ArcanaAI.ini`, [Stage29 static baseline](https://github.com/Hawky11/1/blob/stage29-bit17-producer-correlation/Stage29_Overlay/STAGE29_STATIC_BASELINE.md), [apply/readme](https://github.com/Hawky11/1/blob/stage29-bit17-producer-correlation/Stage29_Overlay/README_STAGE29.md), static verifier and a copy of `BINARY_SOURCE_IN_LIBRARY.md`. **Not compiled with MSVC or in-game validated yet.**
+- **Why:** same 2026-11-09 17:28 run had four payload0x1E producer attempts: two P1 with bit17=1 took original `0xF6A75` alternative path (not queue); two P2 with bit17=0 reached `0xF6AD7`, queue, dispatcher and classifier AL0/fallback. Original `0xE8CF0` classifier *must* return AL0 for payload0x1E due range checks. The P2 fallback slot3=0→0 and controller bit400=0→0 are expected observed no-ops, not hook errors. **The P1 bit17 writer's QPC in the same run remains unobserved** because Stage26 watched bit0 instead.
+- **New Stage29 mode** reuses Stage16 write-only DR0/DR1 and captures only P1/P2 `player+0x3B84` **bit17 changes** while updating shadow on each observed write. Marker `STAGE29_BIT17_TRANSITIONS_BUILD=2026-11-09-r1`, log `ArcanaAI_Stage29Bit17Transitions.log`, event `STAGE29_BIT17_TRANSITION`. Default INI: bit17 watcher=1; Stage29 filtering=1; Stage26 bit0 watcher=0; control watcher=0. Existing Stage14/15, Stage17–25 traces stay enabled. Stack snapshot and QPC included for each retained transition. Stage26's C4456 shadowing warning also fixed without modifying its immutable branch.
+- Previous Stage16 **different-session** 16:51 run: 24,176 raw writes, just four bit17 toggles (two sets at post-EIP0xFAD2; two clears at post-EIP0xED1A9). Do not correlate its QPC with Stage15 17:28 run. Stage29 removes full-write log noise but still cannot capture writes on uninstrumented threads or the excluded COMvsCOM thread.
+- **Next user action:** copy **only** Stage29 `src/AITrace.cpp` and `ArcanaAI.ini` over current `D:\INCUBATOR\ArcanaAIOverhaul` equivalents; **keep working Stage25/26 `src/AIQueueTrace.cpp` and all other files**. Build with existing x86 `Build.bat`, run natural COM-vs-COM and upload Build.log + fresh Stage29/Stage15/Stage17/queue/Stage21 logs. Archive results as new Stage29 runtime evidence; do not rewrite prior branches.
+- **Binary is already in persistent ChatGPT Library:** `/AALib.zip` includes pinned original `AALib.exe`; [BINARY_SOURCE_IN_LIBRARY.md](BINARY_SOURCE_IN_LIBRARY.md) explains retrieval without reupload.
+
+---
+
+
 **Critical resource for future assistant sessions:** The exact original `AALib.exe` is already stored in the user's persistent ChatGPT File Library as **`/AALib.zip`**. **Do not ask for a new upload.** Read **[BINARY_SOURCE_IN_LIBRARY.md](BINARY_SOURCE_IN_LIBRARY.md)** for exact files.list/files.materialize instructions, SHA256, and PE RVA mapping. The EXE/ZIP is NOT in GitHub.
 
 ## Latest checkpoint — Stage28 original game EXE analyzed, 2026-11-09

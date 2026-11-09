@@ -1,5 +1,22 @@
 # Next session handoff
 
+## Current handoff — Stage33 source prepared, Windows build + natural runtime next (2026-11-09)
+
+## Stage33 — native EE200 type0/payload0 consumer identified; passive state snapshots ready (2026-11-09)
+
+- **Source-only Stage33:** [stage33-type0-consumer-state-trace](https://github.com/Hawky11/1/tree/stage33-type0-consumer-state-trace) @ `774ddbbf3a8fec3d6ed09afc31232ade3731c2da`. [Original EXE static analysis](https://github.com/Hawky11/1/tree/stage33-type0-consumer-state-trace/Stage33_Analysis/STATIC_ANALYSIS.md) · [RU build/installation guide](https://github.com/Hawky11/1/tree/stage33-type0-consumer-state-trace/Stage33_Overlay/README_STAGE33_RU.md) · [verified SHA-pinned Python checker](https://github.com/Hawky11/1/tree/stage33-type0-consumer-state-trace/Stage33_Analysis/tools/verify_stage33.py).
+- **Native result:** when EE200 receives type0/payload0, it selects table index0 via `158560` (preferred VA `0x6521F80`, bytes `0F 00 00 00 00 00 00 00`, output bytes +2/+3/+4 zero), then calls `158EC0(P,0)` (bitmask flags P+3B70), `F57D0` (controller P+3A08) and `EC4F0(P,0,0)` (state/object coordination).
+- **Exact bit17 clearer found:** `EC4F0` itself calls `F2ED0(queue,1,0x1E)` at `ED193`; if the *history tuple* does not match it, native `ED19F` executes `AND [P+3B84],0xFFF9FFFF`, clearing bit17/18 and preserving bit16. Stage32's three correlated EE200 dispatches had history=(0,0) and Stage29 observed this same post-write site `ED1A9` inside EE200. This accounts for the observed flag transition but **does not prove game action success**.
+- **Verification:** pinned original `AALib.exe` from ChatGPT Library `/AALib.zip` (SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`). Checks passed: 24 byte signatures, 5 E8 CALL targets, 3 table values; wrong-binary rejection confirmed. **No Windows x86 MSVC build or Stage33 in-game run yet**.
+- **Minimal source overlay:** [Stage33_Overlay](https://github.com/Hawky11/1/tree/stage33-type0-consumer-state-trace/Stage33_Overlay) adds only `EnableStage33Type0StateTrace=1`; extends existing Stage32 `EventDispatchHook` read-only before/after snapshots for 12 targeted DWORD fields for type0/payload0. It emits `STAGE33_EFFECT_DETAIL` in `ArcanaAI_EventDispatchTrace.log`, sharing `seq` and QPC with Stage32 `EVENT_DISPATCH_DETAIL`. No new hook, no gameplay writes, original dispatcher invoked once, existing type1/Stage29/Stage31/Stage32 tracing preserved.
+- **Next user:** replace **only** `D:\INCUBATOR\ArcanaAIOverhaul\src\AIQueueTrace.cpp` and `ArcanaAI.ini` with Stage33 overlay; **retain Stage29 AITrace.cpp**, and all other files. Run existing x86 `Build.bat`, install DLL+INI, archive old logs, natural COM-vs-COM, let worker flush >=2s, upload `Build.log` plus fresh `ArcanaAI_EventDispatchTrace.log`, `ArcanaAI_Stage31AlternatePathTrace.log`, `ArcanaAI_Stage29Bit17Transitions.log`, `ArcanaAI_QueueTrace.log`, `ArcanaAI_ProducerCallTrace.log`.
+- **Next analyst:** verify build/marker/hook; join Stage31 episode → Stage32 detail → same-seq Stage33 effect, check full pre/post read masks, actual net bit/controller/object changes, and dropped counters. Never treat a state change as proof of rendered attack/animation; do not inject type1/0x1E or force bits. Immutable old branches preserved. Original EXE already in Library and must not be requested again.
+
+**First action when user uploads:** check `Build.log`, `STAGE33_TYPE0_CONSUMER_BUILD=2026-11-09-r1`, `STAGE32_TYPE0_DISPATCH_BUILD`, Stage31 marker, installed EE200 and F6A8C hooks, stage33 config. Correlate `STAGE33_EFFECT_DETAIL` with `EVENT_DISPATCH_DETAIL` by identical `seq`, time, side, player; match Stage31 nested episodes with QPC. Use full read masks before interpreting zeros. Compare relevant net raw fields, Stage29 bit17 writes and C4F0 native mask; separate F2ED0 history logic from move success. Keep original EXE pointer `/AALib.zip` in ChatGPT Library, preserve all old branches, do not request file again.
+
+---
+
+
 ## Current handoff — Stage32 runtime complete; Stage33 static consumer analysis next (2026-11-09)
 
 ## Stage32 — runtime complete: type0/payload0 reaches dispatcher EE200 (2026-11-09)

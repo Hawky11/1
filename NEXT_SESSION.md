@@ -1,5 +1,22 @@
 # Next session handoff
 
+## Current handoff — Stage32 source ready; MSVC + natural runtime next (2026-11-09)
+
+## Stage32 — type0 dispatcher activation path verified statically (2026-11-09)
+
+- **New source-only branch:** [stage32-type0-dispatch-correlation](https://github.com/Hawky11/1/tree/stage32-type0-dispatch-correlation), commit `44b23d1634139fe15928b1ff50bbddda056f633d` (based on immutable Stage31 runtime evidence `0a9ae75`). [Technical analysis](https://github.com/Hawky11/1/blob/stage32-type0-dispatch-correlation/Stage32_Analysis/STATIC_ANALYSIS.md) · [RU install guide](https://github.com/Hawky11/1/blob/stage32-type0-dispatch-correlation/Stage32_Overlay/README_STAGE32_RU.md).
+- **Native finding:** `F2DE0` deliberately leaves `active=0` for type0/payload0, but `F2E20` checks changed current vs history, `F2E50` transfers the current event to history, and `EE480` activates it at `EE589` before calling dispatcher `EE200` at `EE5C6`. Stage31's six episodes all wrote type0/payload0 into a tuple whose history type was 1; they satisfy the comparison if no intervening overwrite. Existing Stage31 EventDispatchTrace shows type0/payload0 dispatched on both P1/P2 with `active=1`, but only in aggregated groups: no six-to-six event attribution yet.
+- **Bit16:** original `E6C66` sets bit16 and `E9E66` can clear it later; cannot infer gameplay semantics or completion from the Stage31 post-snapshot alone.
+- **Verification:** original Library `/AALib.zip`, `AALib.exe` SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. Verifier `Stage32_Analysis/tools/verify_stage32.py` validates 21 native instruction signatures + 5 E8 targets (passed on original); Stage32 source predicate/invariants checked. **Windows MSVC x86 build and Stage32 runtime not yet tested.**
+- **Install:** replace **only** `D:\INCUBATOR\ArcanaAIOverhaul\src\AIQueueTrace.cpp` and `ArcanaAI.ini` using [Stage32 overlay](https://github.com/Hawky11/1/tree/stage32-type0-dispatch-correlation/Stage32_Overlay); **keep Stage29 AITrace.cpp**, all other files and Stage31 observer. Stage32 adds `EnableStage32Type0DispatchDetail=1` to capture type0/payload0 via **existing EventDispatchHook** (no new hook), records in `ArcanaAI_EventDispatchTrace.log` as `EVENT_DISPATCH_DETAIL` with marker `STAGE32_TYPE0_DISPATCH_BUILD=2026-11-09-r1`. Type1 details remain enabled.
+- **Next user action:** x86 `Build.bat`, save `Build.log`; install DLL and INI, archive old logs, natural COM-vs-COM, >=2 seconds flush; upload fresh `ArcanaAI_EventDispatchTrace.log`, `ArcanaAI_Stage31AlternatePathTrace.log`, `ArcanaAI_Stage29Bit17Transitions.log`, `ArcanaAI_QueueTrace.log`, `ArcanaAI_ProducerCallTrace.log`.
+- **Next assistant action:** verify MSVC build, Stage32 marker and EventDispatch hook installation; correlate individual type0/payload0 `EVENT_DISPATCH_DETAIL` QPC/side/player/current/history with Stage31 episodes and Stage29. Check overwrite intervals and dropped counters, never infer strict parentage from time alone. If confirmed, investigate downstream command semantics rather than injecting type1/payload0x1E. Preserve all historical branches.
+
+**Do not ask for AALib.exe again:** verified original exists in ChatGPT Library `/AALib.zip`; pointer `BINARY_SOURCE_IN_LIBRARY.md`. Do not redo Stage31; it is archived and completed. Avoid changes to Stage31 evidence/source and historical Stage branches. Stage32's only file replacements are `AIQueueTrace.cpp` and `ArcanaAI.ini`; Stage29 `AITrace.cpp` must remain.
+
+---
+
+
 ## Current handoff — Stage31 runtime completed; Stage32 analysis next (2026-11-09)
 
 

@@ -255,6 +255,52 @@ __declspec(naked) void Stage36CandidateHook()
         ret
     }
 }
+// Stage10 ParentFlow normally installs its own six-byte inline detour
+// at F4360 before Stage36. Only trust an executable jump back into our
+// dinput8.dll; never accept an arbitrary foreign/unknown native patch.
+bool Stage36RecognizeStage10Detour(const BYTE* entry, DWORD& destination, DWORD& shape)
+{
+    destination=0u; shape=0u;
+    if (!entry) return false;
+    DWORD target=0u;
+    if (entry[0]==0xE9 && entry[5]==0x90)
+    {
+        std::int32_t disp=0;
+        std::memcpy(&disp,entry+1,4);
+        target=static_cast<DWORD>(reinterpret_cast<std::uintptr_t>(entry+5)+disp);
+        shape=1u;
+    }
+    else if (entry[0]==0xFF && entry[1]==0x25)
+    {
+        DWORD ptr=0u;
+        std::memcpy(&ptr,entry+2,4);
+        if (!SafeReadDword(ptr,&target)) return false;
+        shape=2u;
+    }
+    else if (entry[0]==0x68 && entry[5]==0xC3)
+    {
+        std::memcpy(&target,entry+1,4);
+        shape=3u;
+    }
+    if (!target) return false;
+    HMODULE self=nullptr;
+    if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+            GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+            reinterpret_cast<LPCWSTR>(&Stage36CandidateHook),&self))
+        return false;
+    MEMORY_BASIC_INFORMATION m{};
+    if (!VirtualQuery(reinterpret_cast<const void*>(static_cast<std::uintptr_t>(target)),
+                      &m,sizeof(m)))
+        return false;
+    const DWORD protect=m.Protect&0xFFu;
+    if (m.State!=MEM_COMMIT || m.AllocationBase!=self ||
+        (protect!=PAGE_EXECUTE && protect!=PAGE_EXECUTE_READ &&
+         protect!=PAGE_EXECUTE_READWRITE && protect!=PAGE_EXECUTE_WRITECOPY))
+        return false;
+    destination=target;
+    return true;
+}
+
 bool InstallStage36Hooks()
 {
     if (!IsProcessorFeaturePresent(PF_XMMI_INSTRUCTIONS_AVAILABLE))
@@ -278,6 +324,21 @@ bool InstallStage36Hooks()
     const BYTE cSuffix[8] = {0x83,0xC4,0x14,0x83,0x7D,0xF8,0x00,0x8B};
     const BYTE inPrologue[10] = {0x55,0x8B,0xEC,0x8B,0x45,0x0C,0x56,0x8B,0x75,0x08};
     const BYTE candidatePrologue[10] = {0x55,0x8B,0xEC,0x83,0xEC,0x14,0x53,0x56,0x8B,0x75};
+    DWORD stage10Target=0u, stage10Shape=0u;
+    const bool originalF4360 =
+        std::memcmp(candidateNative,candidatePrologue,sizeof(candidatePrologue))==0;
+    const bool stage10Detour = !originalF4360 &&
+        Stage36RecognizeStage10Detour(candidateNative,stage10Target,stage10Shape);
+    {
+        char status[330]{};
+        sprintf_s(status,
+            "STAGE36_R2_ENTRY F4360=0x%08lX bytes=%02X%02X%02X%02X%02X%02X mode=%s detourShape=%lu target=0x%08lX",
+            static_cast<unsigned long>(g_gameBase+kStage36CandidateTarget),
+            candidateNative[0],candidateNative[1],candidateNative[2],candidateNative[3],candidateNative[4],candidateNative[5],
+            originalF4360?"ORIGINAL":stage10Detour?"STAGE10_OWN_DLL":"UNKNOWN",
+            static_cast<unsigned long>(stage10Shape),static_cast<unsigned long>(stage10Target));
+        AppendStage36Log(status);
+    }
     auto valid = [&]() -> bool {
         if (std::memcmp(a, aExpected, 5) != 0 ||
             std::memcmp(b, bExpected, 5) != 0 ||
@@ -289,7 +350,7 @@ bool InstallStage36Hooks()
             std::memcmp(b + 5, bSuffix, sizeof(bSuffix)) != 0 ||
             std::memcmp(c + 5, cSuffix, sizeof(cSuffix)) != 0 ||
             std::memcmp(inNative, inPrologue, sizeof(inPrologue)) != 0 ||
-            std::memcmp(candidateNative, candidatePrologue, sizeof(candidatePrologue)) != 0)
+            (!originalF4360 && !stage10Detour))
             return false;
         std::int32_t ad = 0, bd = 0, cd = 0;
         std::memcpy(&ad, a + 1, 4);
@@ -301,7 +362,19 @@ bool InstallStage36Hooks()
     };
     if (!valid())
     {
-        AppendStage36Log("ERROR: Stage36 callsite, caller context, native prologue or CALL target mismatch; no patches.");
+                char diagnostics[220]{};
+        sprintf_s(diagnostics,
+            "ERROR: Stage36 r2 site mismatch: callBytes=%d,%d,%d prefix=%d,%d,%d suffix=%d,%d,%d inputPrologue=%d f4360Allowed=%d",
+            std::memcmp(a,aExpected,5)==0,std::memcmp(b,bExpected,5)==0,std::memcmp(c,cExpected,5)==0,
+            std::memcmp(a-sizeof(aPrefix),aPrefix,sizeof(aPrefix))==0,
+            std::memcmp(b-sizeof(bPrefix),bPrefix,sizeof(bPrefix))==0,
+            std::memcmp(c-sizeof(cPrefix),cPrefix,sizeof(cPrefix))==0,
+            std::memcmp(a+5,aSuffix,sizeof(aSuffix))==0,
+            std::memcmp(b+5,bSuffix,sizeof(bSuffix))==0,
+            std::memcmp(c+5,cSuffix,sizeof(cSuffix))==0,
+            std::memcmp(inNative,inPrologue,sizeof(inPrologue))==0,
+            originalF4360||stage10Detour);
+        AppendStage36Log(diagnostics);
         return false;
     }
     BYTE patches[3][5]{};
@@ -353,7 +426,7 @@ bool InstallStage36Hooks()
     ReleaseMutex(mutex);
     CloseHandle(mutex);
     if (success)
-        AppendStage36Log("STAGE36_INSTALLED EB718->F58E0 index=1F EB7D9->F58E0 index=1E F79E4->F4360 candidate; originals called once; 3/3 sites.");
+        AppendStage36Log("STAGE36_R2_INSTALLED EB718->F58E0 index=1F EB7D9->F58E0 index=1E F79E4->F4360 candidate; originals called once; 3/3 sites.");
     else
         AppendStage36Log("ERROR: Stage36 3-callsite patch installation failed; no patches applied.");
     return success;

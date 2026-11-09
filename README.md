@@ -1,5 +1,7 @@
 # ArcanaAI / COM vs COM diagnostic research
 
+**Critical resource for future assistant sessions:** The exact original `AALib.exe` is already stored in the user's persistent ChatGPT File Library as **`/AALib.zip`**. **Do not ask for a new upload.** Read **[BINARY_SOURCE_IN_LIBRARY.md](BINARY_SOURCE_IN_LIBRARY.md)** for exact files.list/files.materialize instructions, SHA256, and PE RVA mapping. The EXE/ZIP is NOT in GitHub.
+
 ## Latest checkpoint — Stage28 original game EXE analyzed, 2026-11-09
 
 - **Immutable Stage28 analysis:** [stage28-original-pe-state-lifecycle](https://github.com/Hawky11/1/tree/stage28-original-pe-state-lifecycle), HEAD `6a210f4be510ab264ddefcadd8d740bfe923cfa4`. [Detailed static findings](https://github.com/Hawky11/1/blob/stage28-original-pe-state-lifecycle/Stage28_Analysis/STATIC_STAGE28_ANALYSIS.md), SHA256-pinned verifier `tools/verify_stage28.py`, 6 tests and machine-readable summary. Stage28 is **offline-only**; no new DLL/game hook, no user game run.

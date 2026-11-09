@@ -1,5 +1,8 @@
 # Next session handoff
 
+**FIRST ACTION FOR NEW ASSISTANTS:** Original game `AALib.exe` is available in the user's ChatGPT Library **`/AALib.zip`**, not GitHub. See [BINARY_SOURCE_IN_LIBRARY.md](BINARY_SOURCE_IN_LIBRARY.md) for retrieving it via `files__list` and `files__materialize`, SHA256 and PE layout. **Never ask for a reupload without checking Library.**
+
+
 ## Current handoff — Stage28 original binary state lifecycle verified, Stage29 next (2026-11-09)
 
 - **Stage28 complete, analysis-only:** [stage28-original-pe-state-lifecycle](https://github.com/Hawky11/1/tree/stage28-original-pe-state-lifecycle), HEAD `6a210f4be510ab264ddefcadd8d740bfe923cfa4`. Based on Stage27 archived `stage27-bit0-tailjump-verified` `78e48cdcef7a67fcdf64a50dfa95228357eedbe6`. Contains `Stage28_Analysis/STATIC_STAGE28_ANALYSIS.md` (full verified analysis), `Stage28_Analysis/README_STAGE28.md`, `Stage28_Analysis/tools/verify_stage28.py`, `Stage28_Analysis/tests/test_stage28.py`, `LOCAL_TEST_RESULTS.txt` and `VERIFICATION_SUMMARY.json`. No DLL source changed; no new game run required.

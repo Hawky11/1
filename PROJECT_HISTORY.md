@@ -1304,3 +1304,11 @@ The new run strengthens the Stage23 resolver result and the Stage18/20/17 setter
 - For ordinary route `0x978B0` checks object+0xC4 bit0 clear, object+0xCC bit1 clear, state `[object+0xD4]==0`; invokes `0x991E0(object+0x10,0)`, which returns old slot0 counter, decrements it by base stride and clamps negative to zero; if old counter `<=0`, `0x97830` writes state1. The helper `0x97830` writes state1, `0x97870` writes state2 (and clears object+0xC8 bits0,2,3 while preserving bit1); both call 0xF7EB0/0x976D0(mode0 or1)/0x99150, and set object+0xC4 bit0x400.
 - Stage26 old/new **full DWORD** recheck: 140 transition-only records with exactly 70 0x0→0x1 and 70 0x1→0x0; bit1 not present at those sampled boundaries. Because `Stage26TransitionsOnly=1`, non-bit0-change writes are suppressed; cannot exclude transient bit1 writes or infer branch runtime usage. Static semantics are technical, not known gameplay meanings. No demonstrated causal bridge to Stage15 bit17 producer suppression nor Stage21 classifier fallback.
 - Handoff Stage29: return to COM-vs-COM original 0x1E production/dispatch problem. Prior Stage15/16/21/23/24 data establish P1/P2 branch divergence and classifier AL0/fallback, while Stage28 gives state lifecycle context but not proof of suppression. Preserve all branches; check existing evidence before deciding on a new passive instrument. Library AALib.zip can be located anew and materialized in future sessions without asking user to reupload.
+
+
+---
+
+## Permanent source location — original AALib.exe in ChatGPT Library (2026-11-09)
+
+- At the user's explicit request, recorded a stable access guide in [BINARY_SOURCE_IN_LIBRARY.md](BINARY_SOURCE_IN_LIBRARY.md), linked prominently from README.md and NEXT_SESSION.md. The original game binary is already in the user's **ChatGPT File Library** at **`/AALib.zip`**, contains `AALib.exe`, size 175,556,608 bytes. SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. ZIP size 12,865,549 bytes.
+- Retrieve in future sessions through `files__list(surface=library)` then `files__materialize` with that session's returned file_id; verify SHA256. The file is NOT checked into GitHub. Future assistants must use the Library before asking the user for an executable.

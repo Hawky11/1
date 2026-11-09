@@ -1,4 +1,18 @@
 # Next session handoff
+## Current handoff — Stage35 runtime complete; Stage36 action/command output path next (2026-11-10)
+
+**Source/evidence:** [stage35-controller-consumer-trace](https://github.com/Hawky11/1/tree/stage35-controller-consumer-trace) (static source-only @ `3ce68f5a5c49fbda11ffd6ad514ea0c229a790e3`, unchanged); [stage35-controller-consumer-runtime-evidence](https://github.com/Hawky11/1/tree/stage35-controller-consumer-runtime-evidence) (all 23 fresh original Git blobs + full [report](https://github.com/Hawky11/1/blob/stage35-controller-consumer-runtime-evidence/Stage35_Runtime/RUNTIME_ANALYSIS.md); archived in commit `4044426a57b6bd8c0872d2afacd1ea7388cce8e8`).
+
+**Stage35 x86 runtime completed:** Build.bat 2026-11-10 00:22:58 `BUILD SUCCEEDED`, 257024-byte DLL, only previous warning C4754, no error. `STAGE35_CONTROLLER_CONSUMER_BUILD=2026-11-10-r1`; installed both validated ACABE→F60C0 TIMER / ACAC4→F5BD0 FLAGS. 9280 consumer rows seq1..9280 (4640+4640), 4640/4640 adjacent TIMER→FLAGS for exact same player and TID, all 9280 before/after 12-bit masks FFF, no dropped/overflow/error in core logs.
+
+**Actual downstream proof:** Stage34 type0/payload4 EE200 seq90,92,93 for P1 wrote/reset P+3A6C slot11 to 0xF00 twice; F60C0 TIMER updated this exact same slot 33 times from 0xF00 down to 0 at observed decrement 0x78 each call, with header P+3A3C=0x78. See [33-row slot11 CSV](https://github.com/Hawky11/1/blob/stage35-controller-consumer-runtime-evidence/Stage35_Runtime/stage35_slot11_timer_transitions.csv). This is a native time/slot read-and-update *not a visible move or hit*. FLAGS P+3B78 bit7 is present in 32/33 positive-slot pairs but also **3989/4607** zero-slot pairs; bit7 is **not uniquely attributable** to slot11 or payload4.
+
+**Prior Stage31/34 consistency:** 24/24 Stage31 type0 queue returns uniquely correlate with a subsequent same-side/player/TID/payload EE200 (5..299 QPC ticks; [24-row CSV](https://github.com/Hawky11/1/blob/stage35-controller-consumer-runtime-evidence/Stage35_Runtime/stage31_to_stage35_run_dispatch_pairs.csv)). EventDispatch seq1..125, 85 type0 = payload0 69, payload1 13, payload4 3, payload5 **0**; all 85/85 effect pairs full masks, 40 type1. Stage29 four bit17 set/clear cycles, clears within EE200 seq14,54,95,121. No evidence to inject missing events or change native state.
+
+**Immediate Stage36 task:** First inspect latest GitHub main/evidence report and original SHA-pinned `AALib.exe` in ChatGPT Library `/AALib.zip` (SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`; do not ask user again). Read-only static trace beyond `ACABE→F60C0`, `ACAC4→F5BD0`, `F5F4C/F5F55`, and `EB7D9→F58E0` to locate an **actual executable AI action/animation/command boundary** rather than only another state bit. Disambiguate `F58E0` return meaning, callers, and branch outputs before proposing a bounded passive observer. Preserve original Stage29 `AITrace.cpp`, Stage35 tested source and all older branches. No gameplay patch until an independently observed behavior defect is established.
+
+---
+
 
 ## Current handoff — Stage35 static verified and passive controller-consumer source ready (2026-11-10)
 

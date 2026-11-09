@@ -1,5 +1,17 @@
 # ArcanaAI / COM vs COM diagnostic research
 
+## Stage35 — passive downstream controller consumers: source prepared (2026-11-10)
+
+- **New source-only branch:** [stage35-controller-consumer-trace](https://github.com/Hawky11/1/tree/stage35-controller-consumer-trace); [original native static analysis](https://github.com/Hawky11/1/blob/stage35-controller-consumer-trace/Stage35_Analysis/STATIC_ANALYSIS.md), [SHA-pinned verifier](https://github.com/Hawky11/1/blob/stage35-controller-consumer-trace/Stage35_Analysis/tools/verify_stage35.py), [three-file Stage35 overlay and Russian instructions](https://github.com/Hawky11/1/tree/stage35-controller-consumer-trace/Stage35_Overlay). **No Windows x86 compilation or natural Stage35 gameplay run yet.**
+- SHA-pinned original `AALib.exe` from ChatGPT Library `/AALib.zip` **PASS**: 19 exact native instruction signatures and 7 CALL targets. Existing Stage34 evidence unchanged: 109/109 effect matches, 33/33 queue→dispatch, payload5 unobserved.
+- **Real downstream path:** `A1106→ACA90`, which calls `ACABE→F60C0` (timer controller-slot updates, including `P+3A6C` slot11 via `F611C→F7ED0`) then `ACAC4→F5BD0` (state-to-flag/object derivation; `F5F4C` reads `P+3A6C`). Independently `EB7D9→F58E0` reads bitmap `P+3A0C/10` for index `0x1E`.
+- **Critical nuance:** Stage34 `P+3A6C=0xF00` is the writer's 120-scaled value, **not** proof of an attack or a fixed 32-frame action. The native timer subtracts a *runtime-dependent* header DWORD `P+3A3C`; Stage35 records that field. In `F5BD0` bit7 of `P+3B78` has earlier OR *and* a clear at `F5C71`; the later slot-dependent OR at `F5F55` is not established as executed merely from pre/post field comparisons.
+- **Stage35 observational overlay:** preserves entire Stage34 and Stage29 logic, adds **two validated original-call-once x86 wrappers** at `ACABE` and `ACAC4`; only P1/P2, 12 raw fields/read masks, per-call QPC, buffered worker log `ArcanaAI_Stage35ControllerConsumerTrace.log`, drop/overflow reporting. No event injection, action synthesis or gameplay modifications intended. Needs real x86 Build.log and natural runtime to confirm correctness and safety.
+- **Next action:** copy three Stage35 Overlay files (`src/AIQueueTrace.cpp`, `src/Stage35ConsumerTrace.inl`, `ArcanaAI.ini`) into `D:\INCUBATOR\ArcanaAIOverhaul`; **keep Stage29 `AITrace.cpp`**, then x86 `Build.bat`, natural COM-vs-COM, archive previous logs and upload Build.log and fresh Stage35/Stage34/Stage31/Stage29 trace logs. Inspect compiler errors and integrity before inferring an AI action. All earlier source/evidence branches stay immutable.
+
+---
+
+
 ## Stage32 — runtime complete: type0/payload0 reaches dispatcher EE200 (2026-11-09)
 
 - **Immutable runtime evidence:** [stage32-type0-dispatch-runtime-evidence](https://github.com/Hawky11/1/tree/stage32-type0-dispatch-runtime-evidence), commit `a6ed15cce970d92e690f349a8dd7a2cf2e5e5f97`; [full analysis](https://github.com/Hawky11/1/blob/stage32-type0-dispatch-runtime-evidence/Stage32_Runtime/RUNTIME_ANALYSIS.md) and [21 event pairs CSV](https://github.com/Hawky11/1/blob/stage32-type0-dispatch-runtime-evidence/Stage32_Runtime/stage31_to_stage32_type0_dispatch.csv). Source-only branch remains [stage32-type0-dispatch-correlation](https://github.com/Hawky11/1/tree/stage32-type0-dispatch-correlation) @ `44b23d1`.

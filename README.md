@@ -1,6 +1,17 @@
 # ArcanaAI / COM vs COM diagnostic research
 
-## Latest checkpoint — Stage27 offline lifecycle/caller analysis complete (2026-11-09)
+## Latest — Stage27 exact-PE static CALL verification (2026-11-09)
+
+- User supplied `Stage27_AALib_StaticReport.txt` from the exact original local AALib.exe. SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` confirmed; all four bit0 clearer signatures and `0x97870` entry matched. **Exact 2,389-byte uploaded TXT** preserved in [stage27-verified-static-callgraph](https://github.com/Hawky11/1/tree/stage27-verified-static-callgraph), commit `2e08b356fa9923e57b0c78c08c70adbf8e1015c1`, blob `7e3dc3a77f602fde1e82ca9fe70903d4d29dd9c7`.
+- **Corrected CALL graph:** `AALib RVA 0x979CC → 0x97870` (return `0x979D1`) is a verified direct E8 CALL, while `0x97609 → 0x97970` (return `0x9760E`) is a verified CALL to another function. Stage27's older prediction that both call directly into `0x97870` was wrong; its 34+20 dynamic stack counts remain unchanged. The transfer from `0x97970` to `0x97870` for the remaining 20 captures has **not** been disassembled yet.
+- Decoded original PE windows further: `0x97870` clears object+0xF8 bits0,2,3, writes object+0x104=2, invokes three helpers then sets bit0x400 at object+0xF4; `0x975A6` is gated on `WORD [player+0x3A34]==1` and bit0 set, then clears bit0; `0x95F55` and `0x97031` participate in multi-field reset sequences. Do not conflate player+0xF4 bit0x400 with Stage22 controller+8 bit0x400.
+- **Next:** inspect pinned executable bytes around function `0x97970` using the new read-only [inspect_call_flow.py](https://github.com/Hawky11/1/blob/stage27-verified-static-callgraph/Stage27_VerifiedStatic/tools/inspect_call_flow.py), export `Stage27_CallFlow_97970.txt` and upload its text only. Five local synthetic Python regression tests passed; the new script has not yet been run against the user's original PE. No DLL recompilation or gameplay session required.
+- Previous Stage26 complete runtime evidence and original Stage27 analysis remain immutable and linked below. Detailed verified correction: [VERIFIED_CALL_GRAPH.md](https://github.com/Hawky11/1/blob/stage27-verified-static-callgraph/Stage27_VerifiedStatic/VERIFIED_CALL_GRAPH.md).
+
+---
+
+
+## Previous checkpoint — Stage27 offline lifecycle/caller analysis complete (2026-11-09)
 
 - **Stage27 analysis-only branch:** [stage27-bit0-lifecycle-callers](https://github.com/Hawky11/1/tree/stage27-bit0-lifecycle-callers), commit `b490f87892791d45f0b0841a47e70d60329ec457`, based on preserved Stage26 runtime evidence. [Full Stage27 findings](https://github.com/Hawky11/1/blob/stage27-bit0-lifecycle-callers/Stage27_Analysis/STAGE27_LIFECYCLE_ANALYSIS.md), `cycles_stage26.csv` (70 matched pairs), `stage27_summary.json`, reproducible standard-library Python parser and 5 unit tests. No new hook, no changed DLL, no new runtime.
 - All Stage26 P1/P2 bit0 sets and clears pair 70/70; main clearing helper at game RVA `0x97870` accounts for 54 clears. Its first instructions are `PUSH EDI; MOV EDI,EAX; AND [EDI+0xC8],0xFFFFFFF2`. From the known stack layout, two dynamic caller-return candidates were observed: RVA `0x979D1` (34, P1 16/P2 18) and `0x9760E` (20, P1 12/P2 8). All 34 nested records additionally carry `0x9760E` deeper on the stack.

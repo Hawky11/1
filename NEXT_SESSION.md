@@ -1,6 +1,21 @@
 # Next session handoff
 
-## Current handoff — Stage27 offline analysis complete; verify static CALL chain next (2026-11-09)
+## Current handoff — Stage27 original PE verified; inspect missing 0x97970 branch next (2026-11-09)
+
+- **New immutable evidence branch:** [stage27-verified-static-callgraph](https://github.com/Hawky11/1/tree/stage27-verified-static-callgraph), HEAD `2e08b356fa9923e57b0c78c08c70adbf8e1015c1`, parent original Stage27 analysis branch `stage27-bit0-lifecycle-callers` HEAD `b490f87892791d45f0b0841a47e70d60329ec457`. Contains exact CRLF 2,389-byte user-uploaded `Stage27_VerifiedStatic/Stage27_AALib_StaticReport.txt`, SHA1 Git blob `7e3dc3a77f602fde1e82ca9fe70903d4d29dd9c7`, `VERIFIED_CALL_GRAPH.md`, read-only `tools/inspect_call_flow.py`, 5 local Python tests and test results. No DLL hook or build was created.
+- **From exact pinned AALib.exe** SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`: all four Stage26 clearer signatures match, helper entry RVA0x97870 matches. E8 CALL at RVA0x979CC targets RVA0x97870, return0x979D1; E8 CALL at RVA0x97609 targets **RVA0x97970**, return0x9760E. This **corrects the previous Stage27 assumption** that RVA0x97609 called 0x97870 directly. The original Stage27 dynamic stack observations are still 34 (return0x979D1) +20 (return0x9760E) on the primary clearer, but **the transfer from 0x97970 into 0x97870 is unverified**.
+- Additional static decoding from uploaded code bytes: `0x97870` AND clears bits0,2,3 at `[player+0xF8]`, writes `[player+0x104]=2`, calls 0xF7EB0,0x976D0,0x99150 and ORs `[player+0xF4]` with 0x400. `0x975A6` path requires `WORD [player+0x3A34]==1` and bit0 set, masks bit0 clear, returns. `0x95F55` and `0x97031` are parts of multi-field reset routines. These operations do not establish gameplay meaning.
+- **Next user's concrete command** from `PS D:\INCUBATOR>`:
+  `Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Hawky11/1/stage27-verified-static-callgraph/Stage27_VerifiedStatic/tools/inspect_call_flow.py" -OutFile ".\inspect_call_flow.py"`
+  `py -3 .\inspect_call_flow.py --binary "G:\Arcana Heart 3 - LS XTEND\AALib.exe" --output ".\Stage27_CallFlow_97970.txt"`
+  Then upload `D:\INCUBATOR\Stage27_CallFlow_97970.txt` only. This logs RVA-labeled 0x97970 window and both actual caller CALL signatures without game hooks. Optional Capstone for live disassembly, but raw bytes suffice for offline objdump. No new MSVC build, source C++ patch or COM battle needed.
+- Next assistant session: study uploaded 0x97970 bytes for control-flow transfer(s) to 0x97870, relate 34+20 dynamic stack groups, classify flags and branch guards, preserve historical branches, append new evidence in a new branch. The new inspector's 5 tests passed locally against **synthetic** PE/call data; the tool's original-game execution remains pending.
+- Prior Stage26 runtime source/evidence remain `a249f452353c340fe8f1dab23375a8a932b079b4` / `4b7564ff71664fedd5745e3bcfc4210d74540075`; original Stage27 analysis remains `b490f87892791d45f0b0841a47e70d60329ec457`. No rewriting.
+
+---
+
+
+## Previous handoff — Stage27 offline analysis complete; verify static CALL chain next (2026-11-09)
 
 - **Newest branch** [stage27-bit0-lifecycle-callers](https://github.com/Hawky11/1/tree/stage27-bit0-lifecycle-callers), HEAD `b490f87892791d45f0b0841a47e70d60329ec457`. Parent: Stage26 runtime evidence HEAD `4b7564ff71664fedd5745e3bcfc4210d74540075`. Contains `Stage27_Analysis/STAGE27_LIFECYCLE_ANALYSIS.md`, `Stage27_Analysis/README_STAGE27.md`, `Stage27_Analysis/cycles_stage26.csv`, `Stage27_Analysis/stage27_summary.json`, `Stage27_Analysis/tools/analyze_bit0_lifecycle.py`, `Stage27_Analysis/tests/test_stage27.py`. Stage27 is **analysis-only**, no new C++ source, no in-game hook or build.
 - Stage26 original source is `stage26-object-bit0-write-trace` HEAD `a249f452353c340fe8f1dab23375a8a932b079b4`; complete successful MSVC/runtime evidence remains immutable at `stage26-object-bit0-write-runtime-evidence` HEAD `4b7564ff71664fedd5745e3bcfc4210d74540075`.

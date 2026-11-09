@@ -1,6 +1,17 @@
 # ArcanaAI / COM vs COM diagnostic research
 
-## Latest — Stage29 bit17 producer correlation source prepared (2026-11-09)
+## Latest — Stage29 runtime correlation verified (2026-11-09, 20:35)
+
+- **Immutable evidence:** [stage29-bit17-runtime-evidence](https://github.com/Hawky11/1/tree/stage29-bit17-runtime-evidence), commit `d5f2cd0266759aa95f8617a3eb3e3770040d73d3`. Contains exact 20 fresh logs from `main` upload `c5d49fe`, Stage29 source overlay, [runtime analysis](https://github.com/Hawky11/1/tree/stage29-bit17-runtime-evidence/Stage29_Runtime/RUNTIME_ANALYSIS.md) and [correlation CSV](https://github.com/Hawky11/1/tree/stage29-bit17-runtime-evidence/Stage29_Runtime/payload_1E_correlation.csv). `Build.log` was not uploaded: no independent MSVC build transcript, although Stage29 instrumentation ran in-game.
+- Stage29 marker and both DR0/DR1 watchpoints confirmed. Eight bit17 transitions (four 0→1 post-RVA `0xFAD2`, four 1→0 post-RVA `0xED1A9`), four complete set→clear cycles. Stage17 `C6502` observed eight setter invocations (two per cycle), index `0x71`.
+- Same-session Stage15: **five** payload-`0x1E` producer attempts. P1 tick `42674656` had bit17=0, passed `F6A68` to `F6AD7`, queue and dispatcher. Four later events (P2 `42674953`, P1 `42682546`, P2 `42689218`, P1 `42691156`) had bit17=1: Stage29 observed 0→1 **before** each `F6A68` and 1→0 **after** each; all four bypassed queue. This makes the branch behavior **bit17-dependent, not P1/P2-dependent**.
+- Initial queued P1 event reached Stage21 classifier `AL=0`, fallback slot3 0→0, Stage22 bit400 0→0. As Stage29 static research established, native bit17=1 instead takes a different processing path; **no gameplay defect is proven**, only different native processing.
+- **Next Stage30:** analyze the native bit17=1 branch's alternative calls `0xE8560`, `0x156C00`, `0x130A10` and their output/observable action semantics before adding more hooks. Original `AALib.exe` is in ChatGPT Library `/AALib.zip`; see [BINARY_SOURCE_IN_LIBRARY.md](BINARY_SOURCE_IN_LIBRARY.md).
+
+---
+
+
+## Previous — Stage29 bit17 producer correlation source prepared (2026-11-09)
 
 - **Source-only Stage29 branch:** [stage29-bit17-producer-correlation](https://github.com/Hawky11/1/tree/stage29-bit17-producer-correlation), HEAD `ad78d4668bd4ca14fc471289037bd6ef9ed62f0b`. Contents: `Stage29_Overlay/src/AITrace.cpp`, `Stage29_Overlay/ArcanaAI.ini`, [Stage29 static baseline](https://github.com/Hawky11/1/blob/stage29-bit17-producer-correlation/Stage29_Overlay/STAGE29_STATIC_BASELINE.md), [apply/readme](https://github.com/Hawky11/1/blob/stage29-bit17-producer-correlation/Stage29_Overlay/README_STAGE29.md), static verifier and a copy of `BINARY_SOURCE_IN_LIBRARY.md`. **Not compiled with MSVC or in-game validated yet.**
 - **Why:** same 2026-11-09 17:28 run had four payload0x1E producer attempts: two P1 with bit17=1 took original `0xF6A75` alternative path (not queue); two P2 with bit17=0 reached `0xF6AD7`, queue, dispatcher and classifier AL0/fallback. Original `0xE8CF0` classifier *must* return AL0 for payload0x1E due range checks. The P2 fallback slot3=0→0 and controller bit400=0→0 are expected observed no-ops, not hook errors. **The P1 bit17 writer's QPC in the same run remains unobserved** because Stage26 watched bit0 instead.

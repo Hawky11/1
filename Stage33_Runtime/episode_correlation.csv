@@ -1,0 +1,4 @@
+episode,side,tid,begin_seq,queue_seq,end_seq,payload,begin_qpc,queue_return_qpc,end_qpc,bit17_set_qpc,bit17_clear_qpc,bit17_clear_postRVA,event_detail_seq,event_detail_begin_qpc,event_detail_end_qpc,effect_detail_seq,end_to_dispatch_ticks,bit17_cleared_inside_dispatch,pre_flags,post_flags,full_pre_mask,full_post_mask
+1,P1,14016,10,11,12,0,515727355624,515727355880,515727356260,515727352817,515727356857,ED1A9,47,515727356272,515727357128,47,12,true,00030000,00010000,fff,fff
+2,P2,14016,30,31,32,1,515844913373,515844913581,515844913931,515844910799,515844914498,ED1A9,,,,,,not captured,,,,
+3,P2,14016,47,48,49,0,515932026396,515932026603,515932026741,515932023738,515932027308,ED1A9,161,515932026750,515932027571,161,9,true,00030000,00010000,fff,fff

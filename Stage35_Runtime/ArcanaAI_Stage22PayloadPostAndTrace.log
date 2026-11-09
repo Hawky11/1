@@ -1,0 +1,3 @@
+[2026-11-10 00:23:45] STAGE22_PAYLOAD_POST_AND_BUILD=2026-11-08-r1
+[2026-11-10 00:23:46] Installed Stage22 post-AND observer at RVA 0x000EE451: validated 7-byte instruction replaced by CALL + 2 NOPs; wrapper executes the identical AND once and restores post-AND EFLAGS.
+[2026-11-10 00:24:02] STAGE22_POST_AND seq=1 side=P1 tid=8204 qpc=563752887691 callReturnRVA=0x000EE456 player=0x0E251F78 dispatchType=1 dispatchPayload=0x0000001E controller=0x2A551020 controllerFlagsBeforeAND=0x00000000 controllerFlagsAfterAND=0x00000000 bit400Before=0 bit400After=0 afterReadable=1 eflagsAfterAND=0x00000246

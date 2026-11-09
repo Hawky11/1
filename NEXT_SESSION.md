@@ -1,6 +1,20 @@
 # Next session handoff
 
-## Current checkpoint — Stage26 source ready; user MSVC/runtime test required
+## Current handoff — Stage26 verified; Stage27 investigation next (2026-11-09)
+
+- **Latest completed stage** Stage26: [source branch](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-trace) `a249f452353c340fe8f1dab23375a8a932b079b4`; [full runtime evidence](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-runtime-evidence) `4b7564ff71664fedd5745e3bcfc4210d74540075`, including exact 21 uploaded log blobs, chat Build.log text and `Stage26_Overlay/STAGE26_RUNTIME_ANALYSIS.md`. Main upload commit `8c6edc82d3146c11b3dd23d964471c31ba3fe816`. **Do not rewrite source/evidence branches.**
+- Build: 2026-11-09 17:27:39 MSVC x86 14.51.36231, 8 files compiled, linked `dinput8.dll` 240,640 bytes, C4456 in new `AITrace.cpp:1671` due to shadowed `reported` local, existing C4754 in `AICommandSiteTrace.cpp:785`. Both non-fatal.
+- Stage26 marker/config present. Both startup P1/P2+`0xF8` zero, DR7=`0x00DD0005`, Stage16 disabled, 59 thread watchpoint installations. 140 unique write records in game thread18044: P1 41 sets and 41 clears; P2 29 sets and 29 clears, all paired 0→1 and 1→0 transitions.
+- **Original setter identified:** all 70 monitored 0→1 writes originate from Stage25 DLL wrapper EIP `0x50B0C267` of original AALib `OR [EAX+0xF8],1` RVA `0xF58C9`. **Clearers:** post-EIP RVAs `0x9787A` (54), `0x975AC` (7), `0x95F5B` (8), `0x97037` (1). Exact instruction starts and operations in `STAGE26_RUNTIME_ANALYSIS.md`. Registers holding object+0x30 allow [+0xC8] to address object+0xF8.
+- Type1/payload0x1E from P2 reached ALT_CALLSITE, queue, dispatcher twice; selector31 and arg3=1 select target P1; each Stage26 0→1 trap occurs 222/197 QPC ticks BEFORE Stage25 logging and afterward the game clears P1 bit0 at post-RVA `0x9787A`. Stage24 output mask `0x10001`, Stage21 AL0, fallback slot3=0→0, Stage22 bit400=0→0.
+- **Big logs read completely:** Stage14 producer 9,730 sequence IDs, Stage19 state map 2,266 IDs, unique and gapless, newline terminated, no explicit error/drop/overflow. Old `ArcanaAI_PlayerBit17WriteTrace.log` SHA `befd639d44731fd9cb5b35de44d49878406d716c` is historical Stage25, not a Stage26 write trace.
+- **Next task — Stage27 static origin/lifecycle work:** examine possible clear-parent control flow around instructions `AALib RVA 0x97873`, `0x975A6`, `0x95F55`, `0x97031` and callers, distinguish natural object/action lifecycle from speculation. Existing 24-byte Stage26 code windows and saved registers/stack provide initial evidence; full fingerprinted AALib.exe was not stored in Git source, so request or retrieve exact binary before asserting full xrefs. Only create new passive observer if a specific unproven branch/caller question remains. If making source revision, preserve Stage26 tested branch, fix C4456 by renaming inner `reported`, add explicit new-stage marker, and require new MSVC/runtime validation.
+- Project objective is to understand COM-vs-COM type1/payload0x1E queue suppression, not merely to label bit0. Existing Stage15/16 results concerning bit17 remain relevant and separate.
+
+---
+
+
+## Historical handoff — Stage26 source ready; subsequently tested
 
 - Stage26 source branch: [stage26-object-bit0-write-trace](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-trace), HEAD `a249f452353c340fe8f1dab23375a8a932b079b4`. Source snapshot includes `Stage26_Overlay/src/AITrace.cpp`, `Stage26_Overlay/ArcanaAI.ini`, `Stage26_Overlay/README_STAGE26.md`, `Stage26_Overlay/STAGE26_DESIGN.md` and `Stage26_Overlay/tests/verify_stage26.py`.
 - Base is immutable Stage25 source `3f034550f9d1254cc136452dde363657f913a91c`. Latest proven runtime evidence is Stage25 commit `b426a8f74764b7606ce3b5da075bb3a61d3698b3`, no rewrite.

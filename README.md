@@ -1,6 +1,19 @@
 # ArcanaAI / COM vs COM diagnostic research
 
-## Latest work — Stage26 source prepared (not built)
+## Current checkpoint — Stage26 runtime complete (2026-11-09)
+
+- **Stage26 built and tested.** User's 17:27:39 chat Build.log: MSVC 14.51.36231 x86, all eight C++ translation units compiled, `dinput8.dll` 240,640 bytes. Nonfatal C4456 in `AITrace.cpp:1671` (inner variable `reported` shadows another) and previously known C4754 in `AICommandSiteTrace.cpp:785`. No compiler errors.
+- Immutable source: [stage26-object-bit0-write-trace](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-trace) at `a249f452353c340fe8f1dab23375a8a932b079b4`. Complete runtime archive: [stage26-object-bit0-write-runtime-evidence](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-runtime-evidence) at `4b7564ff71664fedd5745e3bcfc4210d74540075` with all 21 root-uploaded Git log blobs (one stale Stage16 artifact), Build.log copied from chat and [Stage26 analysis](https://github.com/Hawky11/1/blob/stage26-object-bit0-write-runtime-evidence/Stage26_Overlay/STAGE26_RUNTIME_ANALYSIS.md).
+- **Setter confirmed:** Stage26 startup P1/P2+`0xF8` both 0. DR0/DR1 write-only installed on 59 game threads in six batches, Stage16 disabled. 140 Stage26 records, seq1..140 complete: 70 transitions bit0 `0→1` (P1 41, P2 29), all from Stage25's faithful DLL wrapper of game OR at RVA `0xF58C9`; 70 `1→0` clears.
+- **Four clear sites by post-write RVA:** `0x9787A` (54; game instruction at `0x97873` AND +0xC8,0xFFFFFFF2), `0x975AC` (7; MOV +0xC8,EAX after AND EAX,0xFFFFFFFE), `0x95F5B` (8; MOV +0xC8,0), `0x97037` (1; MOV +0xC8,0). The clearing register base equals player+0x30, giving player+0xF8. Higher-level game meaning is unproven.
+- **Same-event validation:** two P2/type1/payload0x1E events queued and dispatched. In each Stage26 records P1 bit0 `0→1` **before** Stage25 post-OR logging (+222/+197 QPC ticks), followed by a later clear at post-EIP RVA `0x9787A`. Stage23 resolver, Stage24 consumer and Stage21/22 fallback also correlate.
+- **Integrity:** Stage26 140 unique seq IDs; full Stage14 ProducerCallTrace 9,730 unique IDs, Stage19 StateMapTrace 2,266 unique IDs, no gaps/duplicates or explicit warning/error/drop/overflow; 21 uploaded logs preserve original SHA. Uploaded `ArcanaAI_PlayerBit17WriteTrace.log` is the **unchanged old Stage25 blob**, not new Stage26 bit17 evidence (Stage16 mode disabled).
+- **Next (Stage27 not implemented):** static/control-flow study of the four clearing instructions and their callers to establish why/when the flag is cleared. Do not add more hooks until a specific unresolved question demands it. Preserve Stage26 runtime source/evidence untouched; optionally silence harmless C4456 in a separate future branch.
+
+---
+
+
+## Historical preparation — Stage26 source prepared (later built/tested)
 
 - Source-only Stage26: [stage26-object-bit0-write-trace](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-trace), HEAD `a249f452353c340fe8f1dab23375a8a932b079b4`. Apply `Stage26_Overlay/src/AITrace.cpp` and `Stage26_Overlay/ArcanaAI.ini` over the working Stage25 project; **retain Stage25 `src/AIQueueTrace.cpp`**. No project-file changes.
 - Stage26 reuses the Stage16 write-only DR0/DR1 watchpoint pipeline but targets **P1/P2 +0xF8**, not +0x3B84. INI disables Stage16 and legacy control watchers to avoid conflicts. Marker `STAGE26_OBJECT_BIT0_WRITE_BUILD=2026-11-09-r1`; log `ArcanaAI_Stage26ObjectBit0WriteTrace.log`. By default log only transitions of bit0 (enable `Stage26TransitionsOnly=0` for all write traffic).

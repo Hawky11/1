@@ -1,0 +1,94 @@
+{
+  "provenance": {
+    "sourceBranch": "stage26-object-bit0-write-runtime-evidence",
+    "sourceCommit": "4b7564ff71664fedd5745e3bcfc4210d74540075",
+    "rootLogSha": "eeb87824a4cd10e573ef84ca124f93c9cd9b684c"
+  },
+  "stage27": {
+    "method": "post-write Stage26 log pairing and verified stack-based caller-return inference, no new game run"
+  },
+  "counts": {
+    "records": 140,
+    "pairedCycles": 70,
+    "sets": 70,
+    "clears": 70
+  },
+  "clearGroups": {
+    "0x0009787A": {
+      "n": 54,
+      "side": {
+        "P1": 28,
+        "P2": 26
+      },
+      "min": 317,
+      "median": 97068,
+      "max": 9214547
+    },
+    "0x000975AC": {
+      "n": 7,
+      "side": {
+        "P1": 7
+      },
+      "min": 354,
+      "median": 99990,
+      "max": 3508074
+    },
+    "0x00095F5B": {
+      "n": 8,
+      "side": {
+        "P2": 3,
+        "P1": 5
+      },
+      "min": 96127,
+      "median": 3704260,
+      "max": 7208130
+    },
+    "0x00097037": {
+      "n": 1,
+      "side": {
+        "P1": 1
+      },
+      "min": 20731060,
+      "median": 20731060,
+      "max": 20731060
+    }
+  },
+  "dominantHelperReturnRvAs": {
+    "0x979D1": 34,
+    "0x9760E": 20
+  },
+  "setEBXDistributions": {
+    "0x0000001E": 2,
+    "0x0000001A": 5,
+    "0x0000002D": 14,
+    "0x00000028": 5,
+    "0x00000004": 1,
+    "0x0000000C": 3,
+    "0x00000024": 1,
+    "0x00000063": 2,
+    "0x00000002": 3,
+    "0x00000020": 13,
+    "0x00000061": 1,
+    "0x00000022": 4,
+    "0x00000026": 1,
+    "0x00000010": 1,
+    "0x00000025": 1,
+    "0x0000005C": 1,
+    "0x0000005E": 1,
+    "0x0000000E": 1,
+    "0x00000008": 1,
+    "0x0000000A": 1,
+    "0x00000023": 2,
+    "0x00000013": 2,
+    "0x0000004D": 1,
+    "0x00000016": 1,
+    "0x0000000B": 1,
+    "0x0000000F": 1
+  },
+  "notes": [
+    "All 70 set EAX matched target P1/P2, all set ESI matched opposing fighter object in captured run.",
+    "The return RVAs 0x979D1 and 0x9760E are dynamic stack observations; static CALL byte validation requires pinned executable.",
+    "EBX=0x1E occurred in two sets, both paired with routine clear via return RVA 0x979D1.",
+    "No Stage27 patch/Build.bat/MSVC compilation was needed."
+  ]
+}

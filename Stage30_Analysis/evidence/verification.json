@@ -1,0 +1,145 @@
+{
+  "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "size": 175556608,
+  "image_base": "0x400000",
+  "verified_calls": [
+    {
+      "site": "0xf6a79",
+      "target": "0xe8560",
+      "bytes": "e8e21affff"
+    },
+    {
+      "site": "0xf6a83",
+      "target": "0x156c00",
+      "bytes": "e878010600"
+    },
+    {
+      "site": "0xf6a8c",
+      "target": "0x130a10",
+      "bytes": "e87f9f0300"
+    },
+    {
+      "site": "0xf6acc",
+      "target": "0xe8560",
+      "bytes": "e88f1affff"
+    },
+    {
+      "site": "0xf6ad7",
+      "target": "0xf2de0",
+      "bytes": "e804c3ffff"
+    },
+    {
+      "site": "0x130bdc",
+      "target": "0xe8560",
+      "bytes": "e87f79fbff"
+    },
+    {
+      "site": "0x130be2",
+      "target": "0x156c30",
+      "bytes": "e849600200"
+    },
+    {
+      "site": "0x130c3b",
+      "target": "0xf5350",
+      "bytes": "e81047fcff"
+    },
+    {
+      "site": "0x130c4d",
+      "target": "0xf53a0",
+      "bytes": "e84e47fcff"
+    },
+    {
+      "site": "0x130cb2",
+      "target": "0xe6c60",
+      "bytes": "e8a95ffbff"
+    },
+    {
+      "site": "0x130cfb",
+      "target": "0x12f3b0",
+      "bytes": "e8b0e6ffff"
+    },
+    {
+      "site": "0xe6d6f",
+      "target": "0xf5390",
+      "bytes": "e81ce60000"
+    },
+    {
+      "site": "0x12fb04",
+      "target": "0x991c0",
+      "bytes": "e8b796f6ff"
+    },
+    {
+      "site": "0x12fb53",
+      "target": "0x156da0",
+      "bytes": "e848720200"
+    },
+    {
+      "site": "0x156e47",
+      "target": "0xf2de0",
+      "bytes": "e894bff9ff"
+    },
+    {
+      "site": "0xed193",
+      "target": "0xf2ed0",
+      "bytes": "e8385d0000"
+    }
+  ],
+  "verified_signatures": 9,
+  "float_constants_by_preferred_VA": {
+    "0x7e4760": -2.0,
+    "0x7fe2e0": -0.5,
+    "0x800710": -0.25,
+    "0x6c6388": -1.0
+  },
+  "double_scale": 100.0,
+  "windows": {
+    "producer": [
+      "0xf6a63",
+      "0xf6ae8"
+    ],
+    "orientation": [
+      "0xe8560",
+      "0xe86cd"
+    ],
+    "snapshot": [
+      "0x156c00",
+      "0x156c21"
+    ],
+    "alternate": [
+      "0x130a10",
+      "0x1313a0"
+    ],
+    "scalar_update": [
+      "0xe6c60",
+      "0xe6d7d"
+    ],
+    "selected_object": [
+      "0xe6960",
+      "0xe6996"
+    ],
+    "field_helpers": [
+      "0xf5350",
+      "0xf53ae"
+    ],
+    "continuation_entry": [
+      "0x12f3b0",
+      "0x12f412"
+    ],
+    "continuation_tail": [
+      "0x12fae9",
+      "0x12fb96"
+    ],
+    "type0_producer": [
+      "0x156da0",
+      "0x156e5e"
+    ],
+    "scaled_slot_writer": [
+      "0x991c0",
+      "0x991df"
+    ],
+    "bit17_clear": [
+      "0xed188",
+      "0xed1a9"
+    ]
+  }
+}

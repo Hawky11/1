@@ -1,0 +1,452 @@
+--- a/src/AIQueueTrace.cpp
++++ b/src/AIQueueTrace.cpp
+@@ -450,6 +450,33 @@
+         CloseHandle(file);
+     }
+ 
++    void AppendStage31Log(const char* message)
++    {
++        wchar_t logPath[MAX_PATH + 1]{};
++        if (!GetSiblingPath(logPath, MAX_PATH, L"ArcanaAI_Stage31AlternatePathTrace.log"))
++            return;
++
++        SYSTEMTIME now{};
++        GetLocalTime(&now);
++        char line[2200]{};
++        const int count = sprintf_s(
++            line,
++            "[%04u-%02u-%02u %02u:%02u:%02u] %s\r\n",
++            now.wYear, now.wMonth, now.wDay,
++            now.wHour, now.wMinute, now.wSecond,
++            message != nullptr ? message : "(empty)");
++        if (count <= 0) return;
++
++        HANDLE file = CreateFileW(
++            logPath, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
++            nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
++        if (file == INVALID_HANDLE_VALUE) return;
++
++        DWORD written = 0;
++        WriteFile(file, line, static_cast<DWORD>(count), &written, nullptr);
++        CloseHandle(file);
++    }
++
+     void AppendStage25ObjectFlagLog(const char* message)
+     {
+         wchar_t logPath[MAX_PATH + 1]{};
+@@ -642,6 +669,194 @@
+             return true;
+         }
+         return false;
++    }
++
++    // Stage31: bounded per-event records, formatting/I/O only on the worker.
++    constexpr DWORD kStage31CallRva = 0xF6A8Cu;
++    constexpr DWORD kStage31TargetRva = 0x130A10u;
++    constexpr BYTE kStage31Call[5] = {0xE8,0x7F,0x9F,0x03,0x00};
++    constexpr BYTE kStage31Prefix[4] = {0x8D,0x55,0xE8,0x52};
++    constexpr BYTE kStage31Suffix[7] = {0x83,0xC4,0x0C,0x5F,0x5E,0xB0,0x01};
++    constexpr BYTE kStage31Prologue[9] = {0x55,0x8B,0xEC,0x83,0xEC,0x14,0x8B,0x45,0x08};
++    DWORD g_stage31Target = 0;
++    volatile LONG g_stage31Installed = 0;
++    volatile LONG g_stage31Episode = 0;
++    volatile LONG g_stage31Dropped = 0;
++    volatile LONG g_stage31Overflow = 0;
++    constexpr DWORD kStage31Capacity = 1024;
++    constexpr DWORD kStage31Depth = 8;
++    struct Stage31Scope { DWORD Episode, Player, Side, Snapshot; };
++    __declspec(thread) DWORD g_stage31Depth = 0;
++    __declspec(thread) Stage31Scope g_stage31Scopes[kStage31Depth] = {};
++    struct Stage31Record
++    {
++        DWORD Sequence, Kind, Episode, Parent, Depth, Thread, Tick, Side, Player, Snapshot;
++        ULONGLONG Qpc, QpcAfter;
++        DWORD Mask, Values[32];
++        DWORD CallerRva, Type, Payload, BeforeReadable, AfterReadable;
++        QueueSnapshot Before, After;
++    };
++    Stage31Record g_stage31Records[kStage31Capacity]{};
++    SRWLOCK g_stage31Lock = SRWLOCK_INIT;
++    DWORD g_stage31Read = 0, g_stage31Write = 0, g_stage31Count = 0, g_stage31Sequence = 0;
++
++    ULONGLONG Stage31Qpc()
++    {
++        LARGE_INTEGER q{}; QueryPerformanceCounter(&q);
++        return static_cast<ULONGLONG>(q.QuadPart);
++    }
++    void AddStage31Record(Stage31Record& r)
++    {
++        AcquireSRWLockExclusive(&g_stage31Lock);
++        r.Sequence = ++g_stage31Sequence; // sequence gaps expose dropped records
++        if (g_stage31Count == kStage31Capacity)
++            InterlockedIncrement(&g_stage31Dropped);
++        else
++        {
++            g_stage31Records[g_stage31Write] = r;
++            g_stage31Write = (g_stage31Write + 1) % kStage31Capacity;
++            ++g_stage31Count;
++        }
++        ReleaseSRWLockExclusive(&g_stage31Lock);
++    }
++    void Stage31Read(Stage31Record& r, DWORD index, DWORD address)
++    {
++        if (address && SafeReadDword(address, &r.Values[index])) r.Mask |= 1u << index;
++    }
++    void Stage31Snapshot(Stage31Record& r, const Stage31Scope& scope)
++    {
++        r.Episode = scope.Episode; r.Player = scope.Player; r.Side = scope.Side;
++        r.Snapshot = scope.Snapshot; r.Thread = GetCurrentThreadId();
++        r.Tick = GetTickCount(); r.Qpc = Stage31Qpc(); r.Depth = g_stage31Depth;
++        for (DWORD i=0; i<4; ++i) Stage31Read(r,i,scope.Snapshot+i*4);
++        const DWORD p = scope.Player;
++        const DWORD offsets[16] = {0x3B84,0x3B80,0x3978,0x3F20,0x4238,0x423C,
++            0x3A2C,0x3A30,0x3A34,0x3B20,0x3ED0,0x3ED4,0x3EDC,0x3B70,0x3F34,0x3F30};
++        for (DWORD i=0; i<16; ++i) Stage31Read(r,4+i,p+offsets[i]);
++        DWORD obj=0;
++        if (SafeReadDword(p+4,&obj))
++        {
++            r.Values[20]=obj; r.Mask |= 1u<<20;
++            if (obj)
++            {
++                const DWORD offsets2[7]={0x1C,0x20,0x24,0x290,0x150,0x154,0x1E4};
++                for (DWORD i=0; i<7; ++i) Stage31Read(r,21+i,obj+offsets2[i]);
++            }
++        }
++        r.Values[28]=p+0x3978u; r.Mask |= 1u<<28;
++        Stage31Read(r,29,p+0x3998u);
++        Stage31Read(r,30,p+0x399Cu);
++        Stage31Read(r,31,p+0x39ACu);
++        // Values28..31 describe only the local candidate, not a redirected E6960 result.
++        // No call to E6960: selecting a redirected block is game logic, not a safe read.
++    }
++    void __cdecl Stage31Begin(const DWORD* context)
++    {
++        const DWORD depth = g_stage31Depth++;
++        if (depth >= kStage31Depth) { InterlockedIncrement(&g_stage31Overflow); return; }
++        Stage31Scope& scope = g_stage31Scopes[depth];
++        scope = Stage31Scope{};
++        DWORD snapshot=0, player=0, side=0, known=0;
++        // PUSHFD/PUSHAD: return=context[9], original cdecl argument=context[10].
++        if (!SafeReadDword(static_cast<DWORD>(reinterpret_cast<std::uintptr_t>(context+10)),&snapshot) ||
++            !snapshot || !SafeReadDword(snapshot,&player) ||
++            !IsKnownPlayerQueue(player+kPlayerQueueOffset,&side,&known) || known != player) return;
++        scope.Episode = static_cast<DWORD>(InterlockedIncrement(&g_stage31Episode));
++        scope.Player=player; scope.Side=side; scope.Snapshot=snapshot;
++        Stage31Record r{}; r.Kind=1;
++        r.Parent = depth ? g_stage31Scopes[depth-1].Episode : 0;
++        Stage31Snapshot(r,scope); AddStage31Record(r);
++    }
++    void __cdecl Stage31End()
++    {
++        if (!g_stage31Depth) { InterlockedIncrement(&g_stage31Overflow); return; }
++        const DWORD depth=g_stage31Depth-1;
++        if (depth<kStage31Depth && g_stage31Scopes[depth].Episode)
++        {
++            Stage31Record r{}; r.Kind=2;
++            r.Parent=depth ? g_stage31Scopes[depth-1].Episode : 0;
++            Stage31Snapshot(r,g_stage31Scopes[depth]); AddStage31Record(r);
++            g_stage31Scopes[depth]=Stage31Scope{};
++        }
++        --g_stage31Depth;
++    }
++    // Both diagnostic calls preserve x87, MMX, XMM, MXCSR as well as GPR/EFLAGS.
++    // EBX pins PUSHAD context; EDI addresses a 16-byte aligned 512-byte FXSAVE area.
++    __declspec(naked) void Stage31AlternateHook()
++    {
++        __asm
++        {
++            pushfd
++            pushad
++            mov ebx, esp
++            sub esp, 210h
++            lea edi, [esp+0Fh]
++            and edi, 0FFFFFFF0h
++            fxsave [edi]
++            fninit
++            cld
++            push ebx
++            call Stage31Begin
++            add esp, 4
++            fxrstor [edi]
++            mov esp, ebx
++            popad
++            popfd
++            push dword ptr [esp+4]
++            call dword ptr [g_stage31Target]
++            lea esp, [esp+4]
++            pushfd
++            pushad
++            mov ebx, esp
++            sub esp, 210h
++            lea edi, [esp+0Fh]
++            and edi, 0FFFFFFF0h
++            fxsave [edi]
++            fninit
++            cld
++            call Stage31End
++            fxrstor [edi]
++            mov esp, ebx
++            popad
++            popfd
++            ret
++        }
++    }
++
++    void FlushStage31()
++    {
++        for (DWORD n=0; n<kStage31Capacity; ++n)
++        {
++            Stage31Record r{};
++            AcquireSRWLockExclusive(&g_stage31Lock);
++            if (!g_stage31Count) { ReleaseSRWLockExclusive(&g_stage31Lock); break; }
++            r=g_stage31Records[g_stage31Read];
++            g_stage31Read=(g_stage31Read+1)%kStage31Capacity; --g_stage31Count;
++            ReleaseSRWLockExclusive(&g_stage31Lock);
++            char message[2000]{};
++            int used=sprintf_s(message,sizeof(message),
++                "STAGE31_EVENT seq=%lu kind=%lu episode=%lu parent=%lu depth=%lu qpc=%I64u qpcAfter=%I64u tid=%lu tick=%lu side=P%lu player=%08lX snapshot=%08lX mask=%08lX values=[",
++                r.Sequence,r.Kind,r.Episode,r.Parent,r.Depth,r.Qpc,r.QpcAfter,r.Thread,r.Tick,r.Side,r.Player,r.Snapshot,r.Mask);
++            for (DWORD i=0;i<32 && used>0;++i)
++            {
++                const int count=sprintf_s(message+used,sizeof(message)-used,"%s%08lX",i?",":"",r.Values[i]);
++                if (count<0) { used=-1; break; } used+=count;
++            }
++            if (used>0) sprintf_s(message+used,sizeof(message)-used,
++                "] callerRVA=%08lX type=%lu payload=%lu beforeReadable=%lu afterReadable=%lu before=(%lu,%lu,%lu,%lu) after=(%lu,%lu,%lu,%lu)",
++                r.CallerRva,r.Type,r.Payload,r.BeforeReadable,r.AfterReadable,
++                static_cast<DWORD>(r.Before.guard),static_cast<DWORD>(r.Before.active),static_cast<DWORD>(r.Before.storedType),static_cast<DWORD>(r.Before.storedPayload),
++                static_cast<DWORD>(r.After.guard),static_cast<DWORD>(r.After.active),static_cast<DWORD>(r.After.storedType),static_cast<DWORD>(r.After.storedPayload));
++            AppendStage31Log(message);
++        }
++        const LONG dropped=InterlockedExchange(&g_stage31Dropped,0);
++        const LONG overflow=InterlockedExchange(&g_stage31Overflow,0);
++        if (dropped || overflow)
++        {
++            char line[160]{};
++            sprintf_s(line,"WARNING: STAGE31 dropped=%ld scopeOverflowOrUnbalanced=%ld capacity=1024 depthLimit=8",dropped,overflow);
++            AppendStage31Log(line);
++        }
+     }
+ 
+     bool SameSiteKey(const QueueSite& site, DWORD side, DWORD callerRva,
+@@ -763,8 +978,34 @@
+             detail.StackDepth = CaptureStackBackTrace(0, kDetailStackDepth, detail.Stack, nullptr);
+         }
+ 
++        Stage31Record stage31{};
++        const bool capture31 = callerRva == 0x156E4Cu && eventType == 0 &&
++            InterlockedCompareExchange(&g_stage31Installed,0,0) != 0 &&
++            IsKnownPlayerQueue(queueAddress,&side,&playerObject);
++        if (capture31)
++        {
++            stage31.Kind=3; stage31.Thread=GetCurrentThreadId(); stage31.Tick=GetTickCount();
++            stage31.Side=side; stage31.Player=playerObject; stage31.Depth=g_stage31Depth;
++            stage31.CallerRva=callerRva; stage31.Type=eventType; stage31.Payload=payload;
++            if (g_stage31Depth && g_stage31Depth<=kStage31Depth)
++            {
++                const Stage31Scope& scope=g_stage31Scopes[g_stage31Depth-1];
++                stage31.Episode=scope.Episode; stage31.Parent=scope.Episode;
++                stage31.Snapshot=scope.Snapshot;
++                // raw parent player permits explicit cross-player detection.
++                stage31.Values[0]=scope.Player; stage31.Mask=1;
++            }
++            stage31.BeforeReadable=SafeReadQueueSnapshot(queueAddress,&stage31.Before)?1u:0u;
++            stage31.Qpc=Stage31Qpc();
++        }
+         QueueInsertFn original = g_originalQueueInsert;
+         if (original != nullptr) original(queue, eventType, payload);
++        if (capture31)
++        {
++            stage31.QpcAfter=Stage31Qpc();
++            stage31.AfterReadable=SafeReadQueueSnapshot(queueAddress,&stage31.After)?1u:0u;
++            AddStage31Record(stage31);
++        }
+ 
+         if (traceThisCall)
+         {
+@@ -1960,6 +2201,122 @@
+                 static_cast<unsigned long>(kStage24ResolverConsumerRva),
+                 static_cast<unsigned long>(suspendedCount));
+             AppendStage24ResolverConsumerLog(message);
++            return true;
++        }
++        return false;
++    }
++
++    bool InstallStage31AlternateHook()
++    {
++        if (!IsProcessorFeaturePresent(PF_XMMI_INSTRUCTIONS_AVAILABLE))
++        {
++            AppendStage31Log("ERROR: FXSAVE/FXRSTOR support unavailable; no Stage31 patch applied.");
++            return false;
++        }
++        BYTE* callSite = reinterpret_cast<BYTE*>(
++            static_cast<std::uintptr_t>(g_gameBase + kStage31CallRva));
++        BYTE* helper = reinterpret_cast<BYTE*>(
++            static_cast<std::uintptr_t>(g_gameBase + kStage31TargetRva));
++
++        if (std::memcmp(callSite - sizeof(kStage31Prefix),
++                kStage31Prefix, sizeof(kStage31Prefix)) != 0 ||
++            std::memcmp(callSite, kStage31Call, sizeof(kStage31Call)) != 0 ||
++            std::memcmp(callSite + sizeof(kStage31Call),
++                kStage31Suffix, sizeof(kStage31Suffix)) != 0 ||
++            std::memcmp(helper, kStage31Prologue, sizeof(kStage31Prologue)) != 0)
++        {
++            AppendStage31Log("ERROR: Stage31 consumer callsite/context or helper prologue signature mismatch; no patch was applied.");
++            return false;
++        }
++
++        std::int32_t relative = 0;
++        std::memcpy(&relative, callSite + 1, sizeof(relative));
++        const std::intptr_t destination =
++            reinterpret_cast<std::intptr_t>(callSite + sizeof(kStage31Call)) + relative;
++        if (destination != reinterpret_cast<std::intptr_t>(helper))
++        {
++            AppendStage31Log("ERROR: RVA 0x000F6A8C does not resolve to helper RVA 0x00130A10; refusing to patch.");
++            return false;
++        }
++
++        BYTE patch[5]{};
++        if (!MakeRelativeCall(callSite,
++                reinterpret_cast<const void*>(&Stage31AlternateHook), patch))
++        {
++            AppendStage31Log("ERROR: Stage31 wrapper is outside rel32 CALL range; no patch was applied.");
++            return false;
++        }
++
++        HANDLE patchMutex = CreateMutexW(nullptr, FALSE, L"Local\\ArcanaAIOverhaul_PatchInstall_Mutex");
++        if (patchMutex == nullptr)
++        {
++            AppendStage31Log("ERROR: could not create shared patch-install mutex.");
++            return false;
++        }
++        const DWORD wait = WaitForSingleObject(patchMutex, INFINITE);
++        if (wait != WAIT_OBJECT_0 && wait != WAIT_ABANDONED)
++        {
++            CloseHandle(patchMutex);
++            AppendStage31Log("ERROR: could not acquire shared patch-install mutex.");
++            return false;
++        }
++
++        HANDLE suspended[512]{};
++        const DWORD suspendedCount = SuspendOtherProcessThreads(
++            suspended, static_cast<DWORD>(sizeof(suspended) / sizeof(suspended[0])));
++
++        DWORD oldProtect = 0;
++        bool protectedTarget = false;
++        bool ok = false;
++        if (!VirtualProtect(callSite, sizeof(patch), PAGE_EXECUTE_READWRITE, &oldProtect))
++        {
++            AppendStage31Log("ERROR: VirtualProtect failed for RVA 0x000F6A8C.");
++        }
++        else
++        {
++            protectedTarget = true;
++            std::int32_t currentRelative = 0;
++            std::memcpy(&currentRelative, callSite + 1, sizeof(currentRelative));
++            const std::intptr_t currentDestination =
++                reinterpret_cast<std::intptr_t>(callSite + sizeof(kStage31Call)) + currentRelative;
++            if (std::memcmp(callSite - sizeof(kStage31Prefix),
++                    kStage31Prefix, sizeof(kStage31Prefix)) != 0 ||
++                std::memcmp(callSite, kStage31Call, sizeof(kStage31Call)) != 0 ||
++                std::memcmp(callSite + sizeof(kStage31Call),
++                    kStage31Suffix, sizeof(kStage31Suffix)) != 0 ||
++                std::memcmp(helper, kStage31Prologue, sizeof(kStage31Prologue)) != 0 ||
++                currentDestination != reinterpret_cast<std::intptr_t>(helper))
++            {
++                AppendStage31Log("ERROR: Stage31 consumer bytes changed during installation; no patch was applied.");
++            }
++            else
++            {
++                g_stage31Target = g_gameBase + kStage31TargetRva;
++                std::memcpy(callSite, patch, sizeof(patch));
++                FlushInstructionCache(GetCurrentProcess(), callSite, sizeof(patch));
++                InterlockedExchange(&g_stage31Installed, 1);
++                ok = true;
++            }
++        }
++
++        if (protectedTarget)
++        {
++            DWORD ignored = 0;
++            VirtualProtect(callSite, sizeof(patch), oldProtect, &ignored);
++        }
++        ResumeThreads(suspended, suspendedCount);
++        ReleaseMutex(patchMutex);
++        CloseHandle(patchMutex);
++
++        if (ok)
++        {
++            char message[512]{};
++            sprintf_s(message,
++                "Installed Stage31 resolver-consumer observer at callsite RVA 0x%08lX -> helper RVA 0x%08lX; original one cdecl argument replayed once; scoped entry/post and queue records; GPR/EFLAGS/FX state preserved across Stage31 diagnostics; suspended=%lu thread(s).",
++                static_cast<unsigned long>(kStage31CallRva),
++                static_cast<unsigned long>(kStage31TargetRva),
++                static_cast<unsigned long>(suspendedCount));
++            AppendStage31Log(message);
+             return true;
+         }
+         return false;
+@@ -2179,6 +2536,7 @@
+ 
+     DWORD WINAPI QueueTraceWorker(void*)
+     {
++        const int stage31Enabled = ReadIniInt(L"AIResearch", L"EnableStage31AlternatePathTrace", 0);
+         const int queueTraceEnabled = ReadIniInt(L"AIResearch", L"EnableCpuQueueTrace", 0);
+         const int queueDetailTraceEnabled = ReadIniInt(L"AIResearch", L"EnableCpuQueueDetailTrace", 1);
+         const int dispatchTraceEnabled = ReadIniInt(L"AIResearch", L"EnableCpuEventDispatchTrace", 0);
+@@ -2195,6 +2553,11 @@
+         if (flushMs > static_cast<int>(kMaxFlushIntervalMs)) flushMs = kMaxFlushIntervalMs;
+         g_flushIntervalMs = static_cast<DWORD>(flushMs);
+ 
++        if (stage31Enabled != 0)
++        {
++            AppendStage31Log("STAGE31_ALTERNATE_PATH_BUILD=2026-11-09-r1");
++            AppendStage31Log("STAGE31_CONFIG enabled=1 ring=1024 depth=8; kind=1 BEGIN,2 END,3 TYPE0_QUEUE; episode=0 means no tracked parent; values are raw DWORDs; read mask required; no boolean helper result inferred.");
++        }
+         if (stage21ConsumerTraceEnabled != 0)
+             AppendStage21ConsumerLog("STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2");
+         if (stage22PostAndTraceEnabled != 0)
+@@ -2205,7 +2568,7 @@
+             AppendStage25ObjectFlagLog("STAGE25_SECONDARY_OBJECT_FLAG_BUILD=2026-11-09-r1");
+         if (stage24ResolverConsumerTraceEnabled != 0)
+             AppendStage24ResolverConsumerLog("STAGE24_RESOLVER_CONSUMER_BUILD=2026-11-09-r1");
+-        if (queueTraceEnabled == 0 && dispatchTraceEnabled == 0 &&
++        if (stage31Enabled == 0 && queueTraceEnabled == 0 && dispatchTraceEnabled == 0 &&
+             stage21ConsumerTraceEnabled == 0 && stage22PostAndTraceEnabled == 0 &&
+             stage23ResolverResultTraceEnabled == 0 && stage24ResolverConsumerTraceEnabled == 0 && stage25ObjectFlagTraceEnabled == 0)
+         {
+@@ -2235,6 +2598,8 @@
+             kStage23ResolverRva + sizeof(kStage23ResolverPrologue) >= g_gameImageSize ||
+             kStage24ResolverConsumerCallRva + sizeof(kStage24ConsumerCall) >= g_gameImageSize ||
+             kStage24ResolverConsumerRva + sizeof(kStage24ConsumerPrologue) >= g_gameImageSize ||
++            kStage31CallRva + 12u >= g_gameImageSize ||
++            kStage31TargetRva + sizeof(kStage31Prologue) >= g_gameImageSize ||
+             kStage25ObjectFlagOrRva + 9u >= g_gameImageSize ||
+             static_cast<ULONGLONG>(kStage24MappingTableRva) + 0xFFull * 3ull + sizeof(DWORD) >= g_gameImageSize ||
+             kP1ControlRva < kPlayerControlOffset || kP2ControlRva < kPlayerControlOffset)
+@@ -2295,7 +2660,15 @@
+         {
+             AppendStage24ResolverConsumerLog("ERROR: Stage24 resolver-consumer observer was not installed; inspect the preceding validation/patch message.");
+         }
+-        if (InterlockedCompareExchange(&g_hookInstalled, 0, 0) == 0 &&
++        if (stage31Enabled != 0)
++        {
++            if (InterlockedCompareExchange(&g_hookInstalled,0,0)==0)
++                AppendStage31Log("ERROR: Stage31 requires the existing queue observer; alternate hook not installed.");
++            else if (!InstallStage31AlternateHook())
++                AppendStage31Log("ERROR: Stage31 alternate observer was not installed.");
++        }
++        if (InterlockedCompareExchange(&g_stage31Installed,0,0)==0 &&
++            InterlockedCompareExchange(&g_hookInstalled, 0, 0) == 0 &&
+             InterlockedCompareExchange(&g_dispatchHookInstalled, 0, 0) == 0 &&
+             InterlockedCompareExchange(&g_stage21PayloadConsumerInstalled, 0, 0) == 0 &&
+             InterlockedCompareExchange(&g_stage22PayloadPostAndInstalled, 0, 0) == 0 &&
+@@ -2310,6 +2683,7 @@
+         for (;;)
+         {
+             Sleep(g_flushIntervalMs);
++            if (stage31Enabled != 0) FlushStage31();
+             if (queueTraceEnabled != 0 && InterlockedCompareExchange(&g_hookInstalled, 0, 0) != 0)
+             {
+                 FlushQueueSites();

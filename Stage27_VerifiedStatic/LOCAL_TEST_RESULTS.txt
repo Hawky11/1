@@ -1,0 +1,16 @@
+Stage27 VerifiedStatic: offline test record
+Date: 2026-11-09
+Target: Stage27_VerifiedStatic/tools/inspect_call_flow.py
+Test command: python -m unittest discover -s Stage27_VerifiedStatic/tests -p 'test_inspect_call_flow.py' -v
+
+test_bad_machine ... ok
+test_pe_rva_mapper ... ok
+test_reject_non_call ... ok
+test_rel32_targets ... ok
+test_windows_nonempty_and_cover_calls ... ok
+
+Ran 5 tests in 0.001s
+OK
+
+Test environment: assistant Linux Python sandbox (synthetic PE sections and generated x86 call bytes).
+Limitations: does not substitute for executing the inspect script against the user's SHA256-pinned AALib.exe.

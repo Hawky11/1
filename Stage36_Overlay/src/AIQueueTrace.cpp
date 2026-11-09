@@ -2737,7 +2737,7 @@ namespace
         }
         if (stage36Enabled != 0)
         {
-            AppendStage36Log("STAGE36_CONTROL_TO_COMMAND_BUILD=2026-11-10-r1");
+            AppendStage36Log("STAGE36_CONTROL_TO_COMMAND_BUILD=2026-11-10-r2");
             AppendStage36Log("STAGE36_CONFIG EB718 INPUT_1F, EB7D9 INPUT_1E, F79E4 CANDIDATE; validated CALL wrappers; read-only buffers and QPC; correlate with existing FINAL_COMMAND F7C5D and EVENT_DISPATCH EE200.");
         }
         if (stage35Enabled != 0)

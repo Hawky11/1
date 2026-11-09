@@ -1131,3 +1131,60 @@ The helper uses arg2/ESI as an index into a three-byte-per-entry mapping table a
 - Exact instruction that changes player bit17 is still absent from this run.
 
 Next: Stage24 should add a passive observer at CALL RVA `0x000EE306` -> helper RVA `0x000F57D0`, without changing Stage23. Capture the four incoming args, the three runtime table bytes at `0x04DDF188 + 0x1F*3`, and the three DWORDs at `player+0x3A08` before/after the helper. Confirm whether the flag byte selects a secondary helper path. Preserve original args, return registers/EFLAGS and caller cleanup; never write table/player state.
+
+
+## Stage23 runtime result — second r2 run (2026-11-09 09:04–09:07)
+
+This is a second run of the existing Stage23 r2 binary, not a Stage24 run. The uploaded marker remains `STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2`, the installed resolver hook is still at CALL RVA `0x000EE273 -> 0x0012EAC0`, and the queue/dispatch trace header requests Stages 12/21/22/23 only. No Stage24 marker, hook at `0x000EE306`, or Stage24 log is present.
+
+Evidence branch: [stage23-resolver-result-runtime-evidence-run2](https://github.com/Hawky11/1/tree/stage23-resolver-result-runtime-evidence-run2), HEAD `0e6ed619a4e812687e615b00535ef17e54118b5b`. It preserves all 18 current uploaded runtime logs, the Build.log supplied in chat, and `Stage23_Overlay/STAGE23_RUNTIME_ANALYSIS_RUN2.md`. The first Stage23 capture remains unchanged at [stage23-resolver-result-runtime-evidence](https://github.com/Hawky11/1/tree/stage23-resolver-result-runtime-evidence), HEAD `306b006a2230c1226a49ab93b9b8b74722fd1683`.
+
+### Build and hook installation
+
+- Build began 2026-11-09 09:04:32,60 with Visual Studio 18 Community / MSVC 14.51.36231 x86.
+- All eight translation units compiled; `build\\dinput8.dll` linked successfully at **229,376 bytes**.
+- Only diagnostic was the known non-fatal C4754 warning at `AICommandSiteTrace.cpp:785`, associated with the bounds calculation beginning at line 782.
+- Runtime initialized at 09:06:20. Stage23 r2 hook installed at `0x000EE273 -> 0x0012EAC0`, reporting 39 suspended threads. Runtime image base was `0x005B0000`.
+
+### Resolver and payload-0x1E path
+
+Three type-1 / payload-`0x1E` resolver records were captured, all readable and all on thread 16252:
+
+| Side | Tick | ALT QPC | Resolver QPC | Δ | Args (arg1,arg2,arg3,arg4) | Record pointer |
+|---|---:|---:|---:|---:|---|---|
+| P2 | 1331046 | 13310812900 | 13310813095 | 195 | `(0x17,0x17,0x1E,0x38)` | `0x05C8DCA0` |
+| P1 | 1332312 | 13323424185 | 13323424234 | 49 | `(0x0A,0x0A,0x1E,0x26)` | `0x0586F490` |
+| P1 | 1350156 | 13501860518 | 13501860595 | 77 | `(0x0A,0x0A,0x1E,0x26)` | `0x0586F490` |
+
+All returned the same 12 bytes as the first Stage23 capture: `60 FF 03 1F 12 00 00 05 13 24 03 00` (DWORDs `0x1F03FF60, 0x05000012, 0x00032413`). Byte +2=`0x03`, +3=`0x1F`, +4=`0x12`, +0x0B=`0x00`.
+
+Each record correlates to Stage13 ALT_CALLSITE at RVA `0xF6AD7`, QueueTrace accepted insertion at return RVA `0xF6ADC`, EventDispatch at RVA `0xEE5CB`, Stage21 classifier/fallback and Stage22 post-AND:
+
+| Side | Resolver QPC | Classifier QPC | Fallback QPC | Post-AND QPC |
+|---|---:|---:|---:|---:|
+| P2 | 13310813095 | 13310818324 | 13310820264 | 13310820882 |
+| P1 | 13323424234 | 13323426193 | 13323426682 | 13323427028 |
+| P1 | 13501860595 | 13501862845 | 13501863381 | 13501863736 |
+
+All three classifier calls to `0xE8CF0` returned AL=0; fallback `0xF7EB0` ran with index 3; the Stage22 post-AND observer then executed. Slot 3 remained `0 -> 0`, and controller bit `0x400` remained `0 -> 0` in every sample. No actual nonzero-to-zero clear was observed. Stage21 `preCallEdi` remains the controller-array pointer, not the resolver mapping byte.
+
+### Stage18 / Stage20 / Stage17 bit17 setter correlation
+
+- Stage18 and Stage20 each recorded eight P2 entries. Sequential pairing by side/player/thread/tick, stack frame and QPC gives **8/8 matches**; object-guard checks followed their gate entries by 121–175 QPC ticks.
+- All eight Stage18 gate results returned AL=1, key `0x19`, table byte `0xFA`.
+- First six Stage20 object-guard results returned AL=1 with `object+0x3B70=0x4C`.
+- Last two object-guard results returned AL=0 with `object+0x3B70=0x58` (bit2 clear), both at tick `1353484`. Their parent returns are `0x00646801` and `0x0067B9FA`, respectively.
+- Stage17 logged exactly two P2 setter calls at CALL RVA `0x000C6502`, index `0x71`, same player `0x0E27CCA0`, with matching EBP/stack frames:
+  - guard #7 QPC `0x326C2BD8E` → setter #1 `0x326C2BDD6` (**72 ticks**); `player+0x3B84` was 0.
+  - guard #8 QPC `0x326C2C03B` → setter #2 `0x326C2C081` (**70 ticks**); `player+0x3B84` was `0x00020000`.
+- Therefore the field was zero at the first AL=0 guard/setter entry and already `0x20000` at the second. The first setter call lies between the two observations. This is strong temporal and stack attribution consistent with the first original setter call setting bit17, but the exact memory-store instruction is not directly captured because `ArcanaAI_PlayerBit17WriteTrace.log` is zero bytes.
+
+### Empty logs, scope-limited no-hits and diagnostics
+
+- `ArcanaAI_PlayerBit17WriteTrace.log`, `ArcanaAI_StateMapTrace.log`, and `ArcanaAI_ProducerCallTrace.log` were zero bytes.
+- `ArcanaAI_FinalCommandTrace.log` contains 45 records but none at its monitored callsite carries payload `0x1E`; this does not contradict the confirmed alternate queue insertion/dispatch route at `0xF6AD7`.
+- No ERROR/WARNING/DROP/OVERFLOW/FAILED markers were found in nonempty uploaded runtime logs.
+
+### Next task remains Stage24
+
+The new run strengthens the Stage23 resolver result and the Stage18/20/17 setter attribution, but does not inspect the downstream mapping consumer. Stage24 must add a separate passive observer at CALL RVA `0x000EE306 -> 0x000F57D0`, capture its four arguments, the three runtime table bytes at `0x04DDF188 + selector*3`, and the three DWORDs at `player+0x3A08` before/after the helper. Use a distinct Stage24 marker and log filename. Keep both Stage23 evidence branches immutable. Read/write diagnostics only; do not alter mapping-table or player state.

@@ -1,5 +1,17 @@
 # ArcanaAI / COM vs COM diagnostic research
 
+## Stage32 — runtime complete: type0/payload0 reaches dispatcher EE200 (2026-11-09)
+
+- **Immutable runtime evidence:** [stage32-type0-dispatch-runtime-evidence](https://github.com/Hawky11/1/tree/stage32-type0-dispatch-runtime-evidence), commit `a6ed15cce970d92e690f349a8dd7a2cf2e5e5f97`; [full analysis](https://github.com/Hawky11/1/blob/stage32-type0-dispatch-runtime-evidence/Stage32_Runtime/RUNTIME_ANALYSIS.md) and [21 event pairs CSV](https://github.com/Hawky11/1/blob/stage32-type0-dispatch-runtime-evidence/Stage32_Runtime/stage31_to_stage32_type0_dispatch.csv). Source-only branch remains [stage32-type0-dispatch-correlation](https://github.com/Hawky11/1/tree/stage32-type0-dispatch-correlation) @ `44b23d1`.
+- 21 original fresh logs copied from user-upload `main` commit `a7a99cf`, retaining their exact Git blob SHA; `Build.log` **not uploaded**, so MSVC compiler/linker transcript remains unverified. Runtime Stage32 marker `2026-11-09-r1`, Stage31 hook at F6A8C and existing EE200 dispatcher hook are installed.
+- All three **Stage31 bit17=1 alternate episodes** (P1 once, P2 twice) have nested type0/payload0 at F2DE0 and immediate matched EE200 dispatcher details (END→EE200 11/11/9 QPC ticks). Queue is `active=0` just after F2DE0, then `active=1, history=(0,0)` at EE200. **Stage29 bit17 clear occurs *inside* each matching EE200 call**, independently corroborating the chain.
+- Across all Stage31 kind3 type0/payload0 insertions, **21/21** have unique close QPC-correlated dispatch details: 18 unscoped (7–70 ticks) and 3 scoped (210–230 ticks from F2DE0, inclusive of Stage31 wrapper). Stage31 seq1..35 and Stage32 detail seq1..131 contiguous; no explicit drops/warnings/errors in core logs. Four bit17 set/clear cycles in Stage29, but only three have F6A68/Stage31; the fourth P2 cycle clears during **unscoped** type0/payload0 dispatcher #87, not evidence of missing Stage31 logging.
+- In same session one direct P1 bit17=0 F6A68 attempt takes F6AD7 type1/payload0x1E and reaches existing queue/dispatcher. **No gameplay effect (attack/movement success) is proven from dispatch alone; no reason to change flags or synthesize type1 events.**
+- **Next Stage33:** static first, inspect original `AALib.exe`'s **type0/payload0 path within `EE200` and downstream effect writes/calls**; distinguish dispatcher entry from effective game action. Original EXE already available in ChatGPT Library `/AALib.zip`, pinned SHA in `BINARY_SOURCE_IN_LIBRARY.md`. If runtime is needed, design passive narrowly targeted observation only; preserve prior Stage branches and do not request EXE again.
+
+---
+
+
 ## Stage32 — type0 dispatcher activation path verified statically (2026-11-09)
 
 - **New source-only branch:** [stage32-type0-dispatch-correlation](https://github.com/Hawky11/1/tree/stage32-type0-dispatch-correlation), commit `44b23d1634139fe15928b1ff50bbddda056f633d` (based on immutable Stage31 runtime evidence `0a9ae75`). [Technical analysis](https://github.com/Hawky11/1/blob/stage32-type0-dispatch-correlation/Stage32_Analysis/STATIC_ANALYSIS.md) · [RU install guide](https://github.com/Hawky11/1/blob/stage32-type0-dispatch-correlation/Stage32_Overlay/README_STAGE32_RU.md).

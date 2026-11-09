@@ -79,3 +79,14 @@ F7C5D   call F2DE0              ; proposed command reaches native event queue
 5. Не пытаться вывести анимацию/урон из ID или bitmap; если нужен следующий этап, искать **фактическую animation/attack/object-commit функцию**, и только затем делать изолированный passive observer.
 
 **Stage36 пока source-only.** Для реального build и natural runtime нужны четыре Stage36 Overlay файла, текущий Stage29 AITrace.cpp и старые проверенные остальные исходники. См. [README_STAGE36_RU.md](../Stage36_Overlay/README_STAGE36_RU.md).
+
+## Runtime update: Stage36 r1 failed closed because Stage10 already hooked F4360 (2026-11-10)
+
+The user successfully built x86 Stage36 r1 (`dinput8.dll` 264192 bytes), but the instrumentation was NOT installed. At 00:55:43, the Stage10 ParentFlow log specifically reports `Installed Stage 10 all-caller helper hook F4360 at RVA=0x000F4360 (patch=6 bytes)`. The following Stage36 hook installer demanded the original F4360 10-byte prologue in process memory; it could not still be present after the preexisting Stage10 hook. The original SHA-verified EXE prologue and three CALL-site instructions nevertheless match the static signatures. The failure is therefore a previously missed **inter-observer hook conflict**, not evidence of an incorrect native reverse-engineering RVA.
+
+Full report: [Stage36_FailedRuntime/RUNTIME_ANALYSIS.md](../Stage36_FailedRuntime/RUNTIME_ANALYSIS.md). 24 exact uploaded log/build Git blobs preserved under `Stage36_FailedRuntime/`. Existing Stage10 captured 66 F4360 events and Stage35 captured 13172 complete consumer events, proving old observers continued to work.
+
+The r2 Stage36 overlay (new branch `stage36-control-to-command-r2-stage10-compat`) verifies all three original caller CALL signatures, prefixes/suffixes, E8 targets, and native F58E0 entry. For F4360 only, the validator allows original prologue OR a previously applied 6-byte unconditional jump (`E9 rel32 + 90`, `FF25 absolute indirect`, or `68 imm32; C3`), with resolved destination strictly in executable memory belonging to our own `dinput8.dll` loaded module. In process it calls the already-hooked F4360, which then chains to native via Stage10. Unknown detours refuse installation. r2 prints `STAGE36_R2_ENTRY` and exact callsite mismatch diagnostics; source-only and Windows MSVC runtime unverified until new user logs. **Do not claim that Stage36 r1 recorded native predicate/candidate results.**
+
+One new gameplay-state finding from failed r1's successful older observers: six naturally occurring `EE200 type0/payload5` events, three P1 and three P2, wrote/reloaded slot11 `P+3A6C` (0→F00, F00→F00, E88→F00 per side) with complete masks. This proves a controller timer state transition for payload5, NOT an action/hit. [Exact six-row CSV](../Stage36_FailedRuntime/type0_payload5_first_natural_evidence.csv).
+

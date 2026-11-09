@@ -2728,9 +2728,9 @@ namespace
                     static_cast<unsigned long>(record.Stage37Before.ReadMask),
                     static_cast<unsigned long>(record.Stage37After.ReadMask),
                     static_cast<unsigned long>(changedMask));
-                if (initial > 0 && static_cast<size_t>(initial) < sizeof(effect))
+                if (initial > 0 && static_cast<std::size_t>(initial) < sizeof(effect))
                 {
-                    size_t used=static_cast<size_t>(initial);
+                    std::size_t used=static_cast<std::size_t>(initial);
                     for (DWORD j=0u;j<kStage37Fields;++j)
                     {
                         const int n=sprintf_s(effect+used,sizeof(effect)-used,
@@ -2739,8 +2739,8 @@ namespace
                             static_cast<unsigned long>(record.Stage37Before.Fields[j]),
                             static_cast<unsigned long>(record.Stage37After.Fields[j]),
                             j+1u<kStage37Fields?",":"");
-                        if (n <= 0 || static_cast<size_t>(n) >= sizeof(effect)-used) break;
-                        used+=static_cast<size_t>(n);
+                        if (n <= 0 || static_cast<std::size_t>(n) >= sizeof(effect)-used) break;
+                        used+=static_cast<std::size_t>(n);
                     }
                     AppendStage37Log(effect);
                 }

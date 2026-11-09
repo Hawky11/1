@@ -8,7 +8,7 @@ Date: 2026-11-09. Stage25 was compiled and run; its target +0xF8 bit0 already eq
 - User-uploaded Stage25 logs do not include a full AALib.exe binary, so a complete static scan of all +0xF8 writers cannot be verified from this repository. Known writer F58C9 is one site, not proven unique.
 - P1 control field RVA DCA5EA4 and P2 control field RVA DCD0BCC, player base offset 3F2C. Target watchpoint RVAs:
   - P1: `0x0DCA5EA4 - 0x3F2C + 0xF8 = 0x0DCA2070`.
-  - P2: `0x0DCD0BCC - 0x3F2C + 0xF8 = 0x0DCCCC98`.
+  - P2: `0x0DCD0BCC - 0x3F2C + 0xF8 = 0x0DCCCD98`.
 - Stage26 uses the most recent version-controlled AITrace.cpp (Stage20 overlay) because Stage21–25 only changed AIQueueTrace.cpp and its INI.
 
 ## Chosen mechanism

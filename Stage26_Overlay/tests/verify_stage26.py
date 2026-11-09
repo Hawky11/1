@@ -40,6 +40,6 @@ assert values.get("EnableStage25SecondaryObjectFlagTrace") == "1"
 
 p1 = 0x0DCA5EA4 - 0x3F2C + 0xF8
 p2 = 0x0DCD0BCC - 0x3F2C + 0xF8
-assert (p1, p2) == (0x0DCA2070, 0x0DCCCC98)
+assert (p1, p2) == (0x0DCA2070, 0x0DCCCD98)
 assert 0x0E27CCA0 + 0xF8 == 0x0E27CD98
 print("PASS: Stage26 source/INI invariants and watchpoint addresses; MSVC/runtime untested")

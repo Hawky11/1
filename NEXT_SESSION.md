@@ -1,5 +1,21 @@
 # Next session handoff
 
+## Current handoff — Stage31 runtime completed; Stage32 analysis next (2026-11-09)
+
+
+- **Evidence branch:** [stage31-alternate-path-runtime-evidence](https://github.com/Hawky11/1/tree/stage31-alternate-path-runtime-evidence), commit `0a9ae75cd952f9ec6e2d8588a3c44ce0974cb466`. Отдельная, неизменённая source-ветка: [stage31-alternate-path-runtime-trace](https://github.com/Hawky11/1/tree/stage31-alternate-path-runtime-trace), `e905316`.
+- [Полный разбор](https://github.com/Hawky11/1/blob/stage31-alternate-path-runtime-evidence/Stage31_Runtime/RUNTIME_ANALYSIS.md) · [6-эпизодная корреляция CSV](https://github.com/Hawky11/1/blob/stage31-alternate-path-runtime-evidence/Stage31_Runtime/correlation.csv). Архивированы все **21** свежих лога из загрузки `main` commit `6e3c9a8`, без изменения blob SHA.
+- Stage31 marker `2026-11-09-r1`, установка хука `F6A8C→130A10` подтверждена. `STAGE31_EVENT` seq1..64: 6 BEGIN, 6 END, 52 type0; ровно по одному `kind=3`, `type0/payload0` внутри каждого из шести `episode` (P1=3, P2=3), 46 внешних type0 имеют `episode=0`. BEGIN/END все с `mask=FFFFFFFF`, без дыр и явных ошибок/сбросов.
+- Все шесть цепочек QPC подтверждены: Stage29 bit17 set → Stage15 `F6A68` bit17=1 / `branchTaken=0` → Stage31 BEGIN → вложенный `F2DE0` от `156E4C` → END → Stage29 bit17 clear. Во всех случаях P+3B84 `0x20000→0x30000` внутри helper (bit16 появляется). Очередь при вложенной type0 записи: `(guard,active,storedType,storedPayload)=(0,0,FFFF,FFFF)→(0,0,0,0)`; **active остаётся 0**, поэтому не приравнивать вызов очереди к выполненной игре-команде.
+- Контрольный P1 Stage15 с bit17=0 отправил `type1/payload0x1E` через `F6AD7`, со сменой queue active 0→1 и Stage21 classifier AL0. Различие нативных ветвей подтверждено, **дефект игрового ИИ пока не доказан**.
+- **Build.log не был загружен.** MSVC transcript отсутствует; работоспособность кода подтверждена игровым runtime и установкой хуков.
+- **Следующий Stage32:** статически исследовать дальнейшую судьбу type0/payload0 при active=0 и функцию bit16 в том же состоянии, затем, только при необходимости, узко инструментировать type0 dispatch с QPC. Не менять значения битов, не внедрять события и не считать отсутствующую type1 команду багом без подтверждения.
+
+**Next assistant action:** use [Stage31 runtime report](https://github.com/Hawky11/1/blob/stage31-alternate-path-runtime-evidence/Stage31_Runtime/RUNTIME_ANALYSIS.md) and [Stage30 native disassembly](https://github.com/Hawky11/1/blob/stage30-native-alternate-path-analysis/Stage30_Analysis/STATIC_ANALYSIS.md). Scope Stage32 to prove/disprove downstream handling of type0/payload0 and bit16; begin with offline disassembly of the pinned original `AALib.exe` available in ChatGPT Library `/AALib.zip` ([pointer](https://github.com/Hawky11/1/blob/main/BINARY_SOURCE_IN_LIBRARY.md)). Do not infer a bug or make gameplay modifications without further evidence. Do not repeat Stage31 build instructions; runtime is already observed. Retain Stage29 AITrace.cpp and Stage31 AIQueueTrace.cpp as latest tested overlays for any later experiments. Historical branches remain immutable.
+
+---
+
+
 ## Stage31 — alternate-path observer source prepared (2026-11-09)
 
 - **Source-only branch:** [stage31-alternate-path-runtime-trace](https://github.com/Hawky11/1/tree/stage31-alternate-path-runtime-trace), commit `e905316353b844f276a40dff33516d48aa1e4d99`, based on Stage30 `78c2358d57d7b31814cea61eeb94aa49bb996473`. [Installation, log schema, validation and limitations](https://github.com/Hawky11/1/blob/stage31-alternate-path-runtime-trace/Stage31_Overlay/README_STAGE31_RU.md).

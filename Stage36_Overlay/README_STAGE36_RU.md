@@ -1,3 +1,31 @@
+# Stage36 r2 — исправлена совместимость с уже установленным Stage10 ParentFlow
+
+**Текущая ветка для следующего x86 прогона:** [stage36-control-to-command-r2-stage10-compat](https://github.com/Hawky11/1/tree/stage36-control-to-command-r2-stage10-compat).
+
+Предыдущий прогон r1 10.11.2026 в 00:55:42 **собрался успешно** (DLL 264192 байта), но **Stage36 не установился**. Причина: Stage10 ParentFlow уже перехватывает нативное начало функции `F4360` шестибайтовым JMP, а Stage36 r1 требовал неизменённый пролог оригинального EXE. Сохранён [полный разбор и оригинальные логи r1](../Stage36_FailedRuntime/RUNTIME_ANALYSIS.md). Не переустанавливать и не повторять r1.
+
+## Для r2 достаточно заменить два файла
+
+- [src/AIQueueTrace.cpp](src/AIQueueTrace.cpp) → `D:\INCUBATOR\ArcanaAIOverhaul\src\AIQueueTrace.cpp` (маркер сборки `r2`);
+- [src/Stage36ControlPredicate.inl](src/Stage36ControlPredicate.inl) → `D:\INCUBATOR\ArcanaAIOverhaul\src\Stage36ControlPredicate.inl` (**основное исправление**).
+
+`Stage35ConsumerTrace.inl` и `ArcanaAI.ini` **не изменились** относительно предыдущего Stage36 — оставь их установленными. `AITrace.cpp` строго оставь от Stage29. Никакие другие исходники, INI, `Build.bat` и игровые поля не изменяй.
+
+Обычный x86 `Build.bat`, установка новой DLL/того же INI, предварительно архивируй старые логи, естественный COM-vs-COM и не менее двух секунд после последнего боя для flush. Загрузи свежие `Build.log`, **`ArcanaAI_Stage36ControlToCommandTrace.log`**, `ArcanaAI_ParentFlowTrace.log`, `ArcanaAI_QueueTrace.log`, `ArcanaAI_FinalCommandTrace.log`, `ArcanaAI_EventDispatchTrace.log`, `ArcanaAI_Stage35ControllerConsumerTrace.log`, `ArcanaAI_Stage31AlternatePathTrace.log`, `ArcanaAI_Stage29Bit17Transitions.log`.
+
+**Ожидаемые маркеры:**
+
+```text
+STAGE36_CONTROL_TO_COMMAND_BUILD=2026-11-10-r2
+STAGE36_R2_ENTRY F4360=0x... bytes=... mode=STAGE10_OWN_DLL detourShape=... target=...
+STAGE36_R2_INSTALLED EB718->F58E0 index=1F EB7D9->F58E0 index=1E F79E4->F4360 candidate; originals called once; 3/3 sites.
+STAGE36_RESULT seq=... kind=INPUT_1F|INPUT_1E|CANDIDATE ...
+```
+
+Если код Stage10 установлен иначе, чем позволяют проверенные варианты JMP, вместо установки r2 запишет `mode=UNKNOWN` и точные шесть байт. **При таком результате не отключай валидацию**: этот журнал позволит определить точный формат перехвата для следующего безопасного исправления. Marker `STAGE36_R2_INSTALLED` и `STAGE36_RESULT` без нового Windows прогона **не подтверждены**.
+
+---
+
 # Stage36 — установка наблюдателя от controller bitmap к предлагаемой игровой команде
 
 **Статус: Stage36 source-only.** Проверка оригинального `AALib.exe` — PASS (22 точные сигнатуры и 8 прямых CALL), но компиляция MSVC x86, установка хуков и реальный COM-vs-COM для этой ветки **ещё не подтверждены**.

@@ -1,6 +1,19 @@
 # Next session handoff
 
-## Current handoff — Stage25 runtime complete, plan Stage26 (2026-11-09)
+## Current checkpoint — Stage26 source ready; user MSVC/runtime test required
+
+- Stage26 source branch: [stage26-object-bit0-write-trace](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-trace), HEAD `a249f452353c340fe8f1dab23375a8a932b079b4`. Source snapshot includes `Stage26_Overlay/src/AITrace.cpp`, `Stage26_Overlay/ArcanaAI.ini`, `Stage26_Overlay/README_STAGE26.md`, `Stage26_Overlay/STAGE26_DESIGN.md` and `Stage26_Overlay/tests/verify_stage26.py`.
+- Base is immutable Stage25 source `3f034550f9d1254cc136452dde363657f913a91c`. Latest proven runtime evidence is Stage25 commit `b426a8f74764b7606ce3b5da075bb3a61d3698b3`, no rewrite.
+- **What to apply:** replace only working `src/AITrace.cpp` and `ArcanaAI.ini`; keep the previously compiled Stage25 `src/AIQueueTrace.cpp`. Run existing x86 `Build.bat`. New log expected: `ArcanaAI_Stage26ObjectBit0WriteTrace.log`; marker `STAGE26_OBJECT_BIT0_WRITE_BUILD=2026-11-09-r1`.
+- Correct INI: `EnableStage26ObjectBit0WriteTrace=1`, `Stage26TransitionsOnly=1`, `EnablePlayerBit17WriteTrace=0`, `EnableControlFieldTrace=0`, Stage25 OR remains 1. These are **mutually exclusive DR0/DR1 modes** and code refuses conflicts.
+- Mechanism: inherit Stage16's write-only hardware watchpoints, thread scanning and exception handler; target `player+0xF8`, mask0x1, P1 watched RVA `0x0DCA2070`, P2 `0x0DCCCD98`. Preserve DR2/DR3 and previous owners. Capture initial DWORDs and post-write EIP/RVA, QPC, old/new shadow bit0, registers, ESP stack snapshot, code bytes; suppressed no-change events periodically counted. This has not been MSVC-compiled or runtime-tested.
+- **Review caveats:** Stage25 wrapper performs the OR inside the DLL, so a hardware post-write EIP may point into the DLL rather than AALib. Initial bit0 could already be 1 before DR watchpoints are installed. OldValue is a best-effort shadow and not proof that every thread was observed. Static writer xref analysis of *all* sites was not performed: complete AALib.exe binary is not in the Git repo. Do not attribute first setter without 0→1 evidence.
+- **Next action:** inspect user's Build.log (warning C4754 at AICommandSiteTrace.cpp:785 was pre-existing), then new Stage26 marker/installation, initial P1/P2 bit0, write transitions, dropped/overflow and QPC correlations with Stage25. If MSVC compilation fails, fix only the new branch with a new revision. Preserve Stage25 evidence and append stage results to PROJECT_HISTORY/README/NEXT_SESSION.
+
+---
+
+
+## Prior handoff — Stage25 runtime complete, plan Stage26 (2026-11-09)
 
 - Latest **build/runtime-tested** observer: Stage25 source [stage25-secondary-object-flag-trace](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-trace), source HEAD `3f034550f9d1254cc136452dde363657f913a91c`. Successful chat Build.log on 2026-11-09 16:50:57: MSVC x86, DLL 237,568 bytes, C4754 warning only.
 - New preserved evidence: [stage25-secondary-object-flag-runtime-evidence](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-runtime-evidence), HEAD `b426a8f74764b7606ce3b5da075bb3a61d3698b`. Includes original Git blobs for all 20 uploaded logs, complete analysis, normalized Build.log transcript from chat (not a separately uploaded Build.log). Keep the source and evidence branches unchanged.

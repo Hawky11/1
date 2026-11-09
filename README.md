@@ -1,6 +1,16 @@
 # ArcanaAI / COM vs COM diagnostic research
 
-## Current checkpoint — Stage25 runtime complete (2026-11-09)
+## Latest work — Stage26 source prepared (not built)
+
+- Source-only Stage26: [stage26-object-bit0-write-trace](https://github.com/Hawky11/1/tree/stage26-object-bit0-write-trace), HEAD `a249f452353c340fe8f1dab23375a8a932b079b4`. Apply `Stage26_Overlay/src/AITrace.cpp` and `Stage26_Overlay/ArcanaAI.ini` over the working Stage25 project; **retain Stage25 `src/AIQueueTrace.cpp`**. No project-file changes.
+- Stage26 reuses the Stage16 write-only DR0/DR1 watchpoint pipeline but targets **P1/P2 +0xF8**, not +0x3B84. INI disables Stage16 and legacy control watchers to avoid conflicts. Marker `STAGE26_OBJECT_BIT0_WRITE_BUILD=2026-11-09-r1`; log `ArcanaAI_Stage26ObjectBit0WriteTrace.log`. By default log only transitions of bit0 (enable `Stage26TransitionsOnly=0` for all write traffic).
+- Static source/INI consistency checked, including exact watch RVAs P1 `0x0DCA2070` and P2 `0x0DCCCD98`. Source has not been compiled with MSVC x86, instruction-level emulation has not been run, and no in-game Stage26 evidence exists. Prior Stage25 runtime remains the latest tested stage.
+- Next: user builds using `Build.bat`, tests a fresh game session and uploads Build.log plus logs to `main`. Check Stage26 startup/installation and bit0 0→1 transition, correlate with Stage25 OR and prior queue events. Archive evidence separately; do not rewrite Stage25 sources/evidence.
+
+---
+
+
+## Prior tested checkpoint — Stage25 runtime complete (2026-11-09)
 
 - **Build/runtime verified:** MSVC x86 Build.log pasted in chat: compiled successfully, `dinput8.dll` 237,568 bytes; one pre-existing C4754 at `AICommandSiteTrace.cpp:785`. Stage25 build marker, observer installation at `0xF58C9`, and one runtime event are present.
 - **Immutable evidence snapshot:** [stage25-secondary-object-flag-runtime-evidence](https://github.com/Hawky11/1/tree/stage25-secondary-object-flag-runtime-evidence) at `b426a8f74764b7606ce3b5da075bb3a61d3698b`, with all 20 uploaded runtime logs, chat Build.log text, and [complete analysis](https://github.com/Hawky11/1/blob/stage25-secondary-object-flag-runtime-evidence/Stage25_Overlay/STAGE25_RUNTIME_ANALYSIS.md).

@@ -47,7 +47,7 @@ F6132  push edi
 F6133  call F7EB0              ; clears slot on additional condition
 ```
 
-`F7ED0` decrements a slot by the structure's `0x78` (120) step for argument 1 and clamps nonnegative; `F7EB0` zeroes the selected slot. Stage34's `0xF00` equals 3840 = 32×120, **but this is not proof of 32 completed gameplay frames or an action duration**: invocation rate, special clear and other transitions must be observed.
+`F7ED0` in this call uses **arg4=0**, so it subtracts the current DWORD at the slot-array base `[P+3A3C]` multiplied by arg3=1, and clamps the result nonnegative; this **is a runtime-dependent step, not a proven constant 120**. `F7EB0` zeroes the selected slot. Separately Stage34's slot writer `991C0` multiplies its input by 120, so `0xF00` = 3840 = 32×120 at **write time**. This is **not** proof of 32 elapsed gameplay frames or a fixed lifetime: the decrement step, invocation rate and early clear must be measured.
 
 `F5BD0` later directly tests this slot:
 
@@ -57,7 +57,7 @@ F5F53  jle F5F5F
 F5F55  or dword ptr [esi+3B78h], 80h
 ```
 
-**Important ambiguity:** at `F5C0C` in the **same routine** an earlier unconditional `OR [esi+3B78h], 0x380` already sets bit7, and `F5C71` can clear bit7 later in the routine. Therefore, the conditional `F5F55` is a native read-to-flag branch, but a **before/after observation of P+3B78 alone cannot prove that F5F55 executed**, and does not identify an action.
+**Important control flow:** `F5C0C` earlier ORs `0x380` (including bit7), but `F5C71` subsequently executes `AND 0xFFFFFF7F`, clearing bit7, *before* `F5F4C` on the linear path. Thus the `F5F55` slot-controlled OR is meaningful; however, there are other flag writes/branches in the function, and a **before/after P+3B78 change alone is not proof of exact instruction execution** or a visible action.
 
 ### Controller bitmap P+3A0C/+3A10 is also read by native logic
 

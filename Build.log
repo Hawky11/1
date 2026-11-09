@@ -1,7 +1,7 @@
 ArcanaAIOverhaul Stage 11 build log
-Started: 09.11.2026 23:02:48,25
+Started: 09.11.2026 23:46:47,75
 Project: D:\INCUBATOR\ArcanaAIOverhaul
-Temporary work: C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Build_1629_13529_5980
+Temporary work: C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Build_10247_1485_29144
 
 [1/6] Project files: OK
 [2/6] Using vswhere: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe
@@ -44,4 +44,4 @@ AIParentFlowTrace.cpp
 [6/6] Linking build\dinput8.dll
    Создается библиотека build\dinput8.lib и объект build\dinput8.exp
 
-BUILD SUCCEEDED. DLL size: 249856 bytes.
+BUILD SUCCEEDED. DLL size: 250880 bytes.

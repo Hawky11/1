@@ -26,7 +26,7 @@ def load_stage69():
 
 def verify_source(src, adapter, read_rva):
     expected = {
-        ('prev', 0x15677D): bytes.fromhex('8b 14 8d e8 54 82 00'),
+        ('prevOpcode', 0x15677D): bytes.fromhex('8b 14 8d'),
         ('site', 0x156784): bytes.fromhex('8b 45 08 89 50 68'),
         ('next', 0x15678A): bytes.fromhex('8b 0f 6a ff 81 c1 d0 3e 00 00'),
     }
@@ -37,6 +37,21 @@ def verify_source(src, adapter, read_rva):
         actual = bytes(int(s.strip(), 0) for s in match.group(1).split(','))
         assert actual == exact, (key, 'unexpected embedded guard')
         assert read_rva(rva, len(exact)) == exact, (key, 'original EXE mismatch')
+
+    # The preceding instruction contains an absolute VA relocated by the PE
+    # loader. The file value is 008254E8, but an image loaded at 00800000
+    # must contain 00C254E8 at the same RVA. NEVER compare the raw file's
+    # 4-byte immediate verbatim against live process memory.
+    import struct
+    preferred_table = struct.unpack('<I', read_rva(0x156780, 4))[0]
+    assert preferred_table == 0x008254E8, hex(preferred_table)
+    for runtime_base in (0x00400000,0x00800000,0x01200000):
+        runtime_table = (preferred_table + runtime_base - 0x00400000) & 0xffffffff
+        assert runtime_table == (runtime_base + 0x4254E8) & 0xffffffff
+    assert 'SafeReadDword(g_gameBase+0x156780u,&relocatedTableVA)' in src
+    assert 'relocatedTableVA==g_gameBase+0x4254E8u' in src
+    assert 'STAGE70_GUARD x86=' in src
+    assert 'STAGE70_DEFERRED_BUILD=2026-11-11-r2' in src
 
     hook = re.search(
         r'__declspec\(naked\)\s+void\s+S70DeferredWriterHook\(\)\s*'

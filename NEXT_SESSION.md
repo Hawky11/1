@@ -8,6 +8,9 @@
 
 **P1 Stage67 connection:** Stage65 seq276 already observed the *exact original `156769` caller* writing the immediate request `2F` at QPC `1467958862442–2446`; Stage41 seq278 PRE at `1467958862984` has same O=`2A393020` with deferred `25`, before pending `22→2F` commit. The callback's directly following `156787` store explains this pair and narrows the deferred origin strongly. Stage67 seq4436 later promotes and activates `25`. Earlier Stage67 wording “deferred25 already present before latest request” only holds *before Stage41 pending commit*, **not before Stage65's earlier request-helper CALL**. P2 deferred26 / immediate33 also matches original static pair.
 
+
+**Selector nuance:** immediate ID uses pre-helper EBX snapshot of `P+3F50`; deferred uses a fresh post-helper read. Mappings 2F/25 and 33/26 are nominal for an unchanged selector, not proof of runtime stability.
+
 **Evidence boundary:** There is **NO direct runtime EIP hit at 156787** and Stage67 did **not** record the runtime value of `P+3F50`. Therefore Stage69 is **STATIC VERIFIED / RUNTIME-LINKED**, not a directly runtime-verified writer. `O+30` arming remains separate candidate `AALib+1E8FEB`, not a measured EIP.
 
 **NEXT Stage70:** audit exact Stage67 source/exception handlers and x86 ABI; if safe, implement a **passive original-site observer** around the two contiguous native original instructions `156784` (3 bytes) + `156787` (3 bytes), relocate/replay exactly once and preserve GPR/FLAGS/x87/SSE. Capture same-player P, O, selector, original table value, old/new O+68, TID, QPC and health in the same run as Stage65/41/67; no DR0/DR1 usage, no AI/movement modifications. Static guard and 32-bit differential test before build; no game run without build+source audit. No new logs or rebuild needed **for Stage69**. Known-good Stage67 1,887,232-byte DLL; Stage65 1,879,552 and Stage59 r2 1,153,024 rollback.

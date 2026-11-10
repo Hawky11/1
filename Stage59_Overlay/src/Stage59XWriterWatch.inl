@@ -219,22 +219,50 @@ DWORD WINAPI S59Worker(LPVOID)
         S59Log(msg);
         return 0;
     }
+    // Stage59 r2: worker starts during proxy/hook initialization, before combat
+    // actors exist. The r1 100*50ms (5s) startup timeout expired 14s before
+    // the first verified Stage55 object observations in the 21:53:53 capture.
+    // Wait up to ten minutes, asynchronously on this worker only, without
+    // suspending threads or claiming that a watchpoint has been armed.
+    constexpr DWORD kS59ObjectWaitAttempts=2400u; // 2400 * 250ms = 600s
     DWORD obj[2]{}, scratchX[2]{};
     bool valid=false;
-    for(DWORD attempt=0;attempt<100u;++attempt) {
-        if(g_playerP1 && g_playerP2 &&
-           SafeReadDword(g_playerP1+4u,&obj[0]) &&
-           SafeReadDword(g_playerP2+4u,&obj[1]) &&
-           obj[0] && obj[1] && obj[0]!=obj[1] &&
-           (obj[0]&3u)==0 && (obj[1]&3u)==0 &&
-           SafeReadDword(obj[0]+0x7Cu,&scratchX[0]) &&
-           SafeReadDword(obj[1]+0x7Cu,&scratchX[1])) {
-            valid=true;break;
+    for(DWORD attempt=0;attempt<kS59ObjectWaitAttempts;++attempt) {
+        obj[0]=0;obj[1]=0;
+        const bool playersKnown=g_playerP1!=0 && g_playerP2!=0;
+        const bool gotP1=playersKnown && SafeReadDword(g_playerP1+4u,&obj[0]);
+        const bool gotP2=playersKnown && SafeReadDword(g_playerP2+4u,&obj[1]);
+        const bool plausible=gotP1 && gotP2 &&
+            obj[0]!=0 && obj[1]!=0 && obj[0]!=obj[1] &&
+            (obj[0]&3u)==0 && (obj[1]&3u)==0;
+        const bool x1=plausible && SafeReadDword(obj[0]+0x7Cu,&scratchX[0]);
+        const bool x2=plausible && SafeReadDword(obj[1]+0x7Cu,&scratchX[1]);
+        if(x1 && x2) {
+            valid=true;
+            char msg[340]{};
+            sprintf_s(msg,
+                "STAGE59_OBJECTS_READY waitedMs=%lu P1_player=%08lX P2_player=%08lX "
+                "P1_object=%08lX P2_object=%08lX P1_rawX=%08lX P2_rawX=%08lX",
+                attempt*250u,g_playerP1,g_playerP2,obj[0],obj[1],
+                scratchX[0],scratchX[1]);
+            S59Log(msg);
+            break;
         }
-        Sleep(50);
+        if(attempt%60u==59u) {
+            char msg[350]{};
+            sprintf_s(msg,
+                "STAGE59_WAITING elapsedSeconds=%lu playersKnown=%lu "
+                "readP1=%lu readP2=%lu plausible=%lu xReadP1=%lu xReadP2=%lu "
+                "P1_object=%08lX P2_object=%08lX",
+                (attempt+1u)/4u,playersKnown?1ul:0ul,
+                gotP1?1ul:0ul,gotP2?1ul:0ul,plausible?1ul:0ul,
+                x1?1ul:0ul,x2?1ul:0ul,obj[0],obj[1]);
+            S59Log(msg);
+        }
+        Sleep(250);
     }
     if(!valid){
-        S59Log("ERROR: Stage59 timed out waiting for two readable player+4 object pointers; no registers touched.");
+        S59Log("ERROR: Stage59 600s timeout waiting for two readable combat objects; no registers touched.");
         return 0;
     }
     // The scratch reads validate the two X DWORDs. Address assignment follows.
@@ -312,7 +340,7 @@ DWORD WINAPI S59Worker(LPVOID)
 }
 bool StartStage59Watch()
 {
-    S59Log("STAGE59_X_WRITER_WATCH_BUILD=2026-11-10-r1; diagnostic only; runtime pending.");
+    S59Log("STAGE59_X_WRITER_WATCH_BUILD=2026-11-10-r2; diagnostic only; runtime pending.");
     if(InterlockedCompareExchange(&g_s58Installed,0,0)!=3) {
         S59Log("ERROR: Stage59 requires Stage58 3/3; worker not started.");
         return false;

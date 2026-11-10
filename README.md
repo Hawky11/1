@@ -1,5 +1,15 @@
 ## Latest — Stage43 caller provenance runtime VERIFIED; Stage44 action-definition binding source ready (2026-11-10)
 
+## Current — Stage44 runtime VERIFIED (2026-11-10)
+
+Upload [73a93ed](https://github.com/Hawky11/1/commit/73a93ede99755e063896c78b510a2acee70311ba). [Evidence and report](https://github.com/Hawky11/1/blob/stage44-runtime-action-definition-evidence/Stage44_Runtime/RUNTIME_ANALYSIS.md), evidence commit b7c72b83b4b382751cedd9310809788943113fc0; original logs preserved plus Stage44 source overlay and 321-row CSV.
+
+Windows x86 BUILD SUCCEEDED (1,047,552-byte DLL), existing C4754 only. Stage44 installed 1/1. 321 binding windows (P1 166/P2 155), FF/FF object masks and post metadata mask 7; all ready-byte=1 and metadata type consistent. 292/292 Stage42 activations each contain one matching Stage44 binding. 29 bindings outside Stage42 windows require separate caller attribution, not proof of lost actions. Stage42/44 health dropped/overflow/mismatch all zero. Stage41 291 NEW/REQUEUE -> 291 distinct activations, 64 duplicates; one extra Stage42 P1 seq160 ID26, original caller AD75C. All 292 Stage43 origins AD75C. Fallback lookup versus normal action definition remains unresolved; no animation/hit/damage or AI-quality claim. Stage35/38 large-log full-text verification unavailable, original blobs preserved.
+
+**NEXT:** Stage45 static inspection of 1E84B3->1DF2D0 normal/fallback resolver and possible caller attribution of 29 other bindings. Stage45 source/DLL NOT prepared. No need to repeat Stage44. Original EXE already in Library. Preserve historical branches.
+
+---
+
 New user x86 runtime [main 09526f3](https://github.com/Hawky11/1/commit/09526f3edebd3057bad4a524cbaa75509a7fbfd6), [archived Stage43 full analysis](https://github.com/Hawky11/1/blob/stage43-runtime-activation-origin-evidence/Stage43_Runtime/RUNTIME_ANALYSIS.md) and [232-row provenance CSV](https://github.com/Hawky11/1/blob/stage43-runtime-activation-origin-evidence/Stage43_Runtime/stage43_native_origin_join.csv). BUILD SUCCEEDED, DLL 1041408 bytes, Stage43 ENABLED with Stage42 INSTALLED 1/1, Stage40/41 healthy. 232/232 original callerRVA=AD75C and nativeReturnRVA=1E9F67, with P1 114 / P2 118. All 232 are verified native O+64 -> O+60 activations and **all 232 NEW Stage41 requests match one-to-one**. Stage42 30 health windows: calls=2090, otherObjects=1858, dropped/overflow/mismatch=0. Earlier six additional activations did not recur, so their upstream writer has NOT been identified. This only proves command-state transfer and caller provenance, not animation/hit/damage/AI improvements.
 
 **Static next boundary:** SHA-pinned original AALib.exe confirms 1E9C70 calls 1E8490 at RVA 1E9E2D after O+60 is set. Native 1E8490 resolves an action definition using active O+60 and variant O+6C; writes pointer O+34, sets ready byte O+26D=1 and metadata O+178. A nonzero pointer can be a fallback; this is not visual-combat proof.

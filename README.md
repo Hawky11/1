@@ -1,3 +1,13 @@
+## Current — Stage63 original P+3F4C request writers STATIC VERIFIED (2026-11-11)
+
+[Static native writer report](https://github.com/Hawky11/1/blob/stage63-native-request-writer-static/Stage63_Analysis/STATIC_ANALYSIS.md) · [SHA-pinned local verifier](https://github.com/Hawky11/1/blob/stage63-native-request-writer-static/Stage63_Analysis/tools/verify_stage63_static.py) · [RU reproduction guide](https://github.com/Hawky11/1/blob/stage63-native-request-writer-static/Stage63_Analysis/README_STAGE63_RU.md).
+
+Private original AALib.exe from existing Library AALib.zip was locally verified SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba, PE32/i386 ImageBase 00400000. Offline verifier **PASS**: 10 exact opcode signatures, 6 direct CALL edges. Original direct fixed-displacement P+3F4C writes: E5C06 and E5C13 via shared setter E5BF0, E9E60 conditional global-request writer, and E853F consumer sentinel reset. Original text direct E8 xrefs: **296 to E5BF0**, **11 to E9E30**, **1 to E8480**. One verified static route is Stage39 callback 12EB10 → helper 131CA0 → E5BF0. These are original potential request sources, **not runtime counts or proof of COM utility selection**.
+
+Stage62's 158/202 activations without corresponding Stage39 output remain **unattributed upstream**; not 158 AI bugs. Stage63 made **NO native DLL/INI/game/AI/coordinate changes**, did not do a new game runtime test, and did not distribute AALib.exe. Next **Stage64**: classify exact original caller families and design narrowly-scoped passive request-writer provenance if static evidence does not resolve the 158. Keep verified Stage59 r2 1,153,024-byte DLL unchanged until source/ABI review.
+
+---
+
 ## Current — Stage62 native action request → activation SAME-RUN VERIFIED (2026-11-10)
 
 [Stage62 verified report](https://github.com/Hawky11/1/blob/stage62-same-session-request-to-activation-join/Stage62_Runtime/RUNTIME_ANALYSIS.md) · [Stage62 offline correlator](https://github.com/Hawky11/1/blob/stage62-same-session-request-to-activation-join/Stage62_Analysis/tools/correlate_stage62.py) · [reproduction guide](https://github.com/Hawky11/1/blob/stage62-same-session-request-to-activation-join/Stage62_Analysis/README_STAGE62_RU.md).

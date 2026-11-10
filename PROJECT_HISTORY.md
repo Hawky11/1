@@ -1606,3 +1606,17 @@ Windows x86 BUILD SUCCEEDED (1,047,552-byte DLL), existing C4754 only. Stage44 i
 
 **NEXT ANALYST:** require STAGE45_DEFINITION_RESOLVER_BUILD r1 and INSTALLED 1/1; join bindingQpcBefore to Stage44 by side/P/O/TID, nested QPC, matching ID/variant and EAX=Stage44 POST O+34. Normal mask 1F/path3, fallback paths 1/2 use applicable bits, unknown path0 is not proof of invalid game data. Check predictions, actual fallback equality and zero loss counters. otherObjects includes calls outside captured Stage44 windows. 29 prior outside-Stage42 bindings still lack upstream caller attribution; Stage45 does NOT identify their producer. Stage44 evidence remains b7c72b83b4b382751cedd9310809788943113fc0; preserve all historical branches. Original EXE already in Library.
 
+
+
+---
+
+## Current — Stage45 runtime VERIFIED (2026-11-10)
+
+Fresh upload [4f8d227](https://github.com/Hawky11/1/commit/4f8d227d01cf624526569aa89999e092ca65ef9d). Exact uploaded log blobs preserved at [stage45-runtime-definition-resolver-evidence](https://github.com/Hawky11/1/tree/stage45-runtime-definition-resolver-evidence), evidence commit 3fdb8647fae45cc517281c7f74ffaa4a9789c203; [report](https://github.com/Hawky11/1/blob/stage45-runtime-definition-resolver-evidence/Stage45_Runtime/RUNTIME_ANALYSIS.md), [231-row CSV](https://github.com/Hawky11/1/blob/stage45-runtime-definition-resolver-evidence/Stage45_Runtime/stage45_resolver_binding_join.csv). Source fe91fb09a31579f71e58d211670839838bdd33b1 now has successful Windows x86 build/runtime evidence: DLL 1,052,672 bytes, only existing C4754; Stage45 INSTALLED 1/1, Stage44 1/1, Stage42 1/1, Stage43 enabled, Stage40 3/3.
+
+**Proven:** 231 resolver records (P1 106/P2 125), all mask1F/path3/predictionMatches1/resultIsFallback0; independently calculated table pointer equals actual EAX. All 231 join distinct Stage44 bindings by parent QPC/P/O/TID, nested time, ID/variant and EAX=POST O+34. All variants zero; no fallback/nonzero variant sample. All binding fields/masks/ready byte/metadata type consistent. 209 Stage42 activations nested into this binding chain, all 209 NEW Stage41 requests -> distinct activations; 305 Stage41 total, 96 duplicates; no extra Stage42 activation. All 209 origins AD75C. 22 binding/resolver pairs outside Stage42 (including initial two ID0) remain unassigned upstream but are also normal table results. No animation/hit/damage or improved-AI claim.
+
+Stage42 HEALTH 2525 calls/2316 excluded; Stage44 9069/8838; Stage45 43539/43308; all dropped/overflow/mismatch zero. Full reviewed Stage36/37/39–45, Queue/EventDispatch sizes match Git blobs. Stage38 text adapter returned empty; Stage35 and remaining historical logs not fully verified, original blobs preserved. Stage39 31/31 next-consumer raw ID matches. See report for scope.
+
+**NEXT Stage46:** inspect native downstream use of bound definition pointer and choose first concrete execution-state/animation-related consumer for passive observation. Stage46 source/DLL NOT prepared; no need to repeat Stage45. 22 outside-Stage42 bindings remain independent caller-attribution question. Keep working Stage45 sources and all prior historical branches. Original AALib.exe already in Library; do not request again.
+

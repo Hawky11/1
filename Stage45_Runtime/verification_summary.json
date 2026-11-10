@@ -1,0 +1,260 @@
+{
+  "statistics": {
+    "counts": {
+      "resolver": 231,
+      "binding": 231,
+      "activation": 209,
+      "request": 305
+    },
+    "resolverSides": {
+      "P1": 106,
+      "P2": 125
+    },
+    "join": 231,
+    "distinct": 231,
+    "bad": 0,
+    "variants": [
+      "00000000"
+    ],
+    "nested": 209,
+    "extra": [
+      {
+        "seq": "1",
+        "side": "P1",
+        "id": "00000000>00000000"
+      },
+      {
+        "seq": "2",
+        "side": "P2",
+        "id": "00000000>00000000"
+      },
+      {
+        "seq": "26",
+        "side": "P1",
+        "id": "000001E2>000001E2"
+      },
+      {
+        "seq": "27",
+        "side": "P1",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "32",
+        "side": "P1",
+        "id": "0000011C>0000011C"
+      },
+      {
+        "seq": "39",
+        "side": "P1",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "42",
+        "side": "P1",
+        "id": "000001D5>000001D5"
+      },
+      {
+        "seq": "44",
+        "side": "P1",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "46",
+        "side": "P1",
+        "id": "000001D3>000001D3"
+      },
+      {
+        "seq": "55",
+        "side": "P1",
+        "id": "000001D5>000001D5"
+      },
+      {
+        "seq": "56",
+        "side": "P1",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "68",
+        "side": "P2",
+        "id": "000001E2>000001E2"
+      },
+      {
+        "seq": "96",
+        "side": "P2",
+        "id": "000001D5>000001D5"
+      },
+      {
+        "seq": "97",
+        "side": "P2",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "98",
+        "side": "P2",
+        "id": "000001D3>000001D3"
+      },
+      {
+        "seq": "114",
+        "side": "P1",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "122",
+        "side": "P2",
+        "id": "000001D5>000001D5"
+      },
+      {
+        "seq": "125",
+        "side": "P2",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "144",
+        "side": "P1",
+        "id": "000001E2>000001E2"
+      },
+      {
+        "seq": "155",
+        "side": "P2",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "164",
+        "side": "P2",
+        "id": "000001D4>000001D4"
+      },
+      {
+        "seq": "196",
+        "side": "P2",
+        "id": "000001D5>000001D5"
+      }
+    ],
+    "newRequests": 209,
+    "duplicates": 96,
+    "newMatched": 209,
+    "newDistinct": 209,
+    "activationBad": 0,
+    "activationUnchanged": 4,
+    "originBad": 0,
+    "requestJoinBad": 0,
+    "health": [
+      {
+        "stage": 42,
+        "calls": 2525,
+        "otherObjects": 2316,
+        "dropped": 0,
+        "overflow": 0,
+        "mismatch": 0
+      },
+      {
+        "stage": 44,
+        "calls": 9069,
+        "otherObjects": 8838,
+        "dropped": 0,
+        "overflow": 0,
+        "mismatch": 0
+      },
+      {
+        "stage": 45,
+        "calls": 43539,
+        "otherObjects": 43308,
+        "dropped": 0,
+        "overflow": 0,
+        "mismatch": 0
+      }
+    ],
+    "sequence": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "integrity": [
+    {
+      "path": "ArcanaAI_EventDispatchTrace.log",
+      "chars": 118655,
+      "size": 118655,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_QueueTrace.log",
+      "chars": 66080,
+      "size": 66080,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage36ControlToCommandTrace.log",
+      "chars": 172828,
+      "size": 172828,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage37Type1CommitTrace.log",
+      "chars": 31990,
+      "size": 31990,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage39ActionOutputTrace.log",
+      "chars": 31098,
+      "size": 31098,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage40ActionConsumerTrace.log",
+      "chars": 200460,
+      "size": 200460,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage41ObjectCommitTrace.log",
+      "chars": 108644,
+      "size": 108644,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage42ActionActivationTrace.log",
+      "chars": 66812,
+      "size": 66812,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage43ActivationOriginTrace.log",
+      "chars": 68439,
+      "size": 68439,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage44ActionDefinitionTrace.log",
+      "chars": 106813,
+      "size": 106813,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "ArcanaAI_Stage45DefinitionResolverTrace.log",
+      "chars": 91964,
+      "size": 91964,
+      "endsNewline": true,
+      "errors": []
+    },
+    {
+      "path": "Build.log",
+      "chars": 1917,
+      "size": 1917,
+      "endsNewline": true,
+      "errors": []
+    }
+  ]
+}

@@ -1,3 +1,28 @@
+# Stage59 r2 — исправление раннего тайм-аута ожидания объектов
+
+**Причина r1 подтверждена:** 10.11.2026 Stage59 стартовал **21:53:34**, завершил 5-секундное ожидание **21:53:39**, а первые живые Stage55 P1/P2 object snapshots появились **21:53:53–21:53:54**. Поэтому r1 не установил ни одного DR0/DR1 watchpoint; отсутствие X_WRITE записей **не является** доказательством отсутствия записей X.
+
+В r2 время ожидания живых объектов увеличено с **5 до 600 секунд**, с записями `STAGE59_WAITING` каждые ~15 секунд и `STAGE59_OBJECTS_READY` после обнаружения двух читаемых объектов и их X DWORD. Все прочие диагностики и адреса неизменны. Это **source ready, Windows x86 compile/runtime ещё не проверены**.
+
+## Установка поверх уже установленного Stage59 r1
+
+**Замени ровно ОДИН файл:** `D:\INCUBATOR\ArcanaAIOverhaul\src\Stage59XWriterWatch.inl` на [исправленный Stage59 r2](./src/Stage59XWriterWatch.inl) из ветки `stage59-r2-wait-for-combat-objects`.
+
+НЕ меняй существующий Stage59 r1 `src\Stage38CallbackWindow.inl`, Stage55–58, другие исходники или Build.bat. Оставь `ArcanaAI.ini` как для Stage59:
+
+```ini
+[AIResearch]
+EnableControlFieldTrace=0
+EnablePlayerBit17WriteTrace=0
+EnableStage59XWriterWatch=1
+```
+
+Сначала сохрани работающую r1 DLL (**1 152 512 байт**, сборка 21:53:04) и предыдущую Stage58 DLL (**1 145 344 байта**) для отката. Выполни `Build.bat`. Если сборка неуспешна, не устанавливай DLL. После успешной сборки запусти игру и COM-vs-COM, дождись появления персонажей. Проверяй `STAGE59_WATCH_ARMED` и минимум один `STAGE59_THREAD_INSTALLED`; запись `STAGE59_OBJECTS_READY` — только готовность объектов, **ещё не доказательство установки watchpoint**. Если `STAGE59_HEALTH` показывает ошибки или есть просадка FPS/вылет — остановись и откатись.
+
+Для следующего анализа залей те же **шесть файлов одного запуска**: `Build.log`, `ArcanaAI_Stage59XWriterWatchTrace.log`, `ArcanaAI_Stage58ACDF0ConditionalCallTrace.log`, `ArcanaAI_Stage57ACDF0HelperBoundaryTrace.log`, `ArcanaAI_Stage56ACDF0WriterTrace.log`, `ArcanaAI_Stage55EarlierMotionCoordinateTrace.log`. Если Stage59 снова не стартует, хватит Build.log + Stage59 trace.
+
+---
+
 # Stage59 — как установить и какие логи загрузить
 
 **Текущий статус: только исходники. Windows x86 BUILD и реальный COM-vs-COM runtime Stage59 ещё не проверены.**

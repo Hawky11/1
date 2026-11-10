@@ -1,5 +1,21 @@
 # Next session handoff
 
+## Current — Stage51 runtime VERIFIED; Stage52 AEF10/AED90 passive boundary SOURCE NEXT (2026-11-10)
+
+**User fresh upload:** [logs](https://github.com/Hawky11/1/commit/b411d18a1c22a3f1f2ddd5c27b08cfb03f1f4894) and [continuation + Build.log](https://github.com/Hawky11/1/commit/034185644dd587f5e3fc1eaf725e24d0f8b93c6f). **BUILD SUCCEEDED** Windows x86 16:14:35, DLL **1,089,024 bytes**, only established warning C4754. New **STAGE51_INSTALLED 1/1 AF119→AE220**; original arg=1, no observed ABI or caller errors. Stage50 r1 and Stage49 r2 still installed.
+
+**Stage51 full blob** sha `76f91158cfb3ba1fcf1ac7d25b1de553215e1697`: **6,560** contiguous tracked P1/P2 rows (3,280 each), all 13 fields readable (mask=1FFF), **zero changedMask throughout**, **31 HEALTH** lines with missingObjects/dropped/overflow/mismatch/badCaller/badArg all 0. Stage50 **6,558** events unchanged, Stage49 **6,556** unchanged. Stage47 **6,494** events, **4,037** intra-call changed. Stage48/46/44 each **1,783**.
+
+**Exact same-frame join:** 6,494 Stage47 POST→Stage51 PRE events matched by side/object and QPC gap <=5,000. **435** changed raw X (`Stage47 f5 POST O+7C != Stage51 f1 PRE O+7C`); **0** changed raw Y, and **6,494 / 6,494** Stage47 POST X equals Stage51 PRE anchor O+AC. Stage51 POST→Stage50 PRE all four coordinate DWORDs match **6,558 / 6,558**; Stage50 POST→Stage49 PRE match **6,556 / 6,556**. Stage51 has 66 tail rows unmatched by a nearby Stage47 event: do not compare them to stale previous frames or claim false 438 X / 5 Y differences. The observed writer is **after Stage47 but before the AF119→AE220 native call**, not in Stage51/50/49 watched call bodies.
+
+**Frozen evidence:** [Stage51 branch](https://github.com/Hawky11/1/tree/stage51-runtime-global-coordinate-evidence), [RUNTIME_ANALYSIS.md](https://github.com/Hawky11/1/blob/stage51-runtime-global-coordinate-evidence/Stage51_Runtime/RUNTIME_ANALYSIS.md), [6,494-row join CSV](https://github.com/Hawky11/1/blob/stage51-runtime-global-coordinate-evidence/Stage51_Runtime/stage47_stage51_sameframe_join.csv). Original main blob SHAs are listed in report.
+
+**NEXT ANALYST — Stage52 source:** Inspect SHA-verified original AALib.exe and preserve original Windows x86 native calling conventions and target code. Corridor: **AF10D CALL AEF10**, **AF112 CALL AED90**, then AF117 PUSH1, **AF119→AE220** (Stage51), AF136→AE100 (Stage50), AF13D→1E9170 (Stage49). Build passive, original-once, ABI-safe before/after P1/P2 X/Y/AC/B0 observers at **AF10D** and **AF112** (or first focus one at a time if native signatures require it), with verified physical signatures/rel32, QPC, lossless ring, health counters. Correlate Stage47→Stage52 calls→Stage51 to identify which earlier call causes the 435 X differences. If neither does, seek writes before AF10D. Do not claim rendered motion, hit/damage or AI gains without independent game evidence.
+
+**NEXT USER:** No file replacement now: **Stage52 Windows source is not yet prepared or tested.** Keep the proven Stage49LinkedMotion.inl **r2**, Stage50PreLinkedCoordinate.inl **r1**, Stage51GlobalCoordinate.inl **r1** and all other working Stage35–48 files untouched. Once Stage52 source is prepared, follow its exact install guide, run x86 Build.bat, natural COM-vs-COM, and upload fresh Build.log and Stage52/51/50/49/47/48 logs.
+
+---
+
 ## Current — Stage50 runtime VERIFIED; Stage51 global AE220 coordinate boundary SOURCE READY (2026-11-10)
 
 **Fresh upload:** [new logs e21cf58](https://github.com/Hawky11/1/commit/e21cf58ff4db752a5b0ef5dfbab88d6ed5def912) and [Build.log 2ddee8a](https://github.com/Hawky11/1/commit/2ddee8a8b025ede1c799edf1ee11fde9d0ff7056). Windows x86 BUILD SUCCEEDED 2026-11-10 15:55:39, dinput8.dll **1,081,344 bytes** with previous C4754 nonfatal warning. Stage50 marker r1 plus **STAGE50_INSTALLED 1/1 AF136→AE100**. Original log blobs, report and [5,790-row Stage47→Stage50→Stage49 CSV](https://github.com/Hawky11/1/blob/stage50-runtime-prelinked-coordinate-evidence/Stage50_Runtime/stage47_stage50_stage49_join.csv) are frozen in [stage50-runtime-prelinked-coordinate-evidence](https://github.com/Hawky11/1/tree/stage50-runtime-prelinked-coordinate-evidence); [report](https://github.com/Hawky11/1/blob/stage50-runtime-prelinked-coordinate-evidence/Stage50_Runtime/RUNTIME_ANALYSIS.md).

@@ -1,6 +1,16 @@
-## Latest — Stage54 r2 relocation-aware native validation SOURCE READY (2026-11-10)
+## Current — Stage55 ACDF0 runtime attribution VERIFIED; Stage56 exact-writer observer SOURCE READY (2026-11-10)
 
-## Current — Stage55 earlier-motion boundaries SOURCE READY (2026-11-10)
+Stage55 Windows x86 BUILD SUCCEEDED (1,122,816-byte DLL, only pre-existing C4754); STAGE55_INSTALLED 3/3. In **6,576 strictly matched complete same-run chains**, all **480 X differences** (P1 248, P2 232) and **zero Y differences** are isolated to **whole native ACDF0**. **This does not prove any individual store or gameplay/AI improvement.** [Full Stage55 runtime analysis](https://github.com/Hawky11/1/blob/main/Stage55_Runtime/RUNTIME_ANALYSIS.md) · [Immutable uploaded evidence](https://github.com/Hawky11/1/commit/c27b6b516edcea4551de9e52e6a151acdc115279) · [Pinned evidence branch](https://github.com/Hawky11/1/tree/stage55-runtime-acdf0-verified-evidence).
+
+**New Stage56 [source branch](https://github.com/Hawky11/1/tree/stage56-acdf0-two-fstp-writer-observer):** passively brackets the actual original x87 FADD/FSTP pairs at **ACF27/ACF2A** and **ACFA0/ACFA3**, observing P1/P2 target X before/after. The original private AALib.exe SHA was reverified, both six-byte instruction pairs, 16-byte signatures and PE relocation non-overlap checked. [RU two-file install guide](https://github.com/Hawky11/1/blob/stage56-acdf0-two-fstp-writer-observer/Stage56_Overlay/README_STAGE56_RU.md) · [static analysis and limits](https://github.com/Hawky11/1/blob/stage56-acdf0-two-fstp-writer-observer/Stage56_Analysis/STATIC_ANALYSIS.md) · [source](https://github.com/Hawky11/1/blob/stage56-acdf0-two-fstp-writer-observer/Stage56_Overlay/src/Stage56ACDF0Writer.inl).
+
+**Stage56 Windows MSVC build/link and runtime PENDING; keep known-working Stage55 DLL for rollback.** Only replace src/Stage38CallbackWindow.inl with Stage56 adapter and add src/Stage56ACDF0Writer.inl; preserve Stage55 and all previous files/INI/Build.bat. Next: build, test natural COM-vs-COM, upload Build.log, Stage56 writer log, and same-session Stage55/47/54 logs; then join writer rows to Stage55 ACDF0 windows by side/object/thread/QPC, accounting for multiple stores/unmatched objects and zero-loss health. No Stage56 actual game behavior or improved AI is claimed.
+
+---
+
+## Previous — Stage54 r2 relocation-aware native validation SOURCE READY (2026-11-10)
+
+## Previous — Stage55 earlier-motion boundaries SOURCE READY (2026-11-10)
 
 Stage54 r2 runtime is verified: 19,734 unchanged sibling windows, 6,500 distinct Stage47→Stage54 pairs with 504 X differences already before A2B81. See [Stage54 report](https://github.com/Hawky11/1/blob/main/Stage54_Runtime/R2_RUNTIME_ANALYSIS.md).
 

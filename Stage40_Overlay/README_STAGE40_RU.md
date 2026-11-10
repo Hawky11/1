@@ -1,3 +1,21 @@
+# Stage40 r2 — PE relocation fix (SOURCE ONLY, x86 runtime pending)
+
+Previous Stage40 r1 run: Windows x86 BUILD SUCCEEDED (687104-byte DLL), but Stage40 did not install; only one line appeared in the new log: ERROR: Stage40 signatures/call targets mismatch; no patches. Stage39/37/36 continued running.
+
+**Cause:** RVA 125925 is an IMAGE_REL_BASED_HIGHLOW (type 3) relocation inside the native 125920 function. The original operand 05CF7260 becomes 060F7260 at gameBase 00800000. R1 required the unrelocated bytes, so the strict signature check rejected legitimate code. R2 validates the opcode and relocation-adjusted operand, retaining all other site and target checks. If a check still fails, it will log per-site results and actual/expected operand.
+
+## Installation now: replace only ONE file
+
+Copy [Stage40_Overlay/src/Stage40RequestConsumer.inl](src/Stage40RequestConsumer.inl) into D:\INCUBATOR\ArcanaAIOverhaul\src\Stage40RequestConsumer.inl, replacing Stage40 r1.
+
+Keep existing Stage38CallbackWindow.inl, Stage39ActionOutput.inl, AIQueueTrace.cpp, Stage35/36 .inl, Stage29 AITrace.cpp, ArcanaAI.ini and Build.bat unchanged. Archive old logs. Run x86 Build.bat and require BUILD SUCCEEDED; then install build\dinput8.dll and run natural COM-vs-COM without forcing any input, ID, or flag. Allow >=2 seconds for worker flush. Upload new Build.log plus ArcanaAI_Stage40ActionConsumerTrace.log and fresh Stage39/38/37/36, EventDispatch, Queue, ParentFlow, FinalCommand and Stage35 logs to main.
+
+Expected runtime: STAGE40_ACTION_CONSUMER_BUILD=2026-11-10-r1 (source marker unchanged) and STAGE40_INSTALLED 3/3, then non-sentinel STAGE40_CONSUMER_WINDOW events. If there is still a signature failure, preserve the full new message with calls=, prologues=, selectGlobalActual= and selectGlobalExpected= fields. Successful installation without any Stage40 window can occur when no non-sentinel request is observed in the run.
+
+This is only a source correction and a SHA-pinned original EXE + PE relocation static verification. The r2 Windows x86 build/installation and actual transfer to actor+280 are NOT verified yet. No visual animation, damage or AI improvement is proven.
+
+---
+
 # Stage40 — E8480 request consumer (SOURCE ONLY, runtime pending)
 
 Stage39 completed and verified: see Stage39_Runtime/RUNTIME_ANALYSIS.md on stage39-native-action-runtime-evidence (ae6074d). It confirmed 51 callback windows where P+3F4C changes from FFFFFFFF to a native request ID. Stage40 observes its consumer and the actual object receiving the request. There is NO Stage40 Windows build or live runtime evidence yet.

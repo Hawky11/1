@@ -1,3 +1,17 @@
+## Current — Stage70 r1 failed installation from ASLR/PE relocation; r2 fix SOURCE ONLY (2026-11-11)
+
+[Stage70 r1 failed-install analysis](Stage70_R1_Runtime/FAILURE_ANALYSIS.md) · [r2 Russian one-file instructions](Stage70_R1_Runtime/README_STAGE70_R2_RU.md) · [r2 relocation-aware source](Stage70_Overlay/src/Stage70DeferredWriter.inl) · [r2 static PE verifier](Stage70_Analysis/tools/verify_stage70.py). Branch: [stage70-r2-relocation-aware-guard](https://github.com/Hawky11/1/tree/stage70-r2-relocation-aware-guard).
+
+New user upload [afb6692a](https://github.com/Hawky11/1/commit/afb6692a7044b0bde487de39b44f9120d7a4f6a1) confirms MSVC x86 BUILD SUCCEEDED at 02:38:02 (**1,892,864-byte DLL**) but Stage70 emitted **ERROR: prerequisites or signature mismatch; no patch**. There was **no Stage70 installed marker or deferred writer event**. Stage65/67/59 worked normally (218/4,128/12,614 rows respectively, relevant health counters zero).
+
+**Exact r1 fault:** the native `AALib+15677D` previous-instruction guard included a preferred-image absolute `008254E8`. At actual loaded base `00800000`, PE relocation `IMAGE_REL_BASED_HIGHLOW` at **RVA 156780** rebases its embedded address to `00C254E8`, causing a deterministic exact-byte mismatch. The six original target bytes `156784/156787` themselves remain valid. R2 checks invariant 3-byte opcode and separately reads the relocated VA, plus logs `STAGE70_GUARD` with prerequisites. New verifier checks actual PE reloc entries. No AI modifications, DR use, or change to the Stage70 hook's replay.
+
+**Additional independent in-game linkage in the failed run:** Stage65 P2 seq73 original caller156769 requests `2E`; Stage41 P2 seq73 sees deferred `24` and Stage67 seq1133 activates `2E` with deferred `24` still present. This supports the native table's 2E/24 mapping but remains indirect evidence, not a Stage70 writer EIP hit.
+
+**Next:** on the existing Stage70 r1 local tree replace **only** `src/Stage70DeferredWriter.inl` from R2. The Stage38 adapter is unchanged. Run updated source/relocation verifier + synthetic tests, finish x86 compiled-wrapper differential and MSVC Build.bat, then only a controlled short COM-vs-COM capture. Require `STAGE70_GUARD nativeOK=1` and `STAGE70_INSTALLED 1/1` before interpreting events. R2 BUILD/RUNTIME not yet tested. Preserve Stage67 1,887,232-byte DLL and other rollback builds. `main` and raw uploads untouched.
+
+---
+
 ## Current — Stage70 deferred-ID positive writer passive observer SOURCE ONLY (2026-11-11)
 
 [Russian integration guide](Stage70_Analysis/README_STAGE70_RU.md) · [static report](Stage70_Analysis/STATIC_ANALYSIS.md) · [opcode/source verifier](Stage70_Analysis/tools/verify_stage70.py) · [same-run correlator](Stage70_Analysis/tools/correlate_stage70.py). Branch: [stage70-native-deferred-writer-probe](https://github.com/Hawky11/1/tree/stage70-native-deferred-writer-probe).

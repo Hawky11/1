@@ -145,6 +145,7 @@ bool InstallStage51Hooks()
   BYTE* native=reinterpret_cast<BYTE*>(static_cast<std::uintptr_t>(g_gameBase+0xAE220u));
   const BYTE argPush[]={0x6A,0x01};
   const BYTE original[]={0xE8,0x02,0xF1,0xFF,0xFF};
+  const BYTE afterOpcode[]={0x8B,0x35}; // AF11E relocated absolute operand omitted
   const BYTE callerClean[]={0x83,0xC4,0x04};
   const BYTE nativePrologue[]={0x55,0x8B,0xEC,0x51,0x53,0x56,0x57,0xE8,0x44,0x13,0xFF,0xFF};
   const BYTE nestedCall[]={0xE8,0xC4,0x19,0x04,0x00};
@@ -155,6 +156,7 @@ bool InstallStage51Hooks()
   auto valid=[&]()->bool{
     if(!same(0xAF117u,argPush,sizeof(argPush))||
        !same(0xAF119u,original,sizeof(original))||
+       !same(0xAF11Eu,afterOpcode,sizeof(afterOpcode))||
        !same(0xAF124u,callerClean,sizeof(callerClean))||
        !same(0xAE220u,nativePrologue,sizeof(nativePrologue))||
        !same(0xAE2B7u,nestedCall,sizeof(nestedCall))||

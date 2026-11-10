@@ -243,7 +243,7 @@ void FlushStage70()
         char line[900]{};
         sprintf_s(line,
             "STAGE70_DEFERRED_WRITE seq=%lu side=P%lu player=%08lX object=%08lX tid=%lu "
-            "qpcBefore=%I64u qpcAfter=%I64u writerRVA=156787 "
+            "qpcBefore=%I64u qpcAfter=%I64u siteRVA=156784 originalStoreRVA=156787 "
             "valueEDX=%08lX eaxBefore=%08lX eaxAfter=%08lX edxAfter=%08lX "
             "preMask=%02lX postMask=%02lX "
             "deferred=%08lX>%08lX selector=%08lX>%08lX objectPtr=%08lX>%08lX",

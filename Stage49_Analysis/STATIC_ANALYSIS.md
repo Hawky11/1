@@ -7,7 +7,7 @@
 Stage48 runtime proved 1,924/1,924 direct native binder `1E908F` variant steps map to 0x5C byte definition-record strides; 8,051/8,052 subsequent Stage47 windows match latest binding, with one isolated final P2 late variant step (+1/0x5C) without recorded Stage48 binder. Stage47 native function 1E66E0 itself updates floats O+7C/+80/+88/+8C (5,229 windows with float raw changes among 8,052). This is numerical internal motion state, not proof of on-screen translation/hits.
 
 The original `AALib.exe` already in ChatGPT Library (175,556,608 bytes, SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`) was re-read as real PE32 by native objdump. The *different* original native function **RVA 1E9170** has thiscall ECX=object, no stack args, prologue
-`55 8B EC 83 EC 08 56 8B F1`, and an ordinary `RET` at 1E9167.
+`55 8B EC 83 EC 08 56 8B F1`, and verified no-argument `RET` paths at 1E935D, 1E9370 and 1E9381.
 
 This function contains a guarded linked-object data flow:
 | RVA | Original op | Meaning |

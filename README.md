@@ -1,3 +1,9 @@
+## Latest — Stage46 runtime VERIFIED; Stage47 consumer analysis NEXT (2026-11-10)
+
+[Fresh main upload 3e668d7](https://github.com/Hawky11/1/commit/3e668d74ec1181ee6adf5952c7665e8948b767df): Windows x86 BUILD SUCCEEDED (DLL 1,056,256 bytes). All 297 native Stage46 binding/resolver/motion snapshots joined, with 68 windows changing float fields; Stage42/44/45 loss counters zero. 269 activations nested one Stage44 binding; 266 new Stage41 bit0 writes map to activations, plus 3 activation cases without a new write. No visual animation, damage or improved AI proven. [Preserved original logs and detailed report](https://github.com/Hawky11/1/blob/stage46-runtime-definition-motion-evidence/Stage46_Runtime/RUNTIME_ANALYSIS.md), [297-row CSV](https://github.com/Hawky11/1/blob/stage46-runtime-definition-motion-evidence/Stage46_Runtime/stage46_motion_binding_join.csv), [handoff](https://github.com/Hawky11/1/blob/main/NEXT_SESSION.md). Next Stage47: find actual native consumers of motion fields before developing passive source. Original EXE already in Library.
+
+---
+
 ## Latest — Stage43 caller provenance runtime VERIFIED; Stage44 action-definition binding source ready (2026-11-10)
 
 ## Current — Stage45 runtime VERIFIED; Stage46 motion-state SOURCE READY (2026-11-10)

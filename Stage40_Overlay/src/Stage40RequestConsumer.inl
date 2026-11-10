@@ -239,7 +239,26 @@ bool InstallStage40Hooks()
         }
         return true;
     };
-    if(!valid()){S40Log("ERROR: Stage40 signatures/call targets mismatch; no patches.");return false;}
+    if(!valid()){
+        char reason[450]{};
+        DWORD actualSelectGlobal=0;
+        std::memcpy(&actualSelectGlobal,ns+5u,sizeof(actualSelectGlobal));
+        const bool callEntry=std::memcmp(e,be,sizeof(be))==0;
+        const bool callSelector=std::memcmp(s,bs,sizeof(bs))==0;
+        const bool callActor=std::memcmp(a,ba,sizeof(ba))==0;
+        const bool prologEntry=std::memcmp(ne,pe,sizeof(pe))==0;
+        const bool prologSelector=std::memcmp(ns,psHead,sizeof(psHead))==0;
+        const bool prologActor=std::memcmp(na,pa,sizeof(pa))==0;
+        sprintf_s(reason,
+            "ERROR: Stage40 signature failure calls=%d%d%d prologues=%d%d%d "
+            "selectGlobalActual=%08lX selectGlobalExpected=%08lX; no patches.",
+            callEntry?1:0,callSelector?1:0,callActor?1:0,
+            prologEntry?1:0,prologSelector?1:0,prologActor?1:0,
+            static_cast<unsigned long>(actualSelectGlobal),
+            static_cast<unsigned long>(expectedSelectGlobal));
+        S40Log(reason);
+        return false;
+    }
     BYTE patchE[5]{},patchS[5]{},patchA[5]{};
     if(!MakeRelativeCall(e,reinterpret_cast<const void*>(&S40EntryHook),patchE)||
        !MakeRelativeCall(s,reinterpret_cast<const void*>(&S40SelectHook),patchS)||

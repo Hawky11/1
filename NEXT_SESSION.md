@@ -1,6 +1,18 @@
 # Next session handoff
 
-## Current handoff — Stage38 Windows runtime VERIFIED (2026-11-10), Stage39 native output boundary next
+## Current handoff — Stage39 action-output observer SOURCE READY (2026-11-10), x86/runtime pending
+
+**New source:** [stage39-native-action-output-trace](https://github.com/Hawky11/1/tree/stage39-native-action-output-trace) at `0fa6529` ([installation instructions](https://github.com/Hawky11/1/blob/stage39-native-action-output-trace/Stage39_Overlay/README_STAGE39_RU.md), [static disassembly and field schema](https://github.com/Hawky11/1/blob/stage39-native-action-output-trace/Stage39_Analysis/STATIC_ANALYSIS.md), [PE verifier](https://github.com/Hawky11/1/blob/stage39-native-action-output-trace/Stage39_Analysis/tools/verify_stage39.py)). Base is verified Stage38 evidence `12dd482`; original uploaded runtime data preserved unchanged. **No Windows x86 Stage39 build or runtime yet.**
+
+- Reused original `/AALib.zip` in ChatGPT Library (SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`; 175556608 bytes). PE32/i386, 10 exact opcode ranges and 8 direct CALL targets **PASS**. The three actual Stage38 EDI handler RVAs are `12EB10`, `123AF0`, `1DA490`. `123AF0` and `1DA490` converge on `1BD6E0` then `1B8050/1B80F0` action-state initializers; `12EB10` uses a jump table and e.g. `131CA0/131D00 → E5BF0` (raw `P+3F4C` request write), `F7E70` (next callback installation). This is **native action-state/request**, not verified animation/hit/damage.
+- **Implementation:** no new native patches; existing Stage38 guarded callback wrappers are unchanged. New `Stage39ActionOutput.inl` adds 30 masked DWORD reads only for those three actual EDI values inside Stage38 prepare/finish. Updated `Stage38CallbackWindow.inl` piggybacks its existing TLS/ring/worker, emits `STAGE39_OUTPUT_WINDOW stage38Seq=...` with exact matching QPC and side to `ArcanaAI_Stage39ActionOutputTrace.log`. Stage38 records remain intact. Masks may lack actor-relative bits when `P+43B4` is null; this is normal.
+- **USER:** replace only `src/Stage38CallbackWindow.inl`, add `src/Stage39ActionOutput.inl` from Stage39_Overlay. Keep Stage38 `AIQueueTrace.cpp`, `ArcanaAI.ini` (`EnableStage38CallbackWindowTrace=1`), Stage35/36 inls, Stage29 `AITrace.cpp` and all else unchanged. Archive old logs, x86 Build.bat, install DLL, natural COM-vs-COM, allow 2s worker flush, upload Build.log + Stage39/38/37/EventDispatch/36/Queue/ParentFlow/FinalCommand/35 fresh logs to main.
+- **NEXT ANALYST:** validate `BUILD SUCCEEDED`, Stage38 r1 `STAGE38_INSTALLED 2/2`, `STAGE39_ACTION_OUTPUT_BUILD=2026-11-10-r1`, `STAGE39_ENABLED`; require all Stage39 windows to match unique Stage38 windows exactly by seq/callback/side/TID/QPC, masks and 30 fields. Compare the six positive Stage36 candidate chains to Stage39 outputs; identify native request/state changes vs no change, then research consumers for the next animation/effect boundary. Check Stage38 dropped/overflow/pairMismatch before any completeness claim; do not inject inputs or re-request EXE.
+- **Preserve all historical stage branches**, no changes to native game logic or other observers. Static PASS is not proof that MSVC compiles this new inl or that it runs correctly in the game.
+
+---
+
+## Historical handoff — Stage38 Windows runtime VERIFIED (2026-11-10), Stage39 native output boundary next
 
 **Latest verified evidence:** [Stage38 runtime archive and report](https://github.com/Hawky11/1/blob/stage38-native-callback-runtime-evidence/Stage38_Runtime/RUNTIME_ANALYSIS.md) ([branch](https://github.com/Hawky11/1/tree/stage38-native-callback-runtime-evidence), commit `12dd482b`). User upload `def14ec` in main; all 26 uploaded original files are retained unchanged under `Stage38_Runtime/`. Source branch [stage38-native-callback-window](https://github.com/Hawky11/1/tree/stage38-native-callback-window) stays intact.
 

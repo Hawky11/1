@@ -139,12 +139,10 @@ def join(stage55, stage56):
         starts, group = time_index.get(key, ([], []))
         # A writer may only be inside parents whose PRE <= writer PRE.
         last = bisect_left(starts, w["q0"] + 1)
-        candidates = [r for r in group[max(0, last-8):last]
+        # Check every candidate interval, even under unexpected recursion.
+        # The unique-target requirement is more important than this small scan cost.
+        candidates = [r for r in group[:last]
                       if r["q0"] <= w["q0"] and w["q1"] <= r["q1"]]
-        # If there is unusual deep nesting, check the full candidate prefix.
-        if last > 8 and not candidates:
-            candidates = [r for r in group[:last]
-                          if r["q0"] <= w["q0"] and w["q1"] <= r["q1"]]
         if len(candidates) == 1:
             writers_by_parent[candidates[0]["seq"]].append(w)
         elif len(candidates) == 0:

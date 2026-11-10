@@ -1,6 +1,6 @@
 # Stage39 — callback-to-native-action output, static analysis (source only)
 
-Date: 2026-11-10. Base: [verified Stage38 runtime](../../Stage38_Runtime/RUNTIME_ANALYSIS.md), 4,916 paired Stage38 windows, including 6/6 positive Stage36 candidates reaching actual native callbacks. No Windows Stage39 build/runtime has been performed. Original PE32 i386 AALib.exe from ChatGPT Library `/AALib.zip`, 175,556,608 bytes, SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` (verified in this investigation); preferred image base 0x400000, runtime base 0x800000. Values below are **RVA**.
+Date: 2026-11-10. Base: [verified Stage38 runtime](../Stage38_Runtime/RUNTIME_ANALYSIS.md), 4,916 paired Stage38 windows, including 6/6 positive Stage36 candidates reaching actual native callbacks. No Windows Stage39 build/runtime has been performed. Original PE32 i386 AALib.exe from ChatGPT Library `/AALib.zip`, 175,556,608 bytes, SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` (verified in this investigation); preferred image base 0x400000, runtime base 0x800000. Values below are **RVA**.
 
 ## Call graph confirmed against original PE
 

@@ -40,7 +40,7 @@ CONSUMERS = {
 
 def pe_reader(data: bytes):
     pe = struct.unpack_from("<I", data, 0x3C)[0]
-    assert data[:2] == b"MZ" and data[pe:pe+4] == b"PE\\0\\0"
+    assert data[:2] == b"MZ" and data[pe:pe+4] == bytes((0x50,0x45,0,0))
     nsec = struct.unpack_from("<H", data, pe+6)[0]
     opt = pe+24
     assert struct.unpack_from("<H", data, opt)[0] == 0x10B
@@ -50,7 +50,7 @@ def pe_reader(data: bytes):
     for i in range(nsec):
         at = start+i*40
         name, vsize, va, rawsize, rawptr = struct.unpack_from("<8sIIII", data, at)
-        sections.append((name.rstrip(b"\\0"), va, vsize, rawsize, rawptr))
+        sections.append((name.rstrip(bytes((0,))), va, vsize, rawsize, rawptr))
     def read(rva: int, size: int) -> bytes:
         for _, va, _, rawsize, rawptr in sections:
             if va <= rva and rva+size <= va+rawsize:

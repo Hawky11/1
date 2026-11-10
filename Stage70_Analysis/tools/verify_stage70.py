@@ -51,7 +51,7 @@ def verify_source(src, adapter, read_rva):
     assert normalized.rfind('jmp dword ptr [g_s70resume]') > normalized.index('call s70leave')
     for op in ('pushfd', 'pushad', 'fxsave [edi]', 'fninit', 'cld',
                'fxrstor [edi]', 'popad', 'popfd'):
-        assert len(re.findall(r'\b' + re.escape(op) + r'\b', body.lower())) == 2, op
+        assert body.lower().count(op) == 2, op
     assert normalized.count('mov ebx,esp') == 2
     assert normalized.count('sub esp,210h') == 2
     assert normalized.count('and edi,0fffffff0h') == 2

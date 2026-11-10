@@ -97,9 +97,8 @@ def verify(aalib,root):
         "S58CheckHook","S58LookupHook","S58Enter","S58Leave",
         "S57Snap","push dword ptr [esp+8]","push dword ptr [esp+4]",
         "lea esp,[esp+8]","ret 4","STAGE58_INSTALLED 3/3",
-        "Stage58_ACDF0Conditional", # matched against marker in the source below
+        "ArcanaAI_Stage58ACDF0ConditionalCallTrace.log",
     ]
-    required[-1]="ArcanaAI_Stage58ACDF0ConditionalCallTrace.log"
     for token in required:check(token in src,f"Stage58 source contains {token}")
     print("STATIC VERIFIED. Windows MSVC build and runtime ABI still PENDING.")
 if __name__=="__main__":

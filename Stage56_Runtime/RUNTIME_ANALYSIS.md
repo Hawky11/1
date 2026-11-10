@@ -60,8 +60,8 @@ Strict match uses **same side + player + object + thread**, requires *both* `wri
 Static reinspection of SHA-pinned original ACDF0 reveals two *unobserved subsequent native CALL boundaries* immediately before function return:
 
 ```
-ACFD6: E8 E5 FE 0A 00    CALL 55CEC0
-ACFDB: E8 C0 E8 0A 00    CALL 55B8A0
+ACFD6: E8 E5 FE 0A 00    CALL RVA 15CEC0 (VA 55CEC0)
+ACFDB: E8 C0 E8 0A 00    CALL RVA 15B8A0 (VA 55B8A0)
 ACFE0: 5F ...            original epilogue
 ```
 

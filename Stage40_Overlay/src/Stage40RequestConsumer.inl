@@ -290,7 +290,7 @@ bool InstallStage40Hooks()
     if(vs){DWORD x=0;VirtualProtect(s,5,os,&x);}
     if(ve){DWORD x=0;VirtualProtect(e,5,oe,&x);}
     ResumeThreads(suspended,count);ReleaseMutex(mutex);CloseHandle(mutex);
-    S40Log("STAGE40_ACTION_CONSUMER_BUILD=2026-11-10-r1");
+    S40Log("STAGE40_ACTION_CONSUMER_BUILD=2026-11-10-r2");
     S40Log(installed?
         "STAGE40_INSTALLED 3/3 AD72F->E8480 E84E3->125920 E8505->1357F0 original calls once; passive.":
         "ERROR: Stage40 install failed; no patches.");

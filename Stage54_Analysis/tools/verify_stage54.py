@@ -33,6 +33,36 @@ def main():
   with zipfile.ZipFile(args.aalib) as z: b=z.read("AALib.exe")
  else: b=args.aalib.read_bytes()
  check(len(b)==175556608,"size")
+ # Original physical PE relocation table must explicitly contain HIGHLOW A1B82.
+ pe=struct.unpack_from("<I",b,0x3C)[0]
+ dd=pe+24+96
+ reloc_rva,reloc_size=struct.unpack_from("<II",b,dd+5*8)
+ check(reloc_rva!=0 and reloc_size>0,"PE relocation directory exists")
+ section_count=struct.unpack_from("<H",b,pe+6)[0]
+ optional_size=struct.unpack_from("<H",b,pe+20)[0]
+ section_base=pe+24+optional_size
+ def offset(rv):
+  for j in range(section_count):
+   p=section_base+j*40
+   vs,va,raw_size,raw_offset=struct.unpack_from("<IIII",b,p+8)
+   if va<=rv<va+max(vs,raw_size):return raw_offset+rv-va
+  raise AssertionError("unmapped RVA "+hex(rv))
+ reloc_start=offset(reloc_rva)
+ cursor=reloc_start
+ end=reloc_start+reloc_size
+ found=False
+ while cursor+8<=end:
+  page,size=struct.unpack_from("<II",b,cursor)
+  if size<8:break
+  for j in range((size-8)//2):
+   entry=struct.unpack_from("<H",b,cursor+8+j*2)[0]
+   if page+(entry&0x0FFF)==0xA1B82 and entry>>12==3:found=True
+  cursor+=size
+ check(found,"A1B82 HIGHLOW base relocation present")
+ original_abs=struct.unpack_from("<I",b,offset(0xA1B82))[0]
+ check(original_abs==0x0E0A1B5C,"original A1B82 operand")
+ check((original_abs+(0x00800000-0x00400000))&0xFFFFFFFF==0x0E4A1B5C,"expected rebased absolute operand")
+
  check(hashlib.sha256(b).hexdigest()==SHA,"exact original SHA256")
  pe=struct.unpack_from("<I",b,0x3c)[0]
  check(b[pe:pe+4]==b"PE\x00\x00","PE header")
@@ -54,7 +84,13 @@ def main():
  check('#include "Stage53ParentCoordinate.inl"\n#include "Stage54PreParentCoordinate.inl"' in adapter,"adapter includes Stage53+54")
  check("if(InstallStage53Hooks())InstallStage54Hooks();" in adapter,"installation after Stage53")
  check("FlushStage53();\n    FlushStage54();" in adapter,"flush after Stage53")
- print("Stage54 original PE/static source PASS; Windows x86 compile/runtime PENDING.")
+ for needle in ("STAGE54_PRE_PARENT_COORD_BUILD=2026-11-10-r2","0xA1B82u",
+                "actualAOperand==expectedAOperand","0x0E0A1B5Cu+(g_gameBase-0x00400000u)",
+                "callsValid[i]=same(rvas[i],originals[i],5u)","STAGE54_ASLR_CHECK",
+                "STAGE54_SIGNATURE_FAILURE"):
+  check(needle in src,"r2 source "+needle)
+ check("aPrologue,sizeof(aPrologue)" not in src,"no unrelocated compare")
+ print("Stage54 r2 original PE/static source PASS; Windows x86 compile/runtime PENDING.")
 if __name__=="__main__":
  try:main()
  except (OSError,ValueError,AssertionError,struct.error,KeyError) as e:

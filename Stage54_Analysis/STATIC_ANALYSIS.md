@@ -23,3 +23,11 @@ Analysis decision:
 4. Cross-check same-side/object QPC and anchor X; never infer AI decisions, visual animation, hits or damage from raw coordinate changes.
 
 **Windows MSVC x86 BUILD and in-game runtime PENDING**. Do not describe this branch as tested.
+
+## r2 fix — relocation-aware A1B80 native signature (2026-11-10)
+
+**Stage54 r1 Windows BUILD succeeded** but runtime rejected all hooks: `STAGE54_PRE_PARENT_COORD_BUILD=2026-11-10-r1` followed by original sibling CALL/signature mismatch. Binary verification of the exact original PE32 file (SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`) identifies an `IMAGE_REL_BASED_HIGHLOW` (type 3) relocation at **RVA A1B82**, inside the seven-byte A1B80 instruction `80 3D 5C 1B 0A 0E 00`. This transforms absolute operand `0E0A1B5C` by loaded gameBase minus preferred ImageBase `00400000`. When loaded at `00800000`, expected operand is `0E4A1B5C`. r1 erroneously hard-compared the unrelocated original bytes in memory.
+
+Stage54 r2 compares stable opcode prefix `80 3D`, relocated DWORD operand `original+baseDelta`, stable suffix `00 74 36`; other helper prologues, the untouched A2B95 call, all three original five-byte CALL sites and their rel32 destinations remain **strictly checked before and again during suspended installation**. Adds one `STAGE54_ASLR_CHECK` diagnostic and a detailed `STAGE54_SIGNATURE_FAILURE` per-site report. Nothing disables or weakens original CALL-site validation. Previous Stage53–47 instrumentation preserved. All three native calls are still original-once; no gameplay writes.
+
+**r2 Windows x86 Build + runtime PENDING.** Runtime r1 inability to install was a validation flaw, not evidence that all native target addresses are invalid. Full runtime verification requires `STAGE54_INSTALLED 3/3` and events for A2B81/A2B86/A2B8B without health errors.

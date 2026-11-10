@@ -1,6 +1,10 @@
 # Stage54 — три вызова до AF0A0, только диагностика
 
-**SOURCE READY, Windows x86 BUILD/runtime пока НЕ проверены.** Stage53 показал 1 091 изменений X до вызова `A2B90→AF0A0`. Stage54 отдельно снимает координаты **до и после** трёх более ранних вызовов `A2B81→A1B80`, `A2B86→CFB80`, `A2B8B→BAB60`. Оригинальные функции вызываются ровно по одному разу, без новых игровых решений или записей в координаты.
+**Stage54 r2 SOURCE READY. Windows x86 BUILD/runtime r2 пока НЕ проверены.** Stage53 показал 1 091 изменений X до вызова `A2B90→AF0A0`. Stage54 отдельно снимает координаты **до и после** трёх более ранних вызовов `A2B81→A1B80`, `A2B86→CFB80`, `A2B8B→BAB60`. Оригинальные функции вызываются ровно по одному разу, без новых игровых решений или записей в координаты.
+
+## Исправление Stage54 r2
+
+Stage54 r1 собрался (1 113 088 байт), но не установился: сравнивал абсолютный адрес внутри оригинального A1B80 без учёта ASLR/PE relocation. Версия r2 правильно проверяет релокацию `A1B82`, не ослабляя проверку всех трёх CALL. **Если адаптер Stage54 уже установлен, менять его не надо: достаточно заменить только Stage54PreParentCoordinate.inl из ветки r2.**
 
 ## Установка в D:\INCUBATOR\ArcanaAIOverhaul\src
 
@@ -18,7 +22,8 @@
 Ожидаемые маркеры:
 
 ```text
-STAGE54_PRE_PARENT_COORD_BUILD=2026-11-10-r1
+STAGE54_PRE_PARENT_COORD_BUILD=2026-11-10-r2
+STAGE54_ASLR_CHECK ... expectedOperand=0E4A1B5C actualOperand=0E4A1B5C readable=1
 STAGE54_INSTALLED 3/3 A2B81->A1B80 A2B86->CFB80 A2B8B->BAB60
 STAGE54_SIBLING_WINDOW ... callRVA=000A2B81 ... changedMask=...
 STAGE54_SIBLING_WINDOW ... callRVA=000A2B86 ... changedMask=...

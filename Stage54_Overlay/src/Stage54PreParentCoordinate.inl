@@ -207,7 +207,7 @@ __declspec(naked) void S54BAB60Hook()
 }
 bool InstallStage54Hooks()
 {
-  S54Log("STAGE54_PRE_PARENT_COORD_BUILD=2026-11-10-r1");
+  S54Log("STAGE54_PRE_PARENT_COORD_BUILD=2026-11-10-r2");
   if(InterlockedCompareExchange(&g_s53Installed,0,0)!=1||
      InterlockedCompareExchange(&g_s52Installed,0,0)!=2||
      InterlockedCompareExchange(&g_s47Installed,0,0)!=1){
@@ -223,28 +223,57 @@ bool InstallStage54Hooks()
     {0xE8,0xF5,0xCF,0x02,0x00},
     {0xE8,0xD0,0x7F,0x01,0x00}
   };
-  // SHA-pinned original AALib.exe native entry bytes.
-  const BYTE aPrologue[]={0x80,0x3D,0x5C,0x1B,0x0A,0x0E,0x00};
+  // SHA-pinned AALib.exe ImageBase=0x00400000. PE base relocation HIGHLOW
+  // at RVA A1B82 changes the absolute operand in CMP BYTE PTR [abs32],0.
+  // The original on-disk seven-byte prologue must NOT be compared verbatim
+  // against a relocated in-memory image.
+  const BYTE aPrefix[]={0x80,0x3D};       // A1B80 CMP BYTE PTR [abs32], imm8
+  const BYTE aSuffix[]={0x00,0x74,0x36};  // A1B86 IMM 00, then JZ +0x36
+  const DWORD expectedAOperand=0x0E0A1B5Cu+(g_gameBase-0x00400000u);
   const BYTE bPrologue[]={0xE8,0x5B,0x06,0x11,0x00,0x6A,0x01,0xE8,0x54,0x06,0x11,0x00,0x59,0xC3};
   const BYTE cPrologue[]={0x55,0x8B,0xEC,0x81,0xEC,0xC0,0x00,0x00,0x00,0x53,0x56,0x33,0xDB,0x57};
   const BYTE after[]={0xE8,0xF6,0xCE,0x02,0x00}; // A2B95->CFA90
   auto same=[&](DWORD rva,const BYTE* bytes,size_t count)->bool{
     return std::memcmp(reinterpret_cast<const void*>(static_cast<std::uintptr_t>(g_gameBase+rva)),bytes,count)==0;
   };
+  DWORD actualAOperand=0;
+  const bool aOperandRead=SafeReadDword(g_gameBase+0xA1B82u,&actualAOperand);
+  {
+    char status[256]{};
+    sprintf_s(status,"STAGE54_ASLR_CHECK loadBase=%08lX preferredBase=00400000 relocRVA=000A1B82 expectedOperand=%08lX actualOperand=%08lX readable=%u",
+      g_gameBase,expectedAOperand,actualAOperand,aOperandRead?1u:0u);
+    S54Log(status);
+  }
   auto valid=[&]()->bool{
-    if(!same(0xA1B80u,aPrologue,sizeof(aPrologue))||
-       !same(0xCFB80u,bPrologue,sizeof(bPrologue))||
-       !same(0xBAB60u,cPrologue,sizeof(cPrologue))||
-       !same(0xA2B95u,after,sizeof(after)))return false;
+    const bool aValid=aOperandRead&&actualAOperand==expectedAOperand&&
+      same(0xA1B80u,aPrefix,sizeof(aPrefix))&&
+      same(0xA1B86u,aSuffix,sizeof(aSuffix));
+    const bool bValid=same(0xCFB80u,bPrologue,sizeof(bPrologue));
+    const bool cValid=same(0xBAB60u,cPrologue,sizeof(cPrologue));
+    const bool afterValid=same(0xA2B95u,after,sizeof(after));
+    bool callsValid[3]{};
     for(DWORD i=0;i<3u;++i){
       BYTE* site=reinterpret_cast<BYTE*>(static_cast<std::uintptr_t>(g_gameBase+rvas[i]));
-      if(!same(rvas[i],originals[i],5u))return false;
-      std::int32_t rel=0;std::memcpy(&rel,site+1u,4u);
-      if(site+5u+rel!=reinterpret_cast<BYTE*>(static_cast<std::uintptr_t>(g_gameBase+targets[i])))return false;
+      callsValid[i]=same(rvas[i],originals[i],5u);
+      if(callsValid[i]){
+        std::int32_t rel=0;std::memcpy(&rel,site+1u,4u);
+        callsValid[i]=site+5u+rel==
+          reinterpret_cast<BYTE*>(static_cast<std::uintptr_t>(g_gameBase+targets[i]));
+      }
     }
-    return true;
+    const bool allValid=aValid&&bValid&&cValid&&afterValid&&
+      callsValid[0]&&callsValid[1]&&callsValid[2];
+    if(!allValid){
+      char status[256]{};
+      sprintf_s(status,
+        "STAGE54_SIGNATURE_FAILURE A1B80=%u CFB80=%u BAB60=%u A2B95=%u CALL_A2B81=%u CALL_A2B86=%u CALL_A2B8B=%u; refusing all patches.",
+        aValid?1u:0u,bValid?1u:0u,cValid?1u:0u,afterValid?1u:0u,
+        callsValid[0]?1u:0u,callsValid[1]?1u:0u,callsValid[2]?1u:0u);
+      S54Log(status);
+    }
+    return allValid;
   };
-  if(!valid()){S54Log("ERROR: Stage54 original sibling CALL/signature mismatch; no patches.");return false;}
+  if(!valid()){S54Log("ERROR: Stage54 sibling validation mismatch; no patches.");return false;}
   BYTE* sites[3]{};
   BYTE patches[3][5]{};
   const void* wrappers[3]={

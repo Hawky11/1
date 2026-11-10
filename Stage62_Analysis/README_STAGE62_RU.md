@@ -1,15 +1,17 @@
-# Stage62 — offline action-chain analysis
+# Stage62 — офлайн-сопоставление выбора и активации действий
 
-Runtime-verified same-launch results: [RUNTIME_ANALYSIS.md](../Stage62_Runtime/RUNTIME_ANALYSIS.md).
+**Статус:** сопоставление оригинальных логов одного запуска 10.11.2026 в 22:07 подтверждено. [Полный отчёт Stage62](../Stage62_Runtime/RUNTIME_ANALYSIS.md).
 
-The Python 3 source [correlate_stage62.py](tools/correlate_stage62.py) is **read-only**, uses only the standard library, and does not attach to the game, write memory or load the DLL. It checks exact session stamps, P1/P2 actors, native game thread, QPC order, original action IDs, observer sequence IDs, definition binding and the Stage43 original caller. The 44 subset chains also require Stage37 type1 payload equality and Stage39 P+3F4C output.
+Скрипт [correlate_stage62.py](tools/correlate_stage62.py) работает локально на Python 3, не использует сторонних библиотек и **ничего не меняет в игре**. Он не подключается к процессу, не загружает DLL и не пишет в память. Он только читает журналы и сверяет сторону, указатель P, объект O, TID, монотонный QPC, исходный ID запроса, активный O+60, вызов AD75C и адрес определения действия.
 
-Usage in Windows PowerShell:
+Запуск в PowerShell из корня клона репозитория:
 
     py -3 .\Stage62_Analysis\tools\correlate_stage62.py --dir D:\INCUBATOR\ArcanaAIOverhaul --json .\Stage62_analysis.json
 
-Place **the original eight 22:07 session logs** together in the --dir folder: Stage37Type1CommitTrace, Stage39ActionOutputTrace, Stage40ActionConsumerTrace, Stage41ObjectCommitTrace, Stage42ActionActivationTrace, Stage43ActivationOriginTrace, Stage44ActionDefinitionTrace, and Stage46DefinitionMotionTrace (all prefixed ArcanaAI_ and suffixed .log). The program prints summary counts and optionally writes a local JSON report; that JSON is not committed.
+Параметр --dir должен указывать на папку, в которой лежат **все восемь логов именно от запуска 22:07**: ArcanaAI_Stage37Type1CommitTrace.log, ArcanaAI_Stage39ActionOutputTrace.log, ArcanaAI_Stage40ActionConsumerTrace.log, ArcanaAI_Stage41ObjectCommitTrace.log, ArcanaAI_Stage42ActionActivationTrace.log, ArcanaAI_Stage43ActivationOriginTrace.log, ArcanaAI_Stage44ActionDefinitionTrace.log, ArcanaAI_Stage46DefinitionMotionTrace.log. Параметр --json необязателен; он создаст локальный отчёт JSON.
 
-For the fixed uploaded snapshot, independent analysis of the actual eight logs established 48/44/263/263/202/202/1476/1476 rows, **202 strict activation links**, **44 strict upstream callback links**, **61 Stage40 duplicate requests all ID 0x49**, and 4 Stage37 effects not matched to an action-output observer. The new Python reproduction script has **not yet been executed on the user's Windows machine**; do not misrepresent this as a fresh Windows test.
+**Уже проверено по исходным GitHub-логам:** 263/263 перехода Stage40→41, 202/202 цепочки Stage40→42→43→44→46, 44/44 цепочки Stage37→39→40→42→44→46. Ещё 61 запрос Stage40 без отдельной активации относятся к повторяющемуся ID 0x49. Четыре события Stage37 не имеют парного наблюдения Stage39; это не доказательство потери команды. У 158 активаций Stage42 нет совпавшей записи Stage39 — их более ранний источник пока не установлен.
 
-DO NOT install another DLL, change INI, force an action ID, or infer smart AI/animation/attack improvement from these correlations. The next investigation is the native **source of the P+3F4C write / AI choice**, not more coordinate watchpoints.
+**Ограничение проверки:** указанные числа получены независимым анализом реальных текстов логов в текущей сессии; опубликованный скрипт Python **ещё не запускался на компьютере пользователя**. Это не новая Windows runtime-проверка. Уже работающую Stage59 r2 DLL (1 153 024 байта) пересобирать **не надо**.
+
+**Следующая задача (Stage63):** статически найти оригинальные инструкции, записывающие запрос в P+3F4C, и цепочку принятия решения COM перед этой записью. Не возвращаться к поиску записей координат, пока источник выбора действия не будет установлен.

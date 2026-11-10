@@ -1,5 +1,71 @@
 # Next session handoff
 
+## Current — Stage67 native promotion / independent zero writer RUNTIME VERIFIED (2026-11-11)
+
+[Runtime report](Stage67_Runtime/RUNTIME_ANALYSIS.md) · [RU result](Stage67_Runtime/README_STAGE67_RU.md) · [Read-only correlator](Stage67_Runtime/tools/correlate_stage67.py) · [Full audit output](Stage67_Runtime/results.json).
+Evidence branch: [stage67-runtime-native-paths-evidence](https://github.com/Hawky11/1/tree/stage67-runtime-native-paths-evidence), based on exact user upload **71e6462f6a7364451372a88d1961f51137986793**. Source published at **4fa25d902a8ec8aa1f6273791188f3603350b33f**, same tree as locally delivered 1723e59; no source change during publication. All uploaded logs/INI preserved unchanged; main untouched.
+
+**Build/runtime:** user's MSVC x86 Build.log 11.11.2026 01:29:50 BUILD SUCCEEDED, DLL **1,887,232 bytes**, existing C4754 only. Runtime initialization 01:30:28, Stage67 INSTALLED 2/2. New session TID10788, P1/P2 objects 2A393020/2A393C50. Stage67 4,586 rows (4,584 promotion windows + 2 E9E60 stores), all full masks, zero health errors. Stage65 278, Stage40/41 280/280, Stage42/43 220/220. **278 unique Stage65 writers + 2 E9E60 writers explain 280/280 consumers**; all 220 activations uniquely nested in same-actor/object Stage67 windows.
+
+**2F→25 directly confirmed:** Stage67 seq4436/P1 entry O+30=1, O+64=2F, O+68=25; POST O+64=25, O+68=FFFFFFFF, O+60=25. Nested Stage42 seq218 sees promoted pending25 before activation. Latest Stage40/41 seq278 requested2F while deferred25 was already present; its Stage65 source seq276 caller156769 did not originate deferred25. This is the sole latest-request/activation mismatch; other219 match.
+
+**Zero writer directly confirmed:** E9E60 Stage67 seq911/P2 → Stage40/42 seq47, and seq1886/P1 → Stage40/42 seq88. Both EDX/global0, request FFFFFFFF→0; QPC gaps442/493, no intervening observed writers/consumers. Later Stage65 zero writes belong to separate consumers48/89. No retrospective claim that old seq39/155/320 were directly observed.
+
+**Health/provenance:** Stage59 14,040 unique seq1..14040, 22 HEALTH samples with zero conflicts/readFail/drop/install/teardown/drift. One file-order reversal8219→8052, no missing/duplicate rows; use seq/QPC. Stage43 raw outer return now DLL as predicted (knownCaller0 for220); Stage67 callerReturn008AD761 and nested intervals verify original AD75C. Do not use old all-AD75C Stage43 assertions.
+
+**Stage68 NEXT, static first:** find original writers of O+68 deferred25 and O+30 arming, then bracket their occurrence using existing snapshots. No new hooks/AI changes justified yet. **No rebuild or new logs needed now.** Preserve Stage67 DLL1,887,232; Stage65 DLL1,879,552; Stage59 r2 DLL1,153,024. Complete compiled source tree/DLL was not uploaded; runtime markers confirm the observer build, not binary reproducibility.
+
+---
+
+
+## Current — Stage67 targeted passive observers SOURCE ONLY (2026-11-11)
+
+Branch: [stage67-pending-promotion-zero-write-probes](https://github.com/Hawky11/1/tree/stage67-pending-promotion-zero-write-probes), based on Stage66 748a0a61. [Two-file RU instructions](Stage67_Overlay/README_STAGE67_RU.md), [ABI/static report](Stage67_Analysis/STATIC_ANALYSIS.md), [read-only verifier + x86 differential tests](Stage67_Analysis/tools/verify_stage67.py).
+
+Adds only guarded CALL AD75C→1E9F40 PRE/POST and six-byte E9E60 MOV observation. Original call/store once; no action ID injection or DR writes. Stage65 adapter 04ecb337 gains three integration lines; install after Stage65 before Stage59, flush through existing worker. New log ArcanaAI_Stage67NativePathsTrace.log, marker STAGE67_NATIVE_PATHS_BUILD=2026-11-11-r1, expected STAGE67_INSTALLED 2/2. Separate TLS lanes, ring 8192, full masks promotion 1F/1F and store 07/07. Original private EXE SHA reverified; six guard arrays + source operand/global + adapter checks PASS; **512 extracted-wrapper differential x86 cases PASS**, including nonempty x87/SSE/FLAGS/ESP and native operations once. **No MSVC build or game test yet.**
+
+**Critical:** wrapped AD75C changes Stage43 RAW outer return to DLL; knownCaller=0 is expected for that site. Use Stage67 original callerReturn plus same-player/object/thread QPC containment with Stage42. Do not apply old all-AD75C Stage43 assertions to this build. No original address is fabricated.
+
+**Next:** preserve working Stage65 1,879,552-byte DLL and Stage59 r2 1,153,024-byte rollback. Add Stage67NativePaths.inl and replace Stage38CallbackWindow.inl from Stage67_Overlay/src over the working Stage65 tree; retain all other sources/INI. Next phase is x86 Build.bat; only after BUILD SUCCEEDED test a short ordinary COM-vs-COM, archive old logs before capture, allow ≥2 seconds flush. Analyze Build.log + same-run Stage67/40/41/42/43/65/59. Require zero health errors and actual target cases before claiming runtime proof. Old seq39/155/320 identify only the previous run. main and all prior branches remain unchanged.
+
+---
+
+
+## Current — Stage66 original native pending promotion / independent request-zero STATIC VERIFIED; Stage67 targeted passive probe NEXT (2026-11-11)
+
+**Branch:** [stage66-native-pending-promotion-and-zero-origin](https://github.com/Hawky11/1/tree/stage66-native-pending-promotion-and-zero-origin), based on full Stage65 RUNTIME VERIFIED evidence 5e98fe587355ca9ec124d5c9db6ce7ecb6238ff2. [Static original code report](Stage66_Analysis/STATIC_ANALYSIS.md), [read-only Python SHA verifier with optional same-run log check](Stage66_Analysis/tools/verify_stage66.py), [RU guide](Stage66_Analysis/README_STAGE66_RU.md). Original user-owned private AALib.exe in Library AALib.zip, 175,556,608 bytes, PE32/i386, image base 00400000, SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba. **21 original opcode ranges, 3 rel32 CALL targets PASS** locally, read-only preferred VA 008254E8 original DWORD verified zero. The full newly committed Python reproducer has not yet been run on user's Windows installation; no new DLL was built or installed in Stage66.
+
+**Stage42 ID25 anomaly explanation now narrowed to one original, directly executed native activation helper:**
+- Stage42 seq39/P1 latest Stage40 seq38=ID2F; Stage42 seq155/P1 latest Stage40 seq204=ID2F. Stage41 POST O+64=2F; Stage42 PRE O+64=25 and POST O+60=25; Stage42 O+68 PRE and POST both FFFFFFFF.
+- Stage43 already proved **caller AD75C → native 1E9F40** for both, and Stage42 wraps **inside** native 1E9F40 at **1E9F62**. Original code preceding that inner call checks O+30 byte at 1E9F40; if nonzero and O+68 != FFFFFFFF, it **copies O+68 → O+64 at 1E9F4E**, **sets O+68=FFFFFFFF at 1E9F51**, and **ORs O+08 bit0** at 1E9F58, then Stage42-observed 1E9C70 at 1E9F62.
+- This path explains 2F→25 if **function-entry O+68 was 25 and O+30 armed**, and why Stage42 already sees O+68=FFFFFFFF. **Those entry fields were not recorded and branch-taken behavior is NOT VERIFIED**. Another original O+64 setter is native 1E9F00→store at 1E9F22, with 476 encoded direct E8 potential native calls; do not equate that count with execution/AI choices.
+- Original 1E9F40 has 14 direct encoded E8 callsites, but just **one AD75C** is needed to test these two exceptions.
+
+**Stage40 seq320 missing Stage65 writer narrowed to native separate source:**
+- Stage40 seq320/P1/ID00000000, qpcBefore 1440484223522; latest preceding Stage65 seq303 wrote 00000304; next zero-writing Stage65 seq321 occurs after seq320 and cannot explain it.
+- Original E9E30 **independently writes P+3F4C at E9E60** from read-only preferred VA 008254E8 whose initial value is **0**. Native E9E3C→E9E41 skips write when P+3B7C bit15 is **SET**; possible write requires **bit15 CLEAR** AND F2ED0 returns nonzero AL (E9E4E, E9E56, E9E58). Stage40 seq320 preflags=0 is compatible but not proof.
+- E9E30 has 11 direct encoded E8 potential original callers; the Stage65 observer covers only E5BF0, therefore did not observe this separate possible write. **Actual E9E60 execution for seq320 remains unconfirmed**. No claim of lost/buggy COM actions.
+
+**Stage67 next:** two strictly narrow passive and signature-guarded observations only, after source/ABI/DR conflict review. (1) Wrap **original CALL AD75C→1E9F40** exactly once, record **O+30, O+64, O+68, O+08** before/after, side/P/O/TID/QPC and native result; correlate with Stage42 by QPC. (2) Consider one original exact **E9E60 six-byte write** guarded trampoline preserving native ESI/EDX/FLAGS, record P+3F4C before/after, TID and QPC, to tie an actual zero-write to Stage40. Do NOT add DR registers: Stage59 uses DR0/DR1; preserve DR2/DR3. Do NOT blanket-hook all 476 calls or overwrite ID, input, movement, priority or damage. Stage66 creates no new hook or DLL; known good Stage65 DLL **1,879,552 bytes**, earlier Stage59 r2 DLL **1,153,024 bytes** for rollback. **No new log upload/build required now.**
+
+---
+
+## Current — Stage65 real request-writer runtime VERIFIED, Stage66 original pending-ID/alternate-writer audit NEXT (2026-11-11)
+
+**Evidence branch:** [stage65-runtime-request-origin-evidence](https://github.com/Hawky11/1/tree/stage65-runtime-request-origin-evidence), starting at fresh user-upload commit 72f47bf63d3db14219a9007c8c18326162c6b400 and freezing all original logs. [Detailed runtime report](Stage65_Runtime/RUNTIME_ANALYSIS.md), [Russian synopsis](Stage65_Runtime/README_STAGE65_RU.md), [read-only Python correlator](Stage65_Runtime/tools/correlate_stage65.py). Stage65 observer source remains on [stage65-request-origin-passive-source](https://github.com/Hawky11/1/tree/stage65-request-origin-passive-source) commit 04ecb337, not applied again to main. **No source recompile by the analyst.** Actual user's MSVC x86 Build.log 11.11.2026 00:44:06 says **BUILD SUCCEEDED, DLL 1,879,552 bytes**, with only existing C4754 warning.
+
+**Stage65 RUNTIME:** native RVA E5BF0 signature-checked entry observer **STAGE65_INSTALLED 1/1**, genuine **429** writer rows, 54 unique direct native E8 original callsites, 429/429 full 3F read mask, mode0 427 / mode1 2, P1 162/P2 267, TID 23432, objects P1 2A39D020 P2 2A39DC50. 26 HEALTH samples sum calls=429 and have dropped/overflow/mismatch/readFail=0. Same-run Stage40 430, Stage41 430, Stage42 318, Stage43 318, Stage44 1825; Stage39 type1 callback output 61. **429/430 unique E5BF0→E8480 links** by same player/side/TID/QPC/raw request and **430/430 exact Stage40→41**. All **318 Stage42** have exact Stage43 original caller AD75C and one enclosed Stage44 binding; **316/318** match latest preceding Stage40 request ID, **315** also include Stage65 writer. **61/61** Stage39 selective output chains match consumer and activation. No old 22:07 session rows were mixed with current 00:44 session.
+
+**Three important exceptions, no made-up origin:** (1) Stage40 **seq320** P1 request **00000000** qpcBefore 1440484223522 lacks Stage65 writer. Independent conditional original P+3F4C E9E30/E9E60 from Stage63 is possible but not proven. (2) Stage42 **seq39** activates ID **00000025**, but latest Stage41 POST pending O+64 was **0000002F** at Stage40 seq38. (3) Stage42 **seq155** same 0x2F→0x25 difference after Stage40 seq204. A native pending field changed before the activation in these cases; cannot attribute to an AI error or particular writer without more evidence.
+
+**All 114 Stage40 requests without *separate* Stage42 activations** are exactly native original caller **153ECA** (118 total calls, four did activate), repeated action IDs 0x49=96, 0x4A=12, 0x48=6. On each, Stage41 O+08 and O+64 did not change and pending O+64 already equaled active O+60 and requested ID — these are already-current duplicates, NOT 114 lost commands.
+
+**Stage59 health remains good:** WATCH_ARMED after both objects ready at 00:44:52; **18,783 contiguous** native X writes (P1 9412, P2 9371), 28 HEALTH zero dropped/readFail/ownershipConflicts/installFailures/teardownFailures/objectDrift. Stage47 6208, Stage49 6270, Stage56 440 and Stage58 942 rows, all relevant sampled health fields zero. No evidence of Stage65 interfering with DR0/DR1.
+
+**Stage66 NEXT:** static-first find original writes to native O+64 and why observed pending 2F turns into 25 before activation; analyze alternative P+3F4C writer E9E30 and the single unexplained consumer 320 without claiming source; prioritize observed **54** real Stage65 caller RVAs, especially 153ECA/133569/1BD65A/158691/131CC5/131D1C, not 296 static possibilities. Only design another passive hook if warranted by original instruction-level proof; do not modify COM strategy/action IDs/coordinates, do not add DR watchpoints. Preserve successful Stage65 DLL 1,879,552 bytes and Stage59 r2 1,153,024-byte rollback. **No new logs or build required for this static step.**
+
+---
+
 ## Current — Stage61 same-run Stage46→47→59 RUNTIME VERIFIED; Stage62 decision linkage NEXT (2026-11-10)
 
 **Provenance:** new exact two-file upload [c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79), frozen unchanged at [stage61-runtime-action-motion-x-evidence](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence), [full Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md). The newly supplied Stage46 `c973b4593a6de15a045220b39c9b8d010db6c764` and Stage47 `d87f182d4cd66fb19aeaf16439428c905c7b6ced` log blobs are unequivocally from **22:07**, same session as earlier Stage59 r2 frozen blob `a5a2e76dcc473e079d0445db6e9d7069a3784879` (previous original upload d2ce2444). Same P1/P2 objects `2A89A020/2A89AC50`, game thread `15132`, monotonic comparable QPC. **Stage61 uses Stage59 r2 already built and verified; no Stage61 DLL was built.**

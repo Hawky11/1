@@ -1,3 +1,56 @@
+## Current — Stage66 native pending-ID promotion and zero-request source STATIC VERIFIED (2026-11-11)
+
+## Current — Stage67 native promotion / independent zero writer RUNTIME VERIFIED (2026-11-11)
+
+[Runtime report](Stage67_Runtime/RUNTIME_ANALYSIS.md) · [RU result](Stage67_Runtime/README_STAGE67_RU.md) · [Read-only correlator](Stage67_Runtime/tools/correlate_stage67.py) · [Full audit output](Stage67_Runtime/results.json).
+Evidence branch: [stage67-runtime-native-paths-evidence](https://github.com/Hawky11/1/tree/stage67-runtime-native-paths-evidence), based on exact user upload **71e6462f6a7364451372a88d1961f51137986793**. Source published at **4fa25d902a8ec8aa1f6273791188f3603350b33f**, same tree as locally delivered 1723e59; no source change during publication. All uploaded logs/INI preserved unchanged; main untouched.
+
+**Build/runtime:** user's MSVC x86 Build.log 11.11.2026 01:29:50 BUILD SUCCEEDED, DLL **1,887,232 bytes**, existing C4754 only. Runtime initialization 01:30:28, Stage67 INSTALLED 2/2. New session TID10788, P1/P2 objects 2A393020/2A393C50. Stage67 4,586 rows (4,584 promotion windows + 2 E9E60 stores), all full masks, zero health errors. Stage65 278, Stage40/41 280/280, Stage42/43 220/220. **278 unique Stage65 writers + 2 E9E60 writers explain 280/280 consumers**; all 220 activations uniquely nested in same-actor/object Stage67 windows.
+
+**2F→25 directly confirmed:** Stage67 seq4436/P1 entry O+30=1, O+64=2F, O+68=25; POST O+64=25, O+68=FFFFFFFF, O+60=25. Nested Stage42 seq218 sees promoted pending25 before activation. Latest Stage40/41 seq278 requested2F while deferred25 was already present; its Stage65 source seq276 caller156769 did not originate deferred25. This is the sole latest-request/activation mismatch; other219 match.
+
+**Zero writer directly confirmed:** E9E60 Stage67 seq911/P2 → Stage40/42 seq47, and seq1886/P1 → Stage40/42 seq88. Both EDX/global0, request FFFFFFFF→0; QPC gaps442/493, no intervening observed writers/consumers. Later Stage65 zero writes belong to separate consumers48/89. No retrospective claim that old seq39/155/320 were directly observed.
+
+**Health/provenance:** Stage59 14,040 unique seq1..14040, 22 HEALTH samples with zero conflicts/readFail/drop/install/teardown/drift. One file-order reversal8219→8052, no missing/duplicate rows; use seq/QPC. Stage43 raw outer return now DLL as predicted (knownCaller0 for220); Stage67 callerReturn008AD761 and nested intervals verify original AD75C. Do not use old all-AD75C Stage43 assertions.
+
+**Stage68 NEXT, static first:** find original writers of O+68 deferred25 and O+30 arming, then bracket their occurrence using existing snapshots. No new hooks/AI changes justified yet. **No rebuild or new logs needed now.** Preserve Stage67 DLL1,887,232; Stage65 DLL1,879,552; Stage59 r2 DLL1,153,024. Complete compiled source tree/DLL was not uploaded; runtime markers confirm the observer build, not binary reproducibility.
+
+---
+
+
+## Current — Stage67 targeted passive observers SOURCE ONLY (2026-11-11)
+
+Branch: [stage67-pending-promotion-zero-write-probes](https://github.com/Hawky11/1/tree/stage67-pending-promotion-zero-write-probes), based on Stage66 748a0a61. [Two-file RU instructions](Stage67_Overlay/README_STAGE67_RU.md), [ABI/static report](Stage67_Analysis/STATIC_ANALYSIS.md), [read-only verifier + x86 differential tests](Stage67_Analysis/tools/verify_stage67.py).
+
+Adds only guarded CALL AD75C→1E9F40 PRE/POST and six-byte E9E60 MOV observation. Original call/store once; no action ID injection or DR writes. Stage65 adapter 04ecb337 gains three integration lines; install after Stage65 before Stage59, flush through existing worker. New log ArcanaAI_Stage67NativePathsTrace.log, marker STAGE67_NATIVE_PATHS_BUILD=2026-11-11-r1, expected STAGE67_INSTALLED 2/2. Separate TLS lanes, ring 8192, full masks promotion 1F/1F and store 07/07. Original private EXE SHA reverified; six guard arrays + source operand/global + adapter checks PASS; **512 extracted-wrapper differential x86 cases PASS**, including nonempty x87/SSE/FLAGS/ESP and native operations once. **No MSVC build or game test yet.**
+
+**Critical:** wrapped AD75C changes Stage43 RAW outer return to DLL; knownCaller=0 is expected for that site. Use Stage67 original callerReturn plus same-player/object/thread QPC containment with Stage42. Do not apply old all-AD75C Stage43 assertions to this build. No original address is fabricated.
+
+**Next:** preserve working Stage65 1,879,552-byte DLL and Stage59 r2 1,153,024-byte rollback. Add Stage67NativePaths.inl and replace Stage38CallbackWindow.inl from Stage67_Overlay/src over the working Stage65 tree; retain all other sources/INI. Next phase is x86 Build.bat; only after BUILD SUCCEEDED test a short ordinary COM-vs-COM, archive old logs before capture, allow ≥2 seconds flush. Analyze Build.log + same-run Stage67/40/41/42/43/65/59. Require zero health errors and actual target cases before claiming runtime proof. Old seq39/155/320 identify only the previous run. main and all prior branches remain unchanged.
+
+---
+
+
+[Stage66 original-source analysis](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/STATIC_ANALYSIS.md) · [SHA-pinned offline verifier](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/tools/verify_stage66.py) · [RU guide](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/README_STAGE66_RU.md).
+
+Local private original AALib.exe SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba **21 original instruction signatures and three native rel32 CALL targets PASS**. Stage65 runtime anomalous Stage42 seq39 and seq155 activated ID25 while preceding Stage41 O+64 was ID2F. Stage43 for both shows native caller AD75C→1E9F40. The original 1E9F40 checks O+30, conditionally moves deferred O+68 into O+64 at 1E9F4E, clears O+68 to FFFFFFFF, and only then invokes Stage42-observed native activation at 1E9F62. This **exact code path can explain the two ID changes** if entry O+68=25, but that entry state and branch-taken behavior were **not actually observed**.
+
+Stage40 seq320 ID0 lacked a preceding Stage65 E5BF0 setter. Independently verified original **E9E30** includes a **separate conditional E9E60 write P+3F4C=00000000**, reading the zero value from original read-only preferred VA 008254E8. It can write only when P+3B7C bit15 is **clear** AND helper F2ED0 returns nonzero AL. Stage40 preflags 0 are compatible but **not proof that E9E60 executed for seq320**. Static direct E8 target counts: E9E30=11; object setter 1E9F00=476; activation helper 1E9F40=14. Counts reflect original possible callsites, not native runtime call frequencies.
+
+**No new DLL or runtime test in Stage66; no source/game behavior patched.** Next Stage67: carefully audited, two narrow passive observations — one original CALL AD75C→1E9F40 entry PRE/POST deferred fields, plus (if needed) one original E9E60 zero-store observation. Preserve Stage65 1,879,552-byte DLL as known-good and Stage59 r2 1,153,024-byte rollback. No new DR breakpoint or modified AI/action/coordinate data.
+
+---
+
+## Current — Stage65 actual Windows x86 RUNTIME VERIFIED (2026-11-11 00:44–00:45)
+
+[Stage65 frozen same-session report](https://github.com/Hawky11/1/blob/stage65-runtime-request-origin-evidence/Stage65_Runtime/RUNTIME_ANALYSIS.md) · [Russian report](https://github.com/Hawky11/1/blob/stage65-runtime-request-origin-evidence/Stage65_Runtime/README_STAGE65_RU.md) · [offline correlator](https://github.com/Hawky11/1/blob/stage65-runtime-request-origin-evidence/Stage65_Runtime/tools/correlate_stage65.py) · [source-only observer branch](https://github.com/Hawky11/1/tree/stage65-request-origin-passive-source).
+
+User-uploaded same-session GitHub main snapshot **72f47bf63d3db14219a9007c8c18326162c6b400**; Windows x86 **BUILD SUCCEEDED** (DLL **1,879,552 bytes**) and genuine **STAGE65_INSTALLED 1/1**. Stage65 **429** original E5BF0 request writer windows (54 unique native CALL sites, full read masks and directE8=1, no health errors), Stage40 **430**, Stage41 **430**, Stage42 **318**, Stage43 **318**, Stage44 **1,825**. Strict original caller ID/player/TID/QPC: **429/430** Stage40 requests linked to a unique Stage65 writer; **430/430** Stage40→41; **316/318** Stage42 activations matched the latest Stage40 ID, **315** also have Stage65. **61/61** selective Stage39 callbacks linked to native activations. Single unexplained Stage40 P1 seq320 ID0; two Stage42 P1 seq39/155 activate **0x25** although preceding Stage41 pending ID was **0x2F**. All **114** Stage40 requests lacking distinct activation were already-current Stage41 duplicates from original caller **153ECA**, IDs 0x49/4A/48, not evidence of dropped action. Stage59 **18,783** contiguous DR0/DR1 X writes, zero issues in 28 HEALTH checks, so observer integration looks healthy in this capture.
+
+**Next Stage66:** source-level original write provenance of O+64 (2F→25) and alternate P+3F4C ID0, plus analysis of 54 real native request callers before claiming an AI decision/scoring site. **No game behavior was intentionally modified**, no new DLL built by the analyst. Keep Stage65 1,879,552-byte runtime DLL and Stage59 r2 1,153,024-byte rollback; no new run/upload needed yet.
+
+---
+
 ## Current — Stage61 same-run action definition → motion → X write VERIFIED (2026-11-10)
 
 [Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md) · [frozen exact two-file user upload](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence) · [Stage61 offline correlator](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/tools/correlate_stage61.py). New [user upload c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79) contains **Stage46 and Stage47 from the identical 22:07 Stage59 r2 game session**. Same actor objects, TID=15132, QPC sequence. Stage46 1,476 sequential records; Stage47 5,292 sequential records; previously frozen Stage59 16,121 sequential watchpoint events. Full masks, Stage47 HEALTH zero dropped/overflow/mismatch/badCaller. **No new DLL was built**.

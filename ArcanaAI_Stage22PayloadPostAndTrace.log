@@ -1,3 +1,4 @@
-[2026-11-10 12:23:31] STAGE22_PAYLOAD_POST_AND_BUILD=2026-11-08-r1
-[2026-11-10 12:23:32] Installed Stage22 post-AND observer at RVA 0x000EE451: validated 7-byte instruction replaced by CALL + 2 NOPs; wrapper executes the identical AND once and restores post-AND EFLAGS.
-[2026-11-10 12:24:09] STAGE22_POST_AND seq=1 side=P2 tid=8304 qpc=995827180590 callReturnRVA=0x000EE456 player=0x0E4CCCA0 dispatchType=1 dispatchPayload=0x0000001E controller=0x29F03C50 controllerFlagsBeforeAND=0x00000000 controllerFlagsAfterAND=0x00000000 bit400Before=0 bit400After=0 afterReadable=1 eflagsAfterAND=0x00000246
+[2026-11-10 12:39:00] STAGE22_PAYLOAD_POST_AND_BUILD=2026-11-08-r1
+[2026-11-10 12:39:01] Installed Stage22 post-AND observer at RVA 0x000EE451: validated 7-byte instruction replaced by CALL + 2 NOPs; wrapper executes the identical AND once and restores post-AND EFLAGS.
+[2026-11-10 12:39:23] STAGE22_POST_AND seq=1 side=P1 tid=8168 qpc=1004967715060 callReturnRVA=0x000EE456 player=0x0E4A1F78 dispatchType=1 dispatchPayload=0x0000001E controller=0x29CEC020 controllerFlagsBeforeAND=0x00000000 controllerFlagsAfterAND=0x00000000 bit400Before=0 bit400After=0 afterReadable=1 eflagsAfterAND=0x00000246
+[2026-11-10 12:39:29] STAGE22_POST_AND seq=2 side=P2 tid=8168 qpc=1005033200502 callReturnRVA=0x000EE456 player=0x0E4CCCA0 dispatchType=1 dispatchPayload=0x0000001E controller=0x29CECC50 controllerFlagsBeforeAND=0x00000000 controllerFlagsAfterAND=0x00000000 bit400Before=0 bit400After=0 afterReadable=1 eflagsAfterAND=0x00000246

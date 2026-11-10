@@ -146,7 +146,7 @@ __declspec(naked) void S49LinkedMotionHook()
 }
 bool InstallStage49Hooks()
 {
-    S49Log("STAGE49_LINKED_MOTION_BUILD=2026-11-10-r1");
+    S49Log("STAGE49_LINKED_MOTION_BUILD=2026-11-10-r2");
     if(InterlockedCompareExchange(&g_s48Installed,0,0)!=1||
        InterlockedCompareExchange(&g_s47Installed,0,0)!=1||
        InterlockedCompareExchange(&g_s45Installed,0,0)!=1){
@@ -165,8 +165,12 @@ bool InstallStage49Hooks()
         {0xE8,0x2E,0xA0,0x13,0x00},
         {0xE8,0xC1,0x9F,0x13,0x00}
     };
-    const BYTE root0[]={0x8B,0x35,0xC8,0x02,0x2E,0x0E};
-    const BYTE root1[]={0x8B,0x35,0xC0,0x02,0x2E,0x0E};
+    // Unlike rel32 CALLs, MOV ESI,[absolute] operands are PE base relocations.
+    // AALib.exe image base=00400000; this process can load at 00800000.
+    // Validate BOTH the opcode and the exact relocated absolute target.
+    const DWORD preferredImageBase=0x00400000u;
+    const DWORD root0Preferred=0x0E2E02C8u;
+    const DWORD root1Preferred=0x0E2E02C0u;
     const BYTE ecxMove[]={0x8B,0xCE};
     const BYTE nativePrologue[]={0x55,0x8B,0xEC,0x83,0xEC,0x08,0x56,0x8B,0xF1};
     const BYTE nativeRet[]={0xC3};
@@ -179,12 +183,35 @@ bool InstallStage49Hooks()
     const BYTE destY[]={0xD9,0x96,0x80,0x00,0x00,0x00};
     const BYTE destCopyY[]={0xD9,0x9E,0xB0,0x00,0x00,0x00};
     auto same=[&](DWORD rva,const BYTE* signature,size_t len)->bool{
-        return std::memcmp(reinterpret_cast<BYTE*>(
-            static_cast<std::uintptr_t>(g_gameBase+rva)),signature,len)==0;
+        const BYTE* p=reinterpret_cast<const BYTE*>(
+            static_cast<std::uintptr_t>(g_gameBase+rva));
+        for(size_t i=0;i<len;++i){
+            if(p[i]==signature[i])continue;
+            char msg[240]{};
+            sprintf_s(msg,"ERROR: Stage49 native signature RVA=%08lX byte=%lu expected=%02X actual=%02X.",
+                rva,static_cast<unsigned long>(i),
+                static_cast<unsigned>(signature[i]),static_cast<unsigned>(p[i]));
+            S49Log(msg);return false;
+        }
+        return true;
+    };
+    auto sameRoot=[&](DWORD rva,DWORD preferredOperand)->bool{
+        const BYTE* p=reinterpret_cast<const BYTE*>(
+            static_cast<std::uintptr_t>(g_gameBase+rva));
+        DWORD actualOperand=0;
+        std::memcpy(&actualOperand,p+2u,sizeof(actualOperand));
+        const DWORD expectedOperand=preferredOperand+(g_gameBase-preferredImageBase);
+        if(p[0]==0x8B && p[1]==0x35 && actualOperand==expectedOperand)return true;
+        char msg[256]{};
+        sprintf_s(msg,
+            "ERROR: Stage49 root RVA=%08lX loadedBase=%08lX opcode=%02X%02X absOperand=%08lX expectedRelocated=%08lX.",
+            rva,g_gameBase,static_cast<unsigned>(p[0]),static_cast<unsigned>(p[1]),
+            actualOperand,expectedOperand);
+        S49Log(msg);return false;
     };
     auto valid=[&]()->bool{
-        if(!same(0xAF11Eu,root0,sizeof(root0))||
-           !same(0xAF19Eu,root1,sizeof(root1))||
+        if(!sameRoot(0xAF11Eu,root0Preferred)||
+           !sameRoot(0xAF19Eu,root1Preferred)||
            !same(0x1E9170u,nativePrologue,sizeof(nativePrologue))||
            !same(0x1E9381u,nativeRet,sizeof(nativeRet))||
            !same(0x1E92C8u,linkRead,sizeof(linkRead))||
@@ -196,15 +223,27 @@ bool InstallStage49Hooks()
            !same(0x1E92FBu,destY,sizeof(destY))||
            !same(0x1E9301u,destCopyY,sizeof(destCopyY)))return false;
         for(DWORD i=0;i<2u;++i){
-            if(std::memcmp(sites[i]-2u,ecxMove,2u)||
-               std::memcmp(sites[i],orig[i],5u))return false;
+            if(std::memcmp(sites[i]-2u,ecxMove,2u)){
+                S49Log(i==0u?"ERROR: Stage49 AF13D caller ECX prefix mismatch.":
+                              "ERROR: Stage49 AF1AA caller ECX prefix mismatch.");
+                return false;
+            }
+            if(std::memcmp(sites[i],orig[i],5u)){
+                S49Log(i==0u?"ERROR: Stage49 AF13D original CALL bytes mismatch.":
+                              "ERROR: Stage49 AF1AA original CALL bytes mismatch.");
+                return false;
+            }
             std::int32_t rel=0;std::memcpy(&rel,sites[i]+1u,sizeof(rel));
-            if(sites[i]+5u+rel!=native)return false;
+            if(sites[i]+5u+rel!=native){
+                S49Log(i==0u?"ERROR: Stage49 AF13D native target mismatch.":
+                              "ERROR: Stage49 AF1AA native target mismatch.");
+                return false;
+            }
         }
         return true;
     };
     if(!valid()){
-        S49Log("ERROR: Stage49 root/CALL/linked-field/ABI signature mismatch; no patches.");
+        S49Log("ERROR: Stage49 r2 signature guard failed (detail logged above); no patches.");
         return false;
     }
     BYTE patches[2][5]{};
@@ -238,7 +277,7 @@ bool InstallStage49Hooks()
     ResumeThreads(suspended,stopped);
     ReleaseMutex(mutex);CloseHandle(mutex);
     S49Log(installed?
-        "STAGE49_INSTALLED 2/2 callsites=AF13D(listC8),AF1AA(listC0) native=1E9170; original no-arg thiscall once; P1/P2-only snapshots.":
+        "STAGE49_INSTALLED 2/2 callsites=AF13D(listC8),AF1AA(listC0) native=1E9170; original no-arg thiscall once; P1/P2-only snapshots; r2 relocated-root guard.":
         "ERROR: Stage49 install failed; existing Stage48/47/46 hooks remain installed.");
     return installed;
 }

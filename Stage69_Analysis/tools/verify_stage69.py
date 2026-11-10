@@ -16,6 +16,9 @@ SITES = [
  (0x1566CB, '89 45 08', 'save O to callback stack slot'),
  (0x156745, '83 fb 01', 'selector 1 conditional'),
  (0x156753, '83 fb 02', 'selector 2 conditional'),
+ (0x15674A, '8b 15 7c 55 82 00', 'request 2F for selector 1'),
+ (0x156758, 'a1 80 55 82 00', 'request 33 for selector 2'),
+ (0x156760, '8b 0d 78 55 82 00', 'request 2E for selector other'),
  (0x156767, '8b 0f', 'reload P'),
  (0x156769, 'e8 82 f4 f8 ff', 'native helper call 0E5BF0'),
  (0x15676E, '8b 17', 'reload P after helper'),
@@ -82,6 +85,9 @@ def inspect(exe):
         if (index, action) != (expected_index, expected_action):
             raise ValueError(f'Unexpected original table mapping selector {selector}: {index:X} -> {action:X}')
         outputs.append({'selector': selector, 'fileInitializedIndex': f'{index:X}', 'fileInitializedDeferredID': f'{action:X}'})
+    for va, expected in ((0x00825578, 0x2e), (0x0082557c, 0x2f), (0x00825580, 0x33)):
+        if dword_va(va) != expected:
+            raise ValueError(f'Original immediate-request table changed at {va:08X}')
     return {'original_sha256': digest, 'exact_site_count': len(SITES),
             'candidate_writer_rva': '156787', 'caller_function_rva': '1566B0',
             'object_from_player_plus_4': True, 'selection_from_player_plus_3F50': True,

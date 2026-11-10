@@ -1,3 +1,13 @@
+## Current — Stage60 original-X-writer static dataflow VERIFIED (2026-11-10)
+
+**Static source branch:** [stage60-original-x-write-dataflow-static-analysis](https://github.com/Hawky11/1/tree/stage60-original-x-write-dataflow-static-analysis) · [full Stage60 analysis](https://github.com/Hawky11/1/blob/stage60-original-x-write-dataflow-static-analysis/Stage60_Analysis/STATIC_ANALYSIS.md) · [read-only verifier](https://github.com/Hawky11/1/blob/stage60-original-x-write-dataflow-static-analysis/Stage60_Analysis/tools/verify_stage60.py) · [Russian instructions](https://github.com/Hawky11/1/blob/stage60-original-x-write-dataflow-static-analysis/Stage60_Analysis/README_STAGE60_RU.md). Original local/private `AALib.exe` SHA256 checked; offline script verified 10 direct calls, 5 original X stores and 9 local source terms.
+
+Verified call/dataflow clusters: `A119B→AE6E0→1E66E0→1E70DB` is an object-position integrator reading current X, `object+88/150/D4` and orientation flags; `A11A0→ACDF0→ACB80→ACC57` bounds pair/constraint displacement; `ACDF0→15CEC0→12D520→126580→126A9A/126B49` processes paired-object records (record type 7) and computes local X corrections. Inline `ACF2A` is an additional conditional native store. These are consistent with engine motion and pair/collision resolution **rather than direct COM action-choice sites**, but precise gameplay semantics and upstream input writers remain unverified.
+
+**Stage60 needs NO DLL change or Windows runtime:** preserve working Stage59 r2 DLL 1,153,024 bytes. **Next Stage61:** static upstream writer/xref analysis for `object+88/150/D4` and separate COM command/action producer path; require evidence linking a decision to movement before any new hooks or behavior modification. No improved AI demonstrated.
+
+---
+
 ## Current — Stage59 r2 Windows runtime VERIFIED: 16,121 X writes, original store RVAs located (2026-11-10)
 
 [Full Stage59 r2 runtime report](https://github.com/Hawky11/1/blob/main/Stage59_Runtime/R2_RUNTIME_ANALYSIS.md) · [frozen six-file raw upload](https://github.com/Hawky11/1/tree/stage59-r2-runtime-writer-attribution-evidence) · [unchanged Stage59 r2 source](https://github.com/Hawky11/1/tree/stage59-r2-wait-for-combat-objects). Windows x86 **BUILD SUCCEEDED** at 22:07:10, DLL **1,153,024 bytes**. After 12.75s actor readiness, Stage59 `WATCH_ARMED` and 62 thread installs were logged. **16,121** contiguous hardware X_WRITE events, no dropped/readFail/ownership conflicts/install failures; final `ownedThreads=61`. Stage55–58 all installed, all sampled health counters clear.

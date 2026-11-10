@@ -1,5 +1,19 @@
 # Next session handoff
 
+## Current — Stage60 original X-writer dataflow STATIC VERIFIED; Stage61 next (2026-11-10)
+
+**Stage60 branch:** [stage60-original-x-write-dataflow-static-analysis](https://github.com/Hawky11/1/tree/stage60-original-x-write-dataflow-static-analysis) ([full static analysis](https://github.com/Hawky11/1/blob/stage60-original-x-write-dataflow-static-analysis/Stage60_Analysis/STATIC_ANALYSIS.md), [SHA-pinned verifier](https://github.com/Hawky11/1/blob/stage60-original-x-write-dataflow-static-analysis/Stage60_Analysis/tools/verify_stage60.py), [RU guide](https://github.com/Hawky11/1/blob/stage60-original-x-write-dataflow-static-analysis/Stage60_Analysis/README_STAGE60_RU.md)). Private local original `AALib.exe` SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` verified, PE32 ImageBase `00400000`. Static scanner and raw-byte relative CALL checks passed: **10 exact direct caller edges, 5 native X stores and 9 local input-read signatures**. No binary or copyrighted source data uploaded.
+
+**Central result:** The Stage59 r2 writer RVAs are in *object-position and pair-adjustment loops*, not proven COM action decision routines. Early `AE6E0` enumerates objects and calls `1E66E0`, whose `1E70DB FSTP [ESI+7C]` integrates X using `[ESI+88]`, `[ESI+150]`, `[ESI+D4]`, facing flags `[ESI+24]` and floating-point terms; Y follows at `1E711A`. The sibling `ACDF0` calls `ACB80` twice (`ACE3D`, `ACE56`) which calls `1E43A0` twice, bounds local scalar terms and adjusts raw X at `ACC57`. It also stores via guarded `ACF2A`. Its `ACFD6` helper enters `15CEC0`, calls `12D520` at `15CF5B`, and `12D520` calls `126580` at `12D58A` for record type **7**. `126580` compares paired-object state and computes local offsets then uses `126A9A` or `126B49` to update raw X. Record type 7 is NOT identified as an attack/action ID. The precise collision/physics mechanism is an interpretation, not demonstrated gameplay semantics.
+
+**Stage59 dynamic evidence retained unchanged:** 16,121 X_WRITE events, 1,930/1,930 early AE6E0 net-X changes matched to `1E70DB`; 719/719 ACDF0 changes matched (379 `ACC57`, 50 Stage56 detoured `ACF2A`, 145 `126A9A`, 145 `126B49`). Verified same-session logs archived as [stage59-r2-runtime-writer-attribution-evidence](https://github.com/Hawky11/1/tree/stage59-r2-runtime-writer-attribution-evidence).
+
+**Next Stage61 precise task (STATIC FIRST):** find exact native writers/callers for early integrator source terms `object+88`, `object+150`, `object+D4` and learn how/when they are set. Separately review COM decision/command chain from the proven payload-`0x1E` queue path (`F6AD7` and prior diagnostics), without assuming it generates those terms. Establish a same-object/action handoff if one exists; only then propose narrowly targeted observational source with ABI/DR ownership review and rollback. No direct motion-coordinate edits or AI quality claims. Stage60 requires **no new DLL, INI or game runtime**; preserve Stage59 r2 1,153,024-byte DLL.
+
+---
+
+
+
 ## Current — Stage59 r2 X-writer attribution VERIFIED; Stage60 STATIC NEXT (2026-11-10)
 
 **Canonical results:** [Stage59 r2 analysis](https://github.com/Hawky11/1/blob/main/Stage59_Runtime/R2_RUNTIME_ANALYSIS.md), [frozen exact six-file raw log upload](https://github.com/Hawky11/1/tree/stage59-r2-runtime-writer-attribution-evidence), [unchanged Stage59 r2 source](https://github.com/Hawky11/1/tree/stage59-r2-wait-for-combat-objects). New raw commit `d2ce2444b569e439db66e076f8428ac4dfc611cc`. Build 22:07:10 Windows x86 **BUILD SUCCEEDED**, DLL **1,153,024 bytes**, only old C4754. `STAGE59_OBJECTS_READY waitedMs=12750`, `STAGE59_WATCH_ARMED`, 62 thread install records; final HEALTH `ownedThreads=61 totalWrites=16121 totalSeq=16121 dropped=0 readFail=0 ownershipConflicts=0 installFailures=0 teardownFailures=0 objectDrift=0`. This closes the prior r1 five-second timeout, and actual X_WRITE data exists.

@@ -47,6 +47,9 @@ The consecutive instructions from `15676E` through `156787` contain **no conditi
 
 The helper's immediate IDs come from original `15674A/156758/156760` reads of `0082557C/00825580/00825578` respectively; these addresses hold `2F/33/2E` in the original file. The verifier's 27 opcode assertions cover the key request-call and deferred-store chain; the three immediate-ID loads and table values are also checked by the verifier.
 
+
+**Selector stability caveat:** the immediate request branches use EBX captured from `P+3F50` before the helper call, whereas the deferred writer **rereads P+3F50 after that helper returns**. If the helper changes the selector, the two values can diverge. Therefore 2F/25 and 33/26 are the original-file nominal pairings when the selector stays stable; Stage67 did not log both selector reads.
+
 **Important limitation:** `06317664` is in **writable .data**, so these are initialized-file mappings, not observed runtime table contents. Also, `P+3F50` was not captured as a Stage67 field. Do not assert actual per-player selector or an exact store instruction hit on the basis of the file data alone.
 
 ## Direct connection to previously observed P1 run

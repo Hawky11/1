@@ -1,5 +1,18 @@
 ## Current — Stage66 native pending-ID promotion and zero-request source STATIC VERIFIED (2026-11-11)
 
+## Current — Stage67 targeted passive observers SOURCE ONLY (2026-11-11)
+
+Branch: [stage67-pending-promotion-zero-write-probes](https://github.com/Hawky11/1/tree/stage67-pending-promotion-zero-write-probes), based on Stage66 748a0a61. [Two-file RU instructions](Stage67_Overlay/README_STAGE67_RU.md), [ABI/static report](Stage67_Analysis/STATIC_ANALYSIS.md), [read-only verifier + x86 differential tests](Stage67_Analysis/tools/verify_stage67.py).
+
+Adds only guarded CALL AD75C→1E9F40 PRE/POST and six-byte E9E60 MOV observation. Original call/store once; no action ID injection or DR writes. Stage65 adapter 04ecb337 gains three integration lines; install after Stage65 before Stage59, flush through existing worker. New log ArcanaAI_Stage67NativePathsTrace.log, marker STAGE67_NATIVE_PATHS_BUILD=2026-11-11-r1, expected STAGE67_INSTALLED 2/2. Separate TLS lanes, ring 8192, full masks promotion 1F/1F and store 07/07. Original private EXE SHA reverified; six guard arrays + source operand/global + adapter checks PASS; **512 extracted-wrapper differential x86 cases PASS**, including nonempty x87/SSE/FLAGS/ESP and native operations once. **No MSVC build or game test yet.**
+
+**Critical:** wrapped AD75C changes Stage43 RAW outer return to DLL; knownCaller=0 is expected for that site. Use Stage67 original callerReturn plus same-player/object/thread QPC containment with Stage42. Do not apply old all-AD75C Stage43 assertions to this build. No original address is fabricated.
+
+**Next:** preserve working Stage65 1,879,552-byte DLL and Stage59 r2 1,153,024-byte rollback. Add Stage67NativePaths.inl and replace Stage38CallbackWindow.inl from Stage67_Overlay/src over the working Stage65 tree; retain all other sources/INI. Next phase is x86 Build.bat; only after BUILD SUCCEEDED test a short ordinary COM-vs-COM, archive old logs before capture, allow ≥2 seconds flush. Analyze Build.log + same-run Stage67/40/41/42/43/65/59. Require zero health errors and actual target cases before claiming runtime proof. Old seq39/155/320 identify only the previous run. main and all prior branches remain unchanged.
+
+---
+
+
 [Stage66 original-source analysis](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/STATIC_ANALYSIS.md) · [SHA-pinned offline verifier](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/tools/verify_stage66.py) · [RU guide](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/README_STAGE66_RU.md).
 
 Local private original AALib.exe SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba **21 original instruction signatures and three native rel32 CALL targets PASS**. Stage65 runtime anomalous Stage42 seq39 and seq155 activated ID25 while preceding Stage41 O+64 was ID2F. Stage43 for both shows native caller AD75C→1E9F40. The original 1E9F40 checks O+30, conditionally moves deferred O+68 into O+64 at 1E9F4E, clears O+68 to FFFFFFFF, and only then invokes Stage42-observed native activation at 1E9F62. This **exact code path can explain the two ID changes** if entry O+68=25, but that entry state and branch-taken behavior were **not actually observed**.

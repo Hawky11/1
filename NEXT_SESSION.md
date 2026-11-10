@@ -1,5 +1,18 @@
 # Next session handoff
 
+## Current — Stage67 targeted passive observers SOURCE ONLY (2026-11-11)
+
+Branch: [stage67-pending-promotion-zero-write-probes](https://github.com/Hawky11/1/tree/stage67-pending-promotion-zero-write-probes), based on Stage66 748a0a61. [Two-file RU instructions](Stage67_Overlay/README_STAGE67_RU.md), [ABI/static report](Stage67_Analysis/STATIC_ANALYSIS.md), [read-only verifier + x86 differential tests](Stage67_Analysis/tools/verify_stage67.py).
+
+Adds only guarded CALL AD75C→1E9F40 PRE/POST and six-byte E9E60 MOV observation. Original call/store once; no action ID injection or DR writes. Stage65 adapter 04ecb337 gains three integration lines; install after Stage65 before Stage59, flush through existing worker. New log ArcanaAI_Stage67NativePathsTrace.log, marker STAGE67_NATIVE_PATHS_BUILD=2026-11-11-r1, expected STAGE67_INSTALLED 2/2. Separate TLS lanes, ring 8192, full masks promotion 1F/1F and store 07/07. Original private EXE SHA reverified; six guard arrays + source operand/global + adapter checks PASS; **512 extracted-wrapper differential x86 cases PASS**, including nonempty x87/SSE/FLAGS/ESP and native operations once. **No MSVC build or game test yet.**
+
+**Critical:** wrapped AD75C changes Stage43 RAW outer return to DLL; knownCaller=0 is expected for that site. Use Stage67 original callerReturn plus same-player/object/thread QPC containment with Stage42. Do not apply old all-AD75C Stage43 assertions to this build. No original address is fabricated.
+
+**Next:** preserve working Stage65 1,879,552-byte DLL and Stage59 r2 1,153,024-byte rollback. Add Stage67NativePaths.inl and replace Stage38CallbackWindow.inl from Stage67_Overlay/src over the working Stage65 tree; retain all other sources/INI. Next phase is x86 Build.bat; only after BUILD SUCCEEDED test a short ordinary COM-vs-COM, archive old logs before capture, allow ≥2 seconds flush. Analyze Build.log + same-run Stage67/40/41/42/43/65/59. Require zero health errors and actual target cases before claiming runtime proof. Old seq39/155/320 identify only the previous run. main and all prior branches remain unchanged.
+
+---
+
+
 ## Current — Stage66 original native pending promotion / independent request-zero STATIC VERIFIED; Stage67 targeted passive probe NEXT (2026-11-11)
 
 **Branch:** [stage66-native-pending-promotion-and-zero-origin](https://github.com/Hawky11/1/tree/stage66-native-pending-promotion-and-zero-origin), based on full Stage65 RUNTIME VERIFIED evidence 5e98fe587355ca9ec124d5c9db6ce7ecb6238ff2. [Static original code report](Stage66_Analysis/STATIC_ANALYSIS.md), [read-only Python SHA verifier with optional same-run log check](Stage66_Analysis/tools/verify_stage66.py), [RU guide](Stage66_Analysis/README_STAGE66_RU.md). Original user-owned private AALib.exe in Library AALib.zip, 175,556,608 bytes, PE32/i386, image base 00400000, SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba. **21 original opcode ranges, 3 rel32 CALL targets PASS** locally, read-only preferred VA 008254E8 original DWORD verified zero. The full newly committed Python reproducer has not yet been run on user's Windows installation; no new DLL was built or installed in Stage66.

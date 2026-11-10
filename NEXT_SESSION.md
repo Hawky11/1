@@ -1,5 +1,15 @@
 # Next session handoff
 
+## Current — Stage44 runtime VERIFIED (2026-11-10)
+
+Upload [73a93ed](https://github.com/Hawky11/1/commit/73a93ede99755e063896c78b510a2acee70311ba). [Evidence and report](https://github.com/Hawky11/1/blob/stage44-runtime-action-definition-evidence/Stage44_Runtime/RUNTIME_ANALYSIS.md), evidence commit b7c72b83b4b382751cedd9310809788943113fc0; original logs preserved plus Stage44 source overlay and 321-row CSV.
+
+Windows x86 BUILD SUCCEEDED (1,047,552-byte DLL), existing C4754 only. Stage44 installed 1/1. 321 binding windows (P1 166/P2 155), FF/FF object masks and post metadata mask 7; all ready-byte=1 and metadata type consistent. 292/292 Stage42 activations each contain one matching Stage44 binding. 29 bindings outside Stage42 windows require separate caller attribution, not proof of lost actions. Stage42/44 health dropped/overflow/mismatch all zero. Stage41 291 NEW/REQUEUE -> 291 distinct activations, 64 duplicates; one extra Stage42 P1 seq160 ID26, original caller AD75C. All 292 Stage43 origins AD75C. Fallback lookup versus normal action definition remains unresolved; no animation/hit/damage or AI-quality claim. Stage35/38 large-log full-text verification unavailable, original blobs preserved.
+
+**NEXT:** Stage45 static inspection of 1E84B3->1DF2D0 normal/fallback resolver and possible caller attribution of 29 other bindings. Stage45 source/DLL NOT prepared. No need to repeat Stage44. Original EXE already in Library. Preserve historical branches.
+
+---
+
 ## Current — Stage43 runtime VERIFIED, Stage44 action-definition binding SOURCE READY (2026-11-10)
 
 **Newest user upload** [09526f3](https://github.com/Hawky11/1/commit/09526f3edebd3057bad4a524cbaa75509a7fbfd6), exact original uploaded runtime blobs frozen under [stage43-runtime-activation-origin-evidence](https://github.com/Hawky11/1/tree/stage43-runtime-activation-origin-evidence), [report](https://github.com/Hawky11/1/blob/stage43-runtime-activation-origin-evidence/Stage43_Runtime/RUNTIME_ANALYSIS.md), [232-row CSV](https://github.com/Hawky11/1/blob/stage43-runtime-activation-origin-evidence/Stage43_Runtime/stage43_native_origin_join.csv). Windows x86 Build.log BUILD SUCCEEDED, DLL 1041408 bytes, only existing C4754. Stage43 origin enabled, Stage42 1/1, Stage41 enabled, Stage40 3/3.

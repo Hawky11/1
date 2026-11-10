@@ -1,5 +1,16 @@
 # Next session handoff
 
+## Current — Stage58 Windows runtime VERIFIED; Stage59 writer-attribution design pending (2026-11-10)
+
+**Evidence:** [verified Stage58 report](https://github.com/Hawky11/1/blob/main/Stage58_Runtime/RUNTIME_ANALYSIS.md), [original upload 5c90de3](https://github.com/Hawky11/1/commit/5c90de3d792f366a6ffd910187859b8b0ce020b1), [frozen five-log branch](https://github.com/Hawky11/1/tree/stage58-runtime-conditional-no-x-evidence), [Stage58 source branch](https://github.com/Hawky11/1/tree/stage58-acdf0-pre-tail-conditional-calls). Build 20:54:37 2026-11-10 MSVC x86 BUILD SUCCEEDED, DLL **1,145,344 bytes**, only old C4754; all Stage55/56/57/58 installation markers correct; zero HEALTH errors, no observed missing/dropped records.
+
+**Strict same-run QPC and object nesting:** 5,538 Stage55 ACDF0 side/object/thread parent windows each contain exactly one of each Stage57 ACE11/ACFD6/ACFDB boundary. Total **1,179** changed-X native windows (P1 668/P2 511), no Y changes; pre-tail gap **776** (P1 470/P2 306), native 15CEC0 **434** (P1 208/P2 226), overlap **31** (P1 10/P2 21), exactly 776+434−31. Stage58 **822 P1/P2 observations** from 411 ACF0F→B86A0 calls, all changedMask=0000 (760 EAX=0, 62 EAX=1 rows). ACF7A and ACF8A had no observed calls. Of 776 changed pre-tail windows, **323** contain Stage58 and **453** do not; the 323 split into **168 already changed before Stage58 PRE** and **155 changed after Stage58 POST**. Stage56 **380 ACF2A** observations all unchanged; 0 ACFA3. Do not mix this run with Stage57's earlier 744 changed X windows. Observed call windows do not identify a true writer, AI improvement or collision.
+
+**Next analyst task — Stage59:** audit Stage16 `AITrace.cpp` debug-register watchpoint ownership and existing INI mode before adding any P1/P2 dynamic `[player+4]+0x7C` memory write observation. Stage16 historically owns **DR0/DR1** for bit17/control traces and AICommandTrace owns DR2/DR3; never install competing watchpoints or forcibly overwrite debug registers. Aim to capture original actual X write addresses, after-write EIP/RVA, thread/QPC, raw bits and dropped/coverage counters, with source preflight and rollback. If incompatible, design a narrow loop-boundary alternative instead. **Stage59 is a diagnostic proposal only: no Stage59 source, build or runtime exists.** Keep the verified Stage58 DLL as rollback. Private AALib.exe remains private.
+
+---
+
+
 ## Current — Stage57 Windows runtime VERIFIED; Stage58 conditional-call source READY (2026-11-10)
 
 **Evidence:** [Stage57 report](https://github.com/Hawky11/1/blob/main/Stage57_Runtime/RUNTIME_ANALYSIS.md); immutable [same-session four-log upload `31f83c3`](https://github.com/Hawky11/1/commit/31f83c31677e9a3f1ff891d24ed8dd223c7f2a54); [frozen evidence branch](https://github.com/Hawky11/1/tree/stage57-runtime-acdf0-verified-evidence). Build.log 10.11.2026 20:23:06: **BUILD SUCCEEDED**, DLL **1,137,664 bytes**. Stage55 3/3, Stage56 2/2, Stage57 3/3, all examined health counters zero.

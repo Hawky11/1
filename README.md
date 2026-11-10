@@ -1,3 +1,15 @@
+## Current handoff — Stage40 r2 ASLR relocation fix ready; x86/runtime pending (2026-11-10)
+
+**Latest upload:** [4faf4e0](https://github.com/Hawky11/1/commit/4faf4e0774a9b8b9a8e2990048b53b2120a4328a); original logs frozen in [stage40-r1-install-failure-evidence](https://github.com/Hawky11/1/tree/stage40-r1-install-failure-evidence). Stage40 r1 x86 BUILD SUCCEEDED (687104-byte DLL) but no Stage40 hooks installed: the new log contains only signature/call-target mismatch. See [failure report](https://github.com/Hawky11/1/blob/stage40-r1-install-failure-evidence/Stage40_R1_Runtime/INSTALL_FAILURE_ANALYSIS.md).
+
+**Confirmed cause:** original AALib.exe has a 32-bit HIGHLOW relocation in native 125920 at RVA 125925: on-disk absolute pointer 05CF7260 becomes 060F7260 for runtime gameBase 00800000. Stage40 r1 compared raw on-disk bytes to relocated process instructions. No gameplay/action bug inferred.
+
+**New r2 source:** [stage40-action-consumer-r2-relocation-fix](https://github.com/Hawky11/1/tree/stage40-action-consumer-r2-relocation-fix), [install instructions](https://github.com/Hawky11/1/blob/stage40-action-consumer-r2-relocation-fix/Stage40_Overlay/README_STAGE40_RU.md), [single file to replace](https://github.com/Hawky11/1/blob/stage40-action-consumer-r2-relocation-fix/Stage40_Overlay/src/Stage40RequestConsumer.inl). R2 validates the relocated address while retaining native CALL/other prologue checks, logs detailed signature failures and uses STAGE40_ACTION_CONSUMER_BUILD=2026-11-10-r2. Original EXE signature/call/relocation static checks passed. Windows x86 r2 build and actual Stage40 runtime are NOT yet verified.
+
+Replace only src/Stage40RequestConsumer.inl in the last successfully built project, do existing x86 Build.bat, install only on BUILD SUCCEEDED, natural COM-vs-COM and upload fresh Stage40/39/38/37/36 and Build.log. Preserve older branches, Stage29 AITrace.cpp, all other sources and INI. Do not ask to upload original EXE again or repeat Stage39 alone.
+
+---
+
 ## Current handoff — Stage40 SOURCE READY (2026-11-10), Windows x86 runtime pending
 
 **Active source branch:** [stage40-action-request-consumer-trace](https://github.com/Hawky11/1/tree/stage40-action-request-consumer-trace) at [43821a5](https://github.com/Hawky11/1/commit/43821a5c5575a590dfd959e838247ca25f8bf9ea). [Stage40 installation](https://github.com/Hawky11/1/blob/stage40-action-request-consumer-trace/Stage40_Overlay/README_STAGE40_RU.md), [static report](https://github.com/Hawky11/1/blob/stage40-action-request-consumer-trace/Stage40_Analysis/STATIC_ANALYSIS.md), [verifier](https://github.com/Hawky11/1/blob/stage40-action-request-consumer-trace/Stage40_Analysis/tools/verify_stage40.py). Stage39 verified runtime evidence remains [here](https://github.com/Hawky11/1/tree/stage39-native-action-runtime-evidence), ae6074d.

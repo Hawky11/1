@@ -1,4 +1,16 @@
-## Current handoff — Stage38 native callback window source ready (2026-11-10)
+## Current handoff — Stage38 Windows runtime VERIFIED (2026-11-10), Stage39 native output boundary next
+
+**Latest verified evidence:** [Stage38 runtime archive and report](https://github.com/Hawky11/1/blob/stage38-native-callback-runtime-evidence/Stage38_Runtime/RUNTIME_ANALYSIS.md) ([branch](https://github.com/Hawky11/1/tree/stage38-native-callback-runtime-evidence), commit `12dd482b`). User upload `def14ec` in main; all 26 uploaded original files are retained unchanged under `Stage38_Runtime/`. Source branch [stage38-native-callback-window](https://github.com/Hawky11/1/tree/stage38-native-callback-window) stays intact.
+
+- x86 `BUILD SUCCEEDED` (278528-byte DLL, only old C4754); `STAGE38_CALLBACK_WINDOW_BUILD=2026-11-10-r1`, `STAGE38_INSTALLED 2/2`. 4916 sequential full-mask callback windows, 0 malformed/changedMask mismatch, callback==callbackAfter 4916/4916, no explicit dropped/overflow/pairMismatch warning. 4195 nonzero guarded callbacks and 721 skipped zero-pointer controls; 367 windows have net changes in the selected 30 fields. These repeated callback windows are not 4916 different commands.
+- All 56 Stage37 type1 commits exactly join EventDispatch; 55/56 have an immediate next same-side Stage38 callback with matching object, generation and type/payload before the next dispatch. Exception P2 dispatch112 payload 0x19 is followed by another same-payload dispatch113; the next callback at Stage38 seq2169 matches generation from 113, **not** 112. Do not claim a missing attack or bad AI from this.
+- Stage36 r2 367 candidates (361 sentinel/6 positive: 33,6,12,92,10,37). All six positive candidate results uniquely join native type1 queue -> EE200/Stage37 -> real Stage38 callback (addresses 0x00923AF0, 0x0092EB10, 0x009DA490), with same player/TID/payload and QPC order.
+- Stage35 10592 contiguous full-mask rows, 2648 TIMER/FLAGS pairs per side. Previous observer health remains good. No INPUT_1E/INPUT_1F Stage36 events captured. Real callback execution **does not prove** visible animation, hitbox, collision, damage, or AI improvement.
+- **NEXT:** Stage39 should statically reverse-trace these **actual** callback RVA targets (RVA 123AF0,12EB10,1DA490; actual gameBase 0x00800000) in already-held SHA-pinned original `AALib.exe`, then select a narrow passive observation of the first concrete action/animation/effect output boundary. Do not guess animation IDs from P+3F64 or O+278, do not inject inputs/commands, and do not request EXE again. Preserve Stage29 `AITrace.cpp`, Stage35/36 inls and all prior branches; no Stage39 DLL is created by this Stage38 review.
+
+---
+
+## Historical handoff — Stage38 native callback window source ready (2026-11-10)
 
 New source: [stage38-native-callback-window](https://github.com/Hawky11/1/tree/stage38-native-callback-window); [install instructions](https://github.com/Hawky11/1/blob/stage38-native-callback-window/Stage38_Overlay/README_STAGE38_RU.md); [static analysis and verification](https://github.com/Hawky11/1/blob/stage38-native-callback-window/Stage38_Analysis/STATIC_ANALYSIS.md). **Windows x86 compilation/runtime NOT yet performed.** Preserve Stage37 evidence `d9808dbf483524c720f7085c754fcddd74824d11` and all historical branches.
 

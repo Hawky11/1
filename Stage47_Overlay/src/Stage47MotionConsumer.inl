@@ -241,7 +241,7 @@ void FlushStage47()
         char line[1600]{};
         int n=sprintf_s(line,
             "STAGE47_CONSUMER_WINDOW seq=%lu side=P%lu player=%08lX object=%08lX tid=%lu "
-            "callRVA=%06lX argument=%08lX qpcBefore=%I64u qpcAfter=%I64u "
+            "callRVA=%08lX argument=%08lX qpcBefore=%I64u qpcAfter=%I64u "
             "preMask=%04lX postMask=%04lX changedMask=%04lX extraMask=%01lX "
             "def=%08lX>%08lX modeDword=%08lX>%08lX",
             r.Seq,r.Side,r.Player,r.Object,r.Tid,r.CallerRva,r.Argument,r.Q0,r.Q1,

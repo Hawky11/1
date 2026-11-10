@@ -1620,3 +1620,19 @@ Stage42 HEALTH 2525 calls/2316 excluded; Stage44 9069/8838; Stage45 43539/43308;
 
 **NEXT Stage46:** inspect native downstream use of bound definition pointer and choose first concrete execution-state/animation-related consumer for passive observation. Stage46 source/DLL NOT prepared; no need to repeat Stage45. 22 outside-Stage42 bindings remain independent caller-attribution question. Keep working Stage45 sources and all prior historical branches. Original AALib.exe already in Library; do not request again.
 
+
+
+---
+
+## Current — Stage45 runtime VERIFIED; Stage46 motion-state SOURCE READY (2026-11-10)
+
+[Stage46 source](https://github.com/Hawky11/1/tree/stage46-definition-motion-state-trace), commit 2365dec68429d8cf404bdfdca58e0ee171b109e7; [installation](https://github.com/Hawky11/1/blob/stage46-definition-motion-state-trace/Stage46_Overlay/README_STAGE46_RU.md), [static report](https://github.com/Hawky11/1/blob/stage46-definition-motion-state-trace/Stage46_Analysis/STATIC_ANALYSIS.md), [verification](https://github.com/Hawky11/1/blob/stage46-definition-motion-state-trace/Stage46_Analysis/tools/verify_stage46.py).
+
+Original SHA-pinned AALib.exe verified. Native 1E8490 after binding: 1E8A1F requires signed O+70 < O+6C; 1E8A2D requires O+08 bit9 clear; byte definition+30 dispatches 1..9 through 1E8D30. Verified float writes/zeroing at O+7C/+80/+88/+8C/+90/+94/+150/+154, signed metadata WORD conversion /100, conditional sign inversion, common tail ground clamp and O+70 advancement. These are motion-related raw object-state operations, NOT proof of rendered animation/hit/damage or AI quality.
+
+**Stage46 source only:** no new hooks/asm/worker/INI. Extends Stage44 record/ring with 13-field PRE (after resolver return, before O+34 native store) and POST (after binding native return) plus definition +20/+30/+34/+38 DWORDs. Stage45 leave calls S46Resolved; Stage44 flush emits ArcanaAI_Stage46DefinitionMotionTrace.log with stage44Seq/P/O/TID/parent QPC/resolvedQpc, resolverCount, definition/definitionAfter and masks. Keep first resolution, count repeats. Stage44 HEALTH governs shared ring, also check Stage45. Native assembly wrappers unchanged. 64 original-fragment Unicorn cases PASS plus original SHA/guard/dispatch/tail signatures and constants; helper bit query stubbed false, modes 2/7/8 and whole-function runtime not tested. **Windows x86 build and game runtime PENDING.**
+
+**NEXT USER:** replace EXACTLY TWO files in D:\\INCUBATOR\\ArcanaAIOverhaul\\src from Stage46_Overlay/src: Stage44ActionDefinition.inl and Stage45DefinitionResolver.inl. KEEP Stage45 Stage38CallbackWindow.inl, working Stage43 Stage42ActivationHook.inl, Stage41 Stage40RequestConsumer.inl, Stage39, AIQueueTrace.cpp, Stage35/36, Stage29 AITrace.cpp, INI/Build.bat. Archive logs, x86 Build.bat; only install fresh DLL after BUILD SUCCEEDED. Natural COM-vs-COM, >=2s flush. Upload Build.log, Stage46/45/44/43/42/41/40/39/38/37/36, Queue/EventDispatch/ParentFlow/FinalCommand/Stage35 to main.
+
+**NEXT ANALYST:** verify STAGE46_DEFINITION_MOTION_BUILD r1 and ENABLED, Stage44/45 installations. Join Stage46 to Stage44 by seq/P/O/TID/QPC and to Stage45 EAX/parent QPC. Expected resolverCount=1, object masks 1FFF/1FFF, metadata F; definitionAfter must match resolved definition. Decode f5..f12 as IEEE754. Analyze command byte +30 and guards against raw-field changes; enclosing function may have other writes/helper conditions, so endpoint mismatches are not automatically bugs or lost commands. Check shared health counters. Treat 22 prior outside-Stage42 bindings separately; caller attribution still unknown. Stage45 evidence 3fdb8647fae45cc517281c7f74ffaa4a9789c203 remains immutable. Original EXE already in Library.
+

@@ -1,5 +1,19 @@
 # Next session handoff
 
+## Current — Stage46 runtime VERIFIED; Stage47 downstream-consumer analysis NEXT (2026-11-10)
+
+Fresh upload [main 3e668d7](https://github.com/Hawky11/1/commit/3e668d74ec1181ee6adf5952c7665e8948b767df). Original logs and build preserved in [Stage46 evidence](https://github.com/Hawky11/1/tree/stage46-runtime-definition-motion-evidence), [full report](https://github.com/Hawky11/1/blob/stage46-runtime-definition-motion-evidence/Stage46_Runtime/RUNTIME_ANALYSIS.md), [297-row CSV](https://github.com/Hawky11/1/blob/stage46-runtime-definition-motion-evidence/Stage46_Runtime/stage46_motion_binding_join.csv); source stage46-definition-motion-state-trace commit 2365dec. Evidence report commit 4cf28b4.
+
+Windows x86 BUILD SUCCEEDED, DLL 1,056,256 bytes, existing C4754 warning only. Stage46 enabled, Stage44/45 installed. 297 sequential Stage46 windows (P1 152/P2 145), every resolverCount=1 and masks=1FFF/1FFF/F; definitionAfter equals Stage45 EAX and recorded definition. 297/297 joins Stage44 and Stage45 on P/O/TID/ID/variant/QPC. Stage46 resolvedQpc minus Stage45 qpcAfter: zero ticks 221 times, one tick 75, nine ticks once (seq80), all nested within binding. Stage45 all path3, predictionMatches1, no fallback, variant0. Stage42/44/45 health dropped/overflow/mismatch zero.
+
+Definition mode at +30: 0=208, 1=9, 2=2, 3=51, 4=19, 5=8; guard pass 290/297, seven blocked by O+08 bit9 (all mode0). In 68/297 windows the native function changes raw IEEE754 motion-related fields. Example seq7 mode3 O+88 0 to 3.86, O+90 0 to 0.64; seq3 mode2 O+7C 890 to 982 and O+80 0 to 196. No proof of visible movement/animation, hit, damage or improved AI.
+
+Stage42/43 269/269 activation origins AD75C, each nested Stage44 binding. 28 bindings outside Stage42, upstream caller unknown. Stage40/41 match 294/294. 266 new Stage41 bit0 requests match 266 distinct Stage42 activations, and 3 activations without new Stage41 request: seq3 P2 ID0506 to 0, seq4 P1 ID0506 to 0, seq209 P1 ID002F to 0025, all AD75C. This is not evidence of command loss. Stage36/37/39-46 were read and verified in full, huge Stage38 and Stage35 not fully validated.
+
+**NEXT Stage47:** source NOT prepared. Reuse original SHA-verified AALib.exe from ChatGPT Library (no user re-upload). Locate actual native readers/consumers of O+88/+8C/+90/+94 and O+7C/+80 and test signatures; instrument a concrete consumer passively with original x86 ABI preserved. Correlate field consumption with Stage46 P/O/ID/QPC and downstream position or animation state. No forced game-state change and no need to repeat Stage46.
+
+---
+
 ## Current — Stage45 runtime VERIFIED; Stage46 motion-state SOURCE READY (2026-11-10)
 
 [Stage46 source](https://github.com/Hawky11/1/tree/stage46-definition-motion-state-trace), commit 2365dec68429d8cf404bdfdca58e0ee171b109e7; [installation](https://github.com/Hawky11/1/blob/stage46-definition-motion-state-trace/Stage46_Overlay/README_STAGE46_RU.md), [static report](https://github.com/Hawky11/1/blob/stage46-definition-motion-state-trace/Stage46_Analysis/STATIC_ANALYSIS.md), [verification](https://github.com/Hawky11/1/blob/stage46-definition-motion-state-trace/Stage46_Analysis/tools/verify_stage46.py).

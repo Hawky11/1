@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage49 source-only SHA-pinned native propagation and overlay verification.
+"""Stage49 r2 SHA-pinned native propagation and relocation-aware overlay verification.
 
 This checks static native bytes and wrapper source shape, NOT Windows x86 build
 or live gameplay. Original AALib.exe must remain in user's ChatGPT Library.
@@ -71,6 +71,15 @@ def check_source(root:Path):
     assert '0x1E9170u' in source
     assert '0xAF11Eu' in source and '0xAF19Eu' in source
     assert 'g_s48Installed' in source and 'g_s47Installed' in source
+    assert "STAGE49_LINKED_MOTION_BUILD=2026-11-10-r2" in source
+    assert "const DWORD preferredImageBase=0x00400000u;" in source
+    assert "const DWORD root0Preferred=0x0E2E02C8u;" in source
+    assert "const DWORD root1Preferred=0x0E2E02C0u;" in source
+    assert "preferredOperand+(g_gameBase-preferredImageBase)" in source
+    assert "sameRoot(0xAF11Eu,root0Preferred)" in source
+    assert "sameRoot(0xAF19Eu,root1Preferred)" in source
+    assert "Stage49 native signature RVA=" in source
+    assert "Stage49 root RVA=" in source
     assert "original no-arg thiscall once" in source
     assert "CreateThread(" not in source
     assert "if(writable&&valid())" in source
@@ -109,6 +118,6 @@ def main():
     print(f"PASS Stage49: original PE SHA/size, {n} exact native signatures,")
     print("two verified direct calls to 1E9170, linked-float copy instructions,")
     print("scoped native once-only wrapper and existing worker integration.")
-    print("PENDING: Windows x86 build, hook installation, COM-vs-COM runtime.")
+    print("Stage49 r2 source guard checks PASS; Windows x86 build/runtime PENDING.")
 
 if __name__=="__main__":main()

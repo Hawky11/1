@@ -1,4 +1,12 @@
-## Latest — Stage52 runtime VERIFIED; Stage53 parent AF0A0 boundary SOURCE READY (2026-11-10)
+## Latest — Stage53 runtime VERIFIED; Stage54 before-AF0A0 source READY (2026-11-10)
+
+Latest Windows x86 BUILD SUCCEEDED, 1,105,408-byte DLL; STAGE53_INSTALLED 1/1. Stage53 has 6,024 P1/P2 before/after snapshots, no X/Y writes within AF0A0, and 28 zero-error HEALTH records. Stage47→Stage53 same-frame QPC join: **1,091 pre-parent X differences among 5,904 matches**, P1 403 / P2 688, no Y differences. Stage53 PRE→Stage52 AEF10 PRE 6,024/6,024 same X/Y. [Frozen evidence](https://github.com/Hawky11/1/tree/stage53-runtime-parent-af0a0-evidence) · [full Stage53 analysis](https://github.com/Hawky11/1/blob/stage53-runtime-parent-af0a0-evidence/Stage53_Runtime/RUNTIME_ANALYSIS.md).
+
+**New [Stage54 source branch](https://github.com/Hawky11/1/tree/stage54-pre-parent-three-call-boundary)** monitors original sibling CALLs A2B81→A1B80, A2B86→CFB80, A2B8B→BAB60, immediately preceding Stage53, each native called once without gameplay writes. **Windows x86 BUILD and runtime NOT YET TESTED.** Replace only [Stage38CallbackWindow.inl](https://github.com/Hawky11/1/blob/stage54-pre-parent-three-call-boundary/Stage54_Overlay/src/Stage38CallbackWindow.inl), add [Stage54PreParentCoordinate.inl](https://github.com/Hawky11/1/blob/stage54-pre-parent-three-call-boundary/Stage54_Overlay/src/Stage54PreParentCoordinate.inl); keep Stage53/52/51/50/49 r2 intact. [Russian guide](https://github.com/Hawky11/1/blob/stage54-pre-parent-three-call-boundary/Stage54_Overlay/README_STAGE54_RU.md), [verifier](https://github.com/Hawky11/1/blob/stage54-pre-parent-three-call-boundary/Stage54_Analysis/tools/verify_stage54.py). The raw X difference is not evidence of changed AI or attacks.
+
+---
+
+## Previous — Stage52 runtime VERIFIED; Stage53 parent AF0A0 boundary SOURCE READY (2026-11-10)
 
 [Fresh Stage52 runtime logs](https://github.com/Hawky11/1/commit/944b3b83a499995808ab34bcce69f8bec973498c) and [general logs](https://github.com/Hawky11/1/commit/7b760cf270a27d16715e6e553e978acc3044a36f): Windows x86 **BUILD SUCCEEDED**, DLL **1,097,728 bytes**, **STAGE52_INSTALLED 2/2** at AF10D→AEF10 and AF112→AED90. **12,748** full P1/P2 native boundary rows, 29 zero-loss HEALTH. Two initial AEF10 `O+18 0→4` events (one per side), otherwise **zero** raw P1/P2 X/Y/anchor changes in AEF10 and all 6,374 AED90 events. Stage51/50/49 remained installed and unchanged on P1/P2.
 

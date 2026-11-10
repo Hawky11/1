@@ -1,3 +1,15 @@
+## Current handoff — Stage40 r2 runtime VERIFIED; Stage41 direct object trace SOURCE READY (2026-11-10)
+
+Verified fresh x86 [Stage40 r2 user upload e4d29fa](https://github.com/Hawky11/1/commit/e4d29fa639c74ab3e5345cf91fec729d43e43f78), archived unchanged with [full runtime report](https://github.com/Hawky11/1/blob/stage40-r2-runtime-evidence/Stage40_R2_Runtime/RUNTIME_ANALYSIS.md) and [56 exact Stage39-to-Stage40 joins](https://github.com/Hawky11/1/blob/stage40-r2-runtime-evidence/Stage40_R2_Runtime/stage39_to_stage40_next_consumer.csv). BUILD SUCCEEDED, DLL 688128 bytes, Stage40 INSTALLED 3/3; 489 native E8480 consumer windows, P1 271/P2 218, all raw requests cleared. All 489 special 125920 selectors returned FFFFFFFF and no actor+280 was written: the original table has only modes 8, 9, 29 while this runtime used modes 10 and 23. This is not an AI bug by itself.
+
+Important new static native path: before the optional 125920 selector, E8480 calls 1E9F00 at E84AB on the real player object O=[P+4]. It conditionally writes object+64=raw request and object+08 bit0, or object+68=FFFFFFFF for a current/duplicate request. Stage40 has not measured these object writes directly. Stage41 will.
+
+**Active Stage41 source-only branch:** [stage41-direct-object-commit-window](https://github.com/Hawky11/1/tree/stage41-direct-object-commit-window), [one-file installation](https://github.com/Hawky11/1/blob/stage41-direct-object-commit-window/Stage41_Overlay/README_STAGE41_RU.md), [static analysis](https://github.com/Hawky11/1/blob/stage41-direct-object-commit-window/Stage41_Analysis/STATIC_ANALYSIS.md). Replace only local src/Stage40RequestConsumer.inl. Keep working Stage40 r2 Stage38CallbackWindow.inl, Stage39ActionOutput.inl, Stage38 AIQueueTrace.cpp, Stage35/36 inls, Stage29 AITrace.cpp, INI and Build.bat. Stage41 reuses the three proven CALL hooks and worker, adds read-only before/after native object snapshots (+08,+30,+60,+64,+68), and logs ArcanaAI_Stage41ObjectCommitTrace.log. No additional hooks, new INI, game writes or synthesized inputs. Windows x86 Stage41 build/runtime is PENDING.
+
+Next: x86 Build.bat, require BUILD SUCCEEDED, install freshly built dinput8.dll, natural COM-vs-COM, allow two seconds for flush, upload Build.log plus Stage41/40/39/38/37/36 and related logs. Verify native object+64 state before inferring animation/hit; preserve all historical branches and original EXE in Library.
+
+---
+
 ## Current handoff — Stage40 r2 ASLR relocation fix ready; x86/runtime pending (2026-11-10)
 
 **Latest upload:** [4faf4e0](https://github.com/Hawky11/1/commit/4faf4e0774a9b8b9a8e2990048b53b2120a4328a); original logs frozen in [stage40-r1-install-failure-evidence](https://github.com/Hawky11/1/tree/stage40-r1-install-failure-evidence). Stage40 r1 x86 BUILD SUCCEEDED (687104-byte DLL) but no Stage40 hooks installed: the new log contains only signature/call-target mismatch. See [failure report](https://github.com/Hawky11/1/blob/stage40-r1-install-failure-evidence/Stage40_R1_Runtime/INSTALL_FAILURE_ANALYSIS.md).

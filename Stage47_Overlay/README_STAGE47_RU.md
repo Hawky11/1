@@ -9,9 +9,9 @@
 В `D:\\INCUBATOR\\ArcanaAIOverhaul\\src`:
 
 1. **ЗАМЕНИ** ровно `Stage38CallbackWindow.inl` файлом
-   [Stage47_Overlay/src/Stage38CallbackWindow.inl](../src/Stage38CallbackWindow.inl).
+   [Stage47_Overlay/src/Stage38CallbackWindow.inl](src/Stage38CallbackWindow.inl).
 2. **ДОБАВЬ** новый `Stage47MotionConsumer.inl` из
-   [Stage47_Overlay/src/Stage47MotionConsumer.inl](../src/Stage47MotionConsumer.inl).
+   [Stage47_Overlay/src/Stage47MotionConsumer.inl](src/Stage47MotionConsumer.inl).
 
 **СОХРАНИ** уже работающие Stage46 версии
 `Stage44ActionDefinition.inl` и `Stage45DefinitionResolver.inl`.

@@ -1,2 +1,5 @@
-[2026-11-11 02:38:40] STAGE70_DEFERRED_BUILD=2026-11-11-r1 SOURCE_ONLY; no DR usage.
-[2026-11-11 02:38:40] ERROR: Stage70 prerequisites or signature mismatch; no patch.
+[2026-11-11 02:54:29] STAGE70_DEFERRED_BUILD=2026-11-11-r2 relocation-aware original signature; DRwrites=0.
+[2026-11-11 02:54:29] STAGE70_GUARD x86=1 xmm=1 stage67=2 stage65=1 stage59Started=0 stage70=0 nativeOK=1 gameBase=00800000 tableRead=1 runtimeTableVA=00C254E8 expectedTableVA=00C254E8
+[2026-11-11 02:54:29] STAGE70_INSTALLED 1/1 site=156784 store=156787 resume=15678A; source MOV executes once; DRwrites=0
+[2026-11-11 02:55:06] STAGE70_DEFERRED_WRITE seq=1 side=P1 player=0E4A1F78 object=2A3A3020 tid=20812 qpcBefore=1518396105821 qpcAfter=1518396105822 siteRVA=156784 originalStoreRVA=156787 valueEDX=00000025 eaxBefore=00000001 eaxAfter=2A3A3020 edxAfter=00000025 preMask=07 postMask=07 deferred=FFFFFFFF>00000025 selector=00000001>00000001 objectPtr=2A3A3020>2A3A3020
+[2026-11-11 02:55:06] STAGE70_HEALTH calls=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=4096 depth=8

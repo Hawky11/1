@@ -1,5 +1,19 @@
 # Next session handoff
 
+## Current — Stage44 runtime VERIFIED; Stage45 resolver SOURCE READY (2026-11-10)
+
+[Stage45 source](https://github.com/Hawky11/1/tree/stage45-definition-resolver-trace), commit fe91fb09a31579f71e58d211670839838bdd33b1; [installation](https://github.com/Hawky11/1/blob/stage45-definition-resolver-trace/Stage45_Overlay/README_STAGE45_RU.md), [static analysis](https://github.com/Hawky11/1/blob/stage45-definition-resolver-trace/Stage45_Analysis/STATIC_ANALYSIS.md), [extracted-wrapper test](https://github.com/Hawky11/1/blob/stage45-definition-resolver-trace/Stage45_Analysis/tools/test_stage45.py).
+
+**New original-EXE finding:** SHA-pinned AALib.exe verified again. Resolver 1DF2D0 checks context+ID+B0000 gate then signed WORD at context+((ID<<7)+variant)*2; positive index yields [context+B0B0C]+(index-1)*5C, otherwise fallback. Original fallback 0E2E49E0 has HIGHLOW relocation at RVA 1DF2FB, hence gameBase+0DEE49E0. At Stage44 runtime base 00800000 fallback=0E6E49E0; **none of 321 Stage44 post-definition pointers equals fallback**. This resolves the prior specific fallback uncertainty for that capture, not action semantics.
+
+**Stage45:** one new passive strict CALL wrapper 1E84B3->1DF2D0, two original args copied and native called once, original/native stack cleanup retained, GPR/EFLAGS/x87/SSE saved around diagnostics. Captures only matching active Stage44 parent windows via TLS; logs context/ID/variant/gate/signed index/table base/prediction/EAX/fallback and bindingQpcBefore, dedicated ArcanaAI_Stage45DefinitionResolverTrace.log, existing worker. Full native signature plus relocation-aware immediate checks. 128 extracted-assembly/native Unicorn equivalence cases PASS (arguments, once-only native call, GPR/ESP/EFLAGS, XMM0/7, FPCW/MXCSR), SHA/CALL/relocation/integration PASS. **Windows x86 compile and game runtime remain PENDING.**
+
+**NEXT USER:** in D:\\INCUBATOR\\ArcanaAIOverhaul\\src replace Stage38CallbackWindow.inl from Stage45_Overlay/src and add Stage45DefinitionResolver.inl. Keep working Stage44ActionDefinition.inl, Stage43 Stage42ActivationHook.inl, Stage41 Stage40RequestConsumer.inl, Stage39, AIQueueTrace.cpp, Stage35/36, Stage29 AITrace.cpp, INI and Build.bat. Archive logs, x86 Build.bat, require BUILD SUCCEEDED, install fresh DLL, natural COM-vs-COM and >=2s flush. Upload Build.log, Stage45/44/43/42/41/40/39/38/37/36, Queue/EventDispatch/ParentFlow/FinalCommand/Stage35 to main.
+
+**NEXT ANALYST:** require STAGE45_DEFINITION_RESOLVER_BUILD r1 and INSTALLED 1/1; join bindingQpcBefore to Stage44 by side/P/O/TID, nested QPC, matching ID/variant and EAX=Stage44 POST O+34. Normal mask 1F/path3, fallback paths 1/2 use applicable bits, unknown path0 is not proof of invalid game data. Check predictions, actual fallback equality and zero loss counters. otherObjects includes calls outside captured Stage44 windows. 29 prior outside-Stage42 bindings still lack upstream caller attribution; Stage45 does NOT identify their producer. Stage44 evidence remains b7c72b83b4b382751cedd9310809788943113fc0; preserve all historical branches. Original EXE already in Library.
+
+---
+
 ## Current — Stage44 runtime VERIFIED (2026-11-10)
 
 Upload [73a93ed](https://github.com/Hawky11/1/commit/73a93ede99755e063896c78b510a2acee70311ba). [Evidence and report](https://github.com/Hawky11/1/blob/stage44-runtime-action-definition-evidence/Stage44_Runtime/RUNTIME_ANALYSIS.md), evidence commit b7c72b83b4b382751cedd9310809788943113fc0; original logs preserved plus Stage44 source overlay and 321-row CSV.

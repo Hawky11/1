@@ -20,7 +20,7 @@ SIGNATURES={
     0xAF1A8:"8bce",
     0xAF1AA:"e8c19f1300",
     0x1E9170:"558bec83ec08568bf1",
-    0x1E9167:"c3",
+    0x1E9381:"c3",
     0x1E92C8:"8bbed0020000",  # linked O+2D0
     0x1E92CE:"8b4760",        # linked O+60
     0x1E92D1:"3b8680020000",  # compare O+280

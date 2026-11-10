@@ -1,3 +1,3 @@
-[2026-11-10 09:56:03] STAGE25_SECONDARY_OBJECT_FLAG_BUILD=2026-11-09-r1
-[2026-11-10 09:56:03] Installed Stage25 secondary-object post-OR observer at RVA 0x000F58C9: validated 7-byte instruction replaced by CALL + 2 NOPs; wrapper executes the identical OR once and restores post-OR EFLAGS.
-[2026-11-10 09:56:28] STAGE25_SECONDARY_OBJECT_FLAG seq=1 side=P2 tid=18740 tick=90720968 qpc=907218454282 player=0x0E4CCCA0 selector=31 arg3=1 arg4=0 target=0x0E4A1F78 targetSide=1 field=0x0E4A2070 before=0x00000001 after=0x00000001 beforeReadable=1 afterReadable=1 bit0Before=1 bit0After=1 observerReturnRVA=0x000F58CE helperReturn=0x53AC2A71 eflagsAfterOR=0x00000202
+[2026-11-10 12:23:31] STAGE25_SECONDARY_OBJECT_FLAG_BUILD=2026-11-09-r1
+[2026-11-10 12:23:32] Installed Stage25 secondary-object post-OR observer at RVA 0x000F58C9: validated 7-byte instruction replaced by CALL + 2 NOPs; wrapper executes the identical OR once and restores post-OR EFLAGS.
+[2026-11-10 12:24:09] STAGE25_SECONDARY_OBJECT_FLAG seq=1 side=P2 tid=8304 tick=99581843 qpc=995827175410 player=0x0E4CCCA0 selector=31 arg3=1 arg4=0 target=0x0E4A1F78 targetSide=1 field=0x0E4A2070 before=0x00000000 after=0x00000001 beforeReadable=1 afterReadable=1 bit0Before=0 bit0After=1 observerReturnRVA=0x000F58CE helperReturn=0x53A73731 eflagsAfterOR=0x00000202

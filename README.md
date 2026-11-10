@@ -1,3 +1,13 @@
+## Current — Stage64 native request callsite families STATIC VERIFIED (2026-11-11)
+
+[Stage64 analysis](https://github.com/Hawky11/1/blob/stage64-native-request-callsite-classification/Stage64_Analysis/STATIC_ANALYSIS.md) · [original PE callsite analyzer](https://github.com/Hawky11/1/blob/stage64-native-request-callsite-classification/Stage64_Analysis/tools/analyze_stage64.py) · [verified callback graph](https://github.com/Hawky11/1/blob/stage64-native-request-callsite-classification/Stage64_Analysis/tools/verify_stage64_callback_edges.py) · [RU guide](https://github.com/Hawky11/1/blob/stage64-native-request-callsite-classification/Stage64_Analysis/README_STAGE64_RU.md).
+
+Private original AALib.exe SHA-verified, PE32/i386. Verified original decoded x86 E8 CALL sites: **296** to E5BF0 shared request setter, **11** to E9E30 conditional source, **1** to E8480 request consumer. E5BF0 callsites span **201 INT3-padding-defined structural islands** (not 201 certified native functions). Conservative PUSH flag classes: **212 immediate0 / 12 immediate1 / 14 dynamic / 58 unresolved**; **120 immediate-ID / 118 register-ID / 58 unresolved** (93 different static literal IDs). Strongest known Stage39 source: callback **12EB10** contains **19 calls to 131CA0** and **11 to 131D00**, whose original conditional paths call E5BF0 at 131CC5 and 131D1C. Callbacks **123AF0** and **1DA490** each invoke shared 1BD6E0, which has **34 direct original CALL references**; this is not proof each helper call produces an action. Two static verifiers PASS; synthetic tests **4/4 PASS**.
+
+Of Stage62's **158/202** activated actions lacking a matching Stage39 callback-output trace, **35** have an ID matching some immediate constant among identified E5BF0 callsites and **123 do not**. Neither class identifies a real runtime caller. **No DLL/game/INI patch or Stage64 runtime capture**. Stage59 r2 rollback remains 1,153,024 bytes. **Next Stage65:** audit/select minimal passive origin observation for E5BF0 and conditional E9E30, with x86 ABI/hook collision/ring/DR checks, before any Windows build; no change to action selection or coordinates.
+
+---
+
 ## Current — Stage63 original P+3F4C request writers STATIC VERIFIED (2026-11-11)
 
 [Static native writer report](https://github.com/Hawky11/1/blob/stage63-native-request-writer-static/Stage63_Analysis/STATIC_ANALYSIS.md) · [SHA-pinned local verifier](https://github.com/Hawky11/1/blob/stage63-native-request-writer-static/Stage63_Analysis/tools/verify_stage63_static.py) · [RU reproduction guide](https://github.com/Hawky11/1/blob/stage63-native-request-writer-static/Stage63_Analysis/README_STAGE63_RU.md).

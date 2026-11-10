@@ -1,3 +1,15 @@
+## Current — Stage66 native pending-ID promotion and zero-request source STATIC VERIFIED (2026-11-11)
+
+[Stage66 original-source analysis](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/STATIC_ANALYSIS.md) · [SHA-pinned offline verifier](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/tools/verify_stage66.py) · [RU guide](https://github.com/Hawky11/1/blob/stage66-native-pending-promotion-and-zero-origin/Stage66_Analysis/README_STAGE66_RU.md).
+
+Local private original AALib.exe SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba **21 original instruction signatures and three native rel32 CALL targets PASS**. Stage65 runtime anomalous Stage42 seq39 and seq155 activated ID25 while preceding Stage41 O+64 was ID2F. Stage43 for both shows native caller AD75C→1E9F40. The original 1E9F40 checks O+30, conditionally moves deferred O+68 into O+64 at 1E9F4E, clears O+68 to FFFFFFFF, and only then invokes Stage42-observed native activation at 1E9F62. This **exact code path can explain the two ID changes** if entry O+68=25, but that entry state and branch-taken behavior were **not actually observed**.
+
+Stage40 seq320 ID0 lacked a preceding Stage65 E5BF0 setter. Independently verified original **E9E30** includes a **separate conditional E9E60 write P+3F4C=00000000**, reading the zero value from original read-only preferred VA 008254E8. It can write only when P+3B7C bit15 is **clear** AND helper F2ED0 returns nonzero AL. Stage40 preflags 0 are compatible but **not proof that E9E60 executed for seq320**. Static direct E8 target counts: E9E30=11; object setter 1E9F00=476; activation helper 1E9F40=14. Counts reflect original possible callsites, not native runtime call frequencies.
+
+**No new DLL or runtime test in Stage66; no source/game behavior patched.** Next Stage67: carefully audited, two narrow passive observations — one original CALL AD75C→1E9F40 entry PRE/POST deferred fields, plus (if needed) one original E9E60 zero-store observation. Preserve Stage65 1,879,552-byte DLL as known-good and Stage59 r2 1,153,024-byte rollback. No new DR breakpoint or modified AI/action/coordinate data.
+
+---
+
 ## Current — Stage65 actual Windows x86 RUNTIME VERIFIED (2026-11-11 00:44–00:45)
 
 [Stage65 frozen same-session report](https://github.com/Hawky11/1/blob/stage65-runtime-request-origin-evidence/Stage65_Runtime/RUNTIME_ANALYSIS.md) · [Russian report](https://github.com/Hawky11/1/blob/stage65-runtime-request-origin-evidence/Stage65_Runtime/README_STAGE65_RU.md) · [offline correlator](https://github.com/Hawky11/1/blob/stage65-runtime-request-origin-evidence/Stage65_Runtime/tools/correlate_stage65.py) · [source-only observer branch](https://github.com/Hawky11/1/tree/stage65-request-origin-passive-source).

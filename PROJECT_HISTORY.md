@@ -1,5 +1,17 @@
 # Project history
 
+## Current — Stage68 deferred-ID origin STATIC FIRST, writer NOT YET IDENTIFIED (2026-11-11)
+
+[Stage68 static report](Stage68_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage68_Analysis/README_STAGE68_RU.md) · [reproducible verifier](Stage68_Analysis/tools/verify_stage68.py). Based on [Stage67 runtime evidence](Stage67_Runtime/RUNTIME_ANALYSIS.md), same original AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. **No new DLL, hooks, gameplay changes, or user tests.**
+
+**New P1 deferred origin bracket:** Stage67 seq4412 POST QPC1467958766094 had O+68=FFFFFFFF; Stage41 seq278 PRE QPC1467958862984 already had O+68=25. Therefore initial positive ID25 write occurred between snapshots, but its **native IP is unknown**. Stage65 seq276 wrote the separate 2F request and is not proven to originate deferred25. Stage67 seq4414 activated 2F while deferred25 stayed present. P2 seq3465 shows independent deferred26 while activating33.
+
+**Separate O+30 arming bracket:** Stage67 seq4434 POST QPC1467959867548 O+30=0 with deferred25; seq4436 PRE QPC1467959966659 O+30=1 with deferred25. Original static writer candidate **AALib+1E8FEB** (`C6 46 30 01`), inside object updater 1E8DC0 called from AE59C on the same linked list as AD75C→1E9F40. The exact original bytes verified, **but runtime execution at 1E8FEB was not observed**. Seq4436 then promoted and activated 25. Do not mislabel this candidate as a confirmed runtime writer.
+
+**NEXT Stage69:** static-first narrow true positive writer of O+68 and plan a passive, scoped O+30/O+68 source test; no new hook until ABI/thread/DR coexistence validated. Preserve Stage67 1,887,232-byte DLL; Stage65 1,879,552 and Stage59 r2 1,153,024 for rollback. Keep main and all original Stage67 runtime artifacts unchanged.
+
+---
+
 ## Current — Stage67 native promotion / independent zero writer RUNTIME VERIFIED (2026-11-11)
 
 [Runtime report](Stage67_Runtime/RUNTIME_ANALYSIS.md) · [RU result](Stage67_Runtime/README_STAGE67_RU.md) · [Read-only correlator](Stage67_Runtime/tools/correlate_stage67.py) · [Full audit output](Stage67_Runtime/results.json).

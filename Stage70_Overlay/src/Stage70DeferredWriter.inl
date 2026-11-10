@@ -141,12 +141,17 @@ __declspec(naked) void S70DeferredWriterHook()
 }
 bool S70OriginalOK()
 {
-    // Adjacent exact native opcodes: table load, target six bytes, continuation.
-    const BYTE prev[]={0x8B,0x14,0x8D,0xE8,0x54,0x82,0x00};
+    // The immediate operand at 156780 is an IMAGE_REL_BASED_HIGHLOW relocated
+    // absolute VA: preferred 008254E8, runtime g_gameBase+004254E8.
+    // Compare invariant OPCODE bytes and independently validate relocation.
+    const BYTE prevOpcode[]={0x8B,0x14,0x8D};
     const BYTE site[]={0x8B,0x45,0x08,0x89,0x50,0x68};
     const BYTE next[]={0x8B,0x0F,0x6A,0xFF,0x81,0xC1,0xD0,0x3E,0x00,0x00};
     const BYTE* base=reinterpret_cast<const BYTE*>(static_cast<std::uintptr_t>(g_gameBase));
-    return std::memcmp(base+0x15677Du,prev,sizeof(prev))==0 &&
+    DWORD relocatedTableVA=0;
+    return SafeReadDword(g_gameBase+0x156780u,&relocatedTableVA) &&
+           relocatedTableVA==g_gameBase+0x4254E8u &&
+           std::memcmp(base+0x15677Du,prevOpcode,sizeof(prevOpcode))==0 &&
            std::memcmp(base+0x156784u,site,sizeof(site))==0 &&
            std::memcmp(base+0x15678Au,next,sizeof(next))==0;
 }
@@ -181,15 +186,27 @@ bool S70SuspendPeers(HANDLE* peers,DWORD& count)
 }
 bool InstallStage70Hooks()
 {
-    S70Log("STAGE70_DEFERRED_BUILD=2026-11-11-r1 SOURCE_ONLY; no DR usage.");
-    if(sizeof(void*)!=4u ||
-       !IsProcessorFeaturePresent(PF_XMMI_INSTRUCTIONS_AVAILABLE) ||
-       InterlockedCompareExchange(&g_s67Installed,0,0)!=2 ||
-       InterlockedCompareExchange(&g_s65Installed,0,0)!=1 ||
-       InterlockedCompareExchange(&g_s59Started,0,0)!=0 ||
-       InterlockedCompareExchange(&g_s70Installed,0,0)!=0 ||
-       !S70OriginalOK()){
-        S70Log("ERROR: Stage70 prerequisites or signature mismatch; no patch.");
+    S70Log("STAGE70_DEFERRED_BUILD=2026-11-11-r2 relocation-aware original signature; DRwrites=0.");
+    const bool x86=sizeof(void*)==4u;
+    const bool xmm=IsProcessorFeaturePresent(PF_XMMI_INSTRUCTIONS_AVAILABLE)!=0;
+    const LONG s67=InterlockedCompareExchange(&g_s67Installed,0,0);
+    const LONG s65=InterlockedCompareExchange(&g_s65Installed,0,0);
+    const LONG s59=InterlockedCompareExchange(&g_s59Started,0,0);
+    const LONG s70=InterlockedCompareExchange(&g_s70Installed,0,0);
+    const bool nativeOK=S70OriginalOK();
+    DWORD relocationOperand=0;
+    const bool relocationRead=SafeReadDword(g_gameBase+0x156780u,&relocationOperand);
+    char diagnostic[400]{};
+    sprintf_s(diagnostic,
+        "STAGE70_GUARD x86=%u xmm=%u stage67=%ld stage65=%ld stage59Started=%ld stage70=%ld "
+        "nativeOK=%u gameBase=%08lX tableRead=%u runtimeTableVA=%08lX expectedTableVA=%08lX",
+        x86?1u:0u,xmm?1u:0u,s67,s65,s59,s70,nativeOK?1u:0u,
+        static_cast<unsigned long>(g_gameBase),relocationRead?1u:0u,
+        static_cast<unsigned long>(relocationOperand),
+        static_cast<unsigned long>(g_gameBase+0x4254E8u));
+    S70Log(diagnostic);
+    if(!x86 || !xmm || s67!=2 || s65!=1 || s59!=0 || s70!=0 || !nativeOK){
+        S70Log("ERROR: Stage70 prerequisites or relocation-aware signature mismatch; no patch.");
         return false;
     }
     BYTE* a=reinterpret_cast<BYTE*>(static_cast<std::uintptr_t>(g_gameBase+0x156784u));

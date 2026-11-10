@@ -10,7 +10,7 @@ Copy [Stage40_Overlay/src/Stage40RequestConsumer.inl](src/Stage40RequestConsumer
 
 Keep existing Stage38CallbackWindow.inl, Stage39ActionOutput.inl, AIQueueTrace.cpp, Stage35/36 .inl, Stage29 AITrace.cpp, ArcanaAI.ini and Build.bat unchanged. Archive old logs. Run x86 Build.bat and require BUILD SUCCEEDED; then install build\dinput8.dll and run natural COM-vs-COM without forcing any input, ID, or flag. Allow >=2 seconds for worker flush. Upload new Build.log plus ArcanaAI_Stage40ActionConsumerTrace.log and fresh Stage39/38/37/36, EventDispatch, Queue, ParentFlow, FinalCommand and Stage35 logs to main.
 
-Expected runtime: STAGE40_ACTION_CONSUMER_BUILD=2026-11-10-r1 (source marker unchanged) and STAGE40_INSTALLED 3/3, then non-sentinel STAGE40_CONSUMER_WINDOW events. If there is still a signature failure, preserve the full new message with calls=, prologues=, selectGlobalActual= and selectGlobalExpected= fields. Successful installation without any Stage40 window can occur when no non-sentinel request is observed in the run.
+Expected runtime: STAGE40_ACTION_CONSUMER_BUILD=2026-11-10-r2 and STAGE40_INSTALLED 3/3, then non-sentinel STAGE40_CONSUMER_WINDOW events. If there is still a signature failure, preserve the full new message with calls=, prologues=, selectGlobalActual= and selectGlobalExpected= fields. Successful installation without any Stage40 window can occur when no non-sentinel request is observed in the run.
 
 This is only a source correction and a SHA-pinned original EXE + PE relocation static verification. The r2 Windows x86 build/installation and actual transfer to actor+280 are NOT verified yet. No visual animation, damage or AI improvement is proven.
 

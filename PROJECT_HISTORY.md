@@ -1741,3 +1741,25 @@ Original SHA-pinned AALib.exe verified. Native 1E8490 after binding: 1E8A1F requ
 - Independent original `AALib.exe` SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` PE32 check: verified relocation-table entry **RVA A1B82 type 3 HIGHLOW**, within native A1B80 original bytes `80 3D 5C 1B 0A 0E 00` (original abs operand `0x0E0A1B5C`). Actual load base `0x00800000` shifts operand to `0x0E4A1B5C`, incompatible with r1's literal seven-byte comparison. Original static CALL bytes and destinations A2B81/A2B86/A2B8B all verified. Since r1 short-circuited on first mismatch, other runtime comparisons were not individually observed.
 - [Frozen Stage54 r1 failure evidence](https://github.com/Hawky11/1/tree/stage54-r1-signature-mismatch-runtime-evidence) with exact uploaded root log blob SHAs and [analysis](https://github.com/Hawky11/1/blob/stage54-r1-signature-mismatch-runtime-evidence/Stage54_Runtime/R1_INSTALL_FAILURE_ANALYSIS.md). Preserve immutable.
 - New [Stage54 r2 source](https://github.com/Hawky11/1/tree/stage54r2-relocation-aware-sibling-boundaries) [relocation-aware inl](https://github.com/Hawky11/1/blob/stage54r2-relocation-aware-sibling-boundaries/Stage54_Overlay/src/Stage54PreParentCoordinate.inl), [verifier](https://github.com/Hawky11/1/blob/stage54r2-relocation-aware-sibling-boundaries/Stage54_Analysis/tools/verify_stage54.py), [RU guide](https://github.com/Hawky11/1/blob/stage54r2-relocation-aware-sibling-boundaries/Stage54_Overlay/README_STAGE54_RU.md). Compensates absolute operand by loaded base delta while retaining strict original three CALL-site/target checks, plus status logs. All original functions called once, no coordinate or game AI writes. Python independent original PE relocation/signature tests PASS at three simulated image bases. **Stage54 r2 Windows x86 build/runtime PENDING**; replace only existing Stage54PreParentCoordinate.inl, keep installed r1 adapter and previous stages untouched.
+
+
+## Stage54 r2 runtime verified — 2026-11-10
+
+Evidence: main upload commit a49661be904b7ef6427b8a885a852089f798801e (logs remain available at that immutable commit). Stage54 blob 413af4919f723351edfcafb7fb397514016ea479; Build.log blob 741cbe661dcba1e54d0ce46822838c19f1e28a25.
+
+Build started 18:27:30 local log time, Windows x86 BUILD SUCCEEDED, DLL 1,113,600 bytes; existing C4754 warning only. Runtime r2 marker and STAGE54_INSTALLED 3/3 confirmed. ASLR check: load base 00800000, expected and actual relocated operand both 0E4A1B5C, readable=1.
+
+Stage54: 19,734 unique contiguous rows (seq 1..19734), 6,578 per callsite A2B81/A2B86/A2B8B. All pre/post masks 1FFF and all changedMask=0000. 29 HEALTH records: missingObjects/dropped/overflow/mismatch/badCaller all zero. Thus no observed changes to any of the 13 watched DWORDs inside these three native calls in this run.
+
+Stage47: 6,500 unique contiguous rows, full masks; 29 HEALTH with zero listed errors. Stage53: 6,572 unique contiguous rows, full masks; 29 HEALTH with zero listed errors. Only two initial Stage53 f7 O+18 changes 0→4; no X/Y change inside AF0A0.
+
+Correlation method: first subsequent PRE after POST, same side/object/thread, QPC gap <=5,000 ticks; target sequence uniqueness checked.
+- Stage47 POST → first Stage54 PRE: 6,500/6,500 distinct matches; gaps 252–1,726 ticks. Raw X differs in 504 (P1 266, P2 238); Y differs in zero. Stage47 POST X equals Stage54 PRE anchor O+AC in all 6,500.
+- A1B80 POST → CFB80 PRE: 6,578 distinct matches, gaps 3–121; X/Y/AC/B0 identical.
+- CFB80 POST → BAB60 PRE: 6,578 distinct matches, gaps 3–221; X/Y/AC/B0 identical.
+- BAB60 POST → Stage53 PRE: 6,572 distinct matches, gaps 4–401; X/Y/AC/B0 identical.
+- Exclude 78 first-sibling rows without a Stage47 partner and six terminal sibling rows without a Stage53 partner; do not join stale frames.
+
+Conclusion: the observed X change occurs after the Stage47 snapshot and before A2B81→A1B80, not inside the three Stage54 siblings or Stage53 AF0A0. This does not identify an exact writer or establish visual/AI improvement.
+
+Next: inspect original SHA-pinned AALib.exe control flow between Stage47 return sites AE711/AE943 and A2B81, identify the enclosing earlier routine/boundary, then prepare a focused passive Stage55 observer after verifying signatures, relocations and ABI. Stage55 source is NOT prepared in this update. Keep the working Stage54 r2 sources and DLL. No rebuild required for this analysis.

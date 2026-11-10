@@ -1,5 +1,19 @@
 # Next session handoff
 
+## Current — Stage69 native deferred writer STATIC VERIFIED / runtime-linked, Stage70 direct-site confirmation NEXT (2026-11-11)
+
+**Branch:** [stage69-deferred-writer-observation-design](https://github.com/Hawky11/1/tree/stage69-deferred-writer-observation-design). [Exact original-code report](Stage69_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage69_Analysis/README_STAGE69_RU.md) · [SHA/opcode/table verifier](Stage69_Analysis/tools/verify_stage69.py). Based on Stage68 + unchanged Stage67 original game run 01:30:28; original private AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. No DLL/build/game test, no gameplay changes. **27 exact native opcode sites and source table mappings verified locally**.
+
+**NEW decisive static path:** Native callback `AALib+1566B0` obtains player P=`[callbackArg]` and O=`[P+04]`; reads selector `P+3F50`. The original request helper CALL is at `AALib+156769`, followed without a conditional branch by `156770` selector reload, `156776` indexing writable `VA 06317664`, `15677D` reading action table `VA 008254E8`, and **`156787: MOV [O+68],EDX`**. Original-file mappings selector0 `2E/24`, selector1 `2F/25`, selector2 `33/26` (immediate/deferred). The index table is writable .data: **runtime mutation not excluded**.
+
+**P1 Stage67 connection:** Stage65 seq276 already observed the *exact original `156769` caller* writing the immediate request `2F` at QPC `1467958862442–2446`; Stage41 seq278 PRE at `1467958862984` has same O=`2A393020` with deferred `25`, before pending `22→2F` commit. The callback's directly following `156787` store explains this pair and narrows the deferred origin strongly. Stage67 seq4436 later promotes and activates `25`. Earlier Stage67 wording “deferred25 already present before latest request” only holds *before Stage41 pending commit*, **not before Stage65's earlier request-helper CALL**. P2 deferred26 / immediate33 also matches original static pair.
+
+**Evidence boundary:** There is **NO direct runtime EIP hit at 156787** and Stage67 did **not** record the runtime value of `P+3F50`. Therefore Stage69 is **STATIC VERIFIED / RUNTIME-LINKED**, not a directly runtime-verified writer. `O+30` arming remains separate candidate `AALib+1E8FEB`, not a measured EIP.
+
+**NEXT Stage70:** audit exact Stage67 source/exception handlers and x86 ABI; if safe, implement a **passive original-site observer** around the two contiguous native original instructions `156784` (3 bytes) + `156787` (3 bytes), relocate/replay exactly once and preserve GPR/FLAGS/x87/SSE. Capture same-player P, O, selector, original table value, old/new O+68, TID, QPC and health in the same run as Stage65/41/67; no DR0/DR1 usage, no AI/movement modifications. Static guard and 32-bit differential test before build; no game run without build+source audit. No new logs or rebuild needed **for Stage69**. Known-good Stage67 1,887,232-byte DLL; Stage65 1,879,552 and Stage59 r2 1,153,024 rollback.
+
+---
+
 ## Current — Stage68 deferred-ID origin STATIC FIRST, writer NOT YET IDENTIFIED (2026-11-11)
 
 [Stage68 static report](Stage68_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage68_Analysis/README_STAGE68_RU.md) · [reproducible verifier](Stage68_Analysis/tools/verify_stage68.py). Based on [Stage67 runtime evidence](Stage67_Runtime/RUNTIME_ANALYSIS.md), same original AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. **No new DLL, hooks, gameplay changes, or user tests.**

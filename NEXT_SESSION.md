@@ -1,6 +1,18 @@
 # Next session handoff
 
-## Current — Stage55 earlier-motion boundaries SOURCE READY (2026-11-10)
+## Current — Stage55 runtime VERIFIED; Stage56 writer observer SOURCE READY (2026-11-10)
+
+**Frozen Stage55 findings:** [runtime report](https://github.com/Hawky11/1/blob/main/Stage55_Runtime/RUNTIME_ANALYSIS.md), [evidence upload c27b6b5](https://github.com/Hawky11/1/commit/c27b6b516edcea4551de9e52e6a151acdc115279), source [00614967](https://github.com/Hawky11/1/commit/00614967dbc386822d75b4bb37954d4f6600a439). Windows x86 BUILD SUCCEEDED, DLL 1,122,816 bytes, Stage55 installed 3/3; 19,764 complete Stage55 rows, 29 zero-loss HEALTH samples. Strict same-run QPC matching yields 6,576 complete Stage47→AE6E0→ACDF0→AC8A0→Stage54 chains. All **480 X** changes (P1 248/P2 232) happen inside ACDF0 whole-function window; Y zero, Stage54 unchanged. 12 unmatched parents / 60 Stage54 tail rows excluded. Previous Stage54-only 504 is a **different run**. Exact internal store unknown; no proven AI or movement improvement.
+
+**Stage56 source:** [stage56-acdf0-two-fstp-writer-observer](https://github.com/Hawky11/1/tree/stage56-acdf0-two-fstp-writer-observer). Private original AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`, PE32; original native pairs **ACF27+ACF2A** and **ACFA0+ACFA3**, each `D8 40 7C D9 58 7C`, 16-byte original signatures, zero relocation overlaps. Stage56 uses six-byte JMP+NOP sites, executes the original x87 FADD and FSTP exactly once in naked detours, preserving original GPR/EFLAGS/FXSAVE around passive before/after target-X capture. Adapter has three narrow changes relative to Stage55. Source proof is limited; MSVC and runtime remain **PENDING**.
+
+**User next action:** keep Stage55 DLL backed up. Replace **only** `src/Stage38CallbackWindow.inl` with [Stage56 overlay adapter](https://github.com/Hawky11/1/blob/stage56-acdf0-two-fstp-writer-observer/Stage56_Overlay/src/Stage38CallbackWindow.inl), **add** `src/Stage56ACDF0Writer.inl`; preserve Stage55EarlierMotionCoordinate.inl / Stage54 r2 and all prior files/INI/Build.bat. [Russian instructions](https://github.com/Hawky11/1/blob/stage56-acdf0-two-fstp-writer-observer/Stage56_Overlay/README_STAGE56_RU.md). Run optional [stdlib static verifier](https://github.com/Hawky11/1/blob/stage56-acdf0-two-fstp-writer-observer/Stage56_Analysis/tools/verify_stage56.py) on private EXE; run Build.bat and install only if BUILD SUCCEEDED. COM-vs-COM natural 30–60 s. Upload **Build.log**, **ArcanaAI_Stage56ACDF0WriterTrace.log** and **same-run Stage55/Stage47/Stage54** logs. Require Stage56 installed 2/2, Stage55 retained 3/3, health dropped/overflow/mismatch/readFail zero.
+
+**Next analyst:** strict interval nesting by object+thread+QPC of Stage56 writer pairs inside Stage55 ACDF0 windows. Compare before/after raw X with Stage55 window start/end; account for multiple events per window and non-player object writes. If neither pair covers a changed ACDF0 window, investigate internal helpers. Do **not** mix captures or equate raw X changes with gameplay improvements. Stage56 Windows build/runtime have not been executed.
+
+---
+
+## Previous — Stage55 earlier-motion boundaries SOURCE READY (2026-11-10)
 
 Stage54 r2 runtime is verified: 19,734 unchanged sibling windows, 6,500 distinct Stage47→Stage54 pairs with 504 X differences already before A2B81. See [Stage54 report](https://github.com/Hawky11/1/blob/main/Stage54_Runtime/R2_RUNTIME_ANALYSIS.md).
 

@@ -1,0 +1,16 @@
+{
+  "rows": 6216,
+  "stage55_x_changes": 1337,
+  "stage56_rows": 593,
+  "stage56_direct_x_changes": 272,
+  "stage56_events_matched": 593,
+  "unmatched_or_ambiguous": [],
+  "stage55_changed_no_writer": 1048,
+  "stage55_changed_with_writer": 289,
+  "changed_completely_explained": 225,
+  "changed_with_writer_post_mismatch": 64,
+  "stage55_changed_by_side": {
+    "P1": 741,
+    "P2": 596
+  }
+}

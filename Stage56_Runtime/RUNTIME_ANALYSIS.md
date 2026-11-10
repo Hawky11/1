@@ -8,7 +8,7 @@
 - Tested source: [`stage56-acdf0-two-fstp-writer-observer`](https://github.com/Hawky11/1/tree/stage56-acdf0-two-fstp-writer-observer), original SHA-pinned AALib.exe `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. Original EXE remains private.
 - Frozen uploaded Git blob SHA and byte lengths:
 
-| File (root of evidence commit) | Git blob SHA | Bytes |
+| File (root of evidence commit) | Git blob SHA | Decoded text chars |
 |---|---|---:|
 | `Build.log` | `0d8c1ca60046eba4a4740cbc554ea60a41e8d3f5` | 1,918 |
 | `ArcanaAI_Stage47MotionConsumerTrace.log` | `f0e3e697da48fcba9e315639745d393dfd82f4d8` | 3,533,320 |
@@ -16,7 +16,7 @@
 | `ArcanaAI_Stage55EarlierMotionCoordinateTrace.log` | `55da5df7c4ecdd451f9100a7301f6e58c722aa44` | 9,372,877 |
 | `ArcanaAI_Stage56ACDF0WriterTrace.log` | `533fe8b685890a255ab2df735695891b80d3a9b3` | 141,018 |
 
-The byte lengths above correspond to the fetched decoded log text. **Do not overwrite the pinned evidence branch or compare to prior session's 480 or 504 X differences.**
+The lengths above are **decoded text character counts returned by the GitHub connector**, not independently verified raw Git blob byte lengths. The Git blob SHA values identify exact original bytes. **Do not overwrite the pinned evidence branch or compare to prior session's 480 or 504 X differences.**
 
 ## Build and install
 

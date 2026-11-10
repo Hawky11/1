@@ -1,3 +1,13 @@
+## Current — Stage61 same-run action definition → motion → X write VERIFIED (2026-11-10)
+
+[Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md) · [frozen exact two-file user upload](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence) · [Stage61 offline correlator](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/tools/correlate_stage61.py). New [user upload c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79) contains **Stage46 and Stage47 from the identical 22:07 Stage59 r2 game session**. Same actor objects, TID=15132, QPC sequence. Stage46 1,476 sequential records; Stage47 5,292 sequential records; previously frozen Stage59 16,121 sequential watchpoint events. Full masks, Stage47 HEALTH zero dropped/overflow/mismatch/badCaller. **No new DLL was built**.
+
+Strict same-side/object/TID and QPC containment shows **4,617/4,711** original `1E70DE` post-write samples inside Stage47 native windows; all 4,617 match exact Stage47 POST raw X, 1,906 change X. The latest earlier matching Stage46 binding supplies exact definition and the same active O+60 ID in **4,616/4,617** windows; **1,905** strict triples change X. Only exception: final Stage47 P1 seq5292 has newer definition than the latest available Stage46, likely a **capture-tail coverage gap**, not a demonstrated bad action. The other 94 Stage59 original-EIP events occur after Stage47's last logged window, excluded.
+
+Mode of definition+30 vs raw-X delta among 4,616 triples: mode3 **213/226**, mode4 **107/109**, mode0 **1,567/3,989**, mode5 **0/98**; these are observational rates, **not** COM action-selection causality or AI improvement. Remaining task **Stage62:** connect same-run command/activation logs Stage40/42/44 before interpreting how COM selected the action. Current root files for those three are **19:56** and cannot be joined with this 22:07 session; request exact 22:07 copies only if still available. Keep working Stage59 r2 1,153,024-byte DLL; no new code changes.
+
+---
+
 ## Current — Stage61 upstream movement source STATIC VERIFIED; same-session join tool READY (2026-11-10)
 
 [Stage61 branch](https://github.com/Hawky11/1/tree/stage61-action-definition-motion-join) · [static report](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/STATIC_ANALYSIS.md) · [read-only correlator](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/tools/correlate_stage61.py) · [RU guide](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/README_STAGE61_RU.md).

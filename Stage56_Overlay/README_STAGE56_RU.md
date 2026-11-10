@@ -49,4 +49,12 @@ Stage55 локализовал все 480 X-различий своей сесс
 
 ## После загрузки
 
+Есть [stdlib-скрипт корреляции](../Stage56_Analysis/tools/analyze_stage56.py), который можно запускать **после появления логов**, передав файлы **одного и того же запуска**:
+
+```powershell
+py -3 Stage56_Analysis\tools\analyze_stage56.py --stage55 "ArcanaAI_Stage55EarlierMotionCoordinateTrace.log" --stage56 "ArcanaAI_Stage56ACDF0WriterTrace.log" --out "Stage56_Runtime"
+```
+
+Он сохранит `Stage56_Runtime/summary.json` и `stage56_stage55_writer_join.csv`. Этот анализатор пока не испытан на реальных Stage56 логах.
+
 Сравним Stage56 события строго внутри Stage55 ACDF0 окна по **object + thread + QPC**. Увидим, покрывают ли конкретные пары записей все изменения X. Пока это только диагностика, не апгрейд боевого ИИ.

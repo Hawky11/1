@@ -125,6 +125,49 @@ def build_rva_reader(path):
     return read
 
 
+def check_relocations(exe, target_rvas=(0x156780, 0x0E9E5C)):
+    """Require real IMAGE_REL_BASED_HIGHLOW entries, not just rebasing math."""
+    import struct
+    data=exe.read_bytes()
+    pe=struct.unpack_from('<I',data,0x3c)[0]
+    optional=pe+24
+    n=struct.unpack_from('<H',data,pe+6)[0]
+    opt_size=struct.unpack_from('<H',data,pe+20)[0]
+    image_base=struct.unpack_from('<I',data,optional+28)[0]
+    assert image_base==0x00400000
+    sections=[]
+    for i in range(n):
+        p=optional+opt_size+40*i
+        virtual_size,rva,raw_size,raw_offset=struct.unpack_from('<IIII',data,p+8)
+        sections.append((rva,raw_size,raw_offset))
+    def fileoff(rva):
+        hits=[offset+rva-start for start,length,offset in sections
+              if start<=rva<start+length]
+        if len(hits)!=1: raise ValueError('not uniquely mapped: '+hex(rva))
+        return hits[0]
+    reloc_rva,reloc_size=struct.unpack_from('<II',data,optional+96+5*8)
+    assert reloc_rva!=0 and reloc_size!=0
+    pos=fileoff(reloc_rva)
+    last=pos+reloc_size
+    wanted=set(target_rvas)
+    matches={}
+    while pos+8<=last:
+        page,size=struct.unpack_from('<II',data,pos)
+        if size<8 or pos+size>last or size%2:
+            raise ValueError('malformed relocation block')
+        for offset in range(pos+8,pos+size,2):
+            entry=struct.unpack_from('<H',data,offset)[0]
+            kind=entry>>12
+            rva=page+(entry&0xfff)
+            if rva in wanted:
+                matches[rva]=kind
+        pos+=size
+    assert pos==last, 'relocation directory size mismatch'
+    for rva in target_rvas:
+        if matches.get(rva)!=3:
+            raise ValueError(f'Missing PE HIGHLOW relocation at RVA {rva:06X}: {matches.get(rva)}')
+    return {f'{rva:06X}':'IMAGE_REL_BASED_HIGHLOW' for rva in target_rvas}
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('original_exe',type=Path)
@@ -134,7 +177,9 @@ def main():
     src=SOURCE.read_text(encoding='utf-8')
     adapter=ADAPTER.read_text(encoding='utf-8')
     results=verify_source(src,adapter,build_rva_reader(args.original_exe))
+    relocation_entries=check_relocations(args.original_exe)
     assert origin['candidate_writer_rva']=='156787'
+    print('ORIGINAL PE RELOCATIONS:', relocation_entries)
     print('STAGE69 ORIGINAL EXE:', origin['original_sha256'])
     print('STAGE70 SOURCE STATIC PASS:', results)
     print('NOTE: Windows MSVC x86 build, compiled-wrapper differential tests and in-game runtime are PENDING.')

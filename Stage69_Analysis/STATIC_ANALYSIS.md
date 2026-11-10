@@ -7,7 +7,7 @@ Based on `stage68-deferred-origin-static-evidence`, plus the already archived St
 
 Original private `AALib.exe`, from Library `AALib.zip`, SHA-256:
 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`.
-PE32/i386 image base `00400000`. All addresses marked `AALib+...` are RVAs. The stdlib verifier [verify_stage69.py](tools/verify_stage69.py) PASSed against that exact original EXE: **24 exact opcode ranges**, the native pointer flow, and both table lookups. The 3 action mappings below were read directly from file-backed sections.
+PE32/i386 image base `00400000`. All addresses marked `AALib+...` are RVAs. The stdlib verifier [verify_stage69.py](tools/verify_stage69.py) PASSed against that exact original EXE: **27 exact opcode ranges**, the native pointer flow, and both table lookups. The 3 action mappings below were read directly from file-backed sections.
 
 ## Newly identified positive-ID writer
 
@@ -45,7 +45,7 @@ The consecutive instructions from `15676E` through `156787` contain **no conditi
 | 1 | 1B | **25** | **2F** |
 | 2 | 1C | **26** | **33** |
 
-The helper's immediate IDs come from original `15674A/156758/156760` reads of `0082557C/00825580/00825578` respectively; these addresses hold `2F/33/2E` in the original file. The verifier's 24 opcode assertions cover the key request-call and deferred-store chain; immediate-ID table values are independently inspectable at those read-only VAs.
+The helper's immediate IDs come from original `15674A/156758/156760` reads of `0082557C/00825580/00825578` respectively; these addresses hold `2F/33/2E` in the original file. The verifier's 27 opcode assertions cover the key request-call and deferred-store chain; the three immediate-ID loads and table values are also checked by the verifier.
 
 **Important limitation:** `06317664` is in **writable .data**, so these are initialized-file mappings, not observed runtime table contents. Also, `P+3F50` was not captured as a Stage67 field. Do not assert actual per-player selector or an exact store instruction hit on the basis of the file data alone.
 

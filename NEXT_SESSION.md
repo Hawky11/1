@@ -1,5 +1,21 @@
 # Next session handoff
 
+## Current — Stage59 r2 X-writer attribution VERIFIED; Stage60 STATIC NEXT (2026-11-10)
+
+**Canonical results:** [Stage59 r2 analysis](https://github.com/Hawky11/1/blob/main/Stage59_Runtime/R2_RUNTIME_ANALYSIS.md), [frozen exact six-file raw log upload](https://github.com/Hawky11/1/tree/stage59-r2-runtime-writer-attribution-evidence), [unchanged Stage59 r2 source](https://github.com/Hawky11/1/tree/stage59-r2-wait-for-combat-objects). New raw commit `d2ce2444b569e439db66e076f8428ac4dfc611cc`. Build 22:07:10 Windows x86 **BUILD SUCCEEDED**, DLL **1,153,024 bytes**, only old C4754. `STAGE59_OBJECTS_READY waitedMs=12750`, `STAGE59_WATCH_ARMED`, 62 thread install records; final HEALTH `ownedThreads=61 totalWrites=16121 totalSeq=16121 dropped=0 readFail=0 ownershipConflicts=0 installFailures=0 teardownFailures=0 objectDrift=0`. This closes the prior r1 five-second timeout, and actual X_WRITE data exists.
+
+**Same-run integrity:** Stage55 15,966 rows (5,322 per site), Stage57 15,984 (5,328 per site), Stage56 270 ACF2A writer rows, Stage58 664 ACF0F observer rows, Stage59 16,121 unique contiguous writes. Stage55/57/58 masks complete `1FFF`, HEALTH clean. Stage59 oldShadow is approximate, so use strict side/object/thread/QPC and raw PRE/POST to support causal attribution. There are 5,322 Stage55 `ACDF0` parents with exactly three contained Stage57 native windows; exclude Stage57's extra six per site in unmatched capture tail.
+
+**Verified X instruction attribution:** Stage55 `AE6E0` changed raw X in 1,930 side-windows; all 1,930 have Stage59 post-write `1E70DE`, original `1E70DB FSTP [ESI+7C]`. Stage55 `ACDF0` changed X in **719** windows (P1 485/P2 234), all 719 have matched Stage59 writes and first/last raw values agree. **429** were in the `ACE11 POST→ACFD6 PRE` gap: 379 native `ACC57 FSTP [EBX+7C]`, 50 Stage56 `ACF2A` detour events with EIP outside AALib. **290** were inside `ACFD6→15CEC0`: 145 each original `126A9A` and `126B49 FSTP [ESI+7C]`. Stage57 has 294 net changed ACFD6 samples, four excluded outside parents. Original private AALib.exe SHA256 matches `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`; native assembly independently rechecked. Stage59 has 2,718 shadow differences in 16,121 hits overall, not all within monitored parent function windows.
+
+**Stage58 conditional branch independently reconfirmed:** 332 native `B86A0` calls (664 P1/P2 records); 270 EAX=0 calls each lead to one Stage56 writer in 4–77 QPC, and 62 EAX=1 calls all skip it. Stage56 270 records, 50 changed X. Stage59 outside-module EIP `78E2FEF2`: 288 hits, 50 changed; 270/288 match Stage56 qpc windows exactly. Do not mislabel the post-write EIP as original instruction RVA; obtain module map to confirm foreign EIP ownership if needed.
+
+**Next analyst — Stage60:** work from Stage59 r2 verified evidence and **perform static calling-context/dataflow examination** of `ACC57`, `126A9A`, `126B49`, `1E70DB` before another runtime patch. Establish how the inputs are produced and whether any link to COM-vs-COM action/decision generation is actually supported; coordinate movement and collision may be engine mechanics. If a new passive hook is justified, design it narrowly with original-once ABI/PE checks, no competing DR0/DR1/DR2/DR3 owners, and keep Stage59 r2 working DLL as rollback. Do not claim smarter AI, new attacks, damage, or hover-dash causality from this trace. Stage60 source/build/runtime **NOT READY**.
+
+---
+
+
+
 ## Current — Stage59 r1 startup timed out; Stage59 r2 ONE-FILE FIX source-ready (2026-11-10)
 
 **Source of truth:** [r1 analysis](https://github.com/Hawky11/1/blob/main/Stage59_Runtime/R1_STARTUP_ANALYSIS.md), [frozen r1 six-file logs](https://github.com/Hawky11/1/tree/stage59-r1-runtime-timeout-evidence), [r2 branch](https://github.com/Hawky11/1/tree/stage59-r2-wait-for-combat-objects), [r2 install RU](https://github.com/Hawky11/1/blob/stage59-r2-wait-for-combat-objects/Stage59_Overlay/README_STAGE59_RU.md).

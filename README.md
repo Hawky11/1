@@ -1,3 +1,9 @@
+## Current — Stage58 runtime VERIFIED; Stage59 coordinate-writer attribution NEXT (2026-11-10)
+
+[Stage58 full report](https://github.com/Hawky11/1/blob/main/Stage58_Runtime/RUNTIME_ANALYSIS.md) · [frozen five-log evidence](https://github.com/Hawky11/1/tree/stage58-runtime-conditional-no-x-evidence) · [unchanged Stage58 source](https://github.com/Hawky11/1/tree/stage58-acdf0-pre-tail-conditional-calls). MSVC x86 BUILD SUCCEEDED at 20:54:37; DLL 1,145,344 bytes. Stage55 3/3, 56 2/2, 57 3/3, 58 3/3, zero HEALTH errors. In 5,538 unique complete ACDF0 P1/P2 windows: **1,179 X changes**, split **776 pre-tail** plus **434 in 15CEC0** minus **31 overlap**; raw Y unchanged. Stage58 saw 822 P1/P2 ACF0F→B86A0 observations, all unchanged, and 0 calls at the other conditional sites. All 380 Stage56 ACF2A direct observations were unchanged. The 776 pre-tail changes split **168 before Stage58 PRE, 155 after Stage58 POST and 453 without any Stage58 call**. Next: audit existing Stage16 DR0/DR1 before designing a compatible **P1/P2 object+7C write-attribution** probe; Stage59 source **NOT READY**. No proven gameplay AI improvement.
+
+---
+
 ## Current — Stage57 runtime VERIFIED; Stage58 pre-tail conditional hooks SOURCE READY (2026-11-10)
 
 **Stage57 Windows x86 test verified:** [full runtime analysis](https://github.com/Hawky11/1/blob/main/Stage57_Runtime/RUNTIME_ANALYSIS.md) · [immutable upload commit `31f83c3`](https://github.com/Hawky11/1/commit/31f83c31677e9a3f1ff891d24ed8dd223c7f2a54) · [frozen evidence branch](https://github.com/Hawky11/1/tree/stage57-runtime-acdf0-verified-evidence). Build succeeded, DLL 1,137,664 bytes; Stage55 3/3, Stage56 2/2, Stage57 3/3; no health drops/mismatches.

@@ -1,5 +1,21 @@
 ## Latest — Stage54 r2 relocation-aware native validation SOURCE READY (2026-11-10)
 
+## Current — Stage55 earlier-motion boundaries SOURCE READY (2026-11-10)
+
+Stage54 r2 runtime is verified: 19,734 unchanged sibling windows, 6,500 distinct Stage47→Stage54 pairs with 504 X differences already before A2B81. See [Stage54 report](https://github.com/Hawky11/1/blob/main/Stage54_Runtime/R2_RUNTIME_ANALYSIS.md).
+
+**Stage55 source:** [stage55-earlier-motion-boundary](https://github.com/Hawky11/1/tree/stage55-earlier-motion-boundary), based on verified Stage54 r2 source commit 4661af49287e106cb9f9d911f63829dbd5f2fae4. [Installation](https://github.com/Hawky11/1/blob/stage55-earlier-motion-boundary/Stage55_Overlay/README_STAGE55_RU.md), [static analysis and validation limits](https://github.com/Hawky11/1/blob/stage55-earlier-motion-boundary/Stage55_Analysis/STATIC_ANALYSIS.md).
+
+Three original-once no-stack-argument CALL boundaries: **A119B→AE6E0**, **A11A0→ACDF0**, **A11A5→AC8A0**. AE6E0 contains Stage47 AE70C. ACDF0 has verified native X stores at ACF2A/ACFA3 (FSTP [EAX+7C]), making it a candidate; runtime attribution is not yet established. Stage47 AE93E belongs to AE880, not AE6E0; do not force its containment. ABCB0 and later corridor remain outside Stage55.
+
+Checks passed: exact original EXE SHA/PE, six full-instruction signatures with no HIGHLOW relocation overlap, decoded calls, reachable CFG with plain RET and no EBP stack argument access; exact narrow adapter change; **384 synthetic assembly differential tests** (128 per wrapper). x87 instruction/data-pointer metadata excluded from emulator comparison. **Windows MSVC build/link and game runtime PENDING.** This is passive diagnostics, not a demonstrated AI improvement.
+
+**Next user action:** replace ONLY src/Stage38CallbackWindow.inl from Stage55_Overlay and ADD src/Stage55EarlierMotionCoordinate.inl. Keep working Stage54PreParentCoordinate.inl r2 and all prior source/INI/Build.bat. Build; install DLL only after BUILD SUCCEEDED. Natural COM-vs-COM 30–60 seconds, allow flush, upload Build.log, ArcanaAI_Stage55EarlierMotionCoordinateTrace.log and same-run Stage47–54 logs.
+
+**Next analyst:** require Stage55 3/3, Stage54 3/3, full masks, unique seq, zero missingObjects/dropped/overflow/mismatch/badCaller. Match Stage47 AE70C by same side/object/thread and containment inside AE6E0; compare last contained Stage47 POST with parent POST, report multiplicity. Then join parent POST→ACDF0 PRE/POST→AC8A0 PRE/POST→Stage54 first PRE using strict QPC and unique targets, excluding stale/unmatched tail. A whole-call X delta does not prove a specific store or visible movement.
+
+---
+
 ## Stage54 r2 runtime verified — 2026-11-10
 
 Evidence: main upload commit a49661be904b7ef6427b8a885a852089f798801e (logs remain available at that immutable commit). Stage54 blob 413af4919f723351edfcafb7fb397514016ea479; Build.log blob 741cbe661dcba1e54d0ce46822838c19f1e28a25.

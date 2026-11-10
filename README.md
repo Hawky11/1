@@ -1,4 +1,12 @@
-## Latest — Stage53 runtime VERIFIED; Stage54 before-AF0A0 source READY (2026-11-10)
+## Latest — Stage54 r2 relocation-aware native validation SOURCE READY (2026-11-10)
+
+[New runtime files](https://github.com/Hawky11/1/commit/47675c5a6262acf9ed470fc443192746a265b8b6): Stage54 r1 x86 **BUILD SUCCEEDED**, DLL **1,113,088 bytes**, but `STAGE54_PRE_PARENT_COORD_BUILD=2026-11-10-r1` immediately reports **original sibling CALL/signature mismatch; no patches**, so Stage54 r1 did not produce coordinate samples. Stage53 still installed and working (3,918 windows, no X/Y internal change). [Immutable r1 failure evidence](https://github.com/Hawky11/1/tree/stage54-r1-signature-mismatch-runtime-evidence).
+
+**Root cause:** original PE relocation HIGHLOW at A1B82 changes absolute operand inside native A1B80 prologue when game loads at a nonpreferred ImageBase; r1 compares unrelocated on-disk bytes. SHA-pinned original binary and relocation table physically verified. **[Stage54 r2 source](https://github.com/Hawky11/1/tree/stage54r2-relocation-aware-sibling-boundaries)** performs relocated operand validation and keeps all original CALL checks. **Windows x86 r2 BUILD/runtime PENDING**. If r1 adapter already installed, replace **only [Stage54PreParentCoordinate.inl](https://github.com/Hawky11/1/blob/stage54r2-relocation-aware-sibling-boundaries/Stage54_Overlay/src/Stage54PreParentCoordinate.inl)**; do not alter other files. Rebuild and upload Build.log and Stage54 logs. [RU instructions](https://github.com/Hawky11/1/blob/stage54r2-relocation-aware-sibling-boundaries/Stage54_Overlay/README_STAGE54_RU.md).
+
+---
+
+## Previous — Stage53 runtime VERIFIED; Stage54 before-AF0A0 source READY (2026-11-10)
 
 Latest Windows x86 BUILD SUCCEEDED, 1,105,408-byte DLL; STAGE53_INSTALLED 1/1. Stage53 has 6,024 P1/P2 before/after snapshots, no X/Y writes within AF0A0, and 28 zero-error HEALTH records. Stage47→Stage53 same-frame QPC join: **1,091 pre-parent X differences among 5,904 matches**, P1 403 / P2 688, no Y differences. Stage53 PRE→Stage52 AEF10 PRE 6,024/6,024 same X/Y. [Frozen evidence](https://github.com/Hawky11/1/tree/stage53-runtime-parent-af0a0-evidence) · [full Stage53 analysis](https://github.com/Hawky11/1/blob/stage53-runtime-parent-af0a0-evidence/Stage53_Runtime/RUNTIME_ANALYSIS.md).
 

@@ -219,12 +219,19 @@ bool InstallStage40Hooks()
     const BYTE bs[5]={0xE8,0x38,0xD4,0x03,0x00};
     const BYTE ba[5]={0xE8,0xE6,0xD2,0x04,0x00};
     const BYTE pe[]={0x55,0x8B,0xEC,0x83,0xEC,0x10,0x56,0x8B,0xF1,0x8B,0x86,0x4C,0x3F,0x00,0x00,0x83,0xF8,0xFF};
-    const BYTE ps[]={0x55,0x8B,0xEC,0x8A,0x15,0x60,0x72,0xCF,0x05};
+    // 125920+5 is a PE HIGHLOW relocation (RVA 125925). At runtime Windows
+    // adds (loadedImageBase - 00400000) to original VA 05CF7260.
+    // Compare opcode bytes and the RELOCATED address instead of raw disk bytes.
+    const BYTE psHead[]={0x55,0x8B,0xEC,0x8A,0x15};
+    const DWORD expectedSelectGlobal=0x05CF7260u+(g_gameBase-0x00400000u);
     const BYTE pa[]={0x55,0x8B,0xEC,0x8B,0x45,0x08,0x83,0xEC,0x08};
     auto valid=[&]()->bool{
         if(std::memcmp(e,be,5)||std::memcmp(s,bs,5)||std::memcmp(a,ba,5)||
-           std::memcmp(ne,pe,sizeof(pe))||std::memcmp(ns,ps,sizeof(ps))||std::memcmp(na,pa,sizeof(pa)))
+           std::memcmp(ne,pe,sizeof(pe))||std::memcmp(ns,psHead,sizeof(psHead))||std::memcmp(na,pa,sizeof(pa)))
             return false;
+        DWORD actualSelectGlobal=0;
+        std::memcpy(&actualSelectGlobal,ns+5u,sizeof(actualSelectGlobal));
+        if(actualSelectGlobal!=expectedSelectGlobal)return false;
         const BYTE* site[3]={e,s,a};const BYTE* dest[3]={ne,ns,na};
         for(int i=0;i<3;++i){
             std::int32_t rel=0;std::memcpy(&rel,site[i]+1,4);

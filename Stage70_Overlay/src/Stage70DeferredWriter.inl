@@ -194,13 +194,11 @@ bool InstallStage70Hooks()
     }
     BYTE* a=reinterpret_cast<BYTE*>(static_cast<std::uintptr_t>(g_gameBase+0x156784u));
     BYTE patch[6]={0xE9,0,0,0,0,0x90};
-    const std::uintptr_t target=reinterpret_cast<std::uintptr_t>(&S70DeferredWriterHook);
-    const std::intptr_t relative=static_cast<std::intptr_t>(target) -
-                                  static_cast<std::intptr_t>(reinterpret_cast<std::uintptr_t>(a+5));
-    if(relative<INT32_MIN || relative>INT32_MAX){
-        S70Log("ERROR: Stage70 hook out of rel32 range.");return false;
-    }
-    const std::int32_t rel=static_cast<std::int32_t>(relative);
+    // In a 32-bit address space rel32 is computed modulo 2^32.
+    // Subtract unsigned pointer values, avoiding signed overflow.
+    const DWORD rel=static_cast<DWORD>(
+        reinterpret_cast<std::uintptr_t>(&S70DeferredWriterHook) -
+        reinterpret_cast<std::uintptr_t>(a+5));
     std::memcpy(patch+1,&rel,4);
     HANDLE mutex=CreateMutexW(nullptr,FALSE,L"Local\\ArcanaAIOverhaul_PatchInstall_Mutex");
     if(!mutex){S70Log("ERROR: Stage70 mutex unavailable.");return false;}

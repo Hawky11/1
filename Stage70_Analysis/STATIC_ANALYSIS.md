@@ -1,3 +1,9 @@
+# Stage70 r2 erratum — runtime original bytes must be relocation-aware
+
+**2026-11-11: r1 runtime failed installation.** This Stage70 document describes the initial r1 source; the source at [Stage70 r2](../Stage70_Overlay/src/Stage70DeferredWriter.inl) was corrected after user log analysis. Original `AALib+15677D` uses an **absolute image-relocated 32-bit operand** at RVA `156780` (PE `IMAGE_REL_BASED_HIGHLOW`). At image base `00800000` its in-memory bytes are `8B 14 8D E8 54 C2 00`, while original-file bytes are `8B 14 8D E8 54 82 00`. Therefore r1's full seven-byte runtime guard fails. R2 matches only immutable `8B 14 8D` and tests relocated operand against `g_gameBase+0x4254E8`. Adjacent hook/displaced-instruction bytes remain exact. R2 adds `STAGE70_GUARD` diagnostics and PE relocation checks to the Python verifier. **R2 not built or runtime-tested yet.** See [r1 failure analysis](../Stage70_R1_Runtime/FAILURE_ANALYSIS.md) and [r2 fix instructions](../Stage70_R1_Runtime/README_STAGE70_R2_RU.md).
+
+---
+
 # Stage70 — native deferred writer hook, static-only release
 
 **Date:** 2026-11-11. **SOURCE ONLY / ORIGINAL OPCODES VERIFIED / WINDOWS BUILD AND RUNTIME PENDING**.

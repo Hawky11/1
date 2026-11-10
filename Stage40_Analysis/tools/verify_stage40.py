@@ -61,6 +61,36 @@ def main():
             if va<=rva and rva+size<=va+rawsize:
                 return b[rawptr+rva-va:rawptr+rva-va+size]
         raise ValueError("RVA not mapped: %08X"%rva)
+    # Original RVA 125925: PE HIGHLOW, VA 05CF7260. Relocate the
+    # immediate in 125920's prologue when comparing loaded image memory.
+    pe=struct.unpack_from("<I",b,0x3C)[0]
+    opt=pe+24
+    preferred_base=struct.unpack_from("<I",b,opt+28)[0]
+    assert preferred_base==0x00400000, "Unexpected preferred PE base"
+    reloc_rva,reloc_size=struct.unpack_from("<II",b,opt+96+5*8)
+    def offset(rva):
+        for va,rawsize,rawptr in mapping:
+            if va<=rva<va+rawsize:
+                return rawptr+rva-va
+        raise ValueError("Unmapped RVA %08X"%rva)
+    assert struct.unpack("<I",read(0x125925,4))[0]==0x05CF7260
+    pos=offset(reloc_rva)
+    end=pos+reloc_size
+    reloc_type=None
+    while pos<end:
+        page,size=struct.unpack_from("<II",b,pos)
+        assert size>=8 and size%2==0, "Broken relocation block"
+        for k in range((size-8)//2):
+            entry=struct.unpack_from("<H",b,pos+8+k*2)[0]
+            if page+(entry&0x0FFF)==0x125925:
+                reloc_type=entry>>12
+        pos+=size
+    assert reloc_type==3, "Missing PE IMAGE_REL_BASED_HIGHLOW at RVA 125925"
+    for loaded_base in (0x00400000,0x00800000,0x00C00000):
+        expected=(0x05CF7260+loaded_base-preferred_base)&0xFFFFFFFF
+        actual=(struct.unpack("<I",read(0x125925,4))[0]+loaded_base-preferred_base)&0xFFFFFFFF
+        assert actual==expected, "ASLR relocation arithmetic mismatch"
+        print("RELOCATION PASS base %08X: RVA 125925 -> VA %08X"%(loaded_base,actual))
     for rva,expected in SIGNATURES.items():
         assert read(rva,len(expected))==expected, "Signature mismatch %08X"%rva
         print("SIGNATURE PASS %07X (%d bytes)"%(rva,len(expected)))
@@ -86,6 +116,9 @@ def main():
                   "push dword ptr [esp+8]",
                   "push dword ptr [esp+10h]",
                   "add esp,8", "add esp,10h",
+                  "expectedSelectGlobal=0x05CF7260u+(g_gameBase-0x00400000u)",
+                  "std::memcpy(&actualSelectGlobal,ns+5u,sizeof(actualSelectGlobal))",
+                  "actualSelectGlobal!=expectedSelectGlobal",
                   "S40SnapActor(r.actor,r.actorPre,r.actorPreMask)",
                   "S40SnapActor(r.actor,r.actorPost,r.actorPostMask)"]:
             assert s in c, "Missing source anchor: "+s

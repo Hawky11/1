@@ -30,7 +30,7 @@ void S59Log(const char* msg)
     if(!GetSiblingPath(path,MAX_PATH,L"ArcanaAI_Stage59XWriterWatchTrace.log"))return;
     SYSTEMTIME t{}; GetLocalTime(&t);
     char line[1900]{};
-    const int n=sprintf_s(line,"[%04u-%02u %02u:%02u:%02u] %s\r\n",
+    const int n=sprintf_s(line,"[%04u-%02u-%02u %02u:%02u:%02u] %s\r\n",
         t.wYear,t.wMonth,t.wDay,t.wHour,t.wMinute,t.wSecond,msg);
     if(n<=0)return;
     HANDLE f=CreateFileW(path,FILE_APPEND_DATA,FILE_SHARE_READ|FILE_SHARE_WRITE,
@@ -219,7 +219,7 @@ DWORD WINAPI S59Worker(LPVOID)
         S59Log(msg);
         return 0;
     }
-    DWORD obj[2]{};
+    DWORD obj[2]{}, scratchX[2]{};
     bool valid=false;
     for(DWORD attempt=0;attempt<100u;++attempt) {
         if(g_playerP1 && g_playerP2 &&
@@ -227,8 +227,8 @@ DWORD WINAPI S59Worker(LPVOID)
            SafeReadDword(g_playerP2+4u,&obj[1]) &&
            obj[0] && obj[1] && obj[0]!=obj[1] &&
            (obj[0]&3u)==0 && (obj[1]&3u)==0 &&
-           SafeReadDword(obj[0]+0x7Cu,&g_s59Addresses[0]) &&
-           SafeReadDword(obj[1]+0x7Cu,&g_s59Addresses[1])) {
+           SafeReadDword(obj[0]+0x7Cu,&scratchX[0]) &&
+           SafeReadDword(obj[1]+0x7Cu,&scratchX[1])) {
             valid=true;break;
         }
         Sleep(50);
@@ -237,7 +237,7 @@ DWORD WINAPI S59Worker(LPVOID)
         S59Log("ERROR: Stage59 timed out waiting for two readable player+4 object pointers; no registers touched.");
         return 0;
     }
-    // Above reads validated accessibility, not the watched addresses.
+    // The scratch reads validate the two X DWORDs. Address assignment follows.
     g_s59Objects[0]=obj[0];g_s59Objects[1]=obj[1];
     g_s59Addresses[0]=obj[0]+0x7Cu;g_s59Addresses[1]=obj[1]+0x7Cu;
     if((g_s59Addresses[0]&3u)||(g_s59Addresses[1]&3u)) {

@@ -1,3 +1,13 @@
+## Current — Stage70 deferred-ID positive writer passive observer SOURCE ONLY (2026-11-11)
+
+[Russian integration guide](Stage70_Analysis/README_STAGE70_RU.md) · [static report](Stage70_Analysis/STATIC_ANALYSIS.md) · [opcode/source verifier](Stage70_Analysis/tools/verify_stage70.py) · [same-run correlator](Stage70_Analysis/tools/correlate_stage70.py). Branch: [stage70-native-deferred-writer-probe](https://github.com/Hawky11/1/tree/stage70-native-deferred-writer-probe).
+
+**Why:** Stage69 found the exact original positive-ID store `AALib+156787: mov [eax+68],edx`, immediately downstream of the actual Stage65-observed callsite `156769`. Stage70 prepares a **six-byte original-site observer** displacing precisely `156784: mov eax,[ebp+8]` and `156787: mov [eax+68],edx`. Source replays both original MOV instructions once and records PRE/POST `O+68`, source EDX, P/O/TID, QPC, selector, and integrity masks. Stage70 DR use is zero and insertion is after Stage67 install, before Stage59 watch thread. Native bytes checked against the SHA-pinned original EXE. **No Stage70 game run or MSVC x86 build has occurred; full assembled-wrapper differential testing remains pending.**
+
+Only **two new overlay files** go over the user's working Stage67 tree; no AALib.exe/gameplay modification. Preserve working Stage67 1,887,232-byte DLL and older rollback builds. Next: execute `verify_stage70.py` and `test_stage70.py`, review ABI/test and x86 Build.log before any runtime trial. Later upload Build.log plus same-run Stage70/65/41/67/59 traces. Do not claim source-only checks prove an executed native writer.
+
+---
+
 ## Current — Stage69 deferred-action native writer STATIC VERIFIED / runtime-linked (2026-11-11)
 
 [Stage69 source-chain report](Stage69_Analysis/STATIC_ANALYSIS.md) · [RU summary](Stage69_Analysis/README_STAGE69_RU.md) · [27-site SHA/opcode/table verifier](Stage69_Analysis/tools/verify_stage69.py). Branch [stage69-deferred-writer-observation-design](https://github.com/Hawky11/1/tree/stage69-deferred-writer-observation-design), based on Stage68 and the unchanged same-run Stage67 evidence.

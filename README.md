@@ -1,3 +1,13 @@
+## Current — Stage69 deferred-action native writer STATIC VERIFIED / runtime-linked (2026-11-11)
+
+[Stage69 source-chain report](Stage69_Analysis/STATIC_ANALYSIS.md) · [RU summary](Stage69_Analysis/README_STAGE69_RU.md) · [27-site SHA/opcode/table verifier](Stage69_Analysis/tools/verify_stage69.py). Branch [stage69-deferred-writer-observation-design](https://github.com/Hawky11/1/tree/stage69-deferred-writer-observation-design), based on Stage68 and the unchanged same-run Stage67 evidence.
+
+**Breakthrough:** The native original callback `AALib+1566B0` takes P and O=[P+4], invokes the *immediate-action request helper* at **CALL RVA 156769**, then executes the table-derived *deferred action ID write* at **RVA 156787: MOV [O+68],EDX** on the same fall-through path. Original-file selector mappings `P+3F50` 0→immediate2E/deferred24, 1→2F/25, 2→33/26. Crucially, Stage65 seq276 from the unchanged Stage67 session **actually recorded native caller RVA 156769 and request2F**, before Stage41 seq278 PRE observed deferred25. This gives strong static/runtime linkage; direct EIP=156787 in-game still unobserved and runtime writable-table contents/selector values not captured. Stage68's origin-unknown conclusion was correct *at the time*; Stage69 identifies the specific native writer candidate.
+
+**Stage70 NEXT:** narrow passive observer around original contiguous `156784/156787` six-byte window after ABI/handler audit, no DR0/DR1 conflict, no AI or requested ID modification. Stage69 adds no DLL, no hook and no gameplay test. Preserve working Stage67 DLL **1,887,232 bytes**; Stage65 **1,879,552** and Stage59 r2 **1,153,024** rollback copies. Main remains untouched.
+
+---
+
 ## Current — Stage68 deferred-ID origin STATIC FIRST, writer NOT YET IDENTIFIED (2026-11-11)
 
 [Stage68 static report](Stage68_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage68_Analysis/README_STAGE68_RU.md) · [reproducible verifier](Stage68_Analysis/tools/verify_stage68.py). Based on [Stage67 runtime evidence](Stage67_Runtime/RUNTIME_ANALYSIS.md), same original AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. **No new DLL, hooks, gameplay changes, or user tests.**

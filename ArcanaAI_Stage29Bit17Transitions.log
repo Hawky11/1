@@ -1,75 +1,98 @@
-[2026-11-10 12:39:00.457] STAGE29_BIT17_TRANSITIONS_BUILD=2026-11-09-r1
-[2026-11-10 12:39:00.460] STAGE29_CONFIG: EnableStage29Bit17TransitionsOnly=1 EnablePlayerBit17WriteTrace=1 EnableStage26ObjectBit0WriteTrace=0 EnableControlFieldTrace=0
-[2026-11-10 12:39:01.216] STAGE29 active. Write-only DR0/DR1 watchpoints cover P1/P2 player+0x3B84 bit17 transitions: P1=0x0E4A5AFC (RVA 0x0DCA5AFC, initial=0x00000000), P2=0x0E4D0824 (RVA 0x0DCD0824, initial=0x00000000). DR7 config=0x00DD0005; scan=100 ms; COMvsCOM writer TID=14524 excluded; existing DR0/DR1 owners preserved.
-[2026-11-10 12:39:01.216] Each record is a post-write hardware-breakpoint snapshot. EIP/RVA is after the writing instruction; bytes_at_EIP_minus_16 allows offline instruction decoding. oldValue is a best-effort shadow of the last observed field value; shadowInitialized=1 means only that the initial baseline read succeeded, not that no write was missed on an uninstrumented thread.
-[2026-11-10 12:39:01.216] STAGE29_NOTE: Only bit17 changes are retained; the shadow tracks all observed writes. P1/P2 stack snapshots and QPC allow correlation with Stage15 branch logs. Uninstrumented threads can still cause missed transitions.
-[2026-11-10 12:39:01.251] Hardware watchpoint install batch: 39 new game thread(s).
-[2026-11-10 12:39:01.392] Hardware watchpoint install batch: 16 new game thread(s).
-[2026-11-10 12:39:02.621] Hardware watchpoint install batch: 1 new game thread(s).
-[2026-11-10 12:39:02.860] Hardware watchpoint install batch: 1 new game thread(s).
-[2026-11-10 12:39:17.450] STAGE29_FILTER_STATUS suppressedNoBit17Transition=356 recorded=0
-[2026-11-10 12:39:17.691] STAGE29_FILTER_STATUS suppressedNoBit17Transition=652 recorded=0
-[2026-11-10 12:39:17.931] STAGE29_FILTER_STATUS suppressedNoBit17Transition=929 recorded=0
-[2026-11-10 12:39:18.174] STAGE29_FILTER_STATUS suppressedNoBit17Transition=1226 recorded=0
-[2026-11-10 12:39:18.420] STAGE29_FILTER_STATUS suppressedNoBit17Transition=1494 recorded=0
-[2026-11-10 12:39:18.662] STAGE29_FILTER_STATUS suppressedNoBit17Transition=1875 recorded=0
-[2026-11-10 12:39:18.905] STAGE29_FILTER_STATUS suppressedNoBit17Transition=2134 recorded=0
-[2026-11-10 12:39:19.147] STAGE29_FILTER_STATUS suppressedNoBit17Transition=2401 recorded=0
-[2026-11-10 12:39:19.513] STAGE29_FILTER_STATUS suppressedNoBit17Transition=2739 recorded=0
-[2026-11-10 12:39:19.758] STAGE29_FILTER_STATUS suppressedNoBit17Transition=2999 recorded=0
-[2026-11-10 12:39:20.123] STAGE29_FILTER_STATUS suppressedNoBit17Transition=3314 recorded=0
-[2026-11-10 12:39:20.370] STAGE29_FILTER_STATUS suppressedNoBit17Transition=3580 recorded=0
-[2026-11-10 12:39:20.616] STAGE29_FILTER_STATUS suppressedNoBit17Transition=3858 recorded=0
-[2026-11-10 12:39:20.858] STAGE29_FILTER_STATUS suppressedNoBit17Transition=4168 recorded=0
-[2026-11-10 12:39:21.222] STAGE29_FILTER_STATUS suppressedNoBit17Transition=4421 recorded=0
-[2026-11-10 12:39:21.590] STAGE29_FILTER_STATUS suppressedNoBit17Transition=4677 recorded=0
-[2026-11-10 12:39:21.950] STAGE29_FILTER_STATUS suppressedNoBit17Transition=5044 recorded=0
-[2026-11-10 12:39:22.191] STAGE29_FILTER_STATUS suppressedNoBit17Transition=5349 recorded=0
-[2026-11-10 12:39:22.436] STAGE29_FILTER_STATUS suppressedNoBit17Transition=5604 recorded=0
-[2026-11-10 12:39:22.556] STAGE29_BIT17_TRANSITION seq=1 side=P2 tid=8168 tick=100495078 time=12:39:22.509 qpc=0x000000E9FC40E90F eipAfter=0x0080FAD2 inAALib=1 rvaAfter=0x0000FAD2 player=0x0E4CCCA0 field=0x0E4D0824 old=0x00000000 new=0x00020000 shadowInitialized=1 oldBit17=0 newBit17=1 shadowBit17Changed=1 dr6=0xFFFF0FF0 EAX=0E4D0824 EBX=003EFC30 ECX=00000011 EDX=00020000 ESI=0E4CCCA0 EDI=29CECC50 EBP=003EFC00 ESP=003EFC00 EFLAGS=00000206 bytes_at_EIP_minus_16=05 49 83 C9 E0 41 BA 01 00 00 00 D3 E2 5E 09 10 5D C2 04 00 CC CC CC CC  stackMask=0xFF stack=[003EFC18,008C6507,00000071,0E4CCCE0,0E4CCCA0,0E4CCCD0,003EFC3C,00896801]
-[2026-11-10 12:39:22.556] STAGE29_BIT17_TRANSITION seq=2 side=P2 tid=8168 tick=100495078 time=12:39:22.509 qpc=0x000000E9FC40F6FF eipAfter=0x008ED1A9 inAALib=1 rvaAfter=0x000ED1A9 player=0x0E4CCCA0 field=0x0E4D0824 old=0x00030000 new=0x00010000 shadowInitialized=1 oldBit17=1 newBit17=0 shadowBit17Changed=1 dr6=0xFFFF0FF0 EAX=00000000 EBX=00000000 ECX=00000000 EDX=00000000 ESI=0E4CCCA0 EDI=FFFFFFEF EBP=003EF998 ESP=003EF96C EFLAGS=00000206 bytes_at_EIP_minus_16=C4 0C 84 C0 75 0A 81 A6 84 3B 00 00 FF FF F9 FF 8B 86 78 39 00 00 83 F8  stackMask=0xFF stack=[00000000,00000000,0E4CCCA0,00000000,00000000,00000000,00000000,00000000]
-[2026-11-10 12:39:22.799] STAGE29_FILTER_STATUS suppressedNoBit17Transition=5899 recorded=2
-[2026-11-10 12:39:23.039] STAGE29_FILTER_STATUS suppressedNoBit17Transition=6161 recorded=2
-[2026-11-10 12:39:23.402] STAGE29_FILTER_STATUS suppressedNoBit17Transition=6549 recorded=2
-[2026-11-10 12:39:23.885] STAGE29_FILTER_STATUS suppressedNoBit17Transition=6875 recorded=2
-[2026-11-10 12:39:24.248] STAGE29_FILTER_STATUS suppressedNoBit17Transition=7177 recorded=2
-[2026-11-10 12:39:24.614] STAGE29_FILTER_STATUS suppressedNoBit17Transition=7468 recorded=2
-[2026-11-10 12:39:24.981] STAGE29_FILTER_STATUS suppressedNoBit17Transition=7726 recorded=2
-[2026-11-10 12:39:25.348] STAGE29_FILTER_STATUS suppressedNoBit17Transition=8044 recorded=2
-[2026-11-10 12:39:25.710] STAGE29_FILTER_STATUS suppressedNoBit17Transition=8296 recorded=2
-[2026-11-10 12:39:26.075] STAGE29_FILTER_STATUS suppressedNoBit17Transition=8592 recorded=2
-[2026-11-10 12:39:26.439] STAGE29_FILTER_STATUS suppressedNoBit17Transition=8926 recorded=2
-[2026-11-10 12:39:26.926] STAGE29_FILTER_STATUS suppressedNoBit17Transition=9245 recorded=2
-[2026-11-10 12:39:27.292] STAGE29_FILTER_STATUS suppressedNoBit17Transition=9550 recorded=2
-[2026-11-10 12:39:27.535] STAGE29_FILTER_STATUS suppressedNoBit17Transition=9811 recorded=2
-[2026-11-10 12:39:27.780] STAGE29_FILTER_STATUS suppressedNoBit17Transition=10088 recorded=2
-[2026-11-10 12:39:28.145] STAGE29_FILTER_STATUS suppressedNoBit17Transition=10451 recorded=2
-[2026-11-10 12:39:28.390] STAGE29_FILTER_STATUS suppressedNoBit17Transition=10779 recorded=2
-[2026-11-10 12:39:28.752] STAGE29_FILTER_STATUS suppressedNoBit17Transition=11091 recorded=2
-[2026-11-10 12:39:29.114] STAGE29_FILTER_STATUS suppressedNoBit17Transition=11373 recorded=2
-[2026-11-10 12:39:29.357] STAGE29_FILTER_STATUS suppressedNoBit17Transition=11684 recorded=2
-[2026-11-10 12:39:29.599] STAGE29_FILTER_STATUS suppressedNoBit17Transition=11983 recorded=2
-[2026-11-10 12:39:29.844] STAGE29_FILTER_STATUS suppressedNoBit17Transition=12273 recorded=2
-[2026-11-10 12:39:30.207] STAGE29_FILTER_STATUS suppressedNoBit17Transition=12568 recorded=2
-[2026-11-10 12:39:30.329] Hardware watchpoint install batch: 2 new game thread(s).
-[2026-11-10 12:39:30.571] STAGE29_FILTER_STATUS suppressedNoBit17Transition=12927 recorded=2
-[2026-11-10 12:39:30.935] STAGE29_FILTER_STATUS suppressedNoBit17Transition=13232 recorded=2
-[2026-11-10 12:39:31.417] STAGE29_FILTER_STATUS suppressedNoBit17Transition=13623 recorded=2
-[2026-11-10 12:39:31.781] STAGE29_FILTER_STATUS suppressedNoBit17Transition=13923 recorded=2
-[2026-11-10 12:39:32.143] STAGE29_FILTER_STATUS suppressedNoBit17Transition=14294 recorded=2
-[2026-11-10 12:39:32.385] STAGE29_FILTER_STATUS suppressedNoBit17Transition=14547 recorded=2
-[2026-11-10 12:39:32.748] STAGE29_FILTER_STATUS suppressedNoBit17Transition=14890 recorded=2
-[2026-11-10 12:39:32.989] STAGE29_FILTER_STATUS suppressedNoBit17Transition=15141 recorded=2
-[2026-11-10 12:39:33.351] STAGE29_BIT17_TRANSITION seq=3 side=P1 tid=8168 tick=100505812 time=12:39:33.242 qpc=0x000000EA02A6CC92 eipAfter=0x0080FAD2 inAALib=1 rvaAfter=0x0000FAD2 player=0x0E4A1F78 field=0x0E4A5AFC old=0x00000000 new=0x00020000 shadowInitialized=1 oldBit17=0 newBit17=1 shadowBit17Changed=1 dr6=0xFFFF0FF0 EAX=0E4A5AFC EBX=003EFC30 ECX=00000011 EDX=00020000 ESI=0E4A1F78 EDI=29CEC020 EBP=003EFC00 ESP=003EFC00 EFLAGS=00000206 bytes_at_EIP_minus_16=05 49 83 C9 E0 41 BA 01 00 00 00 D3 E2 5E 09 10 5D C2 04 00 CC CC CC CC  stackMask=0xFF stack=[003EFC18,008C6507,00000071,0E4A1FB8,0E4A1F78,0E4A1FA8,003EFC3C,00896801]
-[2026-11-10 12:39:33.352] STAGE29_BIT17_TRANSITION seq=4 side=P1 tid=8168 tick=100505812 time=12:39:33.243 qpc=0x000000EA02A6DAED eipAfter=0x008ED1A9 inAALib=1 rvaAfter=0x000ED1A9 player=0x0E4A1F78 field=0x0E4A5AFC old=0x00030000 new=0x00010000 shadowInitialized=1 oldBit17=1 newBit17=0 shadowBit17Changed=1 dr6=0xFFFF0FF0 EAX=00000000 EBX=00000001 ECX=00000000 EDX=00000000 ESI=0E4A1F78 EDI=FFFFFFEF EBP=003EF998 ESP=003EF96C EFLAGS=00000206 bytes_at_EIP_minus_16=C4 0C 84 C0 75 0A 81 A6 84 3B 00 00 FF FF F9 FF 8B 86 78 39 00 00 83 F8  stackMask=0xFF stack=[00000000,00000000,0E4A1F78,00000000,00000000,00000000,00000000,00000001]
-[2026-11-10 12:39:33.352] STAGE29_FILTER_STATUS suppressedNoBit17Transition=15422 recorded=4
-[2026-11-10 12:39:33.719] STAGE29_FILTER_STATUS suppressedNoBit17Transition=15700 recorded=4
-[2026-11-10 12:39:34.206] STAGE29_FILTER_STATUS suppressedNoBit17Transition=16006 recorded=4
-[2026-11-10 12:39:34.813] STAGE29_FILTER_STATUS suppressedNoBit17Transition=16314 recorded=4
-[2026-11-10 12:39:35.179] STAGE29_FILTER_STATUS suppressedNoBit17Transition=16579 recorded=4
-[2026-11-10 12:39:35.544] STAGE29_FILTER_STATUS suppressedNoBit17Transition=16992 recorded=4
-[2026-11-10 12:39:35.788] STAGE29_FILTER_STATUS suppressedNoBit17Transition=17307 recorded=4
-[2026-11-10 12:39:36.755] STAGE29_FILTER_STATUS suppressedNoBit17Transition=17602 recorded=4
-[2026-11-10 12:39:37.242] STAGE29_FILTER_STATUS suppressedNoBit17Transition=17896 recorded=4
-[2026-11-10 12:39:37.732] STAGE29_FILTER_STATUS suppressedNoBit17Transition=18207 recorded=4
-[2026-11-10 12:39:38.221] STAGE29_FILTER_STATUS suppressedNoBit17Transition=18542 recorded=4
+[2026-11-10 12:52:07.055] STAGE29_BIT17_TRANSITIONS_BUILD=2026-11-09-r1
+[2026-11-10 12:52:07.056] STAGE29_CONFIG: EnableStage29Bit17TransitionsOnly=1 EnablePlayerBit17WriteTrace=1 EnableStage26ObjectBit0WriteTrace=0 EnableControlFieldTrace=0
+[2026-11-10 12:52:07.762] STAGE29 active. Write-only DR0/DR1 watchpoints cover P1/P2 player+0x3B84 bit17 transitions: P1=0x0E4A5AFC (RVA 0x0DCA5AFC, initial=0x00000000), P2=0x0E4D0824 (RVA 0x0DCD0824, initial=0x00000000). DR7 config=0x00DD0005; scan=100 ms; COMvsCOM writer TID=9928 excluded; existing DR0/DR1 owners preserved.
+[2026-11-10 12:52:07.763] Each record is a post-write hardware-breakpoint snapshot. EIP/RVA is after the writing instruction; bytes_at_EIP_minus_16 allows offline instruction decoding. oldValue is a best-effort shadow of the last observed field value; shadowInitialized=1 means only that the initial baseline read succeeded, not that no write was missed on an uninstrumented thread.
+[2026-11-10 12:52:07.763] STAGE29_NOTE: Only bit17 changes are retained; the shadow tracks all observed writes. P1/P2 stack snapshots and QPC allow correlation with Stage15 branch logs. Uninstrumented threads can still cause missed transitions.
+[2026-11-10 12:52:07.797] Hardware watchpoint install batch: 39 new game thread(s).
+[2026-11-10 12:52:07.940] Hardware watchpoint install batch: 16 new game thread(s).
+[2026-11-10 12:52:09.290] Hardware watchpoint install batch: 1 new game thread(s).
+[2026-11-10 12:52:09.413] Hardware watchpoint install batch: 1 new game thread(s).
+[2026-11-10 12:52:21.104] STAGE29_FILTER_STATUS suppressedNoBit17Transition=286 recorded=0
+[2026-11-10 12:52:21.345] STAGE29_FILTER_STATUS suppressedNoBit17Transition=582 recorded=0
+[2026-11-10 12:52:21.587] STAGE29_FILTER_STATUS suppressedNoBit17Transition=850 recorded=0
+[2026-11-10 12:52:21.831] STAGE29_FILTER_STATUS suppressedNoBit17Transition=1118 recorded=0
+[2026-11-10 12:52:22.075] STAGE29_FILTER_STATUS suppressedNoBit17Transition=1424 recorded=0
+[2026-11-10 12:52:22.317] STAGE29_FILTER_STATUS suppressedNoBit17Transition=1739 recorded=0
+[2026-11-10 12:52:22.561] STAGE29_FILTER_STATUS suppressedNoBit17Transition=2014 recorded=0
+[2026-11-10 12:52:22.805] STAGE29_FILTER_STATUS suppressedNoBit17Transition=2357 recorded=0
+[2026-11-10 12:52:23.045] STAGE29_FILTER_STATUS suppressedNoBit17Transition=2662 recorded=0
+[2026-11-10 12:52:23.294] STAGE29_FILTER_STATUS suppressedNoBit17Transition=2978 recorded=0
+[2026-11-10 12:52:23.538] STAGE29_FILTER_STATUS suppressedNoBit17Transition=3228 recorded=0
+[2026-11-10 12:52:23.661] STAGE29_BIT17_TRANSITION seq=1 side=P2 tid=13012 tick=101276140 time=12:52:23.576 qpc=0x000000EBCDCE6D8E eipAfter=0x0080FAD2 inAALib=1 rvaAfter=0x0000FAD2 player=0x0E4CCCA0 field=0x0E4D0824 old=0x00000000 new=0x00020000 shadowInitialized=1 oldBit17=0 newBit17=1 shadowBit17Changed=1 dr6=0xFFFF0FF0 EAX=0E4D0824 EBX=0E9EFB00 ECX=00000011 EDX=00020000 ESI=0E4CCCA0 EDI=29F3BC50 EBP=0E9EFAD0 ESP=0E9EFAD0 EFLAGS=00000206 bytes_at_EIP_minus_16=05 49 83 C9 E0 41 BA 01 00 00 00 D3 E2 5E 09 10 5D C2 04 00 CC CC CC CC  stackMask=0xFF stack=[0E9EFAE8,008C6507,00000071,0E4CCCE0,0E4CCCA0,0E4CCCD0,0E9EFB0C,00896801]
+[2026-11-10 12:52:23.661] STAGE29_BIT17_TRANSITION seq=2 side=P2 tid=13012 tick=101276140 time=12:52:23.576 qpc=0x000000EBCDCE7A8F eipAfter=0x008ED1A9 inAALib=1 rvaAfter=0x000ED1A9 player=0x0E4CCCA0 field=0x0E4D0824 old=0x00030000 new=0x00010000 shadowInitialized=1 oldBit17=1 newBit17=0 shadowBit17Changed=1 dr6=0xFFFF0FF0 EAX=00000000 EBX=00000000 ECX=00000000 EDX=00000000 ESI=0E4CCCA0 EDI=FFFFFFEF EBP=0E9EF868 ESP=0E9EF83C EFLAGS=00000206 bytes_at_EIP_minus_16=C4 0C 84 C0 75 0A 81 A6 84 3B 00 00 FF FF F9 FF 8B 86 78 39 00 00 83 F8  stackMask=0xFF stack=[00000000,00000000,0E4CCCA0,00000000,00000000,00000000,00000000,00000000]
+[2026-11-10 12:52:23.782] STAGE29_FILTER_STATUS suppressedNoBit17Transition=3540 recorded=2
+[2026-11-10 12:52:24.024] STAGE29_FILTER_STATUS suppressedNoBit17Transition=3834 recorded=2
+[2026-11-10 12:52:24.265] STAGE29_FILTER_STATUS suppressedNoBit17Transition=4186 recorded=2
+[2026-11-10 12:52:24.507] STAGE29_FILTER_STATUS suppressedNoBit17Transition=4439 recorded=2
+[2026-11-10 12:52:24.868] STAGE29_FILTER_STATUS suppressedNoBit17Transition=4775 recorded=2
+[2026-11-10 12:52:25.237] STAGE29_FILTER_STATUS suppressedNoBit17Transition=5144 recorded=2
+[2026-11-10 12:52:25.599] STAGE29_FILTER_STATUS suppressedNoBit17Transition=5501 recorded=2
+[2026-11-10 12:52:25.966] STAGE29_FILTER_STATUS suppressedNoBit17Transition=5811 recorded=2
+[2026-11-10 12:52:26.208] STAGE29_FILTER_STATUS suppressedNoBit17Transition=6093 recorded=2
+[2026-11-10 12:52:26.567] STAGE29_FILTER_STATUS suppressedNoBit17Transition=6400 recorded=2
+[2026-11-10 12:52:26.927] STAGE29_FILTER_STATUS suppressedNoBit17Transition=6730 recorded=2
+[2026-11-10 12:52:27.168] STAGE29_FILTER_STATUS suppressedNoBit17Transition=7058 recorded=2
+[2026-11-10 12:52:27.410] STAGE29_FILTER_STATUS suppressedNoBit17Transition=7349 recorded=2
+[2026-11-10 12:52:27.773] STAGE29_FILTER_STATUS suppressedNoBit17Transition=7662 recorded=2
+[2026-11-10 12:52:28.017] STAGE29_FILTER_STATUS suppressedNoBit17Transition=7972 recorded=2
+[2026-11-10 12:52:28.139] STAGE29_BIT17_TRANSITION seq=3 side=P1 tid=13012 tick=101280625 time=12:52:28.063 qpc=0x000000EBD07AEE1F eipAfter=0x0080FAD2 inAALib=1 rvaAfter=0x0000FAD2 player=0x0E4A1F78 field=0x0E4A5AFC old=0x00000000 new=0x00020000 shadowInitialized=1 oldBit17=0 newBit17=1 shadowBit17Changed=1 dr6=0xFFFF0FF0 EAX=0E4A5AFC EBX=0E9EFB00 ECX=00000011 EDX=00020000 ESI=0E4A1F78 EDI=29F3B020 EBP=0E9EFAD0 ESP=0E9EFAD0 EFLAGS=00000206 bytes_at_EIP_minus_16=05 49 83 C9 E0 41 BA 01 00 00 00 D3 E2 5E 09 10 5D C2 04 00 CC CC CC CC  stackMask=0xFF stack=[0E9EFAE8,008C6507,00000071,0E4A1FB8,0E4A1F78,0E4A1FA8,0E9EFB0C,00896801]
+[2026-11-10 12:52:28.139] STAGE29_BIT17_TRANSITION seq=4 side=P1 tid=13012 tick=101280625 time=12:52:28.063 qpc=0x000000EBD07AFC9E eipAfter=0x008ED1A9 inAALib=1 rvaAfter=0x000ED1A9 player=0x0E4A1F78 field=0x0E4A5AFC old=0x00030000 new=0x00010000 shadowInitialized=1 oldBit17=1 newBit17=0 shadowBit17Changed=1 dr6=0xFFFF0FF0 EAX=00000000 EBX=00000001 ECX=00000000 EDX=00000000 ESI=0E4A1F78 EDI=FFFFFFEF EBP=0E9EF868 ESP=0E9EF83C EFLAGS=00000206 bytes_at_EIP_minus_16=C4 0C 84 C0 75 0A 81 A6 84 3B 00 00 FF FF F9 FF 8B 86 78 39 00 00 83 F8  stackMask=0xFF stack=[00000000,00000000,0E4A1F78,00000000,00000000,00000000,00000000,00000001]
+[2026-11-10 12:52:28.379] STAGE29_FILTER_STATUS suppressedNoBit17Transition=8295 recorded=4
+[2026-11-10 12:52:28.619] STAGE29_FILTER_STATUS suppressedNoBit17Transition=8618 recorded=4
+[2026-11-10 12:52:29.102] STAGE29_FILTER_STATUS suppressedNoBit17Transition=8939 recorded=4
+[2026-11-10 12:52:29.466] STAGE29_FILTER_STATUS suppressedNoBit17Transition=9228 recorded=4
+[2026-11-10 12:52:29.834] STAGE29_FILTER_STATUS suppressedNoBit17Transition=9480 recorded=4
+[2026-11-10 12:52:30.199] STAGE29_FILTER_STATUS suppressedNoBit17Transition=9824 recorded=4
+[2026-11-10 12:52:30.563] STAGE29_FILTER_STATUS suppressedNoBit17Transition=10138 recorded=4
+[2026-11-10 12:52:30.923] STAGE29_FILTER_STATUS suppressedNoBit17Transition=10422 recorded=4
+[2026-11-10 12:52:31.287] STAGE29_FILTER_STATUS suppressedNoBit17Transition=10776 recorded=4
+[2026-11-10 12:52:31.773] STAGE29_FILTER_STATUS suppressedNoBit17Transition=11083 recorded=4
+[2026-11-10 12:52:32.138] STAGE29_FILTER_STATUS suppressedNoBit17Transition=11430 recorded=4
+[2026-11-10 12:52:32.515] STAGE29_FILTER_STATUS suppressedNoBit17Transition=11768 recorded=4
+[2026-11-10 12:52:32.880] STAGE29_FILTER_STATUS suppressedNoBit17Transition=12052 recorded=4
+[2026-11-10 12:52:33.365] STAGE29_FILTER_STATUS suppressedNoBit17Transition=12340 recorded=4
+[2026-11-10 12:52:33.976] STAGE29_FILTER_STATUS suppressedNoBit17Transition=12600 recorded=4
+[2026-11-10 12:52:34.459] STAGE29_FILTER_STATUS suppressedNoBit17Transition=12869 recorded=4
+[2026-11-10 12:52:34.943] STAGE29_FILTER_STATUS suppressedNoBit17Transition=13163 recorded=4
+[2026-11-10 12:52:35.310] STAGE29_FILTER_STATUS suppressedNoBit17Transition=13428 recorded=4
+[2026-11-10 12:52:35.555] STAGE29_FILTER_STATUS suppressedNoBit17Transition=13738 recorded=4
+[2026-11-10 12:52:35.799] STAGE29_FILTER_STATUS suppressedNoBit17Transition=13997 recorded=4
+[2026-11-10 12:52:36.039] STAGE29_FILTER_STATUS suppressedNoBit17Transition=14298 recorded=4
+[2026-11-10 12:52:36.400] STAGE29_FILTER_STATUS suppressedNoBit17Transition=14645 recorded=4
+[2026-11-10 12:52:36.761] STAGE29_FILTER_STATUS suppressedNoBit17Transition=14926 recorded=4
+[2026-11-10 12:52:36.881] Hardware watchpoint install batch: 2 new game thread(s).
+[2026-11-10 12:52:37.122] STAGE29_FILTER_STATUS suppressedNoBit17Transition=15207 recorded=4
+[2026-11-10 12:52:37.609] STAGE29_FILTER_STATUS suppressedNoBit17Transition=15479 recorded=4
+[2026-11-10 12:52:37.972] STAGE29_FILTER_STATUS suppressedNoBit17Transition=15756 recorded=4
+[2026-11-10 12:52:38.214] STAGE29_FILTER_STATUS suppressedNoBit17Transition=16022 recorded=4
+[2026-11-10 12:52:38.573] STAGE29_FILTER_STATUS suppressedNoBit17Transition=16296 recorded=4
+[2026-11-10 12:52:38.939] STAGE29_FILTER_STATUS suppressedNoBit17Transition=16617 recorded=4
+[2026-11-10 12:52:39.194] STAGE29_FILTER_STATUS suppressedNoBit17Transition=16887 recorded=4
+[2026-11-10 12:52:39.555] STAGE29_FILTER_STATUS suppressedNoBit17Transition=17230 recorded=4
+[2026-11-10 12:52:39.914] STAGE29_FILTER_STATUS suppressedNoBit17Transition=17577 recorded=4
+[2026-11-10 12:52:40.276] STAGE29_FILTER_STATUS suppressedNoBit17Transition=17869 recorded=4
+[2026-11-10 12:52:40.639] STAGE29_FILTER_STATUS suppressedNoBit17Transition=18212 recorded=4
+[2026-11-10 12:52:41.007] STAGE29_FILTER_STATUS suppressedNoBit17Transition=18536 recorded=4
+[2026-11-10 12:52:41.129] STAGE29_FILTER_STATUS suppressedNoBit17Transition=18800 recorded=4
+[2026-11-10 12:52:41.492] STAGE29_FILTER_STATUS suppressedNoBit17Transition=19165 recorded=4
+[2026-11-10 12:52:41.733] STAGE29_FILTER_STATUS suppressedNoBit17Transition=19447 recorded=4
+[2026-11-10 12:52:41.977] STAGE29_FILTER_STATUS suppressedNoBit17Transition=19794 recorded=4
+[2026-11-10 12:52:42.339] STAGE29_FILTER_STATUS suppressedNoBit17Transition=20103 recorded=4
+[2026-11-10 12:52:42.697] STAGE29_FILTER_STATUS suppressedNoBit17Transition=20376 recorded=4
+[2026-11-10 12:52:42.946] STAGE29_FILTER_STATUS suppressedNoBit17Transition=20652 recorded=4
+[2026-11-10 12:52:43.307] STAGE29_FILTER_STATUS suppressedNoBit17Transition=20907 recorded=4
+[2026-11-10 12:52:43.548] STAGE29_FILTER_STATUS suppressedNoBit17Transition=21195 recorded=4
+[2026-11-10 12:52:43.913] STAGE29_FILTER_STATUS suppressedNoBit17Transition=21500 recorded=4
+[2026-11-10 12:52:44.158] STAGE29_FILTER_STATUS suppressedNoBit17Transition=21765 recorded=4
+[2026-11-10 12:52:44.518] STAGE29_FILTER_STATUS suppressedNoBit17Transition=22107 recorded=4
+[2026-11-10 12:52:44.888] STAGE29_FILTER_STATUS suppressedNoBit17Transition=22402 recorded=4
+[2026-11-10 12:52:45.373] STAGE29_FILTER_STATUS suppressedNoBit17Transition=22688 recorded=4
+[2026-11-10 12:52:45.615] STAGE29_FILTER_STATUS suppressedNoBit17Transition=22949 recorded=4
+[2026-11-10 12:52:46.458] STAGE29_FILTER_STATUS suppressedNoBit17Transition=23224 recorded=4
+[2026-11-10 12:52:46.951] STAGE29_FILTER_STATUS suppressedNoBit17Transition=23522 recorded=4
+[2026-11-10 12:52:47.316] STAGE29_FILTER_STATUS suppressedNoBit17Transition=23816 recorded=4
+[2026-11-10 12:52:47.681] STAGE29_FILTER_STATUS suppressedNoBit17Transition=24095 recorded=4
+[2026-11-10 12:52:48.045] STAGE29_FILTER_STATUS suppressedNoBit17Transition=24347 recorded=4
+[2026-11-10 12:52:48.405] STAGE29_FILTER_STATUS suppressedNoBit17Transition=24616 recorded=4
+[2026-11-10 12:52:48.767] STAGE29_FILTER_STATUS suppressedNoBit17Transition=24868 recorded=4
+[2026-11-10 12:52:49.138] STAGE29_FILTER_STATUS suppressedNoBit17Transition=25127 recorded=4

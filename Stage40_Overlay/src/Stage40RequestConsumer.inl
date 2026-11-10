@@ -149,7 +149,12 @@ __declspec(naked) void S40EntryHook()
 __declspec(naked) void S40SelectHook()
 {
     __asm {
+        // Native 125920 is cdecl(arg0,arg1), AD-E8480 caller cleans 8 bytes.
+        // Each push moves ESP by 4: the same [esp+8] fetches arg1 then arg0.
+        push dword ptr [esp+8]
+        push dword ptr [esp+8]
         call dword ptr [g_s40NativeSelect]
+        add esp,8
         pushfd
         pushad
         mov ebx,esp
@@ -172,7 +177,14 @@ __declspec(naked) void S40SelectHook()
 __declspec(naked) void S40ActorHook()
 {
     __asm {
+        // Native 1357F0 is cdecl(arg0,arg1,arg2,arg3), caller cleans 16.
+        // Four equal [esp+10h] offsets replay arg3,arg2,arg1,arg0 in order.
+        push dword ptr [esp+10h]
+        push dword ptr [esp+10h]
+        push dword ptr [esp+10h]
+        push dword ptr [esp+10h]
         call dword ptr [g_s40NativeActor]
+        add esp,10h
         pushfd
         pushad
         mov ebx,esp

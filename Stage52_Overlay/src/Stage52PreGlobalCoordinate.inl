@@ -145,7 +145,7 @@ __declspec(naked) void S52NativeAED90Hook()
     fxsave [edi]
     fninit
     cld
-    push 0AF12h
+    push 0AF112h
     push ebx
     call S52Enter
     add esp,8

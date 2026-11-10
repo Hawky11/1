@@ -169,6 +169,7 @@ bool InstallStage49Hooks()
     const BYTE root1[]={0x8B,0x35,0xC0,0x02,0x2E,0x0E};
     const BYTE ecxMove[]={0x8B,0xCE};
     const BYTE nativePrologue[]={0x55,0x8B,0xEC,0x83,0xEC,0x08,0x56,0x8B,0xF1};
+    const BYTE nativeRet[]={0xC3};
     const BYTE linkRead[]={0x8B,0xBE,0xD0,0x02,0x00,0x00};
     const BYTE idGuard[]={0x3B,0x86,0x80,0x02,0x00,0x00};
     const BYTE sourceX[]={0xD9,0x47,0x7C};
@@ -185,7 +186,7 @@ bool InstallStage49Hooks()
         if(!same(0xAF11Eu,root0,sizeof(root0))||
            !same(0xAF19Eu,root1,sizeof(root1))||
            !same(0x1E9170u,nativePrologue,sizeof(nativePrologue))||
-           !same(0x1E9167u,reinterpret_cast<const BYTE*>("\\xC3"),1u)||
+           !same(0x1E9167u,nativeRet,sizeof(nativeRet))||
            !same(0x1E92C8u,linkRead,sizeof(linkRead))||
            !same(0x1E92D1u,idGuard,sizeof(idGuard))||
            !same(0x1E92DDu,sourceX,sizeof(sourceX))||

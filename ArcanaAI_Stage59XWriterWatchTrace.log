@@ -1,0 +1,3 @@
+[2026-11-10 21:53:34] STAGE59_X_WRITER_WATCH_BUILD=2026-11-10-r1; diagnostic only; runtime pending.
+[2026-11-10 21:53:34] STAGE59_WORKER_STARTED; watchpoints not yet verified, await STAGE59_WATCH_ARMED and THREAD_INSTALLED.
+[2026-11-10 21:53:39] ERROR: Stage59 timed out waiting for two readable player+4 object pointers; no registers touched.

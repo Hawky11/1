@@ -1,5 +1,16 @@
 # Next session handoff
 
+## Current — Stage59 r1 startup timed out; Stage59 r2 ONE-FILE FIX source-ready (2026-11-10)
+
+**Source of truth:** [r1 analysis](https://github.com/Hawky11/1/blob/main/Stage59_Runtime/R1_STARTUP_ANALYSIS.md), [frozen r1 six-file logs](https://github.com/Hawky11/1/tree/stage59-r1-runtime-timeout-evidence), [r2 branch](https://github.com/Hawky11/1/tree/stage59-r2-wait-for-combat-objects), [r2 install RU](https://github.com/Hawky11/1/blob/stage59-r2-wait-for-combat-objects/Stage59_Overlay/README_STAGE59_RU.md).
+
+**Stage59 r1 Windows x86 BUILD SUCCEEDED 2026-11-10 21:53:04, DLL 1,152,512 bytes.** Stage55/56/57/58 all installed. Stage59 r1 worker started 21:53:34, its 5-second object pointer wait expired 21:53:39 with `no registers touched`. First valid Stage55 P1/P2 objects appeared only 21:53:53 and Stage56/58 traces from 21:53:55. Thus **Stage59 never armed, no X_WRITE data**; no evidence of missing writes, conflict or actual writer EIP. Stage55 12,606 rows, Stage57 12,624, Stage56 176 (all zero X delta), Stage58 414 (all zero delta), all HEALTH zero errors. There are 368 whole ACDF0 X changes (P1/P2 184 each); do not demand entire-window exact 1:1 nesting because Stage57 has six more per site than Stage55. R1 actual compile is verified, but Stage59 runtime watchpoint/VEH behavior is not.
+
+**Stage59 r2 source ready, build/runtime pending:** On new [stage59-r2-wait-for-combat-objects](https://github.com/Hawky11/1/tree/stage59-r2-wait-for-combat-objects), only `Stage59_Overlay/src/Stage59XWriterWatch.inl` changed vs Stage59 r1. Wait extended to `2400 × Sleep(250ms)=600s` with `STAGE59_WAITING` every ~15s, `STAGE59_OBJECTS_READY` marker; all native hook patches and Stage38 adapter unchanged. User with r1 installed must **REPLACE ONLY** `D:\INCUBATOR\ArcanaAIOverhaul\src\Stage59XWriterWatch.inl`. Keep `ArcanaAI.ini`: in `[AIResearch]`, `EnableControlFieldTrace=0`, `EnablePlayerBit17WriteTrace=0`, `EnableStage59XWriterWatch=1`. Keep rollback DLL Stage59 r1 1,152,512 bytes and Stage58 1,145,344 bytes. Build.bat, require BUILD SUCCEEDED; test game COM-vs-COM after objects exist; require `STAGE59_OBJECTS_READY`, `STAGE59_WATCH_ARMED`, at least one `STAGE59_THREAD_INSTALLED`, inspect `STAGE59_HEALTH`, and then correlate `STAGE59_X_WRITE` QPC/EIP_after with Stage55/57. Upload **six same-run files**: Build.log + Stage59/58/57/56/55 traces (if fail, Build.log + Stage59 trace). Do not label r2 runtime verified until tested. No claim of improved AI.
+
+---
+
+
 ## Current — Stage59 guarded P1/P2 X writer watchpoint SOURCE READY; Windows runtime pending (2026-11-10)
 
 **Stage58 baseline:** [verified report](https://github.com/Hawky11/1/blob/main/Stage58_Runtime/RUNTIME_ANALYSIS.md) and [frozen same-run evidence](https://github.com/Hawky11/1/tree/stage58-runtime-conditional-no-x-evidence). Windows x86 BUILD SUCCEEDED, 1,145,344-byte DLL. Stage55 5,538 strict complete ACDF0 windows, 1,179 X changes (776 pre-tail, 434 in 15CEC0, overlap 31). Stage58 ACF0F→B86A0 411 physical invocations: EAX=0 on 380, all lead to ACF2A (unchanged X this run); EAX=1 on 31, all skip ACF2A. Pre-tail changed 776 windows split 168 before Stage58 PRE, 155 after Stage58 POST, 453 without Stage58 call. No identified actual X writer, no proven gameplay change.

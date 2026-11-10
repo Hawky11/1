@@ -186,7 +186,7 @@ bool InstallStage49Hooks()
         if(!same(0xAF11Eu,root0,sizeof(root0))||
            !same(0xAF19Eu,root1,sizeof(root1))||
            !same(0x1E9170u,nativePrologue,sizeof(nativePrologue))||
-           !same(0x1E9167u,nativeRet,sizeof(nativeRet))||
+           !same(0x1E9381u,nativeRet,sizeof(nativeRet))||
            !same(0x1E92C8u,linkRead,sizeof(linkRead))||
            !same(0x1E92D1u,idGuard,sizeof(idGuard))||
            !same(0x1E92DDu,sourceX,sizeof(sourceX))||

@@ -1,0 +1,80 @@
+[
+  {
+    "candidate": "9",
+    "id": 6,
+    "side": "P2",
+    "parentMatches": 1,
+    "queueMatches": 1,
+    "dispatchMatches": 1,
+    "queueSeq": "6",
+    "dispatchSeq": "27",
+    "queueDelta": 28,
+    "dispatchDelta": 17,
+    "changedMask": "0x02010426"
+  },
+  {
+    "candidate": "26",
+    "id": 12,
+    "side": "P2",
+    "parentMatches": 1,
+    "queueMatches": 1,
+    "dispatchMatches": 1,
+    "queueSeq": "7",
+    "dispatchSeq": "28",
+    "queueDelta": 13,
+    "dispatchDelta": 195,
+    "changedMask": "0x02010406"
+  },
+  {
+    "candidate": "54",
+    "id": 82,
+    "side": "P2",
+    "parentMatches": 1,
+    "queueMatches": 1,
+    "dispatchMatches": 1,
+    "queueSeq": "8",
+    "dispatchSeq": "32",
+    "queueDelta": 14,
+    "dispatchDelta": 19,
+    "changedMask": "0x0200042E"
+  },
+  {
+    "candidate": "119",
+    "id": 20,
+    "side": "P2",
+    "parentMatches": 1,
+    "queueMatches": 1,
+    "dispatchMatches": 1,
+    "queueSeq": "13",
+    "dispatchSeq": "45",
+    "queueDelta": 22,
+    "dispatchDelta": 16,
+    "changedMask": "0x02010006"
+  },
+  {
+    "candidate": "466",
+    "id": 42,
+    "side": "P1",
+    "parentMatches": 1,
+    "queueMatches": 1,
+    "dispatchMatches": 1,
+    "queueSeq": "47",
+    "dispatchSeq": "164",
+    "queueDelta": 26,
+    "dispatchDelta": 17,
+    "changedMask": "0x02010000"
+  },
+  {
+    "candidate": "476",
+    "id": 89,
+    "side": "P2",
+    "parentMatches": 1,
+    "queueMatches": 1,
+    "dispatchMatches": 1,
+    "queueSeq": "51",
+    "dispatchSeq": "172",
+    "queueDelta": 14,
+    "dispatchDelta": 16,
+    "changedMask": "0x0201042E"
+  }
+]

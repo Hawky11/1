@@ -1,0 +1,2 @@
+[2026-11-10 07:08:36] STAGE25_SECONDARY_OBJECT_FLAG_BUILD=2026-11-09-r1
+[2026-11-10 07:08:37] Installed Stage25 secondary-object post-OR observer at RVA 0x000F58C9: validated 7-byte instruction replaced by CALL + 2 NOPs; wrapper executes the identical OR once and restores post-OR EFLAGS.

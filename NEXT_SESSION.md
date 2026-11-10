@@ -1,5 +1,18 @@
 # Next session handoff
 
+## Stage37 runtime verified — 2026-11-10
+
+Upload: `0a87d4c5e93b5115e9288cbde78acf491f18bf4f` (07:10:17 Moscow), evidence branch: [stage37-type1-runtime-evidence](https://github.com/Hawky11/1/tree/stage37-type1-runtime-evidence). Full report: [Stage37_Runtime/RUNTIME_ANALYSIS.md](https://github.com/Hawky11/1/blob/stage37-type1-runtime-evidence/Stage37_Runtime/RUNTIME_ANALYSIS.md).
+
+- Windows x86 build at 07:07:57: BUILD SUCCEEDED, DLL 268288 bytes; only old C4754 warning. Stage37 r1 marker and ENABLED present, EE200 installed; Stage36 r2 3/3 installed with STAGE10_OWN_DLL.
+- 173 consecutive EventDispatch records, 52 type1 and 121 type0. All 52 type1 have exact Stage37 join on dispatchSeq, side, player, tid, payload and both QPC stamps. P1=22/P2=30. All 30 fields readable before/after (3FFFFFFF), all changed masks recomputed correctly; every row changes state.
+- O+278 increments by one in 52/52; P+3A08 and P+3A0C change 51/52, P+3A10 23/52, P+3F64 51/52, P+3B70 49/52. O+184 changes only 3/52 (0->1E); do NOT label it animation ID.
+- 478 consecutive Stage36 CANDIDATE records: 472 FFFFFFFF, 6 positive IDs 6,12,82,20,42,89. All six uniquely match nested ParentFlow F4360, subsequent same P/TID/payload F7C62 queue and EE200/Stage37. INPUT_1E/1F remain unobserved. ID42/dispatch164 changes only P+3F64 and O+278; unchanged bitmap is not a lost command.
+- Stage35 10812 consecutive full-mask rows, 5406 TIMER/FLAGS pairs. No explicit runtime ERROR/WARNING/dropped/overflow in successfully retrieved logs. ProducerCallTrace could not be retrieved (transport closed); its exact blob is archived unchanged, do not claim it was empty or checked. All other 24 uploaded files read, nonempty and newline terminated; no malformed Stage37 rows or sequence gaps in checked streams. Tail flush completeness cannot be proved solely from logs.
+- Next Stage38: trace readers of changed object lifecycle fields (especially O+278 and player P+3F64) to a precise native per-frame action/animation consumer using original SHA-pinned AALib.exe already in Library; no need to request EXE. This proves controller/object state changes, not visible attacks/hits or an AI bug. No new DLL needed for this completed review. Preserve Stage37 source and all older branches, keep Stage29 AITrace.cpp.
+
+---
+
 ## Current handoff — Stage37 source-only type1 controller/object state observer ready (2026-11-10)
 
 **Active new Stage37 branch:** [stage37-type1-controller-object-commit-trace](https://github.com/Hawky11/1/tree/stage37-type1-controller-object-commit-trace). [Full static research](https://github.com/Hawky11/1/blob/stage37-type1-controller-object-commit-trace/Stage37_Analysis/STATIC_ANALYSIS.md), [original SHA verifier](https://github.com/Hawky11/1/blob/stage37-type1-controller-object-commit-trace/Stage37_Analysis/tools/verify_stage37.py), [full Russian install & output schema](https://github.com/Hawky11/1/blob/stage37-type1-controller-object-commit-trace/Stage37_Overlay/README_STAGE37_RU.md). **Windows x86 Stage37 build/runtime NOT yet verified; new Stage37 log must not be claimed to exist until user installs & uploads it.** Preserve completed evidence branch `stage36-control-to-command-r2-runtime-evidence` @ `b3c879c610fb88c15de4519a4fdd6a13f7bc2948`, source-only r2 branch @ `4918328a2eca6b42eb9525802530827359eefe4e`, and all previous historical stages unchanged.

@@ -1,0 +1,2 @@
+[2026-11-10 07:08:36] STAGE24_RESOLVER_CONSUMER_BUILD=2026-11-09-r1
+[2026-11-10 07:08:37] Installed Stage24 resolver-consumer observer at callsite RVA 0x000EE306 -> helper RVA 0x000F57D0; original four cdecl arguments are replayed once; table/output reads are passive; helper result registers/EFLAGS and caller-owned stack are preserved; suspended=39 thread(s).

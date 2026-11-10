@@ -1,0 +1,2 @@
+[2026-11-10 07:08:36] STAGE21_PAYLOAD_1E_CONSUMER_BUILD=2026-11-08-r2
+[2026-11-10 07:08:37] Installed both Stage21 observational CALL wrappers: classifier RVA=0x000EE426 -> helper=0x000E8CF0; fallback slot-clear RVA=0x000EE446 -> helper=0x000F7EB0; suspended=39 thread(s). Original helper calls and caller stack cleanup are preserved.

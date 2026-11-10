@@ -1,0 +1,2 @@
+[2026-11-10 07:08:36] STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2
+[2026-11-10 07:08:37] Installed Stage23 resolver-result observer at callsite RVA 0x000EE273 -> helper RVA 0x0012EAC0; original four cdecl arguments are replayed once; result registers/EFLAGS and caller-owned stack are preserved; suspended=39 thread(s).

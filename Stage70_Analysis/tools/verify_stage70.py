@@ -70,6 +70,7 @@ def verify_source(src, adapter, read_rva):
     assert 'r.NewDeferred!=r.SourceEdx' in src
     assert 'STAGE70_INSTALLED 1/1' in src
     assert 'STAGE70_DEFERRED_WRITE' in src
+    assert 'siteRVA=156784 originalStoreRVA=156787' in src
     assert 'STAGE70_HEALTH' in src
     assert 'kS70Capacity=4096u' in src
 

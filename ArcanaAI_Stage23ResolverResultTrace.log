@@ -1,2 +1,3 @@
-[2026-11-10 15:56:04] STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2
-[2026-11-10 15:56:05] Installed Stage23 resolver-result observer at callsite RVA 0x000EE273 -> helper RVA 0x0012EAC0; original four cdecl arguments are replayed once; result registers/EFLAGS and caller-owned stack are preserved; suspended=37 thread(s).
+[2026-11-10 16:14:58] STAGE23_RESOLVER_RESULT_BUILD=2026-11-09-r2
+[2026-11-10 16:14:59] Installed Stage23 resolver-result observer at callsite RVA 0x000EE273 -> helper RVA 0x0012EAC0; original four cdecl arguments are replayed once; result registers/EFLAGS and caller-owned stack are preserved; suspended=37 thread(s).
+[2026-11-10 16:15:38] STAGE23_RESOLVER_RESULT seq=1 side=P1 tid=6816 tick=113470578 qpc=1134714530842 callReturnRVA=0x000EE278 player=0x0E4A1F78 dispatchType=1 dispatchPayload=0x0000001E resolverRVA=0x0012EAC0 resolverRecord=0x05ABF490 resolverArgs=(0000000A,0000000A,0000001E,00000026) recordReadable=1 recordDwords=(1F03FF60,05000012,00032413) resolverByte02=3 resolverByte03=31 resolverByte04=18 resolverByte0B=0 playerState3978=0x0000000A playerState3F20=0x0000000A playerField1224=0x00000026 eflagsAfterResolver=0x00000283

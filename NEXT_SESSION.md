@@ -6,6 +6,8 @@
 
 **NEXT:** Stage89 static disassembly of SHA-pinned AALib.exe native reader paths from P+3A08/0C/10, prioritize exact downstream consumer and identify safe observer without collision; do not re-hook EE306 or enable Stage36 collision with Stage82. Only then implement/read-only test and connect to actual gameplay if observed. Seek natural selector2. Preserve Stage88 DLL backup and immutable uploaded log commit; no AI improvement or confirmed hit.
 
+**Stage89 STATIC DISCOVERY (not runtime-tested):** [read this before Stage89 code](Stage89_Analysis/STATIC_ANALYSIS.md). Exact helper F58E0 `arg=0x26` tests `P+3A0C & (0x200|0x400|0x800)` then, if all clear, generic bitmap bit38 in `P+3A10`. Four direct literal-0x26 callsites: `9A870/9AA20/9AB00/AAB55`. `AAB55` tests AL and conditionally reaches `AAB65→E8560` if AL=0. **No evidence these reader callsites ran in the Stage88 log yet.** Stage89 should instrument a narrow exact site, preserve native F58E0 once and use same-session P/TID/QPC correlation. Source-only stage not built/prepared yet.
+
 ---
 
 ## Current — Stage85 rare AFTER-JOIN selector path VERIFIED; Stage86 single E8560 CALL observer SOURCE READY (2026-11-11)

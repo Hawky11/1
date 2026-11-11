@@ -1,0 +1,108 @@
+{
+  "stage": 76,
+  "status": "SOURCE READY; STATIC MACHINE OPCODES VERIFIED; WINDOWS BUILD AND GAME RUNTIME UNTESTED",
+  "originalAALibSHA256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "previousStage74UserDllBytes": 1893376,
+  "previousStage70R2DllBytes": 1892864,
+  "sourceBlobs": {
+    "originalStage74Adapter": "106dca56d662fe1c8e0b7083013a535b67cde3c8",
+    "stage76Adapter": "f439a0f35e08891590acdb6099afd04ed8d821a4",
+    "stage76NewProbe": "4d1fad129a6269c764d6950fd8a8269bb6b18189"
+  },
+  "sourceAudit": {
+    "adapterExactEdits": 3,
+    "newPassiveCallWrappers": 3,
+    "originalCallTargetsReplayed": 3,
+    "balancedSaveRestoreRegions": 6,
+    "newHardwareDRWatchpoints": 0,
+    "newVEHHandlers": 0,
+    "noGameplayStateWritesAdded": true,
+    "WindowsBuildDone": false,
+    "gameTestDone": false
+  },
+  "originalCallsites": [
+    {
+      "phase": 0,
+      "site": "0EE7D1",
+      "bytes": "E8 AA FC FF FF",
+      "target": "0EE480",
+      "continuation": "0EE7D6",
+      "nativeArgumentConvention": "ECX=P"
+    },
+    {
+      "phase": 1,
+      "site": "0EE7D6",
+      "bytes": "E8 C5 A5 FF FF",
+      "target": "0E8DA0",
+      "continuation": "0EE7DB",
+      "nativeArgumentConvention": "ESI=P"
+    },
+    {
+      "phase": 2,
+      "site": "0EE7EA",
+      "bytes": "E8 F1 FD FF FF",
+      "target": "0EE5E0",
+      "continuation": "0EE7EF",
+      "nativeArgumentConvention": "P argument already PUSH ESI"
+    }
+  ],
+  "fields": [
+    {
+      "index": 0,
+      "offset": "3F50",
+      "name": "selector"
+    },
+    {
+      "index": 1,
+      "offset": "3F54",
+      "name": "selectorState"
+    },
+    {
+      "index": 2,
+      "offset": "3A2C",
+      "name": "eventHeader"
+    },
+    {
+      "index": 3,
+      "offset": "3A30",
+      "name": "currentEventCodePacked"
+    },
+    {
+      "index": 4,
+      "offset": "3A34",
+      "name": "previousEventModeAndCodePacked"
+    },
+    {
+      "index": 5,
+      "offset": "3ED0",
+      "name": "callbackPtr"
+    },
+    {
+      "index": 6,
+      "offset": "3ED4",
+      "name": "callbackParam"
+    },
+    {
+      "index": 7,
+      "offset": "3B7C",
+      "name": "stateFlags"
+    },
+    {
+      "index": 8,
+      "offset": "3F4C",
+      "name": "immediateRequest"
+    },
+    {
+      "index": 9,
+      "offset": "0004",
+      "name": "objectPointer"
+    }
+  ],
+  "risks": [
+    "New CALL wrappers change callee-visible return address",
+    "Windows x86 MSVC compilation not tested",
+    "Runtime timing/behavior may change due to instrumentation",
+    "No exact numeric selector writer EIP proven"
+  ],
+  "next": "User builds Stage76 overlay and submits same-session Stage76+Stage38+Stage65+Stage70+Stage59+Build logs; Stage77 correlates phase"
+}

@@ -1,0 +1,85 @@
+{
+  "stage": 71,
+  "classification": "STATIC VERIFIED / RUNTIME PRODUCER IP UNOBSERVED",
+  "date": "2026-11-11",
+  "baseEvidenceBranch": "stage70-r2-runtime-evidence",
+  "originalExeSHA256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "explicitLiteralOneProducer": {
+    "functionRVA": "155B70",
+    "siteRVA": "155D29",
+    "opcodes": "C7 86 50 3F 00 00 01 00 00 00",
+    "player": "ESI = [callback argument]",
+    "writes": "DWORD [P+3F50] = 1",
+    "branchAState": {
+      "site": "155D1D",
+      "value": 4
+    },
+    "branchBState": {
+      "site": "155D74",
+      "value": 3,
+      "joinRVA": "155D27"
+    },
+    "eventCode": "21",
+    "eventCallRVA": "155D3C",
+    "eventTargetRVA": "0F2DE0",
+    "directCallerSites": [
+      "1566F0",
+      "1560B9"
+    ],
+    "returnsEarlyOnSetterSuccess": true
+  },
+  "directMovWriterInventory": {
+    "total": 20,
+    "literalOne": 1,
+    "literalZero": 9,
+    "registerDerived": 10,
+    "nonExhaustive": true,
+    "registerDerivedSites": [
+      "0F3DE9",
+      "0F3E02",
+      "0F3F50",
+      "0F3F69",
+      "0F466F",
+      "0F4688",
+      "0F48A9",
+      "0F48C2",
+      "0F7D22",
+      "0F7D38"
+    ],
+    "zeroSites": [
+      "0F3E0A",
+      "0F3F71",
+      "0F4690",
+      "0F48CA",
+      "0F7D43",
+      "124CFE",
+      "155669",
+      "1BDDDE",
+      "1BF38E"
+    ]
+  },
+  "previousRuntime": {
+    "sessionLocal": "2026-11-11 02:54:29",
+    "stage65seq319": {
+      "callerRVA": "156769",
+      "immediateRequest": "2F"
+    },
+    "stage70seq1": {
+      "selectorBefore": 1,
+      "selectorAfter": 1,
+      "sourceEDX": "25",
+      "deferredBefore": "FFFFFFFF",
+      "deferredAfter": "25"
+    },
+    "provenSameRunRequestToDeferred": true,
+    "selectorWriterEipNotCaptured": true
+  },
+  "unknowns": [
+    "Whether the actual Stage70 selector=1 was written by native 155D29 or one of 10 register-derived stores",
+    "Which native branch/predicate conditions were met at selector choice time",
+    "Whether other aliased/indirect writes of P+3F50 exist",
+    "High-level meaning of event code 21 and selector's strategic role",
+    "Exact O+30 arming instruction in Stage70 session"
+  ],
+  "next": "Stage72: static callback scheduler/field writer ownership audit, only then a passive instrument if safe; preserve existing Stage70 DLL and DR0/DR1"
+}

@@ -1,0 +1,118 @@
+{
+  "stage": 79,
+  "evidenceCommit": "1b2aadaeabeebf959fa0575cf59023060e481323",
+  "status": "Windows x86 build installed runtime proven; native call EFFE8->E89E0 changes selector in three exact windows; exact internal writer EIP unobserved",
+  "build": {
+    "start": "2026-11-11 14:19:14.08",
+    "succeeded": true,
+    "dllBytes": 1918976,
+    "oldWarning": "C4754"
+  },
+  "game": {
+    "gameBase": "00280000",
+    "thread": 12708,
+    "P1": "0DF21F78",
+    "P2": "0DF4CCA0",
+    "O1": "29DBA020",
+    "O2": "29DBAC50"
+  },
+  "rows": {
+    "stage38": 4315,
+    "stage77": 4315,
+    "stage76": 8718,
+    "phase0": 4359,
+    "phase1": 4359,
+    "phase2": 0,
+    "stage79": 3808,
+    "stage79Health": 30,
+    "stage78LiteralOneHits": 0
+  },
+  "dataHealth": {
+    "stage79MasksAllFull": true,
+    "stage77NativeSelectorChanges": 0,
+    "stage79Errors": 0,
+    "stage76Errors": 0,
+    "stage77Errors": 0,
+    "stage38SelectorChangesWithinCallback": 0,
+    "stage38BetweenWindowsByActor": 3
+  },
+  "changed": [
+    {
+      "stage79Seq": 2901,
+      "side": "P1",
+      "selector": "0>1",
+      "state": "0>0",
+      "event": "FFFF>11",
+      "qpcBefore": 1929407257966,
+      "qpcAfter": 1929407258465,
+      "stage38Pair": [
+        2763,
+        2765
+      ],
+      "stage76Pair": [
+        5525,
+        5526
+      ],
+      "f3_P16E_DWORD": "00010000",
+      "f11_P3F7C": "00000000",
+      "f12_P3B90": "00000002"
+    },
+    {
+      "stage79Seq": 3404,
+      "side": "P2",
+      "selector": "0>1",
+      "state": "0>0",
+      "event": "FFFF>11",
+      "qpcBefore": 1929433903237,
+      "qpcAfter": 1929433903586,
+      "stage38Pair": [
+        3253,
+        3255
+      ],
+      "stage76Pair": [
+        6505,
+        6506
+      ],
+      "f3_P16E_DWORD": "00000001",
+      "f11_P3F7C": "00000000",
+      "f12_P3B90": "00000000"
+    },
+    {
+      "stage79Seq": 3740,
+      "side": "P2",
+      "selector": "1>0",
+      "state": "0>0",
+      "event": "FFFF>11",
+      "qpcBefore": 1929450719743,
+      "qpcAfter": 1929450720115,
+      "stage38Pair": [
+        3581,
+        3583
+      ],
+      "stage76Pair": [
+        7161,
+        7162
+      ],
+      "f3_P16E_DWORD": "00000000",
+      "f11_P3F7C": "00000000",
+      "f12_P3B90": "00000002"
+    }
+  ],
+  "stage80Next": {
+    "site": "0E8A8E",
+    "target": "0F7150",
+    "conditionalLateBranch": true,
+    "writerCandidateSites": [
+      "0F7D22",
+      "0F7D38",
+      "0F7D43"
+    ],
+    "positiveIsFunctionLevelOnly": true
+  },
+  "limits": [
+    "No direct individual MOV EIP hit",
+    "Early E89E0 branch exclusions based on before/after flag snapshots, not branch EIP",
+    "No Stage59/65/70 fresh logs",
+    "No claimed gameplay improvement"
+  ]
+}

@@ -1,5 +1,18 @@
 # Next session handoff
 
+## Current — Stage78 exact literal-one selector writer observer SOURCE READY (2026-11-11)
+
+**New source:** [stage78-literal-one-writer-exact-site-source](https://github.com/Hawky11/1/tree/stage78-literal-one-writer-exact-site-source); [one-site writer observer](Stage78_Overlay/src/Stage78LiteralOneWriter.inl), [Stage77-based adapter](Stage78_Overlay/src/Stage38CallbackWindow.inl), [RU instructions](Stage78_Analysis/README_STAGE78_RU.md), [static analysis](Stage78_Analysis/STATIC_ANALYSIS.md), [SHA-pinned verifier](Stage78_Analysis/tools/verify_stage78.py). Original private AALib.exe SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` verified locally, exact 7 native opcode ranges. **STAGE78 SOURCE READY ONLY; Windows x86 BUILD and gameplay RUNTIME NOT TESTED.**
+
+**Previous Stage77 RUNTIME VERIFIED:** user [commit 2ee8534](https://github.com/Hawky11/1/commit/2ee8534ba314221da8b980f7ebc8cc3458baf22a), [report](https://github.com/Hawky11/1/blob/stage77-runtime-selector-positive-callback-evidence/Stage77_Runtime/RUNTIME_ANALYSIS.md): DLL 1,905,664 bytes; 4,805 Stage77 before/after 156C00 samples and 9,690 Stage76 call phases; selector never changed within 156C00 in observed run. P1 0→1 happened upstream before native 156C00. **P2 original callback 1560B0 in Stage38 seq2910 changed selector 0→1, state 1→3**, followed by event code 0x21 in Stage76; original static 1560B9→155B70→155D74→155D29 path strongly implicated, exact writer EIP not directly observed.
+
+**Stage78 change:** exactly one native ten-byte MOV site `AALib+155D29 C786503F000001000000` detoured via JMP+NOP. Hook records P/O/TID, EBP+4 caller return, before/after selector+state and QPC, **replays same original MOV once** and tail-jumps to 155D33. No additional game-value edits, DR/VEH ownership, or known gameplay improvements. Stage77/76/65/70/59 sources preserved. Staged installation requires Stage76 success before Stage59 worker. New log `ArcanaAI_Stage78LiteralOneWriterTrace.log`; `STAGE78_INSTALLED 1/1`, `STAGE78_LITERAL_ONE`, `STAGE78_HEALTH` are expected.
+
+**NEXT USER:** Back up tested Stage77 `dinput8.dll` **1,905,664 bytes** and current Stage38CallbackWindow.inl; copy exactly two files from Stage78_Overlay/src into `D:\INCUBATOR\ArcanaAIOverhaul\src`: replace Stage38CallbackWindow.inl, add Stage78LiteralOneWriter.inl. Do not alter Stage76AfterCallbackPhases.inl or any other source/INI. Optional SHA/source verifier on local AALib.zip; then Build.bat, require BUILD SUCCEEDED, install markers Stage38 2/2 Stage77 ENABLED Stage76 3/3 Stage78 1/1 Stage70 1/1 Stage59 WATCH_ARMED. If valid, one COM-vs-COM; upload same-run Build.log, Stage78LiteralOneWriterTrace, Stage38CallbackWindowTrace, Stage76AfterCallbackTrace. Stage78 HEALTH counters must be zero; if crash/instability, restore Stage77. **No direct writer proof until an actual Stage78 hit.** An absent hit does not exclude ten register-derived/aliased writers.
+
+---
+
+
 ## Current — Stage77 before-native selector boundary SOURCE READY (2026-11-11)
 
 **Stage76 runtime is CLOSED/VERIFIED.** User upload [d0fddb14](https://github.com/Hawky11/1/commit/d0fddb14bdccadaf0e42be5208cba44fcf544f0d), report [Stage76 runtime](https://github.com/Hawky11/1/blob/stage76-r1-runtime-after-callback-selector-gap/Stage76_Runtime/RUNTIME_ANALYSIS.md): Windows x86 BUILD SUCCEEDED, DLL **1,901,568 bytes**; 11,478 Stage76 records with full masks and clean health; 5 between-Stage38-window selector changes (P1/P2), all **after** EE480/E8DA0 and **before** next Stage38 PRE; gated EE5E0 had 0 calls and remains untested. Six same-run Stage65 request→Stage70 deferred writes confirmed within Stage38 callback. Exact P+3F50 writer EIP UNKNOWN.

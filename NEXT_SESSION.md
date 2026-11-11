@@ -1,5 +1,15 @@
 # Next session handoff
 
+## Current — Stage85 rare AFTER-JOIN selector path VERIFIED; Stage86 single E8560 CALL observer SOURCE READY (2026-11-11)
+
+**Read first:** [Stage85 long-run report](Stage85_Runtime/LONG_RUN_ANALYSIS.md) · [results](Stage85_Runtime/long_run_results.json) · [frozen logs e1fd008](https://github.com/Hawky11/1/commit/e1fd008f1ed8695f9f7cb53b005112f41f9605b7). **Stage85 r1 remains last runtime-verified build**, Windows x86 DLL **1,957,376 bytes**; Build.log unchanged. New same-run 18:19–18:21 capture: Stage79 16,747, Stage80 15,218, Stage82 3,812, Stage84 16, Stage85 228. Strict unique same P/O/TID/QPC joins: 15,218/15,218 (80 inside 79), 3,812/3,812 (82 inside 80), 16/16 (84 inside 82), 228/228 (85 inside 80). All HEALTH errors zero.
+
+**New positive:** Stage80 P2 seq5640 selector `P+3F50:0→1`, companion `P+3F54:1→2` was NOT matched by any Stage84 exact writer. Stage82 F3930 seq1453 selector 0→0 while companion 1→2, Stage85 F7C68 seq82 selector=0, companion=2, ESI=0x20, localF8=0; F7150 later returns selector=1. Therefore this write happened **AFTER F7C68**. Stage81 F7D22/F7D38/F7D43 remain zero hits. Nine other Stage80 selector changes matched Stage84 exact writer sites; no new exact EIP for alternative path.
+
+**Stage86 SOURCE ONLY prepared in chat as `ArcanaAI_Stage86_F7CF2_E8560_Boundary_SourceOnly.zip`** (not yet built/tested on Windows, not uploaded to GitHub). Original AALib.exe SHA verified; exact original `F7CF2 E86908FFFF→E8560`, single pushed flag arg, thiscall `RET 4` at E858E/E8636/E86CA. Stage86 wraps **one** original E8560 call and observes selector before/after; includes SHA-guarded apply/rollback and offline correlator. User should back up Stage85 1,957,376-byte DLL, install only two source files, run Windows x86 Build.bat, COM-vs-COM, upload same-run Build.log and Stage79/80/81/82/84/85/**86** logs. Preserve `EnableStage36ControlToCommandTrace=0`. If mismatch, crash or HEALTH regression, rollback. **No gameplay logic change or AI improvement demonstrated.**
+
+---
+
 ## Current — Stage85 runtime VERIFIED; rare post-F3930 P2 1→2 path NOT reproduced (2026-11-11)
 
 **Read first:** [Stage85 runtime analysis](Stage85_Runtime/RUNTIME_ANALYSIS.md) · [machine results](Stage85_Runtime/results.json) · [frozen 7-log upload](https://github.com/Hawky11/1/commit/428b6b27895b1b1fb3015ab225169370e541050c). Stage85 r1 **Windows MSVC x86 BUILD SUCCEEDED**, DLL **1,957,376 bytes** (existing C4754), `STAGE85_INSTALLED 1/1` with exact original F7C68 CMP/JNE signature, **109 JOIN samples**. Old Stage84 positive rare-route evidence remains valid but is from a different run.

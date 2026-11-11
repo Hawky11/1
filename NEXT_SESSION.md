@@ -1,5 +1,15 @@
 # Next session handoff
 
+## Current — Stage92 F5990 execution/9ED20 vs 9ED60 source-only prepared; Windows runtime next (2026-11-11)
+
+**Source branch:** [stage92-f5990-branch-consequence-source-only](https://github.com/Hawky11/1/tree/stage92-f5990-branch-consequence-source-only). [Install guide](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Overlay/README_STAGE92_RU.md). [Static analysis](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Analysis/STATIC_ANALYSIS.md). [Prior tested Stage91](Stage91_Runtime/RUNTIME_ANALYSIS.md). Original AALib SHA 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba.
+
+Stage91 recorded 34,790 native F58E0 bit9/10/11 reads including **1,825 AL1**. Stage92 targets the next native control flow: `ACAB8 CALL F5990` function-level `P+3B70` bit3 PRE/POST, actual branch helpers `F5A86→9ED20` SET and `F5A8F→9ED60` CLEAR. These two helpers operate bit3/index3 with ECX actor and `RET4`. Stage92 passes control to real helpers by **tail JMP**, preserving original stack behavior. `F5A68` direct OR remains only statically attributed (not a directly observed EIP). No game-state/DR writes, no additional EE306 or global F58E0 detour. Original PE/source verification **67/67 PASS**, synthetic test **2 positive/3 negative PASS**; **Windows build, actual install and in-game runtime NOT tested**.
+
+**NEXT USER ACTION:** back up Windows tested Stage91 DLL (1,999,872 bytes), extract Stage92 overlay and run `ApplyStage92.ps1` on exact Stage91 source, build x86 and look for `STAGE92_INSTALLED 3/3`, 3–5 COM-vs-COM rounds and same-run Build.log, Stage92/Stage91/Stage90/Stage88/Stage87/FinalCommand/EventDispatch logs. `EnableStage36ControlToCommandTrace=0`; `EnableStage92BranchTrace=1`. Check Stage92 HEALTH overflow/dropped/mismatch/readFail=0 and Stage91 3/3, correlate by P/TID/QPC. On errors, rollback or restore known-good Stage91 DLL. **Do not claim AI fighting improvement/queued attack based on positive bit reads alone.** Prior handoffs below historical.
+
+---
+
 ## Current — Stage91 F58E0 bit9/10/11 readers RUNTIME VERIFIED, 1,825 AL=1; Stage92 branch follow-up (2026-11-11)
 
 **FIRST READ:** [Stage91 full runtime report](Stage91_Runtime/RUNTIME_ANALYSIS.md) · [results](Stage91_Runtime/results.json) · [fresh raw upload `4e56101`](https://github.com/Hawky11/1/commit/4e56101e9095d6f3b04fd4dcedf2ca5d5314ed57) · [source-only Stage91 branch](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay) · [prior Stage90 runtime](Stage90_Runtime/RUNTIME_ANALYSIS.md).

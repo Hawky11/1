@@ -1,3 +1,15 @@
+## Current — Stage70 r2 native deferred action ID writer RUNTIME VERIFIED (2026-11-11)
+
+**Exact user upload:** [98ff59b](https://github.com/Hawky11/1/commit/98ff59b871e90fb757c787b472d5d5322941ce07). [Full runtime analysis](Stage70_R2_Runtime/RUNTIME_ANALYSIS.md) · [Russian summary](Stage70_R2_Runtime/README_STAGE70_R2_RU.md) · [machine-readable results](Stage70_R2_Runtime/results.json). Analyst's evidence branch [stage70-r2-runtime-evidence](https://github.com/Hawky11/1/tree/stage70-r2-runtime-evidence) preserves user raw logs exactly; tested source [stage70-r2-relocation-aware-guard](https://github.com/Hawky11/1/tree/stage70-r2-relocation-aware-guard).
+
+**BUILD SUCCEEDED** at 02:53:34 MSVC 14.51 x86, DLL **1,892,864 bytes**. Startup at 02:54:29: `STAGE70_GUARD nativeOK=1 gameBase=00800000 runtimeTableVA=00C254E8 expectedTableVA=00C254E8`; `STAGE70_INSTALLED 1/1`. **Direct Stage70 seq1** P1/O=`2A3A3020`, TID20812, source EDX25, selector `P+3F50=1`, `O+68 FFFFFFFF→25`, masks 07/07, health errors all zero. Original RVA `156787` is an opcode-guarded source label; the replay runs inside DLL, not at original EIP.
+
+**Complete same-run source→activation:** Stage65 seq319 native original caller `156769` requests2F (QPC1518396105810–5813); Stage70 seq1 writes deferred25 (1518396105821–5822); Stage41 seq320 commits pending22→2F while deferred25 persists; Stage42 seq232 activates2F; Stage67 seq4561 promotes deferred25→pending25 and clears it; Stage42 seq234 activates25. All P1/O/TID match. Stage40/41 **371/371**, Stage42/43 **276/276**, Stage65 **369**, Stage67 **5,708**, Stage59 **16,947**, Stage70 **1**. No sequence gaps, health errors zero. All 371 request consumers accounted for by 369 Stage65 and 2 Stage67 original zero writers; all 276 Stage42 activations have unique Stage67 parent windows.
+
+**Stage71 NEXT (STATIC FIRST):** determine who sets `P+3F50=1` and why `1566B0` callback chooses this selector; separate open `O+30` arming writer origin. No new Stage70 DLL or logs needed for the already proven 2F/25 origin. Preserve validated Stage70 r2 DLL 1,892,864 bytes and Stage67/65/59 rollback DLLs. No AI decision logic was modified. Main/user upload untouched.
+
+---
+
 ## Current — Stage61 same-run action definition → motion → X write VERIFIED (2026-11-10)
 
 [Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md) · [frozen exact two-file user upload](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence) · [Stage61 offline correlator](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/tools/correlate_stage61.py). New [user upload c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79) contains **Stage46 and Stage47 from the identical 22:07 Stage59 r2 game session**. Same actor objects, TID=15132, QPC sequence. Stage46 1,476 sequential records; Stage47 5,292 sequential records; previously frozen Stage59 16,121 sequential watchpoint events. Full masks, Stage47 HEALTH zero dropped/overflow/mismatch/badCaller. **No new DLL was built**.

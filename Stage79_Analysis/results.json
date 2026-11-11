@@ -1,0 +1,59 @@
+{
+  "stage": 79,
+  "status": "STATIC PE VERIFIED; SOURCE READY; Windows x86 build and runtime untested",
+  "originalSha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "commonBoundary": {
+    "callRVA": "0EFFE8",
+    "targetRVA": "0E89E0",
+    "returnRVA": "0EFFED",
+    "originalBytes": "E8F389FFFF",
+    "changedCodeSites": 1,
+    "onceCall": true
+  },
+  "selectorWriters": [
+    {
+      "functionRVA": "0F3930",
+      "sites": [
+        "0F3DE9",
+        "0F3E02",
+        "0F3F50",
+        "0F3F69"
+      ]
+    },
+    {
+      "functionRVA": "0F4360",
+      "sites": [
+        "0F466F",
+        "0F4688"
+      ]
+    },
+    {
+      "functionRVA": "0F46F0",
+      "sites": [
+        "0F48A9",
+        "0F48C2"
+      ]
+    },
+    {
+      "functionRVA": "0F7150",
+      "sites": [
+        "0F7D22",
+        "0F7D38"
+      ]
+    }
+  ],
+  "validatedDirectEdges": 11,
+  "validatedDirectCallerInventories": 8,
+  "additionalDebugRegisterOwners": 0,
+  "additionalGameplayWrites": 0,
+  "expectedLog": "ArcanaAI_Stage79SelectorFamilyTrace.log",
+  "expectedFields": 13,
+  "expectedMask": "1FFF",
+  "testedRollbackDllStage78Bytes": 1911808,
+  "exactMOVWriterEipCaptured": false,
+  "knownLimits": [
+    "Direct E8 graph does not exclude indirect calls or aliases",
+    "Common window attributes interval not individual writer",
+    "Native original call ABIs not yet runtime verified"
+  ]
+}

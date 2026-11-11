@@ -1,0 +1,26 @@
+{
+  "stage": 78,
+  "status": "SOURCE READY; original PE SHA/opcode STATIC VERIFIED; no Windows build/runtime",
+  "originalSha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "site": {
+    "rva": "155D29",
+    "bytes": "C786503F000001000000",
+    "length": 10,
+    "resume": "155D33",
+    "originalMoveReplayedOnce": true
+  },
+  "validatedRvas": [
+    "155D27",
+    "155D29",
+    "155D33",
+    "155D74",
+    "155D7E",
+    "1560B9",
+    "1566F0"
+  ],
+  "nativeDebugRegisterChanges": 0,
+  "additionalGameplayWrites": 0,
+  "adapterEdits": 3,
+  "knownStage77RollbackBytes": 1905664,
+  "nextRequired": "Build.bat and same-run Stage78 Stage38 Stage76 logs"
+}

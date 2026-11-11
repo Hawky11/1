@@ -1,0 +1,71 @@
+{
+  "stage": "81-r2",
+  "date": "2026-11-11",
+  "source_commit": "c003261e9e63e817c92bd5e58fd4afa35ee34e52",
+  "build": {
+    "status": "SUCCEEDED",
+    "dll_bytes": 1934336,
+    "compiler_warning": "C4754"
+  },
+  "stage79": {
+    "installed": true,
+    "events": 5628,
+    "selector_changes": 4
+  },
+  "stage80": {
+    "installed": true,
+    "events": 5185,
+    "selector_changes": 4,
+    "unique_nested_in_stage79": 5185,
+    "unmatched": 0,
+    "ambiguous": 0
+  },
+  "stage81": {
+    "installed": true,
+    "writer_sites": [
+      "0F7D22",
+      "0F7D38",
+      "0F7D43"
+    ],
+    "callsEdx": 0,
+    "callsEcx": 0,
+    "callsZero": 0
+  },
+  "selector_changes": [
+    {
+      "side": "P2",
+      "s79": 1088,
+      "s80": 803,
+      "before": 0,
+      "after": 1
+    },
+    {
+      "side": "P1",
+      "s79": 2743,
+      "s80": 2401,
+      "before": 0,
+      "after": 2
+    },
+    {
+      "side": "P1",
+      "s79": 3521,
+      "s80": 3156,
+      "before": 2,
+      "after": 1
+    },
+    {
+      "side": "P2",
+      "s79": 5052,
+      "s80": 4622,
+      "before": 0,
+      "after": 2
+    }
+  ],
+  "health": {
+    "dropped": 0,
+    "overflow": 0,
+    "mismatch": 0,
+    "read_fail": 0
+  },
+  "conclusion": "F7150 interval positive, exact writer EIP unresolved"
+}

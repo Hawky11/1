@@ -1,0 +1,56 @@
+{
+  "stage": 80,
+  "status": "SOURCE READY; SHA-PINNED ORIGINAL AND SOURCE STATIC CHECKS; WINDOWS/GAME UNTESTED",
+  "sourceBranch": "stage80-e8a8e-late-f7150-boundary-source",
+  "motivation": {
+    "stage79EvidenceCommit": "1b2aadaeabeebf959fa0575cf59023060e481323",
+    "stage79Positive": [
+      {
+        "seq": 2901,
+        "side": "P1",
+        "selector": "0>1",
+        "event": "FFFF>11"
+      },
+      {
+        "seq": 3404,
+        "side": "P2",
+        "selector": "0>1",
+        "event": "FFFF>11"
+      },
+      {
+        "seq": 3740,
+        "side": "P2",
+        "selector": "1>0",
+        "event": "FFFF>11"
+      }
+    ]
+  },
+  "originalSha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "newBoundary": {
+    "site": "0E8A8E",
+    "target": "0F7150",
+    "return": "0E8A93",
+    "callBytes": "E8BDE60000",
+    "originalArg": "PUSH ESI at E8A8D",
+    "targetCallsOriginalOnce": true,
+    "argumentCopiedOnce": true,
+    "selectorMOVsPatched": 0
+  },
+  "staticCandidates": [
+    "0F7D22 (1/2)",
+    "0F7D38 (1/2)",
+    "0F7D43 (0)"
+  ],
+  "logs": {
+    "file": "ArcanaAI_Stage80F7150LateTrace.log",
+    "window": "STAGE80_LATE_F7150",
+    "health": "STAGE80_HEALTH"
+  },
+  "rollbackStage79DllBytes": 1918976,
+  "limitations": [
+    "Function interval only, not exact writer EIP",
+    "Windows x86 build and nested-call runtime not tested",
+    "No AI gameplay modification claimed",
+    "No new DR/VEH ownership"
+  ]
+}

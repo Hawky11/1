@@ -1,3 +1,69 @@
+## Current — Stage81 r2 Windows runtime VERIFIED; selector writer EIP NOT YET FOUND (2026-11-11)
+
+[Stage81 r2 runtime report](Stage81_Runtime/RUNTIME_ANALYSIS.md) · [machine-readable results](Stage81_Runtime/results.json) · [exact runtime commit](https://github.com/Hawky11/1/commit/c003261e9e63e817c92bd5e58fd4afa35ee34e52) · [Stage80 static/source overlay](Stage80_Overlay/src/Stage80F7150LateBoundary.inl).
+
+**Windows x86 BUILD SUCCEEDED**, DLL **1,934,336 bytes** (one existing compiler warning C4754). Stage79 **INSTALLED 1/1** and **5,628** native EFFE8→E89E0 windows; Stage80 **INSTALLED 1/1** and **5,185** E8A8E→F7150 calls. All 5,185 Stage80 intervals nest uniquely inside a same-player/object/TID Stage79 interval. Exactly **four** matching selector `P+3F50` changes (P2 0→1, P1 0→2, P1 2→1, P2 0→2), and all observer HEALTH counters stayed at zero errors. Stage81 r2 waits for Stage80, then **INSTALLED 3/3** at F7D22/F7D38/F7D43; nevertheless **callsEdx=0, callsEcx=0, callsZero=0** throughout. These three sites are **not verified executed writers** in this run. Positive Stage79/80 windows prove the selector changed somewhere within original F7150 execution, not which instruction performed the write.
+
+**Next: Stage82 source/static investigation of alternative/nested F7150 writer paths before adding new instruction hooks.** Do not claim COM AI behavior improved. Preserve same-run raw files and confirmed runtime baseline; Stage81 r1 early-install failure is archived in [Stage81_Runtime/r1_failed/](Stage81_Runtime/r1_failed/).
+
+---
+
+## Stage80 now SOURCE READY — late F7150 original-call boundary (2026-11-11)
+
+[Stage80 source branch](https://github.com/Hawky11/1/tree/stage80-e8a8e-late-f7150-boundary-source) · [two-file RU install](Stage80_Analysis/README_STAGE80_RU.md) · [static audit](Stage80_Analysis/STATIC_ANALYSIS.md) · [SHA/source verifier](Stage80_Analysis/tools/verify_stage80.py) · [one-call observer](Stage80_Overlay/src/Stage80F7150LateBoundary.inl). Stage79 tested [runtime](https://github.com/Hawky11/1/blob/stage79-runtime-common-selector-positive-evidence/Stage79_Runtime/RUNTIME_ANALYSIS.md) found three actual selector changes inside native E89E0 (two 0→1 and one 1→0, all event 0x11). Stage80 patches only original CALL `0E8A8E→0F7150` with a guarded read-only before/after window, preserving the original `PUSH ESI` argument. F7150 has three candidate selector writer sites F7D22/F7D38/F7D43; direct EIP not yet sampled. **Stage80 Windows x86 BUILD and game runtime NOT YET VERIFIED.** Preserve tested Stage79 1,918,976-byte DLL as rollback. No change to COM gameplay/AI behavior claimed.
+
+---
+
+## Current — Stage79 common selector-family observer SOURCE READY (2026-11-11)
+
+[Stage79 source branch](https://github.com/Hawky11/1/tree/stage79-effe8-common-selector-family-observer-source) · [RU install & rollback](Stage79_Analysis/README_STAGE79_RU.md) · [original PE/call graph audit](Stage79_Analysis/STATIC_ANALYSIS.md) · [verifier](Stage79_Analysis/tools/verify_stage79.py) · [native observer](Stage79_Overlay/src/Stage79SelectorFamilyBoundary.inl). Exact SHA-pinned original PE confirms **10** numeric selector1/2 writer instructions clustered in **4** native functions reachable by **11** verified direct E8 CALL edges under common E89E0 called at **EFFE8**. Only **one five-byte native call** is detoured in Stage79; 13 player fields captured PRE/POST; Stage38/76/77/78 retained. Indirect/aliased writers and per-site EIP still not resolved. **Windows x86 build and game runtime Stage79 untested**. Preserve tested Stage78 DLL **1,911,808 bytes** as rollback. No COM AI improvement/gameplay modification claimed.
+
+---
+
+## Current — Stage78 exact selector writer observation SOURCE READY (2026-11-11)
+
+[Stage78 two-file overlay](Stage78_Overlay/src/Stage38CallbackWindow.inl) · [literal-one hook](Stage78_Overlay/src/Stage78LiteralOneWriter.inl) · [RU install/rollback](Stage78_Analysis/README_STAGE78_RU.md) · [PE/static audit](Stage78_Analysis/STATIC_ANALYSIS.md) · [local verifier](Stage78_Analysis/tools/verify_stage78.py). Branch [stage78-literal-one-writer-exact-site-source](https://github.com/Hawky11/1/tree/stage78-literal-one-writer-exact-site-source). Private original PE SHA and 7 opcode ranges checked, no binary uploaded. Passive exact ten-byte `AALib+155D29` native store replayed once in hook, records selector/companion/caller; Stage77 and Stage76 remain intact, DR ownership unchanged. **Windows x86 BUILD/GAME RUNTIME UNTESTED for Stage78.**
+
+Prior [Stage77 runtime](https://github.com/Hawky11/1/blob/stage77-runtime-selector-positive-callback-evidence/Stage77_Runtime/RUNTIME_ANALYSIS.md) confirmed P2 callback 1560B0 selector 0→1, companion 1→3 with following event 0x21; direct instruction EIP not yet recorded. Current known-good Stage77 DLL is 1,905,664 bytes. Follow two-file installation, short COM-vs-COM capture, health and rollback instructions. No gameplay/AI improvement claimed.
+
+---
+
+## Current — Stage77 selector snapshot before native 156C00 (SOURCE READY, 2026-11-11)
+
+[Stage77 one-file Stage38 adapter](Stage77_Overlay/src/Stage38CallbackWindow.inl) · [RU install/rollback](Stage77_Analysis/README_STAGE77_RU.md) · [source audit](Stage77_Analysis/STATIC_ANALYSIS.md) · [source check](Stage77_Analysis/tools/verify_stage77.py). Branch [stage77-pre156c00-selector-boundary-source](https://github.com/Hawky11/1/tree/stage77-pre156c00-selector-boundary-source). **Windows x86 BUILD and GAME RUNTIME NOT TESTED for Stage77.** Stage76 is verified: 11,478 observed call-phase events and five numeric-selector changes occur after EE480/E8DA0 but before next Stage38 PRE; [runtime report](https://github.com/Hawky11/1/blob/stage76-r1-runtime-after-callback-selector-gap/Stage76_Runtime/RUNTIME_ANALYSIS.md). Stage77 inserts only a protected read-only snapshot before original 156C00 in the existing Stage38 wrapper; native 156C00 still called once, no new detour/debug-register owner/gameplay writes. New `STAGE77_NATIVE_PREPARE` records appear in existing Stage38 trace; `n0` is selector P+3F50 before→after native. Copy only the Stage77 replacement adapter on top of tested Stage76 source, then build/test. Retain Stage76 DLL (1,901,568 bytes) for rollback.
+
+---
+
+## Current — Stage76 after-callback selector phase probe SOURCE READY (2026-11-11)
+
+[Stage76 two-file overlay](Stage76_Overlay/src/Stage38CallbackWindow.inl) · [new passive hook source](Stage76_Overlay/src/Stage76AfterCallbackPhases.inl) · [technical design](Stage76_Analysis/STATIC_ANALYSIS.md) · [Russian build/rollback](Stage76_Analysis/README_STAGE76_RU.md) · [static verifier](Stage76_Analysis/tools/verify_stage76.py) · [results](Stage76_Analysis/results.json). Branch [stage76-after-callback-phase-snapshots-source](https://github.com/Hawky11/1/tree/stage76-after-callback-phase-snapshots-source). **Windows x86 build / game runtime NOT VERIFIED.** The original private EXE and the three exact E8 native calls are SHA/opcode checked; no new hardware breakpoint/VEH or COM gameplay writes.
+
+**Stage74 gap**: five selector changes `P+3F50` were only between callback windows. Stage75 traced event key `P+3A36→P+3ED4=11h`, not selector origin. Stage76 wraps original CALLs `EE7D1→EE480` (phase0), `EE7D6→E8DA0` (phase1), conditional `EE7EA→EE5E0` (phase2), taking actor/QPC PRE/POST snapshots and calling each target exactly once. The Stage74 adapter is preserved except **3 integration edits** (include/install/flush). **The wrappers change callee-visible return addresses** and instrumented timing; runtime behavior must be tested and rollback maintained.
+
+**Next user:** back up known-good **Stage74 DLL 1,893,376 bytes** and adapter; copy both Stage76 `.inl` files to project `src`, run optional verifier, Windows x86 Build.bat then normal COM-vs-COM capture. Upload same-run Build.log + Stage76/38/65/70/59 logs; preserve Stage70 r2 1,892,864-byte secondary rollback. Stage77 will attribute transitions to phases, not claim exact native selector writer EIP before proof. Original logs/default main not modified.
+
+---
+
+## Current — Stage75 static callback-11 registration provenance VERIFIED (2026-11-11)
+
+[Stage75 original-native report](Stage75_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage75_Analysis/README_STAGE75_RU.md) · [PE SHA/35 opcode/8 call verifier](Stage75_Analysis/tools/verify_stage75.py) · [results](Stage75_Analysis/results.json). Branch [stage75-event-record-callback11-static-provenance](https://github.com/Hawky11/1/tree/stage75-event-record-callback11-static-provenance), based on the unchanged [Stage74 runtime-verified capture](Stage74_Runtime/RUNTIME_ANALYSIS.md). **No Stage75 DLL, hooks, game test, code injections or gameplay behavior changes.**
+
+**Native dataflow established:** `0F2DE0` writes a player event record's current mode/code at `P+3A2E/+3A30`. Conditional `0F2E50` transfer, called from `EE480`, copies it to previous mode/code `P+3A34/+3A36`. Original `EE5E0`, after the player callback **and after native `FC60` cleanup**, can route on active event previous mode 0 to **`EE643→158E90`**, the *only direct E8 caller* of 158E90 in original `.text`; registrar stores `P+3ED0=callback 158570` and `P+3ED4=sign_extended P+3A36`. This is a concrete native possible source of Stage74's next callback **argument 0x11**, NOT an origin proof for selector **P+3F50** or proof that EE643 ran in those Stage74 frames. Original switch 11h at `158ACB` conditionally **reads** selector at `158ADC`.
+
+**Next Stage76:** after-callback/P-event preparation checkpoints to narrow the **five Stage74 between-window selector writes**, no blind 11-site patch or hardware DR collision. Preserve current Stage74 user-tested **1,893,376-byte DLL** and Stage70 r2 rollback. Existing user logs and main not changed.
+
+---
+
+## Current — Stage74 selector transitions RUNTIME VERIFIED (2026-11-11)
+
+[Stage74 runtime report](Stage74_Runtime/RUNTIME_ANALYSIS.md) · [RU](Stage74_Runtime/README_STAGE74_RU.md) · [machine-readable results](Stage74_Runtime/results.json), branch [stage74-runtime-selector-transition-evidence](https://github.com/Hawky11/1/tree/stage74-runtime-selector-transition-evidence). User's five new logs frozen at commit [211f088](https://github.com/Hawky11/1/commit/211f0882e6b8e220877e4c15b072e5a7b8a7b067). Stage74 [four-edit source](https://github.com/Hawky11/1/tree/stage74-callback-selector-boundary-snapshot). **Windows x86 BUILD SUCCEEDED**, DLL **1,893,376 bytes**, Stage38/65/70 installed, Stage59 DR0/DR1 armed.
+
+**Actual observation:** 3,708 Stage38 windows with valid `f30=P+3F50` and `f31=P+3F54`, **zero within-callback selector changes**, **five between-window transitions**: P2 `0→1,1→0`; P1 `0→1,1→2,2→1`. All five *next* windows begin with callback `158570` **parameter 0x11** and set follow-on `155160`. Original switch `0x11→158ACB` conditionally **reads** selector at `158ADC`; this does **not** prove writer IP. Stage65/70 same-frame pairs: `2F→25` with selector1, `33→26` with selector2, `2E→24` with selector0. Stage59: 11,957 complete unique IDs but 14 rows reordered at flush; do not blindly correlate physical line order.
+
+**Next Stage75: static pre-callback source/dataflow**, not blind hooks. Preserve Stage74 known-good DLL and Stage70 r2 rollback, do not modify AI/gameplay. Existing Stage38 initialization banner says “30 fields” but 32 fields are confirmed in actual rows; harmless stale text.
+
+---
+
 ## Current — Stage61 same-run action definition → motion → X write VERIFIED (2026-11-10)
 
 [Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md) · [frozen exact two-file user upload](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence) · [Stage61 offline correlator](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/tools/correlate_stage61.py). New [user upload c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79) contains **Stage46 and Stage47 from the identical 22:07 Stage59 r2 game session**. Same actor objects, TID=15132, QPC sequence. Stage46 1,476 sequential records; Stage47 5,292 sequential records; previously frozen Stage59 16,121 sequential watchpoint events. Full masks, Stage47 HEALTH zero dropped/overflow/mismatch/badCaller. **No new DLL was built**.

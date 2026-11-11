@@ -1,3 +1,13 @@
+## Current — Stage88 runtime VERIFIED, native selector→F57D0 bitmap write (2026-11-11)
+
+[Stage88 report](Stage88_Runtime/RUNTIME_ANALYSIS.md) · [results](Stage88_Runtime/results.json) · [runtime upload `ccbbf6a`](https://github.com/Hawky11/1/commit/ccbbf6a41cd7ed5ba0fdf194f557a4bbf112b3ca) · [Stage88 source `eb92db8`](https://github.com/Hawky11/1/commit/eb92db82bae6afb155a58bef8e8429ef3abf7af3).
+
+**Windows x86 BUILD SUCCEEDED**, DLL **1,975,296 bytes**, unchanged nonfatal C4754. Stage87 installed at EE2F0 and original Stage24 EE306→F57D0 observer installed; Stage88 reuses Stage24, **no second EE306 hook**. Same-run Stage87/88 **175/175** unique side/player/TID/QPC/selector/arg matches; **110** selector0→0x0E→P+3A0C bit0x200, **65** selector1→0x0F→bit0x400. **13** actual target-bit 0→1 transitions; **58** net 3-DWORD changes; HEALTH stale/mismatch/readFail/dropped all zero. **Selector2→0x10/bit0x800 not observed in this run.** Predominantly type0 payload0x22; FinalCommand is separate type1 evidence, **no proven causal action/hit**.
+
+**NEXT Stage89:** original EXE static study of downstream actual readers of P+3A08/0C/10, then narrow passive reader-specific runtime trace only if safely attributable. Preserve Stage88 DLL and source, Stage36 disabled, no game data edits or synthetic events. Earlier “Current” sections are historical.
+
+---
+
 ## Current — Stage85 after-join alternate selector path confirmed; Stage86 source-only next (2026-11-11)
 
 [Stage85 long-run report](Stage85_Runtime/LONG_RUN_ANALYSIS.md) · [results.json](Stage85_Runtime/long_run_results.json) · [frozen upload](https://github.com/Hawky11/1/commit/e1fd008f1ed8695f9f7cb53b005112f41f9605b7). New 18:19–18:21 logs confirm **P2 selector 0→1 after Stage85 F7C68**, Stage80 seq5640 / Stage82 F3930 seq1453 / Stage85 join seq82, with companion 1→2 inside F3930. Stage84 saw **no** exact writer in that call window. Exact parent QPC containment: 15,218/15,218 (80⊂79), 3,812/3,812 (82⊂80), 16/16 (84⊂82), 228/228 (85⊂80); HEALTH error counts all zero. Nine other net selector transitions match Stage84 exact writes, Stage81 direct F7150 writer sites remain zero hits.

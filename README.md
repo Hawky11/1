@@ -1,3 +1,11 @@
+## Current — Stage85 after-join alternate selector path confirmed; Stage86 source-only next (2026-11-11)
+
+[Stage85 long-run report](Stage85_Runtime/LONG_RUN_ANALYSIS.md) · [results.json](Stage85_Runtime/long_run_results.json) · [frozen upload](https://github.com/Hawky11/1/commit/e1fd008f1ed8695f9f7cb53b005112f41f9605b7). New 18:19–18:21 logs confirm **P2 selector 0→1 after Stage85 F7C68**, Stage80 seq5640 / Stage82 F3930 seq1453 / Stage85 join seq82, with companion 1→2 inside F3930. Stage84 saw **no** exact writer in that call window. Exact parent QPC containment: 15,218/15,218 (80⊂79), 3,812/3,812 (82⊂80), 16/16 (84⊂82), 228/228 (85⊂80); HEALTH error counts all zero. Nine other net selector transitions match Stage84 exact writes, Stage81 direct F7150 writer sites remain zero hits.
+
+**Next Stage86 source-only package** is supplied in the chat, **not** Windows-built or runtime-tested. SHA-verified original call `F7CF2→E8560` lies after this Stage85 join on the observed ESI=0x20/localF8=0 branch; its three `RET 4` exits are validated. One exact-signature-guarded passive call observer will separate changes during E8560 from changes later in F7150. Preserve tested Stage85 1,957,376-byte DLL, Stage36 disabled, and game logic unchanged. No improved COM AI claim.
+
+---
+
 ## Current — Stage85 live join verified, unmatched F7150 writer still open (2026-11-11)
 
 [Stage85 runtime report](Stage85_Runtime/RUNTIME_ANALYSIS.md) · [results.json](Stage85_Runtime/results.json) · [same-run upload](https://github.com/Hawky11/1/commit/428b6b27895b1b1fb3015ab225169370e541050c). **BUILD SUCCEEDED** (Windows x86 DLL **1,957,376 bytes**); Stage85 F7C68 hook **INSTALLED 1/1** and verified with **109** join observations. Strict same-player/object/TID/QPC containment: **7,830/7,830** Stage80→79, **2,100/2,100** Stage82→80, **12/12** Stage84→82, **109/109** Stage85→80; all instrumented HEALTH error counters zero.

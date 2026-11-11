@@ -1,3 +1,15 @@
+## Current — Stage89 live: 4/4 F58E0 hooks installed, AAB55 executed; Stage88 selector2 output VERIFIED (2026-11-11)
+
+[Stage89 full live report](Stage89_Runtime/RUNTIME_ANALYSIS.md) · [machine results](Stage89_Runtime/results.json) · [user's raw upload `7475572`](https://github.com/Hawky11/1/commit/7475572ea25d04edb01f383367af83ceb2ad7711) · [Stage89 source `7ede68b`](https://github.com/Hawky11/1/commit/7ede68b825faadea5caed2a59b9afa4881cc24a0).
+
+**BUILD SUCCEEDED**, Windows x86 DLL **1,984,000 bytes**, familiar C4754; `STAGE89_INSTALLED mask=F sites=4/4`. Actual reader calls: **4 at AAB55, zero at 9A870/9AA20/9AB00**; all return **AL=0**, expected from bitmap snapshot (P+3A0C special bits 0xE00 absent), no pre/post changes or diagnostics errors. There is **no direct same-event Stage88→F58E0 read** evidenced here; AAB55's AL=0 predicted JNE-not-taken does not prove E8560 executed.
+
+**New decisive Stage88 runtime observation:** same run Stage87→Stage88 **170/170 exact joins** and now **all 3 selector codes**: 0→0x0E / bit0x200 **81** calls, 1→0x0F / bit0x400 **62**, **2→0x10 / bit0x800 27** (one real bit0→1 at Stage88 seq31). HEALTH stale/mismatch/readFail/dropped all zero. Earlier Stage88 report lacked selector2 *only in that earlier run*.
+
+**NEXT Stage90:** statically localize active bitmap readers and reset/clear writers before choosing a safer read-only observation boundary; do not add a second EE306 hook, mutate game data or enable colliding Stage36. Preserve tested Stage89 DLL. Older 'Current' sections below are historical.
+
+---
+
 ## Current — Stage89 four guarded native F58E0 bitmap READERS, SOURCE ONLY (2026-11-11)
 
 [Stage89 source branch](https://github.com/Hawky11/1/tree/stage89-f58e0-four-call-readers-source-only) · [install guide](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Overlay/README_STAGE89_RU.md) · [static checks](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Analysis/source_only_results.json) · [last verified Stage88 runtime](Stage88_Runtime/RUNTIME_ANALYSIS.md).

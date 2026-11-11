@@ -1,0 +1,111 @@
+{
+  "source_commit": "7e1df728bbfb85b797c06785cd8cf7e407c53a35",
+  "source_ref": "https://github.com/Hawky11/1/commit/7e1df728bbfb85b797c06785cd8cf7e407c53a35",
+  "stage92": {
+    "build": "2026-11-12-r3",
+    "windows_x86_build": "succeeded",
+    "dll_size_bytes": 2011648,
+    "stage35_compat_verified": true,
+    "stage35_guard_bypass": false,
+    "installed_sites": 3,
+    "expected_sites": 3,
+    "ticks": 17788,
+    "valid_ticks": 17788,
+    "helpers": 9786,
+    "helperSet": 154,
+    "helperClear": 9632,
+    "helperSet_by_side": {
+      "P1": 154,
+      "P2": 0
+    },
+    "helperClear_by_side": {
+      "P1": 5436,
+      "P2": 4196
+    },
+    "ticks_by_side": {
+      "P1": 8894,
+      "P2": 8894
+    },
+    "noRead_noHelper": 6502,
+    "bit9_earlyExit": 753,
+    "bit10_earlyExit": 747,
+    "bit11_set": 154,
+    "bit11_clear": 9632,
+    "flag3_rising": 127,
+    "flag3_falling": 123,
+    "flag3_rising_with_SET": 8,
+    "flag3_rising_without_SET": 119,
+    "flag3_falling_with_CLEAR": 123,
+    "any_flag_dword_change": 1013,
+    "bitmap_sample_change_during_tick": 0,
+    "health_rows": 48,
+    "error_health_rows": 0,
+    "helper_join_failures": 0
+  },
+  "stage91": {
+    "installed_sites": 3,
+    "readEvents": 31605,
+    "index9_reads": 11286,
+    "index9_AL1": 753,
+    "index10_reads": 10533,
+    "index10_AL1": 747,
+    "index11_reads": 9786,
+    "index11_AL1": 154,
+    "prediction_match_failures": 0,
+    "health_rows": 48,
+    "error_health_rows": 0,
+    "exact_tick_join_count": 17788,
+    "tick_join_missing_read": 0,
+    "tick_join_bad_player_or_tid": 0,
+    "tick_join_bad_qpc": 0
+  },
+  "stage90": {
+    "calls": 1742,
+    "P1": 808,
+    "P2": 934,
+    "changed": 705,
+    "unchanged": 1037,
+    "stage87_referenced": 220,
+    "missing_stage87_ref": 0,
+    "P1_bit11_up": 10,
+    "P1_bit11_down": 10,
+    "P2_bit11_up": 0,
+    "P2_bit11_down": 0,
+    "stage91_positive_index11_with_last_prior_stage90_bit11_on": 154,
+    "positive_index11_read_total": 154,
+    "health_rows": 48,
+    "error_health_rows": 0
+  },
+  "stage87": {
+    "events": 220,
+    "matched": 220
+  },
+  "stage88": {
+    "events": 220,
+    "matched": 220
+  },
+  "finalCommand": {
+    "events": 174,
+    "P1": 78,
+    "P2": 96,
+    "payload_matches": 174,
+    "player_matches": 174,
+    "localsReadable": 174,
+    "unique_payloads": 43,
+    "flag3_set_at_command": 55,
+    "P1_flag3_set": 18,
+    "P2_flag3_set": 37
+  },
+  "eventDispatch": {
+    "detail_events": 602,
+    "type0": 419,
+    "type1": 183,
+    "afterReadable": 602
+  },
+  "stage89": {
+    "readEvents": 3,
+    "all_returnAL0": true
+  },
+  "runtime_behavior_causation_proven": false,
+  "next": "Read-only Stage93 QPC bridge from F5990 flag3 transitions to FinalCommand and alternate flag3 native writer tracing. Keep Stage36=0, source-only, no gameplay writes."
+}

@@ -1,5 +1,15 @@
 # Project history
 
+## Stage89 live F58E0 reader AL=0; Stage88 all three bit outputs runtime-verified — 2026-11-11
+
+- [Fresh user run `7475572`](https://github.com/Hawky11/1/commit/7475572ea25d04edb01f383367af83ceb2ad7711) · [full Stage89 audit](Stage89_Runtime/RUNTIME_ANALYSIS.md) · [results JSON](Stage89_Runtime/results.json) · [source `7ede68b`](https://github.com/Hawky11/1/commit/7ede68b825faadea5caed2a59b9afa4881cc24a0). `Build.log` **BUILD SUCCEEDED**, Windows x86 DLL **1,984,000 bytes**, earlier nonfatal C4754.
+- Stage89 installed **all four** targeted `F58E0` CALL-site hooks (mask=F), but live counts `9A870=0,9AA20=0,9AB00=0,AAB55=4` (P1 three, P2 one). All four `AL=0`, native bitmap read mask=7 pre/post, no bitmap mutation, predicted AL agrees. All Stage89 HEALTH mismatch/readFail/dropped/overflow = 0. The `AAB55` predicted JNE-not-taken is not proof of traversal into `E8560`.
+- **NEW Stage88 selector2 positive in SAME RUN:** 170/170 strict Stage87↔Stage88 same-player/TID/QPC links. Selector0→0x0E/bit0x200 81 events (4 actual bit0→1); selector1→0x0F/bit0x400 62 (0); **selector2→0x10/bit0x800 27 (1)**. Stage88 seq31 P1 `0x29,0,0x10 → 0x10,0x800,0`. 54 3-DWORD changes; all HEALTH errors zero. Earlier Stage88 run had zero selector2 only as a time-scoped fact, **now superseded as a testing gap**.
+- No Stage89 sample contained any of the special bits set; nearest prior same-P/TID Stage88 events are separated by QPC gaps, and all sampled bitmap states lack those bits. Thus no **immediate/causal** Stage88→reader→command link; FinalCommand's 167 type1 records must not be matched by mere presence.
+- **Stage90 next:** static localization of actual active-bitmap reader and clear/reset writers, then decide on a scoped passive exact-site trace; preserve Stage89 DLL, keep Stage36 off, no gameplay writes or extra EE306/global F58E0 hook.
+
+---
+
 ## Stage89 r1 targeted F58E0 reader SOURCE PREPARED — 2026-11-11
 
 - [Stage89 isolated source branch](https://github.com/Hawky11/1/tree/stage89-f58e0-four-call-readers-source-only), [README/install](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Overlay/README_STAGE89_RU.md), [verification JSON](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Analysis/source_only_results.json). **22 SHA-pinned native signature/destination checks PASS; x86 MSVC build and gameplay runtime NOT PERFORMED.**

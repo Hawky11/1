@@ -38,11 +38,9 @@ def analyze(path89,path88=None):
                 'predict':d(r,'predictedPre')==expected(pre) and d(r,'predictedPost')==expected(post),
                 'valid':d(r,'predictionValid') in (1,2),
                 'match':d(r,'predictionValid')==2 or d(r,'predictionMatch')==int(d(r,'returnAL')==expected(pre)),
-                'branch':d(r,'nextBranchPredictedTaken') == int(d(r,'returnAL')!=(0 if site==0xaab55 else 1)),
+                'branch':d(r,'nextBranchPredictedTaken')==(int(bool(d(r,'returnAL'))) if site==0xaab55 else int(not bool(d(r,'returnAL')))),
             }
-            # In the AAB55 JNE case branch taken iff AL != 0;
-            # in the other three JE cases branch taken iff AL == 0.
-            checks['branch']=d(r,'nextBranchPredictedTaken')==(int(bool(d(r,'returnAL'))) if site==0xaab55 else int(not bool(d(r,'returnAL'))))
+            # In the AAB55 JNE case branch taken iff AL != 0; otherwise JE iff AL == 0.
             for key,ok in checks.items():
                 if not ok:failures.append(f'seq={seq} failed {key}')
             by_site[hex(site)]+=1;by_side[r['side']]+=1;al[str(d(r,'returnAL'))]+=1
@@ -61,7 +59,7 @@ def analyze(path89,path88=None):
         for w in writes:
             key=(w.get('side'),w.get('player'),w.get('tid'))
             by[key].append(w)
-        times={key:sorted((d(w,'qpcAfter'),w) for w in seqs) for key,seqs in by.items()}
+        times={key:sorted(((d(w,'qpcAfter'),d(w,'seq'),w) for w in seqs), key=lambda x:(x[0],x[1])) for key,seqs in by.items()}
         temporal=[]
         for r in cases:
             key=(r.get('side'),r.get('player'),r.get('tid'))
@@ -70,7 +68,7 @@ def analyze(path89,path88=None):
             target=d(r,'qpcBefore')
             i=bisect.bisect_right([x[0] for x in matches],target)-1
             if i<0:continue
-            qw,w=matches[i];gap=target-qw
+            qw,_,w=matches[i];gap=target-qw
             temporal.append({'stage89_seq':d(r,'seq'),'stage88_seq':d(w,'seq'),
                'same_player_tid':True,'qpc_delta_ticks':gap,
                'stage88_expected_bit':w.get('expectedBit'),'stage89_al':r.get('returnAL')})

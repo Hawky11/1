@@ -1,0 +1,23 @@
+{
+  "status": "PASS_STATIC_SOURCE_ONLY",
+  "exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "checks": 30,
+  "descriptor_bytes": {
+    "0x0E": "0126ff",
+    "0x0F": "0126ff",
+    "0x10": "0126ff"
+  },
+  "existing_call": "EE306 -> F57D0",
+  "actual_clear_instructions": [
+    "0xF57FA [EDI+4]=0",
+    "0xF57FD [EDI+8]=0"
+  ],
+  "writeback": [
+    "0xF5856 OR bitmap bit",
+    "0xF58AC OR bitmap bit"
+  ],
+  "stage90_uses_existing_stage24_pre_post": true,
+  "new_native_hooks": 0,
+  "windows_compiled": false,
+  "runtime_tested": false
+}

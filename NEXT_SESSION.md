@@ -1,5 +1,15 @@
 # Next session handoff
 
+## Current — Stage89 F58E0 four targeted readers SOURCE READY, awaiting Windows build/runtime (2026-11-11)
+
+[Source branch](https://github.com/Hawky11/1/tree/stage89-f58e0-four-call-readers-source-only) · [README/install](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Overlay/README_STAGE89_RU.md) · [static verification](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Analysis/source_only_results.json) · [Stage88 runtime baseline](Stage88_Runtime/RUNTIME_ANALYSIS.md).
+
+**Stage89 source-only, NOT COM-vs-COM tested.** Original AALib SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`, all 22 site/helper tests PASS. Guarded CALL-site wrappers at 9A870/9AA20/9AB00/AAB55 call the original F58E0 once with original args. Worker-only ring, snapshot three bitmap DWORDs, AL, EFLAGS, same-player/TID/QPC. F58E0 index 0x26 tests P+3A0C bits 0x200/0x400/0x800, then generic bit38 at P+3A10 &0x40. At AAB55 AL=0 can continue to E8560; **this has not yet been observed in a Stage89 trace**. No new EE306 hook or gameplay edit. Existing Stage87/88 runtime remains validated independently (175/175, 13 bit0→1). The package is named `ArcanaAI_Stage89_F58E0_Reader_SourceOnly.zip` and is supplied in the chat.
+
+**ACTION:** User closes game, backs up working Stage88 1,975,296-byte DLL, runs SHA-guarded `ApplyStage89.ps1` (changes Stage81 inl, adds Stage89 inl only), keeps Stage24/87/88 enabled and Stage36 **off**, optionally `EnableStage89F58E0ReaderTrace=1; Stage89ReaderSiteMask=15`, builds x86 Build.bat, tests 3–5 COM-vs-COM rounds, uploads Build.log + Stage89 reader/Stage88/Stage87/Stage24/EventDispatch/FinalCommand same-run logs. Check STAGE89_INSTALLED, `STAGE89_HEALTH` error counters, record counts, return AL vs predicted bitmap, and temporal preceding Stage88 with P/TID/QPC. Do not infer cause from nearest previous event; no action/animation/hit proof. Rollback if build/crash/health issue.
+
+---
+
 ## Current — Stage88 actual F57D0 bitmap runtime VERIFIED (2026-11-11)
 
 **Read first:** [Stage88 full report](Stage88_Runtime/RUNTIME_ANALYSIS.md) · [results](Stage88_Runtime/results.json) · [user upload `ccbbf6a`](https://github.com/Hawky11/1/commit/ccbbf6a41cd7ed5ba0fdf194f557a4bbf112b3ca) · [Stage88 source branch](https://github.com/Hawky11/1/tree/stage88-f57d0-controller-bitmap-source-only). Last tested DLL **1,975,296 bytes** Windows x86 **BUILD SUCCEEDED**; only familiar C4754 warning. Stage87 EE2F0 and Stage24 EE306→F57D0 installed; Stage88 bridge READY, **no extra hook**. Stage87/88 **175/175 unique same-run stage87Seq/QPC/side/player/TID and mapping**, read masks full; 1482 calls, 1307 deliberately filtered, no stale/mismatch/readFail/dropped. Selector0→EAX 0x0E→P+3A0C bit0x200 **110** calls (12 bit0→1), selector1→EAX 0x0F→bit0x400 **65** calls (1 bit0→1), selector2 **zero** this run. 58 triple-field changes, 117 unchanged. Type/payload 171×0/0x22, 2×0/0x23, 2×2/0x04; **do not equate** them with 143 separate type1 FinalCommand rows.

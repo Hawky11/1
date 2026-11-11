@@ -1,5 +1,14 @@
 # Project history
 
+## Stage90 runtime proves net F57D0 special-bit clears and all three later Stage89 AL0 paths — 2026-11-11
+
+- [Frozen user run `3a6f9e9`](https://github.com/Hawky11/1/commit/3a6f9e908ab7e3bc1e18aca4085c5a6b3fdd044b) · [detailed Stage90 audit](Stage90_Runtime/RUNTIME_ANALYSIS.md) · [machine results](Stage90_Runtime/results.json) · [Stage90 source branch](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay). Windows MSVC x86 **BUILD SUCCEEDED**, DLL **1,991,168 bytes**, one familiar nonfatal C4754. Stage90 existing Stage24 EE306→F57D0 bridge **1,792/1,792** completed P1/P2 calls with 718 output changes and 1,074 no change; **87 special-bit net clears** [38×0x200, 41×0x400, 8×0x800], **88 net sets** [39/41/8]. All Stage90 HEALTH readMaskIncomplete/depthOverflow/mismatch/readFail/dropped zero.
+- **280/280 unique Stage87→Stage88→Stage90** exact QPC-containing player/TID/selector/bitmap PRE+POST joins; selector0/1/2 140/119/21 and 15 Stage88 target-bit 0→1 changes. No evidence of hook collisions, Stage36 remains disabled.
+- **Three full-state native chronology chains before Stage89 AL0:** (1) P1 Stage88 seq79 selector1/0x400, Stage90 seq536 preserves bit, Stage90 seq540 arg6/type0/payload0x12 clears bit, Stage89 seq1 returns AL0; (2) Stage88 seq158 selector2/0x800, Stage90 seq1011 preserves bit, Stage90 seq1014 arg6/type0/payload0x12 clears bit, Stage89 seq2 AL0 **101,261 QPC ticks** after clear; (3) Stage88 seq205 selector0/0x200, Stage90 seq1442 preserves bit, Stage90 seq1445 arg0/type0/payload0 clears bit, Stage89 seq3 AL0. All same player P1/TID 6820; last Stage90 POST before each read matches Stage89 PRE, no intervening **recorded F57D0** new special-bit set. Exact F57FA store EIP is STATIC, not independently observed; other code may write bitmap.
+- The question “why AAB55 always sees AL0?” is **resolved for these three sampled sequences** as native net clears before reader. **NEXT Stage91:** find genuine consumers during active-bit windows before the clear; do not make AI improvement/hit claim, install another EE306 hook or introduce gameplay writes.
+
+---
+
 ## Stage90 source-only: original F57D0 zero/reset path pinned; full-call read-only observer ready — 2026-11-11
 
 - [Full Stage90 source-only 12-file branch](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay) · [static disassembly](Stage90_Analysis/STATIC_ANALYSIS.md) · preceding [Stage89 runtime](Stage89_Runtime/RUNTIME_ANALYSIS.md). Original exe SHA pinned; **30/30 static checks PASS**, synthetic correlator positive and negative tests PASS, 12 Git blobs verified identical to local ZIP contents. **Stage90 Windows x86 build/runtime NOT YET TESTED**; preserve tested Stage89 1,984,000-byte DLL.

@@ -1,0 +1,109 @@
+{
+  "stage": "Stage88",
+  "status": "WINDOWS_X86_RUNTIME_VERIFIED_FOR_OBSERVED_STATES",
+  "captured_at": "2026-11-11 21:04–21:05 (game-local)",
+  "source_branch": "stage88-f57d0-controller-bitmap-source-only",
+  "source_commit": "eb92db82bae6afb155a58bef8e8429ef3abf7af3",
+  "runtime_upload_commit": "ccbbf6a41cd7ed5ba0fdf194f557a4bbf112b3ca",
+  "build": {
+    "succeeded": true,
+    "dll_bytes": 1975296,
+    "warnings": [
+      "C4754 AICommandSiteTrace.cpp:785 (existing)"
+    ]
+  },
+  "hooks": {
+    "stage87": "INSTALLED 1/1 at 0xEE2F0",
+    "stage24": "Installed EE306 -> F57D0",
+    "stage88": "bridge to existing Stage24; no new hook"
+  },
+  "stage87": {
+    "calls": 1482,
+    "filtered": 1307,
+    "events": 175,
+    "p1": 80,
+    "p2": 95,
+    "selectors": {
+      "0": 110,
+      "1": 65,
+      "2": 0
+    }
+  },
+  "stage88": {
+    "preCalls": 1482,
+    "filtered": 1307,
+    "joined": 175,
+    "completed": 175,
+    "events": 175,
+    "unique_one_to_one": 175,
+    "missing": 0,
+    "mismatches": 0,
+    "stale": 0,
+    "readFail": 0,
+    "dropped": 0,
+    "read_masks_full": 175,
+    "all_match": 175,
+    "descriptor_table_raw": "01FF2601",
+    "descriptor_bytes": "01 26 FF",
+    "output_full_changed": 58,
+    "output_no_change": 117,
+    "target_bit_zero_to_one": 13,
+    "target_bit_already_set": 162,
+    "selector_details": {
+      "0": {
+        "mapped_code": "0x0E",
+        "target_bit": "0x200",
+        "calls": 110,
+        "zero_to_one": 12,
+        "already_set": 98
+      },
+      "1": {
+        "mapped_code": "0x0F",
+        "target_bit": "0x400",
+        "calls": 65,
+        "zero_to_one": 1,
+        "already_set": 64
+      },
+      "2": {
+        "mapped_code": "0x10",
+        "target_bit": "0x800",
+        "calls": 0,
+        "zero_to_one": 0,
+        "status": "not observed in this run"
+      }
+    },
+    "dispatch_type_payload": {
+      "0_0x22": 171,
+      "0_0x23": 2,
+      "2_0x04": 2
+    },
+    "qpc87_to_stage88_pre_ticks": {
+      "min": 1,
+      "max": 225,
+      "mean": 6.182857142857143
+    },
+    "stage88_pre_to_post_ticks": {
+      "min": 1,
+      "max": 10,
+      "mean": 3.5485714285714285
+    }
+  },
+  "stage24_legacy": {
+    "payload_0x1E_type_1_records": 5
+  },
+  "final_command": {
+    "records": 143,
+    "p1": 60,
+    "p2": 83,
+    "note": "type-1 queue callsite, not direct identity with Stage88 type0/2; no action proof"
+  },
+  "event_dispatch": {
+    "detail_records": 423
+  },
+  "limitations": [
+    "no selector2 sample; do not claim runtime confirmation of 0x10/0x800",
+    "bitmap output is not proven animation, attack, or hit",
+    "no direct outgoing-command causal join established"
+  ],
+  "next": "Stage89: inspect exact native consumer readers of P+3A08/0C/10 and instrument scoped read-only downstream path, without second EE306 hook or game writes"
+}

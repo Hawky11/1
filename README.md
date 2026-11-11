@@ -1,3 +1,13 @@
+## Current — Stage76 after-callback selector phase probe SOURCE READY (2026-11-11)
+
+[Stage76 two-file overlay](Stage76_Overlay/src/Stage38CallbackWindow.inl) · [new passive hook source](Stage76_Overlay/src/Stage76AfterCallbackPhases.inl) · [technical design](Stage76_Analysis/STATIC_ANALYSIS.md) · [Russian build/rollback](Stage76_Analysis/README_STAGE76_RU.md) · [static verifier](Stage76_Analysis/tools/verify_stage76.py) · [results](Stage76_Analysis/results.json). Branch [stage76-after-callback-phase-snapshots-source](https://github.com/Hawky11/1/tree/stage76-after-callback-phase-snapshots-source). **Windows x86 build / game runtime NOT VERIFIED.** The original private EXE and the three exact E8 native calls are SHA/opcode checked; no new hardware breakpoint/VEH or COM gameplay writes.
+
+**Stage74 gap**: five selector changes `P+3F50` were only between callback windows. Stage75 traced event key `P+3A36→P+3ED4=11h`, not selector origin. Stage76 wraps original CALLs `EE7D1→EE480` (phase0), `EE7D6→E8DA0` (phase1), conditional `EE7EA→EE5E0` (phase2), taking actor/QPC PRE/POST snapshots and calling each target exactly once. The Stage74 adapter is preserved except **3 integration edits** (include/install/flush). **The wrappers change callee-visible return addresses** and instrumented timing; runtime behavior must be tested and rollback maintained.
+
+**Next user:** back up known-good **Stage74 DLL 1,893,376 bytes** and adapter; copy both Stage76 `.inl` files to project `src`, run optional verifier, Windows x86 Build.bat then normal COM-vs-COM capture. Upload same-run Build.log + Stage76/38/65/70/59 logs; preserve Stage70 r2 1,892,864-byte secondary rollback. Stage77 will attribute transitions to phases, not claim exact native selector writer EIP before proof. Original logs/default main not modified.
+
+---
+
 ## Current — Stage75 static callback-11 registration provenance VERIFIED (2026-11-11)
 
 [Stage75 original-native report](Stage75_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage75_Analysis/README_STAGE75_RU.md) · [PE SHA/35 opcode/8 call verifier](Stage75_Analysis/tools/verify_stage75.py) · [results](Stage75_Analysis/results.json). Branch [stage75-event-record-callback11-static-provenance](https://github.com/Hawky11/1/tree/stage75-event-record-callback11-static-provenance), based on the unchanged [Stage74 runtime-verified capture](Stage74_Runtime/RUNTIME_ANALYSIS.md). **No Stage75 DLL, hooks, game test, code injections or gameplay behavior changes.**

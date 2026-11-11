@@ -1,3 +1,15 @@
+## Current — Stage90 F57D0 bitmap clear route VERIFIED in Windows runtime (2026-11-11)
+
+[Stage90 runtime report](Stage90_Runtime/RUNTIME_ANALYSIS.md) · [machine results](Stage90_Runtime/results.json) · [immutable user upload `3a6f9e9`](https://github.com/Hawky11/1/commit/3a6f9e908ab7e3bc1e18aca4085c5a6b3fdd044b) · [Stage90 source](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay).
+
+**Windows x86 BUILD SUCCEEDED**, `dinput8.dll` **1,991,168 bytes**, previous nonfatal C4754. Existing Stage24 EE306→F57D0 reused; Stage90 **1,792/1,792** completed native-call observations, full P1/P2 bitmap PRE/POST, all `readMaskIncomplete/depthOverflow/mismatch/readFail/dropped=0`. Found **87 net special-bit clears** (0x200:38, 0x400:41, 0x800:8), **88 sets** (39/41/8), 718 triple-DWORD changes. **280/280 strict Stage87→Stage88→Stage90 joins** with exact actor/TID/QPC/selector/bitmap state; Stage88 selector0/1/2 counts 140/119/21, all HEALTH errors zero.
+
+**Crucial:** all **three Stage89 AAB55 AL=0 readings** have a preceding Stage90 native bit-clear for the respective most recent Stage88 selector bit: Stage89 seq1 ← Stage90 seq540 clears 0x400 ← Stage88 seq79; seq2 ← Stage90 seq1014 clears 0x800 ← Stage88 seq158; seq3 ← Stage90 seq1445 clears 0x200 ← Stage88 seq205. No subsequently recorded F57D0 sets special bits before these reads; last Stage90 POST equals Stage89 PRE. This verifies the **observed native net-clear path**, not a per-instruction trace or direct same-event gameplay action. In particular, Stage89 seq2 is **101,261 raw QPC ticks** after seq1014.
+
+**NEXT Stage91:** determine which *actual downstream reader* sees these bits while set, before their clearing call. Start with original SHA-pinned disassembly, target guarded passive instrumentation only if warranted, preserve working Stage90 DLL and keep Stage36 disabled. No synthetic inputs, extra EE306 hook or proven COM behavioral improvement. Previous “Current” entries below are historical.
+
+---
+
 ## Current — Stage90 read-only full F57D0 clear/rewrite audit SOURCE READY (2026-11-11)
 
 [Native static analysis](Stage90_Analysis/STATIC_ANALYSIS.md) · [full 12-file source-only package](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay) · [Stage89 tested predecessor](Stage89_Runtime/RUNTIME_ANALYSIS.md).

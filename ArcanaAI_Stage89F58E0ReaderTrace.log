@@ -12,8 +12,6 @@ STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_F58E0 seq=1 siteRVA=0AAB55 side=P1 player=0DF21F78 bitmap=0DF25980 tid=5480 qpcBefore=2203820808533 qpcAfter=2203820808537 bitIndex=00000026 returnRVA=0AAB5A esi=0DF21F78 pre=00000000,00000001,00000000 post=00000000,00000001,00000000 preMask=7 postMask=7 nativeEax=00000000 returnAL=0 returnFlags=00000246 predictedPre=0 predictedPost=0 predictionValid=1 predictionMatch=1 nextBranchPredictedTaken=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=1 events=1 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
@@ -21,22 +19,7 @@ STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_F58E0 seq=2 siteRVA=0AAB55 side=P1 player=0DF21F78 bitmap=0DF25980 tid=5480 qpcBefore=2204071532346 qpcAfter=2204071532350 bitIndex=00000026 returnRVA=0AAB5A esi=0DF21F78 pre=00000000,00000001,00000000 post=00000000,00000001,00000000 preMask=7 postMask=7 nativeEax=00000000 returnAL=0 returnFlags=00000246 predictedPre=0 predictedPost=0 predictionValid=1 predictionMatch=1 nextBranchPredictedTaken=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=1 events=1 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_F58E0 seq=3 siteRVA=0AAB55 side=P1 player=0DF21F78 bitmap=0DF25980 tid=5480 qpcBefore=2204260083122 qpcAfter=2204260083129 bitIndex=00000026 returnRVA=0AAB5A esi=0DF21F78 pre=00000006,00001002,00000000 post=00000006,00001002,00000000 preMask=7 postMask=7 nativeEax=00000000 returnAL=0 returnFlags=00000246 predictedPre=0 predictedPost=0 predictionValid=1 predictionMatch=1 nextBranchPredictedTaken=0
+STAGE89_F58E0 seq=1 siteRVA=0AAB55 side=P1 player=0DF21F78 bitmap=0DF25980 tid=6820 qpcBefore=2235249037136 qpcAfter=2235249037139 bitIndex=00000026 returnRVA=0AAB5A esi=0DF21F78 pre=00000000,00000001,00000000 post=00000000,00000001,00000000 preMask=7 postMask=7 nativeEax=00000000 returnAL=0 returnFlags=00000246 predictedPre=0 predictedPost=0 predictionValid=1 predictionMatch=1 nextBranchPredictedTaken=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=1 events=1 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
@@ -51,7 +34,27 @@ STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
-STAGE89_F58E0 seq=4 siteRVA=0AAB55 side=P2 player=0DF4CCA0 bitmap=0DF506A8 tid=5480 qpcBefore=2204590715001 qpcAfter=2204590715006 bitIndex=00000026 returnRVA=0AAB5A esi=0DF4CCA0 pre=00000018,00000001,00000008 post=00000018,00000001,00000008 preMask=7 postMask=7 nativeEax=00000000 returnAL=0 returnFlags=00000246 predictedPre=0 predictedPost=0 predictionValid=1 predictionMatch=1 nextBranchPredictedTaken=0
+STAGE89_F58E0 seq=2 siteRVA=0AAB55 side=P1 player=0DF21F78 bitmap=0DF25980 tid=6820 qpcBefore=2235535212265 qpcAfter=2235535212269 bitIndex=00000026 returnRVA=0AAB5A esi=0DF21F78 pre=00000006,00001002,00000000 post=00000006,00001002,00000000 preMask=7 postMask=7 nativeEax=00000000 returnAL=0 returnFlags=00000246 predictedPre=0 predictedPost=0 predictionValid=1 predictionMatch=1 nextBranchPredictedTaken=0
 STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=1 events=1 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_F58E0 seq=3 siteRVA=0AAB55 side=P1 player=0DF21F78 bitmap=0DF25980 tid=6820 qpcBefore=2235788045562 qpcAfter=2235788045568 bitIndex=00000026 returnRVA=0AAB5A esi=0DF21F78 pre=00000000,00000001,00000000 post=00000000,00000001,00000000 preMask=7 postMask=7 nativeEax=00000000 returnAL=0 returnFlags=00000246 predictedPre=0 predictedPost=0 predictionValid=1 predictionMatch=1 nextBranchPredictedTaken=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=1 events=1 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0
+STAGE89_HEALTH calls0=0 calls1=0 calls2=0 calls3=0 events=0 filtered=0 overflow=0 dropped=0 mismatch=0 readFail=0 ring=8192 depth=16 mask=F gameWrites=0 DRwrites=0

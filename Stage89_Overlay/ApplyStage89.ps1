@@ -39,5 +39,6 @@ try {
  if (Test-Path -LiteralPath $backup) {Copy-Item -LiteralPath $backup -Destination $stage81 -Force}
  if (Test-Path -LiteralPath $stage89) {Remove-Item -LiteralPath $stage89 -Force}
  if (Test-Path -LiteralPath $state) {Remove-Item -LiteralPath $state -Force}
+ if (Test-Path -LiteralPath $backup) {Remove-Item -LiteralPath $backup -Force}
  throw
 }

@@ -1,5 +1,18 @@
 # Next session handoff
 
+## Current — Stage77 BUILD/RUNTIME VERIFIED; positive native callback selector assignment captured (2026-11-11)
+
+**Frozen user commit:** [2ee8534](https://github.com/Hawky11/1/commit/2ee8534ba314221da8b980f7ebc8cc3458baf22a). Evidence branch [stage77-runtime-selector-positive-callback-evidence](https://github.com/Hawky11/1/tree/stage77-runtime-selector-positive-callback-evidence), [full report](Stage77_Runtime/RUNTIME_ANALYSIS.md), [machine results](Stage77_Runtime/results.json). Original five log files are unchanged on this branch. Windows x86 BUILD SUCCEEDED 12:59:17, Stage77 DLL **1,905,664 bytes**. Game runtime TID 10968, P1/P2 objects 29DF4020/29DF4C50.
+
+**Health:** Stage38 4,805 matching full-mask callback windows; Stage77 4,805 perfect before/after 156C00 pairs, no changes to any of five fields within native 156C00, 21 zero-error STAGE77_HEALTH samples; Stage76 9,690 events (phase0/1 each 4,845, conditional phase2 zero), 21 zero-error HEALTH. Stage65 323 calls, Stage70 2 deferred ID=25 stores in Stage38 P1 callback seq1208/4458 (requests 2F). No Stage59 log was provided in this upload; do not infer fresh Stage59 health.
+
+**TWO distinct selector transitions:** (1) P1 Stage38 seq1168 POST selector0→seq1170 native 156C00-before selector1 (phase76 seq2335/2336 still 0); unknown earlier engine writer, not 156C00. (2) **NEW POSITIVE P2 Stage38 callback seq2910**: native callback `1560B0` executes with selector **0→1** and companion P+3F54 **1→3** within original callback window. Stage76 seq5819 immediately after has event-code P+3A30=0x21. This is strongly consistent with original static `1560B9→155B70→155D74(state=3)→155D29(selector=1)→0F2DE0(event=21)`, but **direct EIP=155D29 was not captured**, so do not overclaim instruction execution proof. Callback-local positive evidence is separate from inter-frame P1 transition.
+
+**NEXT STAGE78:** static first: review native 1560B0/155B70 exact original instruction, branch, register and stack flow, then decide on single guarded passive observer to directly verify source site 155D29 on future COM-vs-COM. Don't automatically hook all 20 sources or claim DR2/3; Stage59 DR0/1 previously used. Keep working Stage77 DLL **1,905,664 bytes**; Stage76 **1,901,568**, Stage74 **1,893,376** rollback. No Stage77 re-run required. No changes to COM logic or gameplay.
+
+---
+
+
 ## Current — Stage61 same-run Stage46→47→59 RUNTIME VERIFIED; Stage62 decision linkage NEXT (2026-11-10)
 
 **Provenance:** new exact two-file upload [c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79), frozen unchanged at [stage61-runtime-action-motion-x-evidence](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence), [full Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md). The newly supplied Stage46 `c973b4593a6de15a045220b39c9b8d010db6c764` and Stage47 `d87f182d4cd66fb19aeaf16439428c905c7b6ced` log blobs are unequivocally from **22:07**, same session as earlier Stage59 r2 frozen blob `a5a2e76dcc473e079d0445db6e9d7069a3784879` (previous original upload d2ce2444). Same P1/P2 objects `2A89A020/2A89AC50`, game thread `15132`, monotonic comparable QPC. **Stage61 uses Stage59 r2 already built and verified; no Stage61 DLL was built.**

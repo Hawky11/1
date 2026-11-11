@@ -1,0 +1,116 @@
+{
+  "stage": 72,
+  "date": "2026-11-11",
+  "status": "STATIC VERIFIED / EXISTING STAGE70 RUNTIME CALLBACK CORRELATION VERIFIED / SELECTOR SOURCE EIP UNOBSERVED",
+  "userEvidenceCommit": "98ff59b871e90fb757c787b472d5d5322941ce07",
+  "sourceBranch": "stage71-selector-origin-static-evidence",
+  "originalExeSHA256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "native": {
+    "opcodeRegionsVerified": 23,
+    "originalTableVA": "00558DC4",
+    "callbackDispatchKey": "0x22",
+    "tableTargetVA": "00558CE0",
+    "switchCallbackRVA": "158570",
+    "switchCaseCallRVA": "158CE1",
+    "switchCaseCallTargetRVA": "156A60",
+    "callbackDescriptorSetRVA": "0F7E70",
+    "descriptorCallbackField": "P+3ED0",
+    "descriptorParameterField": "P+3ED4",
+    "callbackExecutionRVA": "EE7BE",
+    "callbackFrameCopyRVA": "156C00",
+    "followOnCallbackSetCallRVA": "15679A",
+    "nativeDeferredStoreRVA": "156787",
+    "selectorLiteralOneSetterRVA": "155D29",
+    "event21CodeAt": "P+3A30",
+    "event21ModeAt": "P+3A2E",
+    "distinctChannels": [
+      "P+3ED4 callback parameter 0x22",
+      "P+3A30 event record 0x21"
+    ]
+  },
+  "actor": {
+    "side": "P1",
+    "player": "0E4A1F78",
+    "object": "2A3A3020",
+    "tid": 20812,
+    "gameBase": "00800000"
+  },
+  "runtimeEvents": [
+    {
+      "observer": "Stage38",
+      "seq": 4090,
+      "qpcBefore": "1518394805874",
+      "qpcAfter": "1518394805884",
+      "callbackRVA": "158570",
+      "newCallbackRVA": "1566B0",
+      "callbackParamBefore": "22",
+      "callbackParamAfter": "FFFFFFFF"
+    },
+    {
+      "observer": "Stage38",
+      "seqRange": "4092..4114",
+      "countP1": 12,
+      "callbackRVA": "1566B0",
+      "transition": "unchanged",
+      "firstQpc": "1518394908779",
+      "lastQpc": "1518396004030"
+    },
+    {
+      "observer": "Stage38",
+      "seq": 4116,
+      "qpcBefore": "1518396105803",
+      "qpcAfter": "1518396105825",
+      "callbackRVA": "1566B0",
+      "newCallbackRVA": "1560B0",
+      "Oplus68Before": "FFFFFFFF",
+      "Oplus68After": "00000025"
+    },
+    {
+      "observer": "Stage65",
+      "seq": 319,
+      "qpcBefore": "1518396105810",
+      "qpcAfter": "1518396105813",
+      "originalCallerRVA": "156769",
+      "request": "2F",
+      "insideStage38Seq": 4116
+    },
+    {
+      "observer": "Stage70",
+      "seq": 1,
+      "qpcBefore": "1518396105821",
+      "qpcAfter": "1518396105822",
+      "selector": 1,
+      "originalSourceStoreRVA": "156787",
+      "EDX": "25",
+      "deferredBefore": "FFFFFFFF",
+      "deferredAfter": "25",
+      "insideStage38Seq": 4116
+    },
+    {
+      "observer": "Stage38",
+      "seq": 4118,
+      "qpcBefore": "1518396204014",
+      "qpcAfter": "1518396204022",
+      "callbackRVA": "1560B0",
+      "nextCallbackActuallyInvoked": true
+    }
+  ],
+  "offlineIntegrity": {
+    "Stage38_rows": 5109,
+    "Stage65_rows": 369,
+    "Stage70_rows": 1,
+    "allSequencesContiguous": true,
+    "sameActorThreadObject": true,
+    "nestedQpc": true,
+    "originalShaAndCodeMatches": true
+  },
+  "limitations": [
+    "Stage38 did not record P+3F50 nor P+3F54",
+    "Register-derived selector writes and aliases remain possible",
+    "Internal precise branch EIP of 156A60 not recorded",
+    "Original callback switch decoding is static and linked to runtime observed dispatch key, not sampled switch-case EIP",
+    "0x21 event code and 0x22 callback argument are separate fields",
+    "The callback descriptor setter 0F7E70 writes fields; execution occurs later via EE7BE"
+  ],
+  "next": "Stage73: audit selector writer origins and DR ownership before proposing any minimal passive selector attribution observer. No new DLL/build/runtime requested for Stage72."
+}

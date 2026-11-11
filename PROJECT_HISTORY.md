@@ -1,5 +1,13 @@
 # Project history
 
+## Stage92 r2 face-control refusal → r3 Stage35-aware fail-closed check (2026-11-12)
+
+- User r2 Build.log: **BUILD SUCCEEDED** with x86 MSVC, `dinput8.dll` **2,010,112 bytes** and old C4754. Live audit **14/15 region signatures matched**; only `ACAB8_AFTER 0ACABD` mismatched, expected `56E8FD95040056`, live `56E81D8FB17856`. All Stage92 target CALLs and native 9ED20/9ED60 opcodes passed. R2 refused patch, no tick/helper evidence.
+- Neighbor `ACABE` belongs to already installed **Stage35 Controller Consumer**, original TIMER helper F60C0; paired Stage35 FLAGS hook `ACAC4→F5BD0`. The modified CALL live points to `0x78FC59E0`; INI has Stage35 enabled. This is a signature collision with an earlier observer, not proof of action changes.
+- ChatGPT generated **Stage92 r3 ZIP**, SHA source+adapter guard, r2 rollback, accepts either pristine native ACABE or precisely checked Stage35 *pair* in same dinput8 executable image, no generic bypass and no game data write. Original EXE static 67/67; synthetic **10** cases and **17** source structural guards passed; **r3 Windows compile/runtime untested**. [Stage92 r3 analysis handoff](https://github.com/Hawky11/1/blob/stage92-r3-stage35-compatible-guard-handoff/Stage92_R3_Analysis/README_RU.md). Next test: one launch and r3 Stage92 log; expect `STAGE92_STAGE35_COMPAT` and `STAGE92_INSTALLED 3/3`; only then play 3–5 COM-vs-COM rounds to test bit3 branches.
+
+---
+
 ## Stage92 r1 Windows runtime audit — guard blocks installation (2026-11-11)
 
 - [Latest user upload c8530d5](https://github.com/Hawky11/1/commit/c8530d5fd389088bb214010a0b99d19d1f1e1c6f): `Build.log` x86 **BUILD SUCCEEDED**, DLL **2,008,576 bytes**, old C4754. `ArcanaAI_Stage92F5990BranchTrace.log` only `STAGE92_BUILD` + `STAGE92_ERROR native signature mismatch/already installed; no patch`. No hook, helper selection, bit3 transitions or final COM action evidenced for Stage92.

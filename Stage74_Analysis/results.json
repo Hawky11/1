@@ -1,0 +1,26 @@
+{
+  "stage": 74,
+  "status": "SOURCE READY; source diff verified; Windows x86 build and runtime pending",
+  "originalAALibSHA256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "exactBaseSourceBlob": "ed6065fd5877cb5e1ab634493c07b32f054510bf",
+  "exactStage74SourceBlob": "106dca56d662fe1c8e0b7083013a535b67cde3c8",
+  "exactSourceEdits": 4,
+  "fieldCountBefore": 30,
+  "fieldCountAfter": 32,
+  "index30": {
+    "base": "P",
+    "offset": "3F50",
+    "name": "selector"
+  },
+  "index31": {
+    "base": "P",
+    "offset": "3F54",
+    "name": "selectorState"
+  },
+  "preservedIndices": "f0..f29",
+  "newHooks": 0,
+  "newDRWatchpoints": 0,
+  "runtimeSelectorWriterIPVerified": false,
+  "gameBuildVerified": false,
+  "knownGoodRollbackDLLBytes": 1892864
+}

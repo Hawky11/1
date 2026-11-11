@@ -6,6 +6,8 @@
 
 **NEXT Stage89:** original EXE static study of downstream actual readers of P+3A08/0C/10, then narrow passive reader-specific runtime trace only if safely attributable. Preserve Stage88 DLL and source, Stage36 disabled, no game data edits or synthetic events. Earlier “Current” sections are historical.
 
+**Stage89 static follow-up completed:** [four exact F58E0 bitmap-reader callsites](Stage89_Analysis/STATIC_ANALYSIS.md) (`9A870/9AA20/9AB00/AAB55`, argument `0x26`, reads `P+3A0C` bits `0x200/0x400/0x800`; conditional results only). **Stage89 hook has NOT been implemented/built/tested.** Next: passive targeted reader instrumentation, not speculative AI changes.
+
 ---
 
 ## Current — Stage85 after-join alternate selector path confirmed; Stage86 source-only next (2026-11-11)

@@ -1,5 +1,13 @@
 # Project history
 
+## Stage91 source-only: native direct F58E0 bitmap-bit readers 9/10/11 localized — 2026-11-11
+
+- [Stage91 original SHA-pinned static disassembly](Stage91_Analysis/STATIC_ANALYSIS.md) · [68/68 static verification](Stage91_Analysis/static_results.json) · [11-file code/installer/test branch](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay). Native helper `F58E0` generic indices **9/10/11** check special bits of `P+3A0C` 0x200/0x400/0x800, respectively. Reader callsites **F5A4D/F5A5C/F5A76** inside F5990; upstream update call at `ACAB8`. AL1 in first two callers goes to F5A68 setting `P+3B70 |= 8`; third caller selects `9ED20` vs `9ED60`. These are native control-flow candidates **not yet observed by Stage91 runtime**.
+- New Stage91 source-only r1: three individually SHA/exact-signature protected F58E0 CALL site wrappers, preserving original callee once and context/stack; minimal extension to Stage90-tested Stage81 worker, bounded worker-only ring. No global F58E0 hook, duplicate EE306, writes to game fields, or synthetic inputs. Apply/rollback pinned exact Stage90 source. **68/68 static PASS**, synthetic positive and three negatives PASS, 11 Git blobs match archive. **NOT Windows-built nor runtime tested.**
+- Preserve Stage90 DLL **1,991,168 bytes**, Stage36 off. Next action: user Windows x86 build and same-run COM-vs-COM logs for Stage91/90/88/87/89/FinalCommand/EventDispatch. A Stage91 `AL=1` would prove the specific native predicate saw the active bit, not proof of queued COM attack, hit or improved AI.
+
+---
+
 ## Stage90 runtime proves net F57D0 special-bit clears and all three later Stage89 AL0 paths — 2026-11-11
 
 - [Frozen user run `3a6f9e9`](https://github.com/Hawky11/1/commit/3a6f9e908ab7e3bc1e18aca4085c5a6b3fdd044b) · [detailed Stage90 audit](Stage90_Runtime/RUNTIME_ANALYSIS.md) · [machine results](Stage90_Runtime/results.json) · [Stage90 source branch](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay). Windows MSVC x86 **BUILD SUCCEEDED**, DLL **1,991,168 bytes**, one familiar nonfatal C4754. Stage90 existing Stage24 EE306→F57D0 bridge **1,792/1,792** completed P1/P2 calls with 718 output changes and 1,074 no change; **87 special-bit net clears** [38×0x200, 41×0x400, 8×0x800], **88 net sets** [39/41/8]. All Stage90 HEALTH readMaskIncomplete/depthOverflow/mismatch/readFail/dropped zero.

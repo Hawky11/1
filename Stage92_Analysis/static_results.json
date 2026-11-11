@@ -1,0 +1,34 @@
+{
+  "status": "PASS_STATIC_SOURCE_ONLY",
+  "checks": 67,
+  "exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "sites": [
+    {
+      "rva": "0xacab8",
+      "original_target": "0xf5990"
+    },
+    {
+      "rva": "0xf5a86",
+      "original_target": "0x9ed20"
+    },
+    {
+      "rva": "0xf5a8f",
+      "original_target": "0x9ed60"
+    }
+  ],
+  "observed_functions": [
+    "F5990",
+    "9ED20",
+    "9ED60"
+  ],
+  "no_gameplay_mutations": true,
+  "no_new_EE306": true,
+  "no_global_F58E0": true,
+  "windows_compiled": false,
+  "game_runtime_tested": false,
+  "synthetic_correlator_tests": {
+    "positive": 2,
+    "negative": 3,
+    "result": "PASS"
+  }
+}

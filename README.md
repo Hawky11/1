@@ -1,3 +1,13 @@
+## Current — Stage74 callback selector/state window SOURCE READY (2026-11-11)
+
+[Stage74 original source patch](Stage74_Overlay/src/Stage38CallbackWindow.inl) · [full audit](Stage74_Analysis/STATIC_ANALYSIS.md) · [Russian one-file install guide](Stage74_Analysis/README_STAGE74_RU.md) · [exact four-edit source verifier](Stage74_Analysis/tools/verify_stage74.py). Branch: [stage74-callback-selector-boundary-snapshot](https://github.com/Hawky11/1/tree/stage74-callback-selector-boundary-snapshot). **Windows x86 build and gameplay not yet tested.**
+
+Stage59 owns DR0/DR1 for movement X; DR2/DR3 may have other owners. Stage74 deliberately adds **zero new hooks and zero new DR watchpoints**. It changes only the verified Stage70 r2 `Stage38CallbackWindow.inl` to capture **f30=P+3F50 selector** and **f31=P+3F54 state** in existing callback PRE/POST snapshots. The existing f0..f29 values and Stage38/39 indices are unchanged. The two added fields need a new player-address branch rather than reusing object-offset mapping, and a corrected missing-object guard; all four changes are source-diff pinned to the known Stage70 r2 adapter.
+
+**Next:** back up known-good Stage70 r2 **1,892,864-byte** DLL, replace only `src/Stage38CallbackWindow.inl`, run the verifier and `Build.bat`, then same-run COM-vs-COM Stage38/65/70/59 logs and Build.log. Selector changes within callback windows narrow the timing; **Stage74 does not directly observe native writer EIP or prove smarter AI**. [Stage73](Stage73_Analysis/STATIC_ANALYSIS.md) details competing one/literal and register-derived selector sources.
+
+---
+
 ## Current — Stage73 selector-writer source route / early-return audit STATIC VERIFIED (2026-11-11)
 
 [Stage73 original-code analysis](Stage73_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage73_Analysis/README_STAGE73_RU.md) · [PE/opcode and direct-call verifier](Stage73_Analysis/tools/verify_stage73.py) · [results JSON](Stage73_Analysis/results.json). Branch: [stage73-selector-writer-early-exit-static](https://github.com/Hawky11/1/tree/stage73-selector-writer-early-exit-static). **No new DLL, runtime test, source hooks or AI modifications.**

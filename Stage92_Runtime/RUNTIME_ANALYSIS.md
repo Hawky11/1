@@ -44,7 +44,7 @@ Stage90 `F57D0`: 1,742 events (P1=808, P2=934), 705 changed snapshots vs 1,037 u
 ## Same-session independent evidence
 
 - Stage87 `EE2F0` 220 events, all `match=1`; Stage88 `EE306→F57D0` 220 matching QPC joins; Stage90 contains **all 220** stage87Seq references exactly once, no missing.
-- Stage90 1,742 dispatches (type0=1,259, type1=183, type2=300); all health rows error-free. Stage91 31,605 native readers; Stage92 17,788 native F5990 call boundaries.
+- Stage90 1,742 F57D0 calls (observed dispatchType metadata: type0=1,259, type1=183, type2=300); all health rows error-free. Stage91 31,605 native readers; Stage92 17,788 native F5990 call boundaries.
 - `ArcanaAI_FinalCommandTrace.log`: **174 actual type-1 FINAL_COMMAND records** (P1=78, P2=96), all `payloadMatch=1, ediMatchesPlayer=1, localsReadable=1`; 43 unique ESI payloads. **55/174** final-command snapshots had P+3B70 bit3 on (P1=18, P2=37).
 - `ArcanaAI_EventDispatchTrace.log`: **602 EVENT_DISPATCH_DETAIL** records (419 type0 + 183 type1), all `afterReadable=1`; these provide real downstream event traffic, **not** a proven one-to-one linkage of the bit3 transition to a specific final command. The FinalCommand log lacks QPC at callsite, so tick-level cooccurrence cannot establish causality.
 - Stage89 four-site F58E0 observer installed; 3 site 0AAB55 reads with AL=0 in this run, and no reported health errors.

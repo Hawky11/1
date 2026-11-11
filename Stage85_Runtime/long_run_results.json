@@ -1,0 +1,98 @@
+{
+  "stage": "Stage85-r1-long-run",
+  "status": "RUNTIME_VERIFIED_ALTERNATE_POST_JOIN_SELECTOR_PATH",
+  "source_commit": "e1fd008f1ed8695f9f7cb53b005112f41f9605b7",
+  "build_log_unchanged": true,
+  "build_info": {
+    "windows_msvc_x86": "SUCCEEDED",
+    "tested_stage85_dll_bytes": 1957376,
+    "warning": "C4754"
+  },
+  "capture_local": {
+    "start": "2026-11-11 18:19:12",
+    "end": "2026-11-11 18:21:06"
+  },
+  "stages": {
+    "stage79": {
+      "events": 16747,
+      "unique_parent": null
+    },
+    "stage80": {
+      "events": 15218,
+      "unique_parent_stage79": 15218
+    },
+    "stage81": {
+      "installed": "3/3",
+      "writer_events": 0
+    },
+    "stage82": {
+      "events": 3812,
+      "unique_parent_stage80": 3812
+    },
+    "stage84": {
+      "events": 16,
+      "exact_changed": 9,
+      "exact_unchanged": 7,
+      "unique_parent_stage82": 16
+    },
+    "stage85": {
+      "events": 228,
+      "unique_parent_stage80": 228,
+      "matching_stage80_pre_post": 227,
+      "after_join_change": 1
+    }
+  },
+  "selector_net_changes_stage80": 10,
+  "matched_stage84": 9,
+  "unmatched": 1,
+  "unmatched_details": {
+    "stage80_seq": 5640,
+    "stage82_seq": 1453,
+    "stage85_seq": 82,
+    "side": "P2",
+    "player": "0DF4CCA0",
+    "object": "2A3CFC50",
+    "tid": 2516,
+    "qpc80_before": "2073365374279",
+    "qpc82_before": "2073365374294",
+    "qpc82_after": "2073365374315",
+    "qpc85": "2073365374319",
+    "qpc80_after": "2073365374386",
+    "selector_stage80": "0>1",
+    "selector_stage82": "0>0",
+    "selector_stage85": "0",
+    "companion_stage80": "1>2",
+    "companion_stage82": "1>2",
+    "companion_stage85": "2",
+    "stage85_esi": "00000020",
+    "stage85_local_f8": "00000000",
+    "stage84_exact_hits_in_window": 0
+  },
+  "health": {
+    "stage79": 0,
+    "stage80": 0,
+    "stage81": 0,
+    "stage82": 0,
+    "stage84": 0,
+    "stage85": 0
+  },
+  "native_static": {
+    "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "next_call_rva": "0F7CF2",
+    "target_rva": "0E8560",
+    "return_rva": "0F7CF7",
+    "call_bytes": "E86908FFFF",
+    "ret4_rvas": [
+      "0E858E",
+      "0E8636",
+      "0E86CA"
+    ]
+  },
+  "stage86": {
+    "status": "SOURCE_ONLY_STATIC_VERIFIED",
+    "windows_build_verified": false,
+    "game_runtime_verified": false
+  },
+  "stage36_enabled": false,
+  "gameplay_modified": false
+}

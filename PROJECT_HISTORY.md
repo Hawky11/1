@@ -1,5 +1,13 @@
 # Project history
 
+## Stage83–84 exact F3930 selector writers and remaining F7150 alternative path — VERIFIED (2026-11-11)
+
+- Stage83 r1 [Windows capture](https://github.com/Hawky11/1/commit/394d68c567b41012d41a49007229cb4bf1594080): successful x86 build (DLL **1,952,256 bytes**), four exact F3930 store hooks installed 4/4. Five `STAGE83_EXACT_WRITE` events; real selector writes located at **F3F50** (from EDX) and **F3F69** (from ECX). The observed P2 1→0 net change was not captured by its four hooks.
+- Stage84 r1 [first 6/6 capture](https://github.com/Hawky11/1/commit/abef4114a210ac7dac014a9fdd016233b833f0d5): successful build, DLL **1,952,768 bytes**, six F3930 native exact-store hooks (four existing + F3E0A and F3F71 immediate-zero stores), all native signatures verified. First run: six exact-write rows, three changed.
+- Stage84 r1 [extended same-run capture](https://github.com/Hawky11/1/commit/364429c76dbfbfecd7c1679dd3e4dacd90e4897c): 15,116 Stage79, 13,849 Stage80, 3,784 Stage82, 21 Stage84 events; all 80⊂79, 82⊂80, 84⊂82 strict same-actor/object/TID/QPC containment is 100% unique; no dropped/overflow/mismatch/readFail. Stage81 installed 3/3 but zero writer hits. **F3F71 confirmed exact instruction performing 1→0 twice and 2→0 once**. F3F50 also directly writes 2→1, and F3F69 writes 1→2. 15/16 F7150 net P+3F50 changes attributed to exact F3930 writer EIP.
+- **Remaining gap:** P2 1→2 in Stage79 seq2478 / Stage80 seq2160 / Stage82 F3930 seq513. In F3930, P+3F54 changed 1→2 but P+3F50 remained 1; by enclosing F7150 return P+3F50 changed 1→2, with no Stage84 exact store. Do not assign a writer EIP without new evidence. Stage85 should statically inspect F7150 after the F3930 return, before deciding on a new hook.
+- Stage36 must remain disabled to avoid the F79E4 conflict with Stage82; backup known-good Stage84 1,952,768-byte DLL. **No observed AI behavior improvement.** [Detailed report](Stage84_Runtime/RUNTIME_ANALYSIS.md) · [JSON](Stage84_Runtime/results.json).
+
 Append-only record of the ArcanaAI COM-vs-COM diagnostic investigation. Add a new dated entry after each completed stage; do not rewrite earlier conclusions except to correct a documented factual error.
 
 ## Project objective

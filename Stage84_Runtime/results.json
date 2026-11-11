@@ -1,0 +1,123 @@
+{
+  "stage": "Stage84-r1",
+  "status": "RUNTIME_VERIFIED_6_OF_6",
+  "run_commit": "364429c76dbfbfecd7c1679dd3e4dacd90e4897c",
+  "runtime_local_start": "2026-11-11 17:36:20",
+  "run_local_end": "2026-11-11 17:38:08",
+  "build": {
+    "source_commit": "abef4114a210ac7dac014a9fdd016233b833f0d5",
+    "status": "SUCCEEDED",
+    "dll_size_bytes": 1952768,
+    "warning": "C4754",
+    "note": "Build.log unchanged in latest runtime upload"
+  },
+  "stages": {
+    "stage79": {
+      "installed": "1/1",
+      "windows": 15116
+    },
+    "stage80": {
+      "installed": "1/1",
+      "calls": 13849
+    },
+    "stage81": {
+      "installed": "3/3",
+      "writer_hits": 0
+    },
+    "stage82": {
+      "installed": "2/2",
+      "nested_calls": 3784,
+      "site0_f4360": 1974,
+      "site1_f3930": 1810
+    },
+    "stage84": {
+      "installed": "6/6",
+      "writes": 21,
+      "changed": 15,
+      "unchanged": 6
+    }
+  },
+  "containment": {
+    "stage80_in_stage79": {
+      "exact": 13849,
+      "missing": 0,
+      "ambiguous": 0
+    },
+    "stage82_in_stage80": {
+      "exact": 3784,
+      "missing": 0,
+      "ambiguous": 0
+    },
+    "stage84_in_stage82": {
+      "exact": 21,
+      "missing": 0,
+      "ambiguous": 0
+    }
+  },
+  "writer_hits": [
+    {
+      "rva": "0F3DE9",
+      "hits": 0
+    },
+    {
+      "rva": "0F3E02",
+      "hits": 0
+    },
+    {
+      "rva": "0F3F50",
+      "hits": 9
+    },
+    {
+      "rva": "0F3F69",
+      "hits": 7
+    },
+    {
+      "rva": "0F3E0A",
+      "hits": 0
+    },
+    {
+      "rva": "0F3F71",
+      "hits": 5
+    }
+  ],
+  "stage84_transition_counts": {
+    "0>1": 10,
+    "1>1": 4,
+    "2>0": 1,
+    "1>0": 2,
+    "1>2": 1,
+    "2>1": 1,
+    "0>0": 2
+  },
+  "selector_net_changes_in_stage80": 16,
+  "matched_by_stage84": 15,
+  "unmatched": 1,
+  "unmatched_change": {
+    "side": "P2",
+    "transition": "1>2",
+    "stage79_seq": 2478,
+    "stage80_seq": 2160,
+    "stage82_seq": 513,
+    "stage82_site": 1,
+    "stage80_qpc_before": 2047470733250,
+    "stage80_qpc_after": 2047470733393,
+    "stage82_qpc_before": 2047470733285,
+    "stage82_qpc_after": 2047470733364,
+    "stage82_selector": "1>1",
+    "stage82_companion_3f54": "1>2",
+    "exact_writer_rva": null
+  },
+  "health": {
+    "stage79_errors": 0,
+    "stage80_errors": 0,
+    "stage81_errors": 0,
+    "stage82_errors": 0,
+    "stage84_errors": 0
+  },
+  "stage36_configuration": "EnableStage36ControlToCommandTrace=0",
+  "next": "Stage85: verify writer in F7150 execution after F3930 return; source-only first; no behavior changes",
+  "provenance": {
+    "stage83": "394d68c567b41012d41a49007229cb4bf1594080",
+    "stage84_first": "abef4114a210ac7dac014a9fdd016233b833f0d5"
+  }
+}

@@ -1,5 +1,19 @@
 # Next session handoff
 
+## Current — Stage84 long-run exact MOV writers VERIFIED; one Stage85 writer path remains (2026-11-11)
+
+**Read first:** [Stage84 full report](Stage84_Runtime/RUNTIME_ANALYSIS.md) · [results.json](Stage84_Runtime/results.json) · [frozen runtime commit](https://github.com/Hawky11/1/commit/364429c76dbfbfecd7c1679dd3e4dacd90e4897c). Current tested build is **Stage84 r1** (Windows MSVC x86 **BUILD SUCCEEDED**, **1,952,768 bytes**, existing C4754), with `STAGE84_INSTALLED 6/6`; exact Stage79/80/81/82/84 log set updated 17:36–17:38. Main is a documentation/evidence index; do not treat historical Stage82 r1 handoff below as current.
+
+**Verified counts and chain:** Stage79 15,116; Stage80 13,849; Stage82 3,784; Stage84 21. Strict same-player/object/TID/QPC unique containment: 13,849/13,849 (80⊂79), 3,784/3,784 (82⊂80), 21/21 (84⊂82); no gaps/ambiguity; all HEALTH errors zero. Stage81 three hooks installed but zero events. Stage82 sites 0/1 = 1,974 F4360 / 1,810 F3930. Stage84 6/6 exact byte match. All captures observational only.
+
+**Confirmed exact stores:** `0F3F50` MOV EDX (9 hits, including 0→1, 2→1), `0F3F69` MOV ECX (7 hits, including 0→1, 1→2), `0F3F71` MOV immediate 0 (5 hits; two 1→0, one 2→0, two 0→0). F3DE9/F3E02/F3E0A had 0 hits; absence is not disproof of path.
+
+**ONE important gap:** 16 Stage80 net P+3F50 changes; only 15 overlap a Stage84 exact write. Unattributed P2 1→2: Stage79 seq2478; Stage80 seq2160 QPC 2047470733250–3393; nested Stage82 F3930 seq513 QPC 2047470733285–3364; during F3930 `P+3F50` stays 1 while companion `P+3F54` goes 1→2. By F7150 return, selector P+3F50 is 2. This proves the change occurred outside the instrumented F3930 call interval and inside F7150, **not** its exact writer EIP.
+
+**Next Stage85:** inspect original SHA-pinned AALib.exe `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` for native F7150 post-F3930 selector writers/call edges; propose minimal guarded source-only instrumentation only after static instruction signature and ABI proof. Preserve existing 1,952,768-byte Stage84 DLL and logs. Keep `EnableStage36ControlToCommandTrace=0` because Stage36 and Stage82 both hook F79E4. Do not modify game logic, bypass unknown detours, or claim improved COM AI.
+
+---
+
 ## Current — Stage82 r1 runtime signature mismatch; Stage82 r2 live-byte audit next (2026-11-11)
 
 **Frozen evidence:** [commit de188f0](https://github.com/Hawky11/1/commit/de188f061689f5ed00e594413adec786a6735335), [detailed Stage82 report](Stage82_Runtime/RUNTIME_ANALYSIS.md). Build succeeded (1,942,528-byte DLL); 6,084 Stage79 windows; 5,652 Stage80 calls, **all 5,652 uniquely within Stage79** same P/O/TID/QPC; five matching changes P2 0→1, P1 0→1, P2 1→2, P2 2→1, P2 0→1; zero Stage79/80 HEALTH errors. Stage81 3/3 installed but only two non-changing exact MOV hits; Stage82 r1 could not install: `STAGE82_ERROR call signature; no patch`.

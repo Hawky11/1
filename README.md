@@ -1,3 +1,13 @@
+## Current — Stage84 exact selector writer attribution VERIFIED; Stage85 alternative path next (2026-11-11)
+
+[Stage84 full same-run report](Stage84_Runtime/RUNTIME_ANALYSIS.md) · [machine-readable summary](Stage84_Runtime/results.json) · [frozen 5-log upload](https://github.com/Hawky11/1/commit/364429c76dbfbfecd7c1679dd3e4dacd90e4897c) · [Stage83 writer precursor](https://github.com/Hawky11/1/commit/394d68c567b41012d41a49007229cb4bf1594080). Stage84 Windows MSVC x86 **BUILD SUCCEEDED**, **1,952,768-byte DLL**, `STAGE84_INSTALLED 6/6`, 21 exact MOV observations. Stage79 **15,116** windows; Stage80 **13,849** native F7150 calls; Stage82 **3,784** nested calls. Exact strict QPC containment **13,849/13,849**, **3,784/3,784**, **21/21** across 79→80→82→84, same actor/object/TID; all HEALTH errors zero.
+
+**Direct writer EIPs established:** `F3F50` (EDX: `0→1`, `2→1`), `F3F69` (ECX: `0→1`, `1→2`), and **`F3F71` (immediate zero: two `1→0` and one `2→0`)**. The other three F3930 candidate stores did not execute in this run. Stage84 explains **15/16** Stage80 net `P+3F50` transitions. Remaining P2 `1→2`: Stage80 seq2160 and Stage82 F3930 seq513; `F3930` changes `P+3F54:1→2` but reports `P+3F50:1→1`, while the enclosing F7150 reports `P+3F50:1→2`. **Exact writer EIP for that alternate route remains unknown.**
+
+**Next Stage85:** source/static investigation of the F7150 post-F3930 path, then an exact-signature observational discriminator if justified. Keep Stage36 **off** (`EnableStage36ControlToCommandTrace=0`) due to its F79E4 callsite conflict with Stage82. Back up Stage84 1,952,768-byte DLL; no AI/gameplay modifications or AI-performance improvement claimed. Earlier “Current” sections below are historical snapshots.
+
+---
+
 ## Current — Stage82 r1 failed closed; Stage79/80 same-run selector transitions VERIFIED (2026-11-11)
 
 [Stage82 runtime report](Stage82_Runtime/RUNTIME_ANALYSIS.md) · [machine summary](Stage82_Runtime/results.json) · [exact five-log upload](https://github.com/Hawky11/1/commit/de188f061689f5ed00e594413adec786a6735335). Windows MSVC x86 **BUILD SUCCEEDED**, DLL **1,942,528 bytes**. Stage79 **6,084** windows; Stage80 **5,652** calls; **5,652/5,652** uniquely nested same P/O/TID/QPC. **Five** agreeing selector transitions: P2 0→1, P1 0→1, P2 1→2, P2 2→1, P2 0→1. All Stage79/80 HEALTH error counters zero. Stage81 3/3 installed, **two native writer hits, both changed=0**. Stage82 r1 emitted **`STAGE82_ERROR call signature; no patch`**; no Stage82 hooks installed.

@@ -1,0 +1,23 @@
+{
+  "status": "PASS_STATIC_SOURCE_ONLY",
+  "exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "signature_checks": 22,
+  "call_target": "F58E0",
+  "sites": [
+    "9A870",
+    "9AA20",
+    "9AB00",
+    "AAB55"
+  ],
+  "windows_x86_build": false,
+  "runtime_verified": false,
+  "source_stage": "Stage89 four native readers",
+  "stage88_last_verified_dll_bytes": 1975296,
+  "source_pkg_zip": "ArcanaAI_Stage89_F58E0_Reader_SourceOnly.zip",
+  "tests": [
+    "PE SHA and opcodes valid",
+    "Four exact CALL targets",
+    "Synthetic correlator AL model PASS"
+  ],
+  "caveat": "No dynamic AL/branch/action proof yet"
+}

@@ -1,5 +1,13 @@
 # Project history
 
+## Stage85 long-run AFTER-JOIN positive alternate selector path / Stage86 source-only — 2026-11-11
+
+- [Frozen user log commit](https://github.com/Hawky11/1/commit/e1fd008f1ed8695f9f7cb53b005112f41f9605b7) and [full analysis](Stage85_Runtime/LONG_RUN_ANALYSIS.md): Stage85 r1 unchanged DLL **1,957,376 bytes** from previous Windows x86 build. New 18:19–18:21 capture 16,747 Stage79, 15,218 Stage80, 3,812 Stage82, 16 Stage84 and 228 Stage85 events. All strict actor/object/TID/QPC parent windows uniquely matched (15,218/15,218, 3,812/3,812, 16/16 and 228/228). All HEALTH errors zero.
+- **New rare positive:** Stage80 P2 seq5640 selector 0→1, companion 1→2; Stage82 F3930 seq1453 selector 0→0, companion 1→2; Stage85 F7C68 seq82 selector=0, companion=2, ESI=20h and localF8=0; F7150 returns selector=1. No Stage84 exact MOV hit in that interval. Nine other selector net changes matched Stage84; Stage81 direct MOV hooks zero throughout. **Writer occurred after F7C68, exact writer EIP still not identified.**
+- **Next Stage86 prepared SOURCE ONLY** as a two-file optional local overlay in chat (not committed to main, not Windows-built): original SHA-pinned F7CF2 E8 call to E8560 and verified callee `RET 4`, capture before/after selector with original callee once, preserve register/stack/EFLAGS and existing 79/80/81/82/84/85. Requires Windows compile/gameplay test and an uploaded same-session Stage86 log. Keep tested Stage85 DLL as rollback, Stage36 off, no AI/gameplay edit.
+
+---
+
 ## Stage85 r1 verified join (unmatched rare writer remains open) — 2026-11-11
 
 - [Stage85 immutable capture](https://github.com/Hawky11/1/commit/428b6b27895b1b1fb3015ab225169370e541050c), [full report](Stage85_Runtime/RUNTIME_ANALYSIS.md), [results](Stage85_Runtime/results.json): Windows x86 BUILD SUCCEEDED, new DLL **1,957,376 bytes**, one existing C4754 warning. Stage85 guard exact signature F7C68, installed 1/1, 109 join samples, all health errors zero.

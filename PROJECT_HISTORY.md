@@ -1,5 +1,14 @@
 # Project history
 
+## Stage92 source-only native F5990 branch/helper attribution (2026-11-11)
+
+- Prepared [Stage92 branch](https://github.com/Hawky11/1/tree/stage92-f5990-branch-consequence-source-only), [RU installation](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Overlay/README_STAGE92_RU.md), and [native static report](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Analysis/STATIC_ANALYSIS.md). Based on exact Stage91 source-only commit `0516e767be5657118d6950466c5c3dfdfb632a5c` and preserved prior historical branches. Tested Stage91 DLL **1,999,872 bytes** unchanged.
+- Original SHA-pinned AALib.exe disassembly maps `ACAB8→F5990`; AL=1 bit9/10 direct path OR at `F5A68` sets `P+3B70 & 0x8`. Index11 AL1 chooses `F5A86→9ED20` native bit3 setter; AL0 chooses `F5A8F→9ED60` native clearer; both native `RET4` with index3. **Static mapping not yet actual runtime selected branch/hit evidence.**
+- Three read-only exact CALL-site wrappers capture F5990 PRE/POST and actual helper call selection while replaying original function and helpers exactly once. Helper **tail JMP** preserves original callee arg cleanup. Native PE/opcode guards, peer suspension, mutex and rollback. No EE306/F58E0 conflicts, no gameplay/DR changes. Stage91 remains source preserved.
+- **67/67 PE32/source checks PASS; 2 positive and 3 negative synthetic correlator tests PASS. SOURCE ONLY: not compiled with MSVC, no Stage92 runtime installed/tested, no AI behavior improvement.** Next: user installs overlay onto exact Stage91 sources and builds x86; 3–5 natural rounds; upload same-session Build.log and Stage92/91/90/88/87/Dispatch/FinalCommand, check installation and zero errors; correlate same actor/TID/QPC; rollback on failure.
+
+---
+
 ## Stage91 direct special-bit native reads VERIFIED at runtime — 1,825 positive ALs, 2026-11-11
 
 - [Fresh uploaded commit `4e56101`](https://github.com/Hawky11/1/commit/4e56101e9095d6f3b04fd4dcedf2ca5d5314ed57) · [Stage91 full runtime analysis](Stage91_Runtime/RUNTIME_ANALYSIS.md) · [results.json](Stage91_Runtime/results.json) · [source code branch](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay). **Windows MSVC x86 BUILD SUCCEEDED**, DLL **1,999,872 bytes**, old nonfatal C4754. `STAGE91_INSTALLED mask=7 sites=3/3`, all three direct `F58E0` bit9/10/11 readers called.

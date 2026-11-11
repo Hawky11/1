@@ -1,5 +1,17 @@
 # Next session handoff
 
+## Current — Stage90 full F57D0 clear audit RUNTIME VERIFIED; Stage91 active-state reader next (2026-11-11)
+
+**First read:** [Stage90 full live report](Stage90_Runtime/RUNTIME_ANALYSIS.md) · [results.json](Stage90_Runtime/results.json) · [user-uploaded run `3a6f9e9`](https://github.com/Hawky11/1/commit/3a6f9e908ab7e3bc1e18aca4085c5a6b3fdd044b) · [source/installer branch](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay). **Latest tested Windows x86 DLL = 1,991,168 bytes**, BUILD SUCCEEDED with familiar nonfatal C4754. Stage24 EE306→F57D0 reused, Stage87/88/89 still work, Stage90 adds no native hook. Backup this tested DLL before further instrumentation. Stage36 disabled.
+
+**New positive:** **1,792/1,792** Stage90 complete F57D0 call records (P1=910, P2=882), **87 net bit clears** [0x200=38, 0x400=41, 0x800=8] and **88 sets** [39,41,8], all health errors zero. 280/280 strict same-player/TID/QPC/pre+post+arg Stage87→Stage88→Stage90 correlation, selector0/1/2 counts 140/119/21, Stage88 direct target bit 0→1 counts 10/3/2. Stage89 F58E0 `AAB55` has three same-run P1 calls, all `AL=0` and bit masks zero.
+
+**IMPORTANT CAUSAL CHRONOLOGY:** Stage89 `seq1` AL0 follows Stage88 `seq79` selector1/0x400 → Stage90 `seq540` `arg6,type0,payload0x12` clearing 0x400. Stage89 `seq2` follows Stage88 `seq158` selector2/0x800 → Stage90 `seq1014` `arg6,type0,payload0x12` clearing 0x800, **101,261 QPC ticks** before read. Stage89 `seq3` follows Stage88 `seq205` selector0/0x200 → Stage90 `seq1445` `arg0,type0,payload0` clearing 0x200. Each reset occurs inside a native F57D0 PRE/POST and no later *recorded F57D0* special-bit mutation occurs before reader; last Stage90 POST agrees with Stage89 PRE. Do not claim exact F57FA EIP or that no *other* native writer exists. No observed reader while a special bit is 1, hence still **no attack/hit/final command proof**.
+
+**NEXT Stage91:** Use SHA `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` pinned original AALib.exe to locate exact fast-path reader(s) of P+3A08/0C/10 while one of bits 0x200/0x400/0x800 is active, before F57D0 clears it. Investigate already mapped F58E0 callsites but note 9A870/9AA20/9AB00 had zero runtime hits and AAB55 had only AL0. Choose a specific **read-only, exact signature guard** with no hook collision; maintain prior DLL as rollback, disable Stage36, do not create global F58E0 detour, do not patch EE306 twice, do not mutate game or synthesize commands. Previous handoffs below are historical.
+
+---
+
 ## Current — Stage90 full F57D0 bit-clear audit source-only package COMPLETE (2026-11-11)
 
 **First read:** [Stage90 STATIC_ANALYSIS](Stage90_Analysis/STATIC_ANALYSIS.md) · [full package and README](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay) · [last Stage89 Windows run](Stage89_Runtime/RUNTIME_ANALYSIS.md). **Last Windows-built and runtime-tested DLL remains Stage89 1,984,000 bytes; Stage90 is SOURCE ONLY, not Windows-built/tested.** Source branch has 12 verified Git-blob-identical files; original exe SHA `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`; 30 signature/bridge checks PASS and offline correlator positive/negative tests PASS.

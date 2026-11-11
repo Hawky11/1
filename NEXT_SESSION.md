@@ -1,5 +1,28 @@
 # Next session handoff
 
+## Current — Stage76 r1 user runtime VERIFIED; Stage77 pre-156C00 origin boundary NEXT (2026-11-11)
+
+**Evidence branch:** [stage76-r1-runtime-after-callback-selector-gap](https://github.com/Hawky11/1/tree/stage76-r1-runtime-after-callback-selector-gap) from exact new user upload [d0fddb14](https://github.com/Hawky11/1/commit/d0fddb14bdccadaf0e42be5208cba44fcf544f0d), six user raw logs preserved without modifications; [full Stage76 runtime audit](Stage76_Runtime/RUNTIME_ANALYSIS.md), [RU summary](Stage76_Runtime/README_STAGE76_RU.md), [results](Stage76_Runtime/results.json). Original Stage76 source & verification: [stage76-after-callback-phase-snapshots-source](https://github.com/Hawky11/1/tree/stage76-after-callback-phase-snapshots-source) (two `.inl` files and SHA original PE verifier). **BUILD SUCCEEDED**, MSVC x86 14.51.36231, DLL **1,901,568 bytes**; original C4754 warning only. Instrumented same-run **12:28:33–12:29:18**, TID=16408, P1=`0DF21F78` O1=`29BE5020`, P2=`0DF4CCA0` O2=`29BE5C50`, game base=00280000. Stage76 INSTALLED 3/3, Stage38 2/2, Stage65 1/1, Stage70 1/1, Stage59 DR0/DR1 WATCH_ARMED; all observed health errors zero.
+
+**New critical finding:** **11,478** Stage76 PRE/POST records with all masks `3FF` and contiguous seq (phase0 EE480=**5,739**, phase1 E8DA0=**5,739**, **phase2 EE5E0=ZERO executions**). **NO `P+3F50` change within phases0/1**; phase1 didn't change any of 10 monitored fields; phase0 updated event records `f2,f3,f4` **111** times each, reset callback pointer `P+3ED0` **101** times nonzero→0 and `P+3F54` **13** times (11×1→0, 2×2→0). Zero phase2 means **EE5E0 untested this capture**, not globally ruled out.
+
+**Five Stage38 between-window selector events persisted**, all **AFTER prior Stage76 phase1 POST** and BEFORE next Stage38 PRE, which is already AFTER native **`156C00`**:
+- P1 Stage38 `1859→1861: 0→2`; Stage76 phase0/1 `3717/3718`, old selector throughout; phase1 POST `1862720561917` → next Stage38 PRE `1862720659040`.
+- P2 `2761→2763: 0→1`; phases `5521/5522`, old; qpc `1862769421111→1862769523035`.
+- P2 `2875→2877: 1→0`; phases `5749/5750`, old; qpc `1862775131699→1862775230210`.
+- P1 `4370→4372: 0→1`; phases `8739/8740`, old; qpc `1862853034590→1862853132550`.
+- P1 `5120→5122: 1→2`; phases `10239/10240`, old; qpc `1862892990889→1862893090995`.
+
+All five next callback PREs had `158570 / parameter 11h`, then `155160`; previous phase0/1 showed no setter. **Do NOT claim 156C00 wrote selector.** Observed candidate phase interval remains *after phase1 POST, before next Stage38 PRE*, including unsampled engine logic and native 156C00.
+
+**Other integrity:** Stage38 **5,705** callbacks (P1=2772, P2=2933); Stage65 **332** requests; Stage70 **6** original deferred-store events, all six fully QPC-contained within matching Stage38 `1566B0` and Stage65 `156769` (P1 selector2 `33→26` 3×; P1 selector1 `2F→25` 1×; P2 selector0 `2E→24` 2×). Stage59 **18,822** X watch events unique seq all present; file flush delayed `16267..16384` after seq `16428`; sort on QPC, do not conflate line order with time.
+
+**NEXT Stage77**: **modify only existing Stage38PrepareHook** to safely read `P+3F50`, `P+3F54`, `P+3ED0`, `P+3ED4`, optionally event-code before **original native 156C00** and correlate with existing Stage38Prepared PRE after 156C00. No new native hook or DR slots necessary. Audit x86 `EE7AE→Stage38PrepareHook` trampoline stack/context and original exactly-once call, balanced GPR/FLAGS/x87/SSE, TLS pairing/read masks and QPC, installation/mutex/rollback before code. If before-156C00 already new, producer is earlier; if before old / after new, narrow to 156C00 or callees. **Exact native selector writer EIP still UNKNOWN**, no COM gameplay changes or AI quality claims. Preserve user-tested Stage76 DLL **1,901,568 bytes**, Stage74 DLL **1,893,376 bytes**, Stage70 r2 DLL **1,892,864 bytes**. Stage76 runtime question is closed; **no more Stage76 logs needed**.
+
+**Warning:** Main-branch README/NEXT_SESSION snapshot predates some Stage62–Stage76 analysis-only branches; for earlier detailed docs use their dedicated linked stage branches, not old main documentation.
+
+---
+
 ## Current — Stage61 same-run Stage46→47→59 RUNTIME VERIFIED; Stage62 decision linkage NEXT (2026-11-10)
 
 **Provenance:** new exact two-file upload [c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79), frozen unchanged at [stage61-runtime-action-motion-x-evidence](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence), [full Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md). The newly supplied Stage46 `c973b4593a6de15a045220b39c9b8d010db6c764` and Stage47 `d87f182d4cd66fb19aeaf16439428c905c7b6ced` log blobs are unequivocally from **22:07**, same session as earlier Stage59 r2 frozen blob `a5a2e76dcc473e079d0445db6e9d7069a3784879` (previous original upload d2ce2444). Same P1/P2 objects `2A89A020/2A89AC50`, game thread `15132`, monotonic comparable QPC. **Stage61 uses Stage59 r2 already built and verified; no Stage61 DLL was built.**

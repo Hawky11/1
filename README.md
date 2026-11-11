@@ -1,3 +1,13 @@
+## Current — Stage92 native F5990 branch-consequence source READY (2026-11-11)
+
+[Stage92 source-only branch](https://github.com/Hawky11/1/tree/stage92-f5990-branch-consequence-source-only) · [Russian install guide](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Overlay/README_STAGE92_RU.md) · [native static findings](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Analysis/STATIC_ANALYSIS.md) · [Stage91 tested runtime](Stage91_Runtime/RUNTIME_ANALYSIS.md).
+
+**Static-only Stage92 source:** original native `ACAB8 CALL F5990` branch scope, actual `F5A86 CALL 9ED20` and `F5A8F CALL 9ED60` helper selection, and `P+3B70` bit3 PRE/POST. Original `9ED20` sets bit0x8; `9ED60` clears it, each with native `RET 4`. Exact three CALL-site observers replay native F5990 once and tail-jump to native helpers once, preserving original ABI and underlying game behavior. **67/67 original PE/source static checks PASS and 2 positive + 3 negative synthetic correlator tests PASS. No Windows build, hook installation or runtime stage92 tested yet.** No additional EE306 hook, F58E0 entry detour, DR/gameplay writes or synthetic actions. Existing Stage91 DLL **1,999,872 bytes** remains fallback; Stage36 must remain disabled.
+
+**NEXT:** apply source-only Stage92 overlay to exact tested Stage91 sources, MSVC x86 Build.bat, 3–5 natural COM-vs-COM rounds and upload same-run Build.log, Stage92/91/90/88/87, EventDispatch/FinalCommand logs; verify STAGE92_INSTALLED 3/3 and zero health errors. **No attack/hit/AI improvement demonstrated.**
+
+---
+
 ## Current — Stage91 POSITIVE native bit readers runtime VERIFIED: 1,825 AL=1 (2026-11-11)
 
 [Complete Stage91 runtime evidence](Stage91_Runtime/RUNTIME_ANALYSIS.md) · [JSON statistics](Stage91_Runtime/results.json) · [raw user upload `4e56101`](https://github.com/Hawky11/1/commit/4e56101e9095d6f3b04fd4dcedf2ca5d5314ed57) · [Stage91 r1 code](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay).

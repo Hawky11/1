@@ -1,0 +1,29 @@
+{
+  "status": "PASS_STATIC_SOURCE_ONLY",
+  "checks": 68,
+  "exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "native_function": "F58E0",
+  "upstream_actor_tick": "ACAB8->F5990",
+  "sites": [
+    {
+      "rva": "0xF5A4D",
+      "index": 9,
+      "bit": "0x200"
+    },
+    {
+      "rva": "0xF5A5C",
+      "index": 10,
+      "bit": "0x400"
+    },
+    {
+      "rva": "0xF5A76",
+      "index": 11,
+      "bit": "0x800"
+    }
+  ],
+  "global_f58e0_detour": false,
+  "new_EE306_hook": false,
+  "game_data_writes": false,
+  "windows_compiled": false,
+  "game_runtime_tested": false
+}

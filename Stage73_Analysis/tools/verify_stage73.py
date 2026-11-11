@@ -26,7 +26,7 @@ def original_text(path):
     digest=hashlib.sha256(blob).hexdigest()
     if digest!=SHA: raise ValueError("Wrong original SHA-256: "+digest)
     pe=struct.unpack_from("<I",blob,0x3C)[0]
-    if blob[:2]!=b"MZ" or blob[pe:pe+4]!=b"PE\\0\\0":
+    if blob[:2]!=b"MZ" or blob[pe:pe+4]!=b"PE"+bytes((0,0)):
         raise ValueError("Not a PE executable")
     opt=pe+24
     if struct.unpack_from("<H",blob,pe+4)[0]!=0x14C or struct.unpack_from("<H",blob,opt)[0]!=0x10B:
@@ -36,7 +36,7 @@ def original_text(path):
     sections=opt+struct.unpack_from("<H",blob,pe+20)[0]
     for i in range(struct.unpack_from("<H",blob,pe+6)[0]):
         off=sections+40*i
-        if blob[off:off+8].split(b"\\0")[0]==b".text":
+        if blob[off:off+8].split(bytes((0,)))[0]==b".text":
             vs,rva,size,raw=struct.unpack_from("<IIII",blob,off+8)
             return rva,blob[raw:raw+size]
     raise ValueError("Missing .text")

@@ -1,3 +1,9 @@
+## Current — Stage79 common selector-family observer SOURCE READY (2026-11-11)
+
+[Stage79 source branch](https://github.com/Hawky11/1/tree/stage79-effe8-common-selector-family-observer-source) · [RU install & rollback](Stage79_Analysis/README_STAGE79_RU.md) · [original PE/call graph audit](Stage79_Analysis/STATIC_ANALYSIS.md) · [verifier](Stage79_Analysis/tools/verify_stage79.py) · [native observer](Stage79_Overlay/src/Stage79SelectorFamilyBoundary.inl). Exact SHA-pinned original PE confirms **10** numeric selector1/2 writer instructions clustered in **4** native functions reachable by **11** verified direct E8 CALL edges under common E89E0 called at **EFFE8**. Only **one five-byte native call** is detoured in Stage79; 13 player fields captured PRE/POST; Stage38/76/77/78 retained. Indirect/aliased writers and per-site EIP still not resolved. **Windows x86 build and game runtime Stage79 untested**. Preserve tested Stage78 DLL **1,911,808 bytes** as rollback. No COM AI improvement/gameplay modification claimed.
+
+---
+
 ## Current — Stage78 exact selector writer observation SOURCE READY (2026-11-11)
 
 [Stage78 two-file overlay](Stage78_Overlay/src/Stage38CallbackWindow.inl) · [literal-one hook](Stage78_Overlay/src/Stage78LiteralOneWriter.inl) · [RU install/rollback](Stage78_Analysis/README_STAGE78_RU.md) · [PE/static audit](Stage78_Analysis/STATIC_ANALYSIS.md) · [local verifier](Stage78_Analysis/tools/verify_stage78.py). Branch [stage78-literal-one-writer-exact-site-source](https://github.com/Hawky11/1/tree/stage78-literal-one-writer-exact-site-source). Private original PE SHA and 7 opcode ranges checked, no binary uploaded. Passive exact ten-byte `AALib+155D29` native store replayed once in hook, records selector/companion/caller; Stage77 and Stage76 remain intact, DR ownership unchanged. **Windows x86 BUILD/GAME RUNTIME UNTESTED for Stage78.**

@@ -1,0 +1,22 @@
+{
+  "stage": 73,
+  "status": "STATIC VERIFIED; selector runtime writer IP unobserved",
+  "originalSha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "candidateWriters": {
+    "literalOne": [
+      "155D29"
+    ],
+    "literalZero": 9,
+    "registerDerivedOneOrTwo": 10,
+    "setneResultOneWhenAlZero": 5,
+    "seteResultOneWhenAlNonzero": 5
+  },
+  "directCallersOf155B70": [
+    "1560B9",
+    "1566F0"
+  ],
+  "sameInvocation155B70And156787": false,
+  "stage70WriterOriginIpObserved": false,
+  "newDll": false,
+  "newRuntime": false
+}

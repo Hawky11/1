@@ -1,0 +1,117 @@
+{
+  "stage": 78,
+  "evidenceCommit": "8fae5d444ab55cb0cc25806499228eec7c7e563d",
+  "status": "Windows x86 BUILD VERIFIED, Stage78 installed, no 155D29 native hits in observed run; Stage38/76/77 runtime verified",
+  "build": {
+    "start": "2026-11-11 13:26:13.39",
+    "success": true,
+    "dllSizeBytes": 1911808,
+    "msvc": "14.51.36231 x86",
+    "oldWarning": "C4754"
+  },
+  "actor": {
+    "thread": 19736,
+    "gameBase": "00280000",
+    "P1": "0DF21F78",
+    "P2": "0DF4CCA0",
+    "O1": "29B22020",
+    "O2": "29B22C50"
+  },
+  "counts": {
+    "stage38": 5064,
+    "stage77": 5064,
+    "stage76": 9704,
+    "stage76Phase0": 4852,
+    "stage76Phase1": 4852,
+    "stage76Phase2": 0,
+    "stage77ChangedInside156C00": 0,
+    "stage78LoggedHits": 0,
+    "stage78HealthRows": 0,
+    "stage77HealthRows": 22,
+    "stage76HealthRows": 22,
+    "stage38CallbackLocalSelectorTransitions": 1,
+    "stage38BetweenWindowsSelectorTransitions": 5
+  },
+  "upstreamTransitions": [
+    {
+      "side": "P2",
+      "stage38Before": 767,
+      "stage38After": 769,
+      "selector": "0>1",
+      "stage76Seq": [
+        1533,
+        1534
+      ]
+    },
+    {
+      "side": "P1",
+      "stage38Before": 1034,
+      "stage38After": 1036,
+      "selector": "0>2",
+      "stage76Seq": [
+        2067,
+        2068
+      ]
+    },
+    {
+      "side": "P1",
+      "stage38Before": 1948,
+      "stage38After": 1950,
+      "selector": "2>1",
+      "stage76Seq": [
+        3895,
+        3896
+      ]
+    },
+    {
+      "side": "P2",
+      "stage38Before": 2017,
+      "stage38After": 2019,
+      "selector": "0>2",
+      "stage76Seq": [
+        4033,
+        4034
+      ]
+    },
+    {
+      "side": "P2",
+      "stage38Before": 2658,
+      "stage38After": 2660,
+      "selector": "2>1",
+      "stage76Seq": [
+        5315,
+        5316
+      ]
+    }
+  ],
+  "callbackLocalReset": {
+    "stage38Seq": 1643,
+    "side": "P2",
+    "nativeCallback": "154070",
+    "selector": "1>0",
+    "state": "1>1",
+    "stage76Seq": [
+      3285,
+      3286
+    ],
+    "eventCurrentCodeHex": "22",
+    "followupStage38Seq": 1645,
+    "followupArgHex": "22",
+    "nativeStaticPath": [
+      "154091->152C90 conditional",
+      "154100->155640",
+      "155669 selector0",
+      "155675 state1",
+      "155681 event22",
+      "15568B 0F2DE0"
+    ],
+    "directStoreEipCaptured": false
+  },
+  "stage79Next": "static-first map ten register-derived selector1/2 sites and narrow safe observational probe",
+  "limits": [
+    "Zero-hit does not exclude 155D29 on another run",
+    "No Stage59/65/70 fresh logs in this upload",
+    "No direct observed native writer EIP for transitions",
+    "No gameplay improvement demonstrated"
+  ]
+}

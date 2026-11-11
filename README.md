@@ -1,3 +1,13 @@
+## Current — Stage73 selector-writer source route / early-return audit STATIC VERIFIED (2026-11-11)
+
+[Stage73 original-code analysis](Stage73_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage73_Analysis/README_STAGE73_RU.md) · [PE/opcode and direct-call verifier](Stage73_Analysis/tools/verify_stage73.py) · [results JSON](Stage73_Analysis/results.json). Branch: [stage73-selector-writer-early-exit-static](https://github.com/Hawky11/1/tree/stage73-selector-writer-early-exit-static). **No new DLL, runtime test, source hooks or AI modifications.**
+
+Stage73 proved all ten register-derived P+3F50 writer stores use `1 + Boolean(AL)`: five produce selector **1 when AL=0**, five produce **1 when AL!=0**. The original `.text` direct-E8 CALL search for the literal-one producer `155B70` found exactly `1560B9` and `1566F0`. The latter is inside callback `1566B0`, and the `155B70` branch **always leaves that callback before Stage65 request 156769 and Stage70 store 156787**, successful or not. Therefore frozen Stage38 seq4116 cannot have executed that literal-one setter in the *same callback invocation* as observed `2F→25`; an earlier callback or one of the other original register-derived writers remains possible. **The actual prior selector writer EIP is not runtime-proven.**
+
+Next: decide if a guarded multi-site read-only source attribution is needed; inspect Stage59 DR0/DR1 / possible DR2/DR3 and VEH owners first. Preserve Stage70 r2 verified 1,892,864-byte DLL; no unconditional new hook, no claim of smarter AI. See [Stage72](Stage72_Analysis/STATIC_ANALYSIS.md) for existing runtime-linked callback execution and separate 0x21 event / 0x22 callback-parameter records.
+
+---
+
 ## Current — Stage72 native callback dispatch + deferred write continuation VERIFIED (2026-11-11)
 
 [Original switch and frozen runtime report](Stage72_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage72_Analysis/README_STAGE72_RU.md) · [SHA + 23-opcode switch/trace verifier](Stage72_Analysis/tools/verify_stage72.py) · [results JSON](Stage72_Analysis/results.json). Branch [stage72-callback-dispatch-static-runtime-correlation](https://github.com/Hawky11/1/tree/stage72-callback-dispatch-static-runtime-correlation) based on Stage71 / archived user Stage70 r2 capture. **No new DLL, instrumentation, or game run**. Original private `AALib.exe` SHA-pinned.

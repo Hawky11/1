@@ -1,5 +1,13 @@
 # Project history
 
+## Stage92 r1 Windows runtime audit — guard blocks installation (2026-11-11)
+
+- [Latest user upload c8530d5](https://github.com/Hawky11/1/commit/c8530d5fd389088bb214010a0b99d19d1f1e1c6f): `Build.log` x86 **BUILD SUCCEEDED**, DLL **2,008,576 bytes**, old C4754. `ArcanaAI_Stage92F5990BranchTrace.log` only `STAGE92_BUILD` + `STAGE92_ERROR native signature mismatch/already installed; no patch`. No hook, helper selection, bit3 transitions or final COM action evidenced for Stage92.
+- Stage87/88/89/90 trace files present with active records and no startup critical warnings visible; do not conflate those prior stage events with Stage92 hook installation. SHA-pinned original AALib passes 67/67 static Stage92 checks, but actual loaded EXE (after earlier detours) failed one of r1 live checks. r1 did not log the first failing byte, therefore exact conflict unknown.
+- **Next r2:** separate [audit note](https://github.com/Hawky11/1/blob/stage92-r2-live-signature-audit-source-only/Stage92_R2_Audit/README_RU.md); ChatGPT ZIP provides r1→r2 source-only SHA-gated upgrade and byte-reporting `STAGE92_SIGAUDIT` without bypassing checks. Windows r2 build/runtime UNTESTED. Upload Build.log and Stage92 SIGAUDIT after single launch; investigate failed RVA then consider a minimal noncolliding new branch. Preserve verified Stage91 DLL 1,999,872 bytes, Stage36 OFF.
+
+---
+
 ## Stage92 source-only native F5990 branch/helper attribution (2026-11-11)
 
 - Prepared [Stage92 branch](https://github.com/Hawky11/1/tree/stage92-f5990-branch-consequence-source-only), [RU installation](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Overlay/README_STAGE92_RU.md), and [native static report](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Analysis/STATIC_ANALYSIS.md). Based on exact Stage91 source-only commit `0516e767be5657118d6950466c5c3dfdfb632a5c` and preserved prior historical branches. Tested Stage91 DLL **1,999,872 bytes** unchanged.

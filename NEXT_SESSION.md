@@ -1,5 +1,18 @@
 # Next session handoff
 
+## Current — Stage77 before-native selector boundary SOURCE READY (2026-11-11)
+
+**Stage76 runtime is CLOSED/VERIFIED.** User upload [d0fddb14](https://github.com/Hawky11/1/commit/d0fddb14bdccadaf0e42be5208cba44fcf544f0d), report [Stage76 runtime](https://github.com/Hawky11/1/blob/stage76-r1-runtime-after-callback-selector-gap/Stage76_Runtime/RUNTIME_ANALYSIS.md): Windows x86 BUILD SUCCEEDED, DLL **1,901,568 bytes**; 11,478 Stage76 records with full masks and clean health; 5 between-Stage38-window selector changes (P1/P2), all **after** EE480/E8DA0 and **before** next Stage38 PRE; gated EE5E0 had 0 calls and remains untested. Six same-run Stage65 request→Stage70 deferred writes confirmed within Stage38 callback. Exact P+3F50 writer EIP UNKNOWN.
+
+**New source branch:** [stage77-pre156c00-selector-boundary-source](https://github.com/Hawky11/1/tree/stage77-pre156c00-selector-boundary-source), [one-file Stage38 adapter](Stage77_Overlay/src/Stage38CallbackWindow.inl), [RU installation and rollback](Stage77_Analysis/README_STAGE77_RU.md), [static audit](Stage77_Analysis/STATIC_ANALYSIS.md) and [source-pattern check](Stage77_Analysis/tools/verify_stage77.py). Stage77 samples P+3F50 **immediately before original 156C00** in existing Stage38 prepare wrapper and pairs with existing **after-native Stage38 PRE**; no new native detour, DR owner or gameplay writes. Snapshot also captures P+3F54, P+3ED0, P+3ED4, P+4. One new `STAGE77_NATIVE_PREPARE` line per Stage38 window in the **existing Stage38 trace file**, sharing Stage38 seq; `n0` is selector, expected masks `1F`. Preserve existing Stage76AfterCallbackPhases.inl and all other source.
+
+**Status:** STAGE77 SOURCE READY ONLY. No Stage77 Windows x86 build, hook install or gameplay runtime has been tested. Existing Stage76 and Stage74 DLLs are known-good rollback checkpoints, **1,901,568** and **1,893,376** bytes respectively.
+
+**NEXT USER:** Back up existing Stage76 adapter/DLL, copy **only** `Stage77_Overlay/src/Stage38CallbackWindow.inl` to `D:\INCUBATOR\ArcanaAIOverhaul\src\Stage38CallbackWindow.inl`; leave Stage76AfterCallbackPhases.inl, Stage70, Stage59, INI unchanged. Build.bat; require BUILD SUCCEEDED (new DLL size unknown). Run one COM-vs-COM test if install markers Stage38 2/2, Stage77 ENABLED, Stage76 3/3, Stage70 1/1, Stage59 WATCH_ARMED. Upload **same-run** Build.log, Stage38CallbackWindowTrace, Stage76AfterCallbackTrace, Stage65RequestOriginTrace, Stage70DeferredWriterTrace. If Stage59 health regresses include Stage59XWriterWatchTrace. Check `STAGE77_HEALTH overflow=mismatch=readFail=0`, pair P/O/TID/QPC and identify n0 before→after change. Stop and restore Stage76 if crashes or anomalies. No smarter AI, damage, hit or animation claims.
+
+---
+
+
 ## Current — Stage76 bounded after-callback native CALL phase observer SOURCE READY (2026-11-11)
 
 **Branch:** [stage76-after-callback-phase-snapshots-source](https://github.com/Hawky11/1/tree/stage76-after-callback-phase-snapshots-source), based on completed Stage75. Files: [Stage76 source probe](Stage76_Overlay/src/Stage76AfterCallbackPhases.inl), [Stage74-based replacement adapter](Stage76_Overlay/src/Stage38CallbackWindow.inl), [full static report](Stage76_Analysis/STATIC_ANALYSIS.md), [RU setup/rollback](Stage76_Analysis/README_STAGE76_RU.md), [private original SHA+source diff verifier](Stage76_Analysis/tools/verify_stage76.py), [results](Stage76_Analysis/results.json). **Static checks passed against original 175,556,608-byte AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` and fetched Git blobs. Windows x86 BUILD / game runtime NOT performed. Do not claim AI changes, native execution or selector writer EIP verified.**

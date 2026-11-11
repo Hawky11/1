@@ -1,0 +1,183 @@
+{
+  "stage": "Stage89",
+  "status": "WINDOWS_X86_RUNTIME_PASS_FOUR_SITES_INSTALLED_ONE_ACTIVE_NO_IMMEDIATE_STAGE88_JOIN",
+  "date": "2026-11-11",
+  "user_upload_commit": "7475572ea25d04edb01f383367af83ceb2ad7711",
+  "source_commit": "7ede68b825faadea5caed2a59b9afa4881cc24a0",
+  "files": [
+    "Build.log",
+    "ArcanaAI_Stage89F58E0ReaderTrace.log",
+    "ArcanaAI_Stage87SelectorConsumerTrace.log",
+    "ArcanaAI_Stage88Stage24JoinTrace.log",
+    "ArcanaAI_Stage24ResolverConsumerTrace.log",
+    "ArcanaAI_FinalCommandTrace.log",
+    "ArcanaAI_EventDispatchTrace.log"
+  ],
+  "build": {
+    "status": "BUILD SUCCEEDED",
+    "dll_bytes": 1984000,
+    "warning": "pre-existing C4754 at AICommandSiteTrace.cpp:785"
+  },
+  "stage89": {
+    "installed": 4,
+    "site_mask": "0xF",
+    "requested_sites": [
+      "0x9A870",
+      "0x9AA20",
+      "0x9AB00",
+      "0xAAB55"
+    ],
+    "events": 4,
+    "events_per_site": {
+      "0x9A870": 0,
+      "0x9AA20": 0,
+      "0x9AB00": 0,
+      "0xAAB55": 4
+    },
+    "sides": {
+      "P1": 3,
+      "P2": 1
+    },
+    "returnAL": {
+      "0": 4,
+      "1": 0
+    },
+    "predictionMatch": 4,
+    "full_pre_post_masks": 4,
+    "unchanged_bitmap": 4,
+    "special_bits_present": 0,
+    "branch_at_AAB55": {
+      "JNE_condition_true": 0,
+      "JNE_condition_false": 4,
+      "note": "Actual branch execution after callsite is not independently traced"
+    },
+    "health": {
+      "calls": 4,
+      "events": 4,
+      "filtered": 0,
+      "overflow": 0,
+      "dropped": 0,
+      "mismatch": 0,
+      "readFail": 0
+    },
+    "observed_bitmap": [
+      {
+        "seq": 1,
+        "side": "P1",
+        "data": [
+          "0x00000000",
+          "0x00000001",
+          "0x00000000"
+        ]
+      },
+      {
+        "seq": 2,
+        "side": "P1",
+        "data": [
+          "0x00000000",
+          "0x00000001",
+          "0x00000000"
+        ]
+      },
+      {
+        "seq": 3,
+        "side": "P1",
+        "data": [
+          "0x00000006",
+          "0x00001002",
+          "0x00000000"
+        ]
+      },
+      {
+        "seq": 4,
+        "side": "P2",
+        "data": [
+          "0x00000018",
+          "0x00000001",
+          "0x00000008"
+        ]
+      }
+    ],
+    "same_session_nearest_previous_stage88_qpc_gaps": {
+      "seq1": null,
+      "seq2": 51066255,
+      "seq3": 12718636,
+      "seq4": 36346291
+    },
+    "warning": "AL=0 cannot prove actual traversal into E8560 or that active Stage88 bits were read"
+  },
+  "stage87": {
+    "events": 170,
+    "preCalls": 1614,
+    "filtered": 1444,
+    "selector_count": {
+      "0": 81,
+      "1": 62,
+      "2": 27
+    },
+    "side": {
+      "P1": 62,
+      "P2": 108
+    },
+    "health": {
+      "mismatch": 0,
+      "readFail": 0,
+      "dropped": 0
+    }
+  },
+  "stage88": {
+    "events": 170,
+    "unique_stage87_join": 170,
+    "unmatched": 0,
+    "preCalls": 1614,
+    "joined": 170,
+    "completed": 170,
+    "filtered": 1444,
+    "stale": 0,
+    "mismatch": 0,
+    "readFail": 0,
+    "dropped": 0,
+    "full_masks_and_mapping": 170,
+    "bitmap_3dword_changed": 54,
+    "target_bit_zero_to_one": 5,
+    "by_selector": {
+      "0": {
+        "mapped_code": "0x0E",
+        "bit": "0x200",
+        "events": 81,
+        "zero_to_one": 4
+      },
+      "1": {
+        "mapped_code": "0x0F",
+        "bit": "0x400",
+        "events": 62,
+        "zero_to_one": 0
+      },
+      "2": {
+        "mapped_code": "0x10",
+        "bit": "0x800",
+        "events": 27,
+        "zero_to_one": 1
+      }
+    },
+    "selector2_example": {
+      "stage88_seq": 31,
+      "side": "P1",
+      "pre": "00000029,00000000,00000010",
+      "post": "00000010,00000800,00000000"
+    },
+    "dispatch_counts": {
+      "type0_payload0x22": 166,
+      "type0_payload0x23": 2,
+      "type2_payload0x02": 2
+    }
+  },
+  "stage24": {
+    "legacy_type1_payload0x1E_events": 4
+  },
+  "final_command": {
+    "type1_records": 167,
+    "proven_causal_stage89_join": 0
+  },
+  "next": "Stage90 static trace from P+3A0C actual bit consumers and stores clearing those bits, choose targeted passive site triggered near Stage88; avoid global F58E0 hook/second EE306 hook and game modifications"
+}

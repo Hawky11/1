@@ -1,0 +1,22 @@
+{
+  "stage": "Stage90",
+  "status": "SOURCE_ONLY_STATIC_PASS",
+  "source": "Stage89 r1 exact source baseline",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "static_checks": 30,
+  "windows_compiled": false,
+  "runtime_tested": false,
+  "files": {
+    "ApplyStage90.ps1": "bfe423e5512aba536b4e7fe17e594e66cd65ef9ada9486ed6723ffd73e027b3d",
+    "README_STAGE90_RU.md": "1a3380d45e3b145c4c76b9251afeb074ddeafd2fe88237e024aadad646d025b9",
+    "RollbackStage90.ps1": "c413f93febac89b432ea925c93c72700618f808bdc9d873e3f59f3d8be6ca66b",
+    "analysis/STATIC_ANALYSIS.md": "c8e0f0337d7c6deb6029fc9569d12ce5a7445fed701a1d07e7b54db35f05eb9f",
+    "analysis/static_results.json": "ee9b18a72a21f4f4edb1b120e2cd1e120a1004c0a60c39c1488925953bed89e7",
+    "src/Stage81SelectorWriter.inl": "04b1d2644caf5312a8d53e3ec34a70c522c1929dcb6b05e8c3deb2a8c76af4ec",
+    "src/Stage88Stage24Join.inl": "986b77b2fd07f67c92296ffb57bea0817dd2bf6b1758547da513f4d32c34a4bd",
+    "src/Stage90AllF57D0.inl": "080374d0551dee87551c0ffea1bd9ddfa4a58bad708f71814b36cc3d260b421a",
+    "tools/correlate_stage90.py": "19f7124dfcf58a31e182f73fef58bfcc2e7ddae1cae0c6bbc7ab2a9b8839c4e8",
+    "tools/test_correlate_stage90.py": "53d786ae8166b7a61e9dac68f1567cb4b2ee4cf5f188b65fb426beab9e11263b",
+    "tools/verify_stage90.py": "e1e11d7559b8fd07d558229597bc025dc3fcd27ee7b3bf857a00ed41bb5b9ff6"
+  }
+}

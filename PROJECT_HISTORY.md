@@ -1,5 +1,14 @@
 # Project history
 
+## Stage90 source-only: original F57D0 zero/reset path pinned; full-call read-only observer ready — 2026-11-11
+
+- [Full Stage90 source-only 12-file branch](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay) · [static disassembly](Stage90_Analysis/STATIC_ANALYSIS.md) · preceding [Stage89 runtime](Stage89_Runtime/RUNTIME_ANALYSIS.md). Original exe SHA pinned; **30/30 static checks PASS**, synthetic correlator positive and negative tests PASS, 12 Git blobs verified identical to local ZIP contents. **Stage90 Windows x86 build/runtime NOT YET TESTED**; preserve tested Stage89 1,984,000-byte DLL.
+- **Native potential clear:** `F57EC TEST table[selector*3],1`; if true, `F57FA MOV [EDI+4],0` zeros `P+3A0C`, `F57FD MOV [EDI+8],0` zeros `P+3A10`. `F5800` stores new code and `F5856/F58AC` can OR bit back. Descriptor for selector codes 0x0E/0x0F/0x10 = `01 26 FF`; bit0 set. Net pre/post clearing is not identical to internal zeroing where bits are re-added.
+- **Stage90 hook policy:** **no new native patch**, no second EE306 or global F58E0 detour. Existing Stage24 EE306→F57D0 wrapper and Stage88 C++ Pre/Post bridge extended to observe all P1/P2 native calls; record triple bitmap PRE/POST, `clearMask/setMask=0xE00`, descriptor, selector code, dispatch, QPC, and exact same-thread Stage87 seq if available. Bounded 8192 ring, worker-only writing, SHA-gated two-file install/rollback; prior Stage87/88/89 instrumentation preserved.
+- Next: Windows MSVC x86 build, COM-vs-COM capture with Stage90 `logAll=1`, strict Stage88-within-Stage90 same-player/TID/QPC matching, identify any F57D0 call between Stage88 set and Stage89 AL=0 that **actually clears** the bit. If none, study other native writers. No COM action/attack inference yet; keep Stage36 disabled.
+
+---
+
 ## Stage89 live F58E0 reader AL=0; Stage88 all three bit outputs runtime-verified — 2026-11-11
 
 - [Fresh user run `7475572`](https://github.com/Hawky11/1/commit/7475572ea25d04edb01f383367af83ceb2ad7711) · [full Stage89 audit](Stage89_Runtime/RUNTIME_ANALYSIS.md) · [results JSON](Stage89_Runtime/results.json) · [source `7ede68b`](https://github.com/Hawky11/1/commit/7ede68b825faadea5caed2a59b9afa4881cc24a0). `Build.log` **BUILD SUCCEEDED**, Windows x86 DLL **1,984,000 bytes**, earlier nonfatal C4754.

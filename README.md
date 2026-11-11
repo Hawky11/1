@@ -1,3 +1,9 @@
+## Stage79 now RUNTIME VERIFIED — three genuine selector changes inside original E89E0 call (2026-11-11)
+
+[Frozen evidence](https://github.com/Hawky11/1/tree/stage79-runtime-common-selector-positive-evidence) · [report](Stage79_Runtime/RUNTIME_ANALYSIS.md) · [results](Stage79_Runtime/results.json) from unchanged user commit [1b2aada](https://github.com/Hawky11/1/commit/1b2aadaeabeebf959fa0575cf59023060e481323). Windows x86 BUILD SUCCEEDED DLL **1,918,976 bytes**; Stage79 native EFFE8→E89E0 installed, 3,808 complete call windows, 30 clean health samples. **Three changed intervals**: P1 0→1 (seq2901), P2 0→1 (seq3404), P2 1→0 (seq3740), all `P+3A30 FFFF→11`. Their three actor-matched Stage38 between-window transitions and Stage76 chronology agree. Exact nested MOV writer EIP is **not** yet observed. Next Stage80 should instrument **one** narrower late F7150 call at RVA E8A8E, preserving existing observer and DR owner. Keep tested Stage79 DLL 1,918,976 bytes as rollback; no gameplay/AI improvement claimed.
+
+---
+
 ## Current — Stage61 same-run action definition → motion → X write VERIFIED (2026-11-10)
 
 [Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md) · [frozen exact two-file user upload](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence) · [Stage61 offline correlator](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/tools/correlate_stage61.py). New [user upload c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79) contains **Stage46 and Stage47 from the identical 22:07 Stage59 r2 game session**. Same actor objects, TID=15132, QPC sequence. Stage46 1,476 sequential records; Stage47 5,292 sequential records; previously frozen Stage59 16,121 sequential watchpoint events. Full masks, Stage47 HEALTH zero dropped/overflow/mismatch/badCaller. **No new DLL was built**.

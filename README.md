@@ -1,3 +1,13 @@
+## Current — Stage75 static callback-11 registration provenance VERIFIED (2026-11-11)
+
+[Stage75 original-native report](Stage75_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage75_Analysis/README_STAGE75_RU.md) · [PE SHA/35 opcode/8 call verifier](Stage75_Analysis/tools/verify_stage75.py) · [results](Stage75_Analysis/results.json). Branch [stage75-event-record-callback11-static-provenance](https://github.com/Hawky11/1/tree/stage75-event-record-callback11-static-provenance), based on the unchanged [Stage74 runtime-verified capture](Stage74_Runtime/RUNTIME_ANALYSIS.md). **No Stage75 DLL, hooks, game test, code injections or gameplay behavior changes.**
+
+**Native dataflow established:** `0F2DE0` writes a player event record's current mode/code at `P+3A2E/+3A30`. Conditional `0F2E50` transfer, called from `EE480`, copies it to previous mode/code `P+3A34/+3A36`. Original `EE5E0`, after player callback and prior `FC60` cleanup, can route on active event previous mode 0 to **`EE643→158E90`**, the *only direct E8 caller* of 158E90 in original `.text`; registrar stores `P+3ED0=callback 158570` and `P+3ED4=sign_extended P+3A36`. This is a concrete native possible source of Stage74's next callback **argument 0x11**, NOT an origin proof for selector **P+3F50** or proof that EE643 ran in those Stage74 frames. Original switch 11h at `158ACB` conditionally **reads** selector at `158ADC`.
+
+**Next Stage76:** after-callback/P-event preparation checkpoints to narrow the **five Stage74 between-window selector writes**, no blind 11-site patch or hardware DR collision. Preserve current Stage74 user-tested **1,893,376-byte DLL** and Stage70 r2 rollback. Existing user logs and main not changed.
+
+---
+
 ## Current — Stage74 selector transitions RUNTIME VERIFIED (2026-11-11)
 
 [Stage74 runtime report](Stage74_Runtime/RUNTIME_ANALYSIS.md) · [RU](Stage74_Runtime/README_STAGE74_RU.md) · [machine-readable results](Stage74_Runtime/results.json), branch [stage74-runtime-selector-transition-evidence](https://github.com/Hawky11/1/tree/stage74-runtime-selector-transition-evidence). User's five new logs frozen at commit [211f088](https://github.com/Hawky11/1/commit/211f0882e6b8e220877e4c15b072e5a7b8a7b067). Stage74 [four-edit source](https://github.com/Hawky11/1/tree/stage74-callback-selector-boundary-snapshot). **Windows x86 BUILD SUCCEEDED**, DLL **1,893,376 bytes**, Stage38/65/70 installed, Stage59 DR0/DR1 armed.

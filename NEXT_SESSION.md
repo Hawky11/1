@@ -1,5 +1,15 @@
 # Next session handoff
 
+## Current — Stage89 Windows live reader test, Stage88 selector2 runtime VERIFIED (2026-11-11)
+
+**Read first:** [Stage89 runtime report](Stage89_Runtime/RUNTIME_ANALYSIS.md) · [JSON results](Stage89_Runtime/results.json) · [user upload `7475572`](https://github.com/Hawky11/1/commit/7475572ea25d04edb01f383367af83ceb2ad7711) · [Stage89 source branch](https://github.com/Hawky11/1/tree/stage89-f58e0-four-call-readers-source-only). Last tested Windows MSVC x86 DLL **1,984,000 bytes** (`BUILD SUCCEEDED`, existing C4754). Stage89 **4/4** guarded CALL sites installed, but only `AAB55` emitted **4** events (P1=3, P2=1), all `AL=0`, pre/post read masks 7/7, predictionMatch=1, bitmap unchanged. `STAGE89_HEALTH` summed calls0/1/2/3 = 0/0/0/4, no mismatch/readFail/dropped/overflow. All four had **special selector bits 0x200/0x400/0x800 clear** and no generic bit38. No positive reader of active Stage88 output, and predicted AAB55 JNE-not-taken is NOT instrumented E8560 execution.
+
+**Important NEW Stage88 full 3-state runtime:** `Stage87_...Trace.log` + `Stage88_...Trace.log` from same 21:56–21:59 session: **170/170 exact same-player/TID/QPC joins**, selector0 81 (4 bit0→1), selector1 62 (0), selector2 **27 (1 bit0→1)**. Example Stage88 seq31 P1 `P+3A08/0C/10 (0x29,0,0x10) → (0x10,0x800,0)`. 1614 Stage87/Stage88 calls, 1444 filtered, no stale/mismatch/readFail/dropped. **All three native selector→F57D0 bitmap bit mappings now runtime-verified.**
+
+**NEXT Stage90** static/reverse-engineering focus: identify **clearing writers and actual fast-path readers** of `P+3A0C` between Stage88 and the later AAB55 zero-state reads, then decide whether a read-only non-colliding hook at an exact site can catch a positive read. Preserve Stage89 1,984,000-byte DLL, keep `EnableStage36ControlToCommandTrace=0`, never install another EE306 or global F58E0 hook, never synthesize inputs. No demonstrated rendered AI move/attack or direct queue causality. Prior handoffs below are historical.
+
+---
+
 ## Current — Stage89 F58E0 four targeted readers SOURCE READY, awaiting Windows build/runtime (2026-11-11)
 
 [Source branch](https://github.com/Hawky11/1/tree/stage89-f58e0-four-call-readers-source-only) · [README/install](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Overlay/README_STAGE89_RU.md) · [static verification](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Analysis/source_only_results.json) · [Stage88 runtime baseline](Stage88_Runtime/RUNTIME_ANALYSIS.md).

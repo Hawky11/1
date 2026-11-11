@@ -30,14 +30,16 @@ constexpr BYTE kAfter[4][8]={{0x83,0xC4,0x08,0x84,0xC0,0x74,0x4E,0},
                              {0x83,0xC4,0x08,0x84,0xC0,0x75,0x11,0}};
 constexpr DWORD kAfterLength[4]={7u,7u,8u,7u};
 constexpr BYTE kTargetStart[9]={0x55,0x8B,0xEC,0x8B,0x45,0x0C,0x56,0x8B,0x75};
+// Keep thread-local records POD: MSVC x86 __declspec(thread) must not need
+// a dynamic C++ TLS constructor (C2483 in older toolsets).
 struct Event {
- DWORD seq=0,site=0,side=0,player=0,bitmap=0,tid=0,index=0,returnRva=0;
- DWORD regsEsi=0,pre[3]{},post[3]{},preMask=0,postMask=0;
- DWORD nativeEax=0,nativeFlags=0,al=0,predictedPre=0,predictedPost=0;
- DWORD predictionValid=0,predictionMatch=0,nextBranchPredictedTaken=0;
- ULONGLONG qpcBefore=0,qpcAfter=0;
+ DWORD seq,site,side,player,bitmap,tid,index,returnRva;
+ DWORD regsEsi,pre[3],post[3],preMask,postMask;
+ DWORD nativeEax,nativeFlags,al,predictedPre,predictedPost;
+ DWORD predictionValid,predictionMatch,nextBranchPredictedTaken;
+ ULONGLONG qpcBefore,qpcAfter;
 };
-struct Pending { Event e{}; bool valid=false; };
+struct Pending { Event e; bool valid; };
 __declspec(thread) Pending g_pending[kDepth]{};
 __declspec(thread) DWORD g_depth=0;
 SRWLOCK g_lock=SRWLOCK_INIT;

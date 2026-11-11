@@ -1,59 +1,35 @@
-[2026-11-11 17:36:20] STAGE81_BUILD=2026-11-11-r2 SOURCE_ONLY wait Stage80 then 3 exact selector writers; original MOV once
-[2026-11-11 17:36:20] STAGE81_WAIT_STAGE80 callRVA=0E8A8E requires patched CALL into current proxy; writers untouched
-[2026-11-11 17:36:21] STAGE81_PREREQ_STAGE80_OK E8A8E redirected into proxy; starting writer installation
-[2026-11-11 17:36:21] STAGE81_INSTALLED 3/3 rvas=0F7D22,0F7D38,0F7D43 lengths=6,6,10 originalMOV=once fxsave=1 gameBase=00280000 P1=0DF21F78 P2=0DF4CCA0 DRwrites=0 extraGameDataWrites=0
-[2026-11-11 17:36:24] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:26] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:28] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:30] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:32] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:34] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:36] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:38] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:40] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:42] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:44] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:46] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:48] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:50] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:51] STAGE81_NATIVE_WRITE seq=1 writerRVA=0F7D22 side=P2 player=0DF4CCA0 tid=11860 qpcBefore=2047470733373 qpcAfter=2047470733375 previous=00000001 proposed=00000002 post=00000002 changed=1 branchEBX=0DF4CDF4 b1A=01 b1C=00 esi=00000020 eax=00000001
-[2026-11-11 17:36:52] STAGE81_HEALTH callsEdx=1 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:54] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:56] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:36:58] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:00] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:02] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:04] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:06] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:08] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:10] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:12] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:14] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:16] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:18] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:20] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:22] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:24] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:26] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:28] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:30] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:32] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:34] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:36] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:38] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:40] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:42] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:44] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:46] STAGE81_NATIVE_WRITE seq=2 writerRVA=0F7D43 side=P2 player=0DF4CCA0 tid=11860 qpcBefore=2048016260626 qpcAfter=2048016260628 previous=00000000 proposed=00000000 post=00000000 changed=0 branchEBX=0DF4CDF4 b1A=00 b1C=00 esi=00000020 eax=29FE5C00
-[2026-11-11 17:37:46] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=1 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:48] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:50] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:52] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:54] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:56] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:37:58] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:38:00] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:38:02] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:38:04] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:38:06] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
-[2026-11-11 17:38:08] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:03:49] STAGE81_BUILD=2026-11-11-r2 SOURCE_ONLY wait Stage80 then 3 exact selector writers; original MOV once
+[2026-11-11 18:03:49] STAGE81_WAIT_STAGE80 callRVA=0E8A8E requires patched CALL into current proxy; writers untouched
+[2026-11-11 18:03:50] STAGE81_PREREQ_STAGE80_OK E8A8E redirected into proxy; starting writer installation
+[2026-11-11 18:03:50] STAGE81_INSTALLED 3/3 rvas=0F7D22,0F7D38,0F7D43 lengths=6,6,10 originalMOV=once fxsave=1 gameBase=00280000 P1=0DF21F78 P2=0DF4CCA0 DRwrites=0 extraGameDataWrites=0
+[2026-11-11 18:03:52] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:03:54] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:03:56] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:03:58] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:00] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:02] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:04] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:06] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:08] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:10] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:12] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:14] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:16] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:18] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:20] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:22] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:24] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:26] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:28] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:30] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:32] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:34] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:36] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:38] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:41] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:43] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:45] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:47] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:49] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:51] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+[2026-11-11 18:04:53] STAGE81_HEALTH callsEdx=0 callsEcx=0 callsZero=0 filtered=0 dropped=0 pendingOverflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0

@@ -1,0 +1,143 @@
+STAGE85_BUILD=2026-11-11-r1 SOURCE_ONLY F7150 join; CMP/JNE replay original branches
+STAGE85_SITE_AUDIT rva=0F7C68 length=10 live=837DF8000F85E0000000 exact=1
+STAGE85_INSTALLED 1/1 rva=0F7C68 length=10 originalCMPJNE=once fallthrough=0F7C72 taken=0F7D52 FXSAVE=1 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=1 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063815425892 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=00000010 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=2 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063816323820 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000011 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=3 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063817931181 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=00000010 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=4 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063820035855 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000000 ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=4 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=5 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063821836112 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000E ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=6 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063830842391 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000011 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=7 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063836851805 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000022 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=8 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063838254942 selector=00000001 companion=00000000 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000010 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_HEALTH calls=4 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=9 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063845767538 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=0000002D ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=10 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063851574305 selector=00000001 companion=00000001 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000025 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_HEALTH calls=2 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=11 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063863985032 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000012 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=12 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063867993322 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000000 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=13 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063869692468 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000E ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=14 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063877302874 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000006 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=15 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063879012198 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000013 ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=5 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=16 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063882809118 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000020 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=17 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063883113120 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000052 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=18 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063897131254 selector=00000001 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000011 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=19 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063897948040 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000000 ebp=0E73F618 ebx=0DF259A4
+STAGE85_HEALTH calls=4 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=20 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063901739004 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000021 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=21 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063902238527 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000011 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=22 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063909946926 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000A ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=23 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063910950067 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=0000000E ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=24 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063911852537 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000005C ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=25 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063916554171 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000000 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=26 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063919465803 selector=00000002 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000005 ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=7 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=27 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063924569454 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=0000000E ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=28 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063925669892 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000061 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=29 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063928772394 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000022 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=30 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063937382900 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000025 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=31 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063940886782 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000027 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_HEALTH calls=5 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=32 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063944692337 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000001B ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=33 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063944991124 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000029 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=34 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063945600140 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000002 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=35 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063947499819 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=0000002A ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=36 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063956806958 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=0000002B ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=37 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063959413299 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=0000002C ebp=0E73F618 ebx=0DF259A4
+STAGE85_HEALTH calls=6 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=38 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063975346558 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000063 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=39 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063980140927 selector=00000000 companion=00000001 localF8=00000000 mask=0F edi=0DF21F78 esi=00000027 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_HEALTH calls=2 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=40 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063985146217 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=0000000A ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=41 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2063985445209 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000024 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=42 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063990455890 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000002 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=43 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063992357505 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=0000000E ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=44 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2063996861689 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000020 ebp=0E73F618 ebx=0DF259A4
+STAGE85_HEALTH calls=5 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=45 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064007975253 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=00000010 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=46 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064010178129 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000022 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=47 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064015690731 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=00000027 ebp=0E73F618 ebx=00000018
+STAGE85_JOIN seq=48 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064016688686 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=0000003A ebp=0E73F618 ebx=0DF259A4
+STAGE85_HEALTH calls=4 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_HEALTH calls=0 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=49 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064071558566 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=0000000C ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=50 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064078368825 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000013 ebp=0E73F618 ebx=0DF259A4
+STAGE85_HEALTH calls=2 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=51 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064084075513 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=00000027 ebp=0E73F618 ebx=00000013
+STAGE85_JOIN seq=52 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064084475041 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000013 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=53 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064084773963 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=0000003A ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=54 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064092585683 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000011 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=55 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064096295847 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000013 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=56 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064100102928 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=00000028 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=57 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064100800410 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000005A ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=7 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=58 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064106909934 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000013 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=59 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064110912903 selector=00000001 companion=00000000 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000027 ebp=0E73F618 ebx=00000013
+STAGE85_JOIN seq=60 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064115315752 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000A ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=61 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064116923003 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000059 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=62 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064121828394 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000004 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=63 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064122931774 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000A ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=6 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=64 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064124436106 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000010 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=65 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064129233400 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=00000004 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=66 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064131341979 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000A ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=67 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064132941407 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000014 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=68 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064135147704 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=0000000E ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=69 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064137547504 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000002 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=70 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064140550105 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000021 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=71 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064140952669 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000005C ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=8 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=72 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064151565621 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=00000010 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=73 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064153567120 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000005C ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=74 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064158172860 selector=00000001 companion=00000000 localF8=00000000 mask=0F edi=0DF4CCA0 esi=0000000E ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=75 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064161276274 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000005C ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=4 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=76 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064166584023 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000006 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=77 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064169386214 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000C ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=78 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064173594946 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000022 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=79 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064175796842 selector=00000001 companion=00000000 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000027 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=80 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064177998809 selector=00000001 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=00000005 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=81 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064179604377 selector=00000001 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=00000011 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=82 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064180504124 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=0000004D ebp=0E73F618 ebx=0DF259A4
+STAGE85_HEALTH calls=7 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=83 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064186612510 selector=00000001 companion=00000001 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000026 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=84 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064189613552 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000012 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=85 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064193720882 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000012 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=86 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064193821244 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000023 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=87 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064201931503 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000E ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=5 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=88 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064204639898 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000052 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=89 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064214347845 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000024 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=90 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064215246676 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000C ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=91 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064216252243 selector=00000001 companion=00000000 localF8=00000000 mask=0F edi=0DF21F78 esi=00000027 ebp=0E73F618 ebx=00000018
+STAGE85_JOIN seq=92 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064218663187 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000000 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=93 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064220457641 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000012 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=94 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064223559203 selector=00000001 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000060 ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=7 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=95 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064235578098 selector=00000001 companion=00000000 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000027 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=96 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064238376927 selector=00000001 companion=00000001 localF8=00000000 mask=0F edi=0DF21F78 esi=00000027 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_JOIN seq=97 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064242088003 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=00000010 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=98 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064242088599 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000001B ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=4 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=99 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064252395313 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000004 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=100 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064253598413 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000A ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=101 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064254601491 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000013 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=102 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064260610711 selector=00000000 companion=00000000 localF8=00000000 mask=0F edi=0DF4CCA0 esi=00000027 ebp=0E73F618 ebx=FFFFFFFF
+STAGE85_HEALTH calls=4 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=103 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064266316495 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000004 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=104 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064269019840 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF21F78 esi=00000026 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=105 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064269519552 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000A ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=106 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064272422757 selector=00000000 companion=00000001 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000023 ebp=0E73F618 ebx=0DF506CC
+STAGE85_JOIN seq=107 rva=0F7C68 side=P1 player=0DF21F78 object=2A421020 tid=2804 qpc=2064281240115 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF21F78 esi=00000000 ebp=0E73F618 ebx=0DF259A4
+STAGE85_JOIN seq=108 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064282138378 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=00000000 ebp=0E73F618 ebx=0DF506CC
+STAGE85_HEALTH calls=6 filtered=0 dropped=0 readFail=0 ring=16384 patchSites=1 controlBranchesPreserved=2 DRwrites=0 gameDataWrites=0
+STAGE85_JOIN seq=109 rva=0F7C68 side=P2 player=0DF4CCA0 object=2A421C50 tid=2804 qpc=2064283944725 selector=00000000 companion=00000000 localF8=00000001 mask=0F edi=0DF4CCA0 esi=0000000E ebp=0E73F618 ebx=0DF506CC

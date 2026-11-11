@@ -1,3 +1,15 @@
+## Current — Stage91 POSITIVE native bit readers runtime VERIFIED: 1,825 AL=1 (2026-11-11)
+
+[Complete Stage91 runtime evidence](Stage91_Runtime/RUNTIME_ANALYSIS.md) · [JSON statistics](Stage91_Runtime/results.json) · [raw user upload `4e56101`](https://github.com/Hawky11/1/commit/4e56101e9095d6f3b04fd4dcedf2ca5d5314ed57) · [Stage91 r1 code](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay).
+
+**Windows x86 BUILD SUCCEEDED**, DLL **1,999,872 bytes**; all three direct `F58E0` reader CALL-site hooks `F5A4D/F5A5C/F5A76` **INSTALLED 3/3 mask=7**. Massive raw Stage91 log is **15,480,170 bytes** (blob SHA `84f4f78cb0eeeb68425caea347bb300e4c308e2f`): GitHub `fetch_file` returned empty due to size; exact `fetch_blob` recovers full text. **Do not misdiagnose empty upload.** Counted **34,790** real read events: bit0x200/index9 **12,571 (AL1 1,183)**; bit0x400/index10 **11,388 (AL1 557)**; bit0x800/index11 **10,831 (AL1 85)**. **1,825 AL=1** actual native results, all with matching bit set; all **34,790/34,790** native predictions, full masks, pre/post unchanged, stage91 PRE == most recent same-player/TID Stage90 POST. No Stage91 mismatch/readFail/overflow/dropped. Periodic HEALTH sums cover **34,114**, plus **676** event lines after last health; not lost data.
+
+**Critical Stage88→Stage91 direct evidence:** 49 positive reads directly follow a Stage87/88 paired F57D0 call without another recorded F57D0; **12** of these follow real target bit **0→1** (11×0x200, 1×0x400). Bit0x800 has native AL1 and exact Stage88 POST→Stage91 PRE followed by Stage90 clear (Stage88 seq98 → Stage91 seq12415 → Stage90 seq680), but no immediate fresh 0→1 in this run. Strong native bit-consumer proof; the actual next branch, `P+3B70` write and queued COM move/attack remain unconfirmed.
+
+**NEXT Stage92:** map and passively verify downstream `F5990` branch consequences and `9ED20` vs `9ED60` selection, then bind to already instrumented command trace. Keep last tested Stage91 DLL **1,999,872 bytes**; Stage36 disabled, no global F58E0 detour, duplicate EE306, or gameplay modification. Prior “Current” headings below are history.
+
+---
+
 ## Current — Stage91 three direct special-bit F58E0 readers SOURCE READY (2026-11-11)
 
 [Stage91 native static analysis](Stage91_Analysis/STATIC_ANALYSIS.md) · [machine-readable 68/68 checks](Stage91_Analysis/static_results.json) · [Stage91 complete 11-file source branch](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay) · [last runtime-verified Stage90](Stage90_Runtime/RUNTIME_ANALYSIS.md).

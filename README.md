@@ -1,3 +1,13 @@
+## Current — Stage89 four guarded native F58E0 bitmap READERS, SOURCE ONLY (2026-11-11)
+
+[Stage89 source branch](https://github.com/Hawky11/1/tree/stage89-f58e0-four-call-readers-source-only) · [install guide](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Overlay/README_STAGE89_RU.md) · [static checks](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Analysis/source_only_results.json) · [last verified Stage88 runtime](Stage88_Runtime/RUNTIME_ANALYSIS.md).
+
+**Prepared (NOT MSVC-built or game-runtime-tested):** four SHA/PE/byte-guarded exact native CALL-site readers of `F58E0(bitmap=P+3A08,0x26)` at `9A870`, `9AA20`, `9AB00`, `AAB55`. Real `AL`, `EAX`, `EFLAGS`, P+3A08/0C/10 before/after, P1/P2, TID, QPC and branch-prediction snapshots will be worker-logged. `F58E0` original invoked once, no global detour, **NO new EE306 hook**, no input/bitmap/DR writes. Stage88's 175/175 validated writes remain the last runtime evidence. **Static 22 exact PE32 signatures PASS** on original AALib SHA. Zip prepared in this chat.
+
+**NEXT:** backup working Stage88 DLL **1,975,296 bytes**; run `Stage89_Overlay/ApplyStage89.ps1` on exact Stage88 source, build via x86 MSVC `Build.bat`, 3–5 natural COM-vs-COM rounds, upload same-session Build.log, Stage89, Stage88, Stage87 and Stage24/Dispatch/FinalCommand traces. Keep `EnableStage36ControlToCommandTrace=0`. Roll back on errors or instability. **No confirmed action/animation/hit or AI behavior change.**
+
+---
+
 ## Current — Stage88 runtime VERIFIED, native selector→F57D0 bitmap write (2026-11-11)
 
 [Stage88 report](Stage88_Runtime/RUNTIME_ANALYSIS.md) · [results](Stage88_Runtime/results.json) · [runtime upload `ccbbf6a`](https://github.com/Hawky11/1/commit/ccbbf6a41cd7ed5ba0fdf194f557a4bbf112b3ca) · [Stage88 source `eb92db8`](https://github.com/Hawky11/1/commit/eb92db82bae6afb155a58bef8e8429ef3abf7af3).

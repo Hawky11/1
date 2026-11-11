@@ -1,5 +1,12 @@
 # Project history
 
+## Stage89 static localization of genuine downstream F58E0 0x26 reader — 2026-11-11
+
+- [Exact original SHA-pinned disassembly and callsite table](Stage89_Analysis/STATIC_ANALYSIS.md): F58E0 special `0x26` predicate reads `[P+3A08]+4=P+3A0C`, tests `0x200`, `0x400`, `0x800`, and returns `AL=1` if any is set; generic fallback also examines `P+3A10` bit `0x40` (bitIndex 38). **Four literal-0x26 callsites** `9A870/9AA20/9AB00/AAB55`, each guarded; at `AAB55`, AL=0 can lead to `AAB65→E8560`.
+- **STATIC ONLY**: no Stage89 runtime observations/build/AI changes yet. Stage88's 175 mapped bitmap writes do not establish these readers fired. Candidate next source task is a guarded exact CALL-site passive observer plus same-session correlation, not a global F58E0 detour or second EE306 hook.
+
+---
+
 ## Stage88 Windows x86 runtime: selector→F57D0→controller bitmap established — 2026-11-11
 
 - [User's 21:03–21:05 upload](https://github.com/Hawky11/1/commit/ccbbf6a41cd7ed5ba0fdf194f557a4bbf112b3ca) · [Stage88 source-only stage](https://github.com/Hawky11/1/commit/eb92db82bae6afb155a58bef8e8429ef3abf7af3) · [full audited runtime analysis](Stage88_Runtime/RUNTIME_ANALYSIS.md) · [JSON](Stage88_Runtime/results.json).

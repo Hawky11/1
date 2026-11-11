@@ -1,5 +1,14 @@
 # Project history
 
+## Stage91 direct special-bit native reads VERIFIED at runtime — 1,825 positive ALs, 2026-11-11
+
+- [Fresh uploaded commit `4e56101`](https://github.com/Hawky11/1/commit/4e56101e9095d6f3b04fd4dcedf2ca5d5314ed57) · [Stage91 full runtime analysis](Stage91_Runtime/RUNTIME_ANALYSIS.md) · [results.json](Stage91_Runtime/results.json) · [source code branch](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay). **Windows MSVC x86 BUILD SUCCEEDED**, DLL **1,999,872 bytes**, old nonfatal C4754. `STAGE91_INSTALLED mask=7 sites=3/3`, all three direct `F58E0` bit9/10/11 readers called.
+- **Critical large-file retrieval trap:** Stage91 log actually **15,480,170 bytes** (blob SHA `84f4f78cb0eeeb68425caea347bb300e4c308e2f`). `fetch_file` yields empty on oversized file; `fetch_blob` returns full data. Parsed **34,790** Stage91 events: `F5A4D/index9/0x200` 12,571 (AL1 **1,183**), `F5A5C/index10/0x400` 11,388 (**557**), `F5A76/index11/0x800` 10,831 (**85**). Total native predicate **AL1=1,825**, AL0=32,965. All 34,790 predicted results match actual AL, bit present for each AL1, before/after bitmap equal, full masks, last same-player/TID F57D0 POST exactly matches reader PRE. No errors or dropped events. Periodic health sums **34,114**, with 676 further events past last health row, explaining difference.
+- **Causal native-state sequences:** 49 AL1 readings directly followed a Stage88 joined native F57D0 call; 12 had actual target bit 0→1 (11×0x200, 1×0x400). Examples Stage88 seq22 P2 (0x29,0,0x10)→(0x0E,0x200,0) → Stage91 seq2469 AL1; Stage88 seq239 P1 (0x29,0,0x10)→(0x0F,0x400,0) → Stage91 seq32679 AL1; Stage88 seq98 P1 already-set 0x800 → Stage91 seq12415 AL1 → Stage90 seq680 clears 0x800. This confirms real downstream **predicate consumption**, not a particular action/hit.
+- **Stage92 next:** verify the executed post-F5990 branch and P+3B70 field changes, 9ED20 versus 9ED60 selection, and ultimately same-event FinalCommand/queue provenance with read-only guarded hooks. Preserve Stage91 DLL, Stage36 off. Do not claim improved COM fighting performance from AL1 alone.
+
+---
+
 ## Stage91 source-only: native direct F58E0 bitmap-bit readers 9/10/11 localized — 2026-11-11
 
 - [Stage91 original SHA-pinned static disassembly](Stage91_Analysis/STATIC_ANALYSIS.md) · [68/68 static verification](Stage91_Analysis/static_results.json) · [11-file code/installer/test branch](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay). Native helper `F58E0` generic indices **9/10/11** check special bits of `P+3A0C` 0x200/0x400/0x800, respectively. Reader callsites **F5A4D/F5A5C/F5A76** inside F5990; upstream update call at `ACAB8`. AL1 in first two callers goes to F5A68 setting `P+3B70 |= 8`; third caller selects `9ED20` vs `9ED60`. These are native control-flow candidates **not yet observed by Stage91 runtime**.

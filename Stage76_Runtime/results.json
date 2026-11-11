@@ -1,0 +1,212 @@
+{
+  "stage": 76,
+  "edition": "r1",
+  "status": "Windows x86 BUILD VERIFIED; Stage76 instrumented runtime observations VERIFIED; exact selector writer EIP UNKNOWN",
+  "userCommit": "d0fddb14bdccadaf0e42be5208cba44fcf544f0d",
+  "build": {
+    "at": "2026-11-11T12:28:01",
+    "succeeded": true,
+    "dllBytes": 1901568,
+    "compiler": "MSVC 14.51.36231 x86",
+    "warning": "existing C4754"
+  },
+  "run": {
+    "from": "2026-11-11T12:28:33",
+    "to": "2026-11-11T12:29:18",
+    "gameBase": "00280000",
+    "tid": 16408,
+    "actors": {
+      "P1": {
+        "P": "0DF21F78",
+        "O": "29BE5020"
+      },
+      "P2": {
+        "P": "0DF4CCA0",
+        "O": "29BE5C50"
+      }
+    }
+  },
+  "observers": {
+    "stage38": {
+      "installed": "2/2",
+      "windows": 5705,
+      "P1": 2772,
+      "P2": 2933,
+      "seqComplete": true
+    },
+    "stage65": {
+      "installed": "1/1",
+      "requests": 332,
+      "seqComplete": true,
+      "healthErrors": 0
+    },
+    "stage70": {
+      "installed": "1/1",
+      "deferredWrites": 6,
+      "seqComplete": true,
+      "healthErrors": 0
+    },
+    "stage59": {
+      "watchArmed": true,
+      "xEvents": 18822,
+      "uniqueSeqComplete": true,
+      "physicallySorted": false,
+      "lateFlushSeqRange": [
+        16267,
+        16384
+      ],
+      "afterSeq": 16428,
+      "healthErrors": 0
+    },
+    "stage76": {
+      "installed": "3/3",
+      "totalRows": 11478,
+      "seqComplete": true,
+      "allMasksFull": true,
+      "healthRows": 26,
+      "healthErrors": 0,
+      "phase0": {
+        "callRVA": "EE7D1",
+        "nativeRVA": "EE480",
+        "rows": 5739,
+        "selectorChanges": 0,
+        "stateChanges": 13,
+        "stateResets": {
+          "1->0": 11,
+          "2->0": 2
+        },
+        "callbackPointerChanges": 101,
+        "callbackPointerAllResetToZero": true,
+        "eventRecordChanges": 111
+      },
+      "phase1": {
+        "callRVA": "EE7D6",
+        "nativeRVA": "E8DA0",
+        "rows": 5739,
+        "allTenFieldsChangedCount": 0
+      },
+      "phase2": {
+        "callRVA": "EE7EA",
+        "nativeRVA": "EE5E0",
+        "rows": 0,
+        "untestedInThisRun": true
+      }
+    }
+  },
+  "selectorChangesBetweenWindows": [
+    {
+      "actor": "P1",
+      "stage38Previous": 1859,
+      "stage38Next": 1861,
+      "selectorFrom": 0,
+      "selectorTo": 2,
+      "phase0Seq": 3717,
+      "phase1Seq": 3718,
+      "phase1PostQPC": "1862720561917",
+      "nextStage38PreQPC": "1862720659040"
+    },
+    {
+      "actor": "P2",
+      "stage38Previous": 2761,
+      "stage38Next": 2763,
+      "selectorFrom": 0,
+      "selectorTo": 1,
+      "phase0Seq": 5521,
+      "phase1Seq": 5522,
+      "phase1PostQPC": "1862769421111",
+      "nextStage38PreQPC": "1862769523035"
+    },
+    {
+      "actor": "P2",
+      "stage38Previous": 2875,
+      "stage38Next": 2877,
+      "selectorFrom": 1,
+      "selectorTo": 0,
+      "phase0Seq": 5749,
+      "phase1Seq": 5750,
+      "phase1PostQPC": "1862775131699",
+      "nextStage38PreQPC": "1862775230210"
+    },
+    {
+      "actor": "P1",
+      "stage38Previous": 4370,
+      "stage38Next": 4372,
+      "selectorFrom": 0,
+      "selectorTo": 1,
+      "phase0Seq": 8739,
+      "phase1Seq": 8740,
+      "phase1PostQPC": "1862853034590",
+      "nextStage38PreQPC": "1862853132550"
+    },
+    {
+      "actor": "P1",
+      "stage38Previous": 5120,
+      "stage38Next": 5122,
+      "selectorFrom": 1,
+      "selectorTo": 2,
+      "phase0Seq": 10239,
+      "phase1Seq": 10240,
+      "phase1PostQPC": "1862892990889",
+      "nextStage38PreQPC": "1862893090995"
+    }
+  ],
+  "stage65Stage70Pairs": [
+    {
+      "actor": "P1",
+      "stage38Seq": 1895,
+      "stage65Seq": 120,
+      "request": "33",
+      "stage70Seq": 1,
+      "selector": 2,
+      "deferred": "26"
+    },
+    {
+      "actor": "P2",
+      "stage38Seq": 2921,
+      "stage65Seq": 183,
+      "request": "2E",
+      "stage70Seq": 2,
+      "selector": 0,
+      "deferred": "24"
+    },
+    {
+      "actor": "P1",
+      "stage38Seq": 3489,
+      "stage65Seq": 219,
+      "request": "33",
+      "stage70Seq": 3,
+      "selector": 2,
+      "deferred": "26"
+    },
+    {
+      "actor": "P2",
+      "stage38Seq": 4355,
+      "stage65Seq": 290,
+      "request": "2E",
+      "stage70Seq": 4,
+      "selector": 0,
+      "deferred": "24"
+    },
+    {
+      "actor": "P1",
+      "stage38Seq": 4410,
+      "stage65Seq": 294,
+      "request": "2F",
+      "stage70Seq": 5,
+      "selector": 1,
+      "deferred": "25"
+    },
+    {
+      "actor": "P1",
+      "stage38Seq": 5190,
+      "stage65Seq": 326,
+      "request": "33",
+      "stage70Seq": 6,
+      "selector": 2,
+      "deferred": "26"
+    }
+  ],
+  "stage77Recommended": "Extend existing Stage38PrepareHook with snapshot before native 156C00 and compare existing Stage38 PRE after native 156C00; no new detour or DR; audit stack/GPR/EFLAGS/x87/SSE before implementation",
+  "newDllBuiltByAnalyst": false,
+  "gameplayModified": false
+}

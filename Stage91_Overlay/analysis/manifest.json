@@ -1,0 +1,26 @@
+{
+  "stage": 91,
+  "status": "SOURCE_ONLY_STATIC_VALIDATED",
+  "reference_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "baseline_stage90_dll_bytes": 1991168,
+  "baseline_src_sha256": {
+    "Stage90AllF57D0.inl": "080374d0551dee87551c0ffea1bd9ddfa4a58bad708f71814b36cc3d260b421a",
+    "Stage81SelectorWriter.inl": "04b1d2644caf5312a8d53e3ec34a70c522c1929dcb6b05e8c3deb2a8c76af4ec",
+    "Stage88Stage24Join.inl": "986b77b2fd07f67c92296ffb57bea0817dd2bf6b1758547da513f4d32c34a4bd"
+  },
+  "files": {
+    "RollbackStage91.ps1": "a410d631ad843a55a6874ad3114aef8d8bda666f8c9ab532a27a14a6018b65bb",
+    "README_STAGE91_RU.md": "f3effa498fcd79addab96d75f776a6ebcc54d12418ee40c83c2f285cefbe151e",
+    "ApplyStage91.ps1": "8ac8bdfbcb25bd5d3dc4d6a86690e9493f7a0c98d4ce175a8cf45f1f03368deb",
+    "analysis/STATIC_ANALYSIS.md": "8b253d6ad06811a79e8432971d4af95c0305d1cf5cc427c4fcf803c0b50e7ad4",
+    "analysis/static_results.json": "e8b983bf0e9c5cd23150824f3699bdd25d4cb7a7651a6645028fae842f7042ad",
+    "src/Stage91DirectSpecialReader.inl": "cd9a9495eaa6ac905bb961b3997b60b2edb21329c583a82c767be4a097b9a673",
+    "src/Stage81SelectorWriter.inl": "3b4eb42c458f3419c2ad2c7f9433efb2ad012c88244c3b0e5349793e89da397e",
+    "tools/test_correlate_stage91.py": "441f88edd61ec7e7c12cac11ff23526840f70f6d57a0d489227e412ed4c635ae",
+    "tools/verify_stage91.py": "af8d236ec8e09e57ebe4ddd7215d487712ca3149bcb8b14fb9de02e754d7e688",
+    "tools/correlate_stage91.py": "9deda4d1668b11eb806551dc9383562c303ccad659252c2b90ccac63539c034a",
+    "tools/__pycache__/correlate_stage91.cpython-313.pyc": "43e98c60a723989e69ddfa6ee0b95b18632657548197b8b2d33fa9429818da2b"
+  },
+  "windows_built": false,
+  "runtime_tested": false
+}

@@ -1,5 +1,21 @@
 # Next session handoff
 
+## Current — Stage79 single common EFFE8→E89E0 selector-family boundary SOURCE READY (2026-11-11)
+
+**Main new finding:** the ten original register-derived selector DWORD MOV sites cluster in **four** native functions: F3930 (4), F4360 (2), F46F0 (2), F7150 (2). All are reachable via exact, SHA-pinned **direct E8 native call paths** under original **E89E0**, and the bounded `.text` direct-caller inventory of E89E0 contains **only EFFE8**. **11** original CALL edges, **8** direct caller sets, **10** MOV opcodes and Boolean SETcc predecessors verified against user-owned original AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. This is static potential reachability, NOT an observed call or writer EIP; indirect calls/alias writes not excluded.
+
+**Stage79 source branch** [stage79-effe8-common-selector-family-observer-source](https://github.com/Hawky11/1/tree/stage79-effe8-common-selector-family-observer-source):
+- [Passive one-call native boundary](Stage79_Overlay/src/Stage79SelectorFamilyBoundary.inl): one original 5-byte E8 `EFFE8→E89E0` detour, original E89E0 executes ONCE with ESI=P and return to original EFFED; FXSAVE/PUSHAD register/flags protective snapshots; no additional gameplay edits, DR or VEH ownership; user must validate Windows ABI/runtime.
+- [Stage78-based Stage38 adapter](Stage79_Overlay/src/Stage38CallbackWindow.inl) has exactly three edits: include Stage79, call InstallStage79Hooks after successful InstallStage78Hooks before Stage59 watcher, FlushStage79 after Stage78. Prior Stage38/77/76/78 retained.
+- [RU installation](Stage79_Analysis/README_STAGE79_RU.md), [technical audit](Stage79_Analysis/STATIC_ANALYSIS.md), [SHA-pinned verifier](Stage79_Analysis/tools/verify_stage79.py), [machine summary](Stage79_Analysis/results.json). Original private EXE not uploaded.
+
+**NEXT USER:** Back up tested Stage78 `dinput8.dll` **1,911,808 bytes** and current Stage38 adapter. From Stage79 overlay replace only `D:\INCUBATOR\ArcanaAIOverhaul\src\Stage38CallbackWindow.inl`, add only `Stage79SelectorFamilyBoundary.inl`; retain local Stage78LiteralOneWriter.inl, Stage76 and all others/INI. Run `Build.bat` (must BUILD SUCCEEDED); short COM-vs-COM test, check Stage79 GUARD nativeOK=1, Stage79 INSTALLED 1/1, `STAGE79_HEALTH` zero errors. Upload same-run `Build.log`, `ArcanaAI_Stage79SelectorFamilyTrace.log`, `ArcanaAI_Stage38CallbackWindowTrace.log`, `ArcanaAI_Stage76AfterCallbackTrace.log`, `ArcanaAI_Stage78LiteralOneWriterTrace.log`.
+
+**Interpretation:** `STAGE79_COMMON_WINDOW f0=0>1/2` attributes a change to **inside common family call E89E0**, NOT exact writer EIP. If positive, next Stage80 should narrow only positive family paths to specific MOV site; if zero, compare Stage38/76 QPC gaps for alternate producer. No automatic ten hooks or DR2/DR3. **Stage79 source/static verified only, Windows x86 build and game runtime not tested**. Prior frozen [Stage78 runtime report](https://github.com/Hawky11/1/blob/stage78-runtime-no-literal-hit-selector-alternative-evidence/Stage78_Runtime/RUNTIME_ANALYSIS.md): Stage78 installed but 0 hits, 5 upstream transitions and 1 callback-local selector reset; no new logs in this Stage79 source turn.
+
+---
+
+
 ## Current — Stage78 exact literal-one selector writer observer SOURCE READY (2026-11-11)
 
 **New source:** [stage78-literal-one-writer-exact-site-source](https://github.com/Hawky11/1/tree/stage78-literal-one-writer-exact-site-source); [one-site writer observer](Stage78_Overlay/src/Stage78LiteralOneWriter.inl), [Stage77-based adapter](Stage78_Overlay/src/Stage38CallbackWindow.inl), [RU instructions](Stage78_Analysis/README_STAGE78_RU.md), [static analysis](Stage78_Analysis/STATIC_ANALYSIS.md), [SHA-pinned verifier](Stage78_Analysis/tools/verify_stage78.py). Original private AALib.exe SHA-256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` verified locally, exact 7 native opcode ranges. **STAGE78 SOURCE READY ONLY; Windows x86 BUILD and gameplay RUNTIME NOT TESTED.**

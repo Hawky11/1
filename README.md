@@ -1,3 +1,13 @@
+## Current — Stage74 selector transitions RUNTIME VERIFIED (2026-11-11)
+
+[Stage74 runtime report](Stage74_Runtime/RUNTIME_ANALYSIS.md) · [RU](Stage74_Runtime/README_STAGE74_RU.md) · [machine-readable results](Stage74_Runtime/results.json), branch [stage74-runtime-selector-transition-evidence](https://github.com/Hawky11/1/tree/stage74-runtime-selector-transition-evidence). User's five new logs frozen at commit [211f088](https://github.com/Hawky11/1/commit/211f0882e6b8e220877e4c15b072e5a7b8a7b067). Stage74 [four-edit source](https://github.com/Hawky11/1/tree/stage74-callback-selector-boundary-snapshot). **Windows x86 BUILD SUCCEEDED**, DLL **1,893,376 bytes**, Stage38/65/70 installed, Stage59 DR0/DR1 armed.
+
+**Actual observation:** 3,708 Stage38 windows with valid `f30=P+3F50` and `f31=P+3F54`, **zero within-callback selector changes**, **five between-window transitions**: P2 `0→1,1→0`; P1 `0→1,1→2,2→1`. All five *next* windows begin with callback `158570` **parameter 0x11** and set follow-on `155160`. Original switch `0x11→158ACB` conditionally **reads** selector at `158ADC`; this does **not** prove writer IP. Stage65/70 same-frame pairs: `2F→25` with selector1, `33→26` with selector2, `2E→24` with selector0. Stage59: 11,957 complete unique IDs but 14 rows reordered at flush; do not blindly correlate physical line order.
+
+**Next Stage75: static pre-callback source/dataflow**, not blind hooks. Preserve Stage74 known-good DLL and Stage70 r2 rollback, do not modify AI/gameplay. Existing Stage38 initialization banner says “30 fields” but 32 fields are confirmed in actual rows; harmless stale text.
+
+---
+
 ## Current — Stage61 same-run action definition → motion → X write VERIFIED (2026-11-10)
 
 [Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md) · [frozen exact two-file user upload](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence) · [Stage61 offline correlator](https://github.com/Hawky11/1/blob/stage61-action-definition-motion-join/Stage61_Analysis/tools/correlate_stage61.py). New [user upload c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79) contains **Stage46 and Stage47 from the identical 22:07 Stage59 r2 game session**. Same actor objects, TID=15132, QPC sequence. Stage46 1,476 sequential records; Stage47 5,292 sequential records; previously frozen Stage59 16,121 sequential watchpoint events. Full masks, Stage47 HEALTH zero dropped/overflow/mismatch/badCaller. **No new DLL was built**.

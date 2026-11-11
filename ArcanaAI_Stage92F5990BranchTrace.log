@@ -1,0 +1,2 @@
+STAGE92_BUILD=2026-11-11-r1 SOURCE_ONLY F5990 boundary+selected 9ED20/9ED60 CALL sites; originalOnce=1 gameWrites=0 DRwrites=0
+STAGE92_ERROR native signature mismatch/already installed; no patch

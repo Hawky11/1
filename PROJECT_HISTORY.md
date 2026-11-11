@@ -1,3 +1,14 @@
+## 2026-11-12 — Stage93 r1 prepared, source-only (not Windows tested)
+
+- Confirmed Stage92 r3 live report: 17,788 F5990 ticks, 9,786 helper selections, 31,605 exact Stage91 reader joins; 127 bit3 rises, of which 119 without observed 9ED20 SET. Report in `Stage92_Runtime/RUNTIME_ANALYSIS.md`.
+- Retrieved original AALib.exe from user ChatGPT File Library; verified SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. Disassembled F5990; at RVA **F5A68** native opcode `83 8E 70 3B 00 00 08` ORs P+3B70 bit3. Branches bit2 and positive bit9/bit10 can enter this direct OR. Bit11 follows the already traced helper path. This explains a candidate for Stage92 no-helper rises but does **not** establish 119/119 attribution.
+- Created immutable [Stage93 source-only branch](https://github.com/Hawky11/1/tree/stage93-direct-bit3-final-qpc-source-only): exact byte-gated passive F5A68 OR wrapper + Stage81 install/flush/health; SHA-gated PowerShell Apply/Rollback. Existing Stage92 r3 and Stage91 DLLs remain untouched.
+- QPC source-only bridge captures game-thread QPC in original FinalCommand F7C5D observer, logs worker-only companion `STAGE93_FINAL_QPC` without second CALL detour. Direct native OR observer logs `STAGE93_OR` with side, player, TID, Stage92 tick, before/after field, QPC and health.
+- Offline verification: original-EXE/source verifier **32/32 PASS**, native x86 OR independently encoded exact 7 bytes, synthetic correlator **2 tests PASS**. **NOT built with Windows MSVC, installed or runtime-tested**. The complete patch/test/analysis ZIP is provided through ChatGPT. Stage36 must remain disabled; preserve Stage92 r3 2,011,648-byte DLL.
+- Next: user applies ZIP against exact Stage92 r3 source, compiles MSVC x86, verifies Stage93 1/1 and Stage92 3/3, zero health errors, uploads same-run Build.log and new/old trace files. Only live direct-writer and final-command timestamp joins may support further conclusions; no visual attack/hit interpretation yet.
+
+---
+
 # Project history
 
 ## Stage92 r3 runtime PROVEN — 31,605 reader calls -> 17,788 ticks -> 9,786 helpers (2026-11-12)

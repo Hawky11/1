@@ -1,0 +1,56 @@
+{
+  "stage": 75,
+  "date": "2026-11-11",
+  "status": "STATIC VERIFIED; exact selector producer runtime EIP unresolved",
+  "originalAALibSha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "groundingStage74Commit": "211f0882e6b8e220877e4c15b072e5a7b8a7b067",
+  "staticChecks": {
+    "opcodeRanges": 35,
+    "directCallEdges": 8,
+    "directCallers158E90": [
+      "0EE643"
+    ],
+    "switchKey": 17,
+    "switchCaseRva": "158ACB",
+    "conditionalSelectorReadRva": "158ADC",
+    "status": "PASS"
+  },
+  "nativeDataflow": {
+    "recordBase": "P+3A2C",
+    "currentEventMode": "P+3A2E",
+    "currentEventCode": "P+3A30",
+    "previousEventMode": "P+3A34",
+    "previousEventCode": "P+3A36",
+    "recordTransferRva": "0F2E50",
+    "registrationPath": [
+      "0EE5E0",
+      "0EE643",
+      "158E90",
+      "0F7E70"
+    ],
+    "registeredCallback": "158570",
+    "parameterSource": "sign_extended_WORD(P+3A36)",
+    "callbackDescriptor": "P+3ED0",
+    "callbackArgument": "P+3ED4",
+    "afterCallbackPaths": [
+      "EE7D1→EE480",
+      "EE7D6→E8DA0",
+      "EE7EA→EE5E0 gated by P+3B7C bit23"
+    ]
+  },
+  "evidenceLimitations": [
+    "Stage74 does not contain P+3A2C event fields",
+    "No live EIP proof for EE643/158E90 in Stage74 run",
+    "158ADC is a selector reader, not a writer",
+    "No exact numeric selector source site identified",
+    "Direct-relative-call search does not exclude indirect callers"
+  ],
+  "newDll": false,
+  "newRuntime": false,
+  "aiBehaviorModified": false,
+  "rollbacks": {
+    "Stage74DllBytes": 1893376,
+    "Stage70R2DllBytes": 1892864
+  },
+  "next": "Stage76 STATIC FIRST: investigate native after-callback checkpoints before, between and after EE480/E8DA0/EE5E0"
+}

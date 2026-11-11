@@ -1,5 +1,19 @@
 # Next session handoff
 
+## Current — Stage71 selector producer STATIC VERIFIED, Stage72 writer attribution planning NEXT (2026-11-11)
+
+**Branch:** [stage71-selector-origin-static-evidence](https://github.com/Hawky11/1/tree/stage71-selector-origin-static-evidence), based on frozen [Stage70 r2 runtime evidence](https://github.com/Hawky11/1/tree/stage70-r2-runtime-evidence). [Exact static report](Stage71_Analysis/STATIC_ANALYSIS.md) · [RU summary](Stage71_Analysis/README_STAGE71_RU.md) · [SHA/opcode/native-CALL verifier](Stage71_Analysis/tools/verify_stage71.py) · [results.json](Stage71_Analysis/results.json). Original private `AALib.exe` SHA `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`. **NO new DLL, build, hook, or game run**. Exact relevant original bytes and branch targets were verified offline.
+
+**Breakthrough static producer:** Original callback helper `AALib+155B70` loads `P=[callbackArg]` (`155B7C`) and O=`[P+4]`. Two successful branches set `P+3F54=4` at `155D1D` or `P+3F54=3` at `155D74`; both converge on `155D27 PUSH 21h`, **`155D29 MOV DWORD [P+3F50],1`**, then event helper CALL `155D3C→0F2DE0`. This is a real original positive selector producer, not a text match.
+
+**Callback links:** `1566F0→155B70` inside the *same* native callback `1566B0` that later contains Stage65 request `156769` and deferred store `156787`. Another native callback `1560B9→155B70`. Both callback callers check AL and **return early on success** (`1566FA→156728`, `1560C3→156110`), so do NOT say a successful selector-set immediately falls through to the `156769` request in the same dispatch. The selected 1 may be read on a future callback. Underlying gates include P+3B78 bit2, helper 0E86F0, O+80/O+88 floats, O+24 flags, P+175 and indexed P+154 availability; don't invent gameplay semantics.
+
+**Important non-uniqueness:** 20 exact direct MOV [reg+3F50],value sites found in original .text and SHA/opcode-pinned: one literal-one `155D29`, nine zero constants, **ten register-derived writer sites that can output 1 or 2**. Specifically `0F3DE9/0F3E02` derive 1/2 via SETcc+INC; similar clusters `0F466F/0F4688`, `0F48A9/0F48C2`, `0F7D22/0F7D38`. Alias/memcpy writers not excluded. Stage70 r2 only measured `P+3F50=1→1` at original deferred store `156787`, **not the IP/source of the preceding selector write**. Do not claim Stage71 runtime-verified producer.
+
+**STAGE72 NEXT:** static-first: audit callback 1566B0 / 1560B0 scheduling, event21 dispatcher `0F2DE0`, and which selector stores are reachable for P1/P2 in the COM-vs-COM event. Examine whether prior Stage38/other logs already encode P+3F54 transitions; if not, decide whether a multi-source passive write observer is justified. A single site `155D29` alone cannot rule out 10 register-derived sources. Audit ABI/DR ownership and safety before any hook; Stage59 owns DR0/DR1, possible DR2/DR3 other owner; never inject selector/IDs. Preserve working Stage70 r2 DLL **1,892,864 bytes**, Stage67 **1,887,232**, Stage65 **1,879,552**, Stage59 r2 **1,153,024** rollback. **No new user logs or rebuild required for Stage71.** Main and frozen Stage70 uploads unchanged.
+
+---
+
 ## Current — Stage70 r2 native deferred ID writer RUNTIME VERIFIED; Stage71 STATIC FIRST NEXT (2026-11-11)
 
 **Frozen evidence branch:** [stage70-r2-runtime-evidence](https://github.com/Hawky11/1/tree/stage70-r2-runtime-evidence) built on raw user upload **98ff59b871e90fb757c787b472d5d5322941ce07**. [Detailed runtime report](Stage70_R2_Runtime/RUNTIME_ANALYSIS.md) · [RU summary](Stage70_R2_Runtime/README_STAGE70_R2_RU.md) · [results JSON](Stage70_R2_Runtime/results.json). Tested source branch [stage70-r2-relocation-aware-guard](https://github.com/Hawky11/1/tree/stage70-r2-relocation-aware-guard). Original private EXE SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`.

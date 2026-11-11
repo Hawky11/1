@@ -1,5 +1,17 @@
 # Next session handoff
 
+## Current — Stage91 direct special-bit F58E0 observer source-only ready, 68/68 static (2026-11-11)
+
+**FIRST READ:** [Stage91 static analysis](Stage91_Analysis/STATIC_ANALYSIS.md) · [static_results.json](Stage91_Analysis/static_results.json) · [full Stage91 package/README](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay) · [last Stage90 runtime report](Stage90_Runtime/RUNTIME_ANALYSIS.md). Stage91 is **SOURCE ONLY, not Windows built or runtime tested**; preserve last verified Stage90 Windows x86 `dinput8.dll` **1,991,168 bytes** from [uploaded runtime `3a6f9e9`](https://github.com/Hawky11/1/commit/3a6f9e908ab7e3bc1e18aca4085c5a6b3fdd044b).
+
+**New static exact native reader:** F58E0 generic index9/10/11 tests `P+3A0C bit 0x200/0x400/0x800`. Three original direct CALLs inside actor-update `F5990`, from `ACAB8`: `F5A4D` index9 (AL1→`F5A68`, P+3B70 bit8 set), `F5A5C` index10 (AL1→F5A68), `F5A76` index11 (AL1→`9ED20`, AL0→`9ED60`). Guard before F5A4D via `P+3B70 bit2`; not guaranteed all 3 sites execute every frame. These are static branches, not proof a COM attack/command occurs.
+
+**Stage91 overlay:** two source files `Stage81SelectorWriter.inl` (minimal Stage91 Install/Flush/Health addition) and `Stage91DirectSpecialReader.inl`, reversible SHA-gated `ApplyStage91.ps1` and `RollbackStage91.ps1`, Python PE verifier and offline Stage90/88 temporal correlator. **68 exact signature/source checks PASS**, synthetic PASS positive + three negative, 11 Git blobs match ZIP. Native F58E0 called exactly once per instrumented site, FLAGS/GPR/x87/MMX/XMM restored, 8192 worker-only ring, no game data/DR writes or duplicate EE306/global F58E0 hook. Installer requires exact Stage90 source SHA for Stage81/Stage88/Stage89/Stage90.
+
+**NEXT USER ACTION:** (1) Back up Stage90 DLL **1,991,168 bytes**; close game. (2) Extract Stage91 ZIP and run `powershell -ExecutionPolicy Bypass -File .\ApplyStage91.ps1 -Root 'D:\INCUBATOR\ArcanaAIOverhaul'`. (3) Windows MSVC x86 `Build.bat`; ensure `BUILD SUCCEEDED`, `STAGE91_INSTALLED mask=7 sites=3/3`, no Stage91 errors. (4) Keep Stage24/88/89/90 on, `EnableStage91DirectSpecialReaderTrace=1`, `Stage91ReaderSiteMask=7`, `EnableStage36ControlToCommandTrace=0`. (5) 3–5 COM-vs-COM rounds; upload same-session `Build.log`, `ArcanaAI_Stage91F58E0ReaderTrace.log`, Stage90, Stage88, Stage87, Stage89, FinalCommand and EventDispatch logs. (6) Run `tools/correlate_stage91.py`; audit AL and strict P/TID/QPC/snapshot history **without asserting event identity from proximity**. On crash, build error, HEALTH mismatch/readFail/overflow/dropped, run Stage91 rollback then rebuild/restore Stage90 DLL. Prior sessions below historical.
+
+---
+
 ## Current — Stage90 full F57D0 clear audit RUNTIME VERIFIED; Stage91 active-state reader next (2026-11-11)
 
 **First read:** [Stage90 full live report](Stage90_Runtime/RUNTIME_ANALYSIS.md) · [results.json](Stage90_Runtime/results.json) · [user-uploaded run `3a6f9e9`](https://github.com/Hawky11/1/commit/3a6f9e908ab7e3bc1e18aca4085c5a6b3fdd044b) · [source/installer branch](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay). **Latest tested Windows x86 DLL = 1,991,168 bytes**, BUILD SUCCEEDED with familiar nonfatal C4754. Stage24 EE306→F57D0 reused, Stage87/88/89 still work, Stage90 adds no native hook. Backup this tested DLL before further instrumentation. Stage36 disabled.

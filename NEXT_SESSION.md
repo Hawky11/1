@@ -1,5 +1,13 @@
 # Next session handoff
 
+## Current — Stage88 actual F57D0 bitmap runtime VERIFIED (2026-11-11)
+
+**Read first:** [Stage88 full report](Stage88_Runtime/RUNTIME_ANALYSIS.md) · [results](Stage88_Runtime/results.json) · [user upload `ccbbf6a`](https://github.com/Hawky11/1/commit/ccbbf6a41cd7ed5ba0fdf194f557a4bbf112b3ca) · [Stage88 source branch](https://github.com/Hawky11/1/tree/stage88-f57d0-controller-bitmap-source-only). Last tested DLL **1,975,296 bytes** Windows x86 **BUILD SUCCEEDED**; only familiar C4754 warning. Stage87 EE2F0 and Stage24 EE306→F57D0 installed; Stage88 bridge READY, **no extra hook**. Stage87/88 **175/175 unique same-run stage87Seq/QPC/side/player/TID and mapping**, read masks full; 1482 calls, 1307 deliberately filtered, no stale/mismatch/readFail/dropped. Selector0→EAX 0x0E→P+3A0C bit0x200 **110** calls (12 bit0→1), selector1→EAX 0x0F→bit0x400 **65** calls (1 bit0→1), selector2 **zero** this run. 58 triple-field changes, 117 unchanged. Type/payload 171×0/0x22, 2×0/0x23, 2×2/0x04; **do not equate** them with 143 separate type1 FinalCommand rows.
+
+**NEXT:** Stage89 static disassembly of SHA-pinned AALib.exe native reader paths from P+3A08/0C/10, prioritize exact downstream consumer and identify safe observer without collision; do not re-hook EE306 or enable Stage36 collision with Stage82. Only then implement/read-only test and connect to actual gameplay if observed. Seek natural selector2. Preserve Stage88 DLL backup and immutable uploaded log commit; no AI improvement or confirmed hit.
+
+---
+
 ## Current — Stage85 rare AFTER-JOIN selector path VERIFIED; Stage86 single E8560 CALL observer SOURCE READY (2026-11-11)
 
 **Read first:** [Stage85 long-run report](Stage85_Runtime/LONG_RUN_ANALYSIS.md) · [results](Stage85_Runtime/long_run_results.json) · [frozen logs e1fd008](https://github.com/Hawky11/1/commit/e1fd008f1ed8695f9f7cb53b005112f41f9605b7). **Stage85 r1 remains last runtime-verified build**, Windows x86 DLL **1,957,376 bytes**; Build.log unchanged. New same-run 18:19–18:21 capture: Stage79 16,747, Stage80 15,218, Stage82 3,812, Stage84 16, Stage85 228. Strict unique same P/O/TID/QPC joins: 15,218/15,218 (80 inside 79), 3,812/3,812 (82 inside 80), 16/16 (84 inside 82), 228/228 (85 inside 80). All HEALTH errors zero.

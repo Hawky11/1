@@ -1,5 +1,19 @@
 # Next session handoff
 
+## Current — Stage70 r2 native deferred ID writer RUNTIME VERIFIED; Stage71 STATIC FIRST NEXT (2026-11-11)
+
+**Frozen evidence branch:** [stage70-r2-runtime-evidence](https://github.com/Hawky11/1/tree/stage70-r2-runtime-evidence) built on raw user upload **98ff59b871e90fb757c787b472d5d5322941ce07**. [Detailed runtime report](Stage70_R2_Runtime/RUNTIME_ANALYSIS.md) · [RU summary](Stage70_R2_Runtime/README_STAGE70_R2_RU.md) · [results JSON](Stage70_R2_Runtime/results.json). Tested source branch [stage70-r2-relocation-aware-guard](https://github.com/Hawky11/1/tree/stage70-r2-relocation-aware-guard). Original private EXE SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`.
+
+**Build:** 2026-11-11 02:53:34, MSVC 14.51 x86 **BUILD SUCCEEDED**, 1,892,864-byte DLL. Runtime initialization 02:54:29, Stage70 guard x86=1 xmm=1 stage67=2 stage65=1 stage59Started=0 nativeOK=1, loaded base 00800000, expected and actual relocated table VA 00C254E8. Stage70 installed 1/1; one native writer event at 02:55:06, full PRE/POST 07/07, health errors 0.
+
+**RUNTIME VERIFIED concrete chain:** P1 player 0E4A1F78, O 2A3A3020, TID 20812: Stage65 seq319 native caller RVA **156769** requests `2F` (QPC1518396105810–5813); Stage70 seq1 replays opcode-guarded original `156787 MOV [EAX+68],EDX` with source EDX25, selector1, stores O+68 **FFFFFFFF→25** (QPC1518396105821–5822); Stage40/41 seq320 commits pending22→2F while deferred25 stays; Stage42 seq232 activates2F; Stage67 seq4561 armed gate1 promotes deferred25→pending25 and clears O+68; Stage42 seq234 activates25. All same P/O/TID and strictly ordered QPC. Stage70 `originalStoreRVA` is an origin label: while hooked MOV executes in DLL, not original EIP.
+
+**Integrity:** Stage40/41 371/371, Stage42/43 276/276, Stage65 369, Stage67 5708 (5706 kind0, 2 zero requests kind1), Stage59 16947, Stage70 1; no missing/duplicate sequences or nonzero measured health errors. 369 Stage65 + 2 Stage67 request writers explain 371/371 Stage40 consumers as latest observed same-actor writer; every Stage42 activation nested in exactly one Stage67 parent. User's raw logs remain unmodified on evidence branch.
+
+**STAGE71 NEXT:** do not repeat Stage70 probe. Investigate native producers of selector `P+3F50=1` and scheduling/callback `1566B0` using original SHA-pinned AALib.exe, Stage69 native decode, and existing static/runtime evidence. Stage70 did **not** observe native instruction setting selector; exact O+30 arming instruction also unobserved. Start with original EXE static disassembly and old logs, not another DLL by default. Trace selector's source and when it is chosen, with explicit evidence boundaries; if a new observer becomes justified, audit ABI and DR coexistence first. No new user-uploaded logs or rebuild required for completed Stage70. Preserve Stage70 r2 1,892,864 DLL, Stage67 1,887,232, Stage65 1,879,552, Stage59 r2 1,153,024 rollback. No COM choice modification.
+
+---
+
 ## Current — Stage61 same-run Stage46→47→59 RUNTIME VERIFIED; Stage62 decision linkage NEXT (2026-11-10)
 
 **Provenance:** new exact two-file upload [c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79), frozen unchanged at [stage61-runtime-action-motion-x-evidence](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence), [full Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md). The newly supplied Stage46 `c973b4593a6de15a045220b39c9b8d010db6c764` and Stage47 `d87f182d4cd66fb19aeaf16439428c905c7b6ced` log blobs are unequivocally from **22:07**, same session as earlier Stage59 r2 frozen blob `a5a2e76dcc473e079d0445db6e9d7069a3784879` (previous original upload d2ce2444). Same P1/P2 objects `2A89A020/2A89AC50`, game thread `15132`, monotonic comparable QPC. **Stage61 uses Stage59 r2 already built and verified; no Stage61 DLL was built.**

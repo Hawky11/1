@@ -1,3 +1,9 @@
+## Stage92 r1 build succeeds; native signature guard refuses patch (user upload c8530d5)
+
+[Fresh upload](https://github.com/Hawky11/1/commit/c8530d5fd389088bb214010a0b99d19d1f1e1c6f) · [R2 audit note](https://github.com/Hawky11/1/blob/stage92-r2-live-signature-audit-source-only/Stage92_R2_Audit/README_RU.md). Windows x86 Build.log **BUILD SUCCEEDED, 2,008,576 bytes**, old C4754; Stage92 log only `STAGE92_BUILD` and `STAGE92_ERROR native signature mismatch/already installed; no patch`. Thus **no Stage92 runtime observations**. Existing Stage87–90 logs continue in the same run. The original SHA-pinned AALib PE still passes static 67/67; specific *live-memory* failing RVA **unknown**. A separate r2 fail-closed diagnostic ZIP was prepared in chat, with expected/live byte dump for each Stage92 checked site on failure; keep prior tested Stage91 DLL 1,999,872 bytes, Stage36 off. Next: install r2 one-file upgrade, x86 build, one launch, upload Build.log and Stage92 SIGAUDIT lines. Do not bypass mismatched opcode signatures.
+
+---
+
 ## Current — Stage92 native F5990 branch-consequence source READY (2026-11-11)
 
 [Stage92 source-only branch](https://github.com/Hawky11/1/tree/stage92-f5990-branch-consequence-source-only) · [Russian install guide](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Overlay/README_STAGE92_RU.md) · [native static findings](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Analysis/STATIC_ANALYSIS.md) · [Stage91 tested runtime](Stage91_Runtime/RUNTIME_ANALYSIS.md).

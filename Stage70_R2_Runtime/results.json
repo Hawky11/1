@@ -1,0 +1,140 @@
+{
+  "stage": 70,
+  "revision": "r2",
+  "date": "2026-11-11",
+  "source_commit": "98ff59b871e90fb757c787b472d5d5322941ce07",
+  "source_branch": "stage70-r2-relocation-aware-guard",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "build": {
+    "status": "SUCCEEDED",
+    "started_local": "2026-11-11T02:53:34",
+    "architecture": "x86",
+    "msvc": "14.51.36231",
+    "dll_bytes": 1892864,
+    "existing_warning": "C4754 AICommandSiteTrace.cpp:785"
+  },
+  "session": {
+    "initialized_local": "2026-11-11T02:54:29",
+    "tid": 20812,
+    "P1": "0E4A1F78",
+    "P1_object": "2A3A3020",
+    "P2": "0E4CCCA0",
+    "P2_object": "2A3A3C50"
+  },
+  "stage70": {
+    "installed": true,
+    "guard": {
+      "x86": 1,
+      "xmm": 1,
+      "stage67": 2,
+      "stage65": 1,
+      "stage59Started": 0,
+      "stage70": 0,
+      "nativeOK": 1,
+      "gameBase": "00800000",
+      "runtimeTableVA": "00C254E8",
+      "expectedTableVA": "00C254E8"
+    },
+    "positive_writes": [
+      {
+        "seq": 1,
+        "side": "P1",
+        "object": "2A3A3020",
+        "tid": 20812,
+        "qpcBefore": "1518396105821",
+        "qpcAfter": "1518396105822",
+        "sourceEDX": "00000025",
+        "deferredBefore": "FFFFFFFF",
+        "deferredAfter": "00000025",
+        "selectorBefore": 1,
+        "selectorAfter": 1,
+        "preMask": "07",
+        "postMask": "07"
+      }
+    ],
+    "health": {
+      "calls": 1,
+      "filtered": 0,
+      "dropped": 0,
+      "overflow": 0,
+      "mismatch": 0,
+      "readFail": 0
+    }
+  },
+  "chain": [
+    {
+      "stage": 65,
+      "seq": 319,
+      "qpcBefore": "1518396105810",
+      "qpcAfter": "1518396105813",
+      "sourceCallRVA": "156769",
+      "request": "0000002F"
+    },
+    {
+      "stage": 70,
+      "seq": 1,
+      "qpcBefore": "1518396105821",
+      "qpcAfter": "1518396105822",
+      "deferred": "FFFFFFFF>00000025"
+    },
+    {
+      "stage": 41,
+      "seq": 320,
+      "qpcBefore": "1518396106226",
+      "qpcAfter": "1518396106236",
+      "pending": "00000022>0000002F",
+      "deferred": "00000025>00000025"
+    },
+    {
+      "stage": 67,
+      "seq": 4539,
+      "qpcBefore": "1518396106268",
+      "qpcAfter": "1518396106303",
+      "active": "00000022>0000002F",
+      "deferred": "00000025>00000025",
+      "nestedStage42": 232
+    },
+    {
+      "stage": 67,
+      "seq": 4561,
+      "qpcBefore": "1518397203768",
+      "qpcAfter": "1518397203801",
+      "gate": "01>00",
+      "pending": "0000002F>00000025",
+      "active": "0000002F>00000025",
+      "deferred": "00000025>FFFFFFFF",
+      "nestedStage42": 234
+    },
+    {
+      "stage": 42,
+      "seq": 234,
+      "qpcBefore": "1518397203770",
+      "qpcAfter": "1518397203797",
+      "active": "0000002F>00000025"
+    }
+  ],
+  "totals": {
+    "Stage40": 371,
+    "Stage41": 371,
+    "Stage42": 276,
+    "Stage43": 276,
+    "Stage59": 16947,
+    "Stage65": 369,
+    "Stage67": 5708,
+    "Stage67_kind0": 5706,
+    "Stage67_kind1": 2,
+    "Stage70": 1,
+    "Stage40_sourcesLatestObserved": 371,
+    "Stage40_sourcesStage65": 369,
+    "Stage40_sourcesStage67": 2,
+    "Stage42_uniquelyNestedInStage67": 276,
+    "sequenceGaps": 0,
+    "healthNonzeroErrorCounters": 0
+  },
+  "limitations": [
+    "Instrumented replay executes original MOV in DLL, originalStoreRVA is a provenance label not sampled original EIP",
+    "Single positive Stage70 writer observed; not proof of all possible native writers",
+    "Selector upstream choice and O+30 arming IP not yet observed",
+    "No independent binary reconstruction or compiled x86 differential test in analyst environment"
+  ]
+}

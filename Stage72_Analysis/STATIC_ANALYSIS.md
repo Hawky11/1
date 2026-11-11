@@ -50,7 +50,7 @@ Raw source: \`ArcanaAI_Stage38CallbackWindowTrace.log\` user upload at [98ff59b]
 
 | Stage38 | Same P1/O/TID QPC interval | Original callback observed | f3 callback before -> after | f4 argument | f20 deferred |
 |---|---|---|---|---|---|
-| **seq4090** | QPC \`1518394805874\`→[see raw log] | \`158570\` | **\`158570→1566B0\`** | **\`22→FFFFFFFF\`** | \`FFFFFFFF→FFFFFFFF\` |
+| **seq4090** | QPC \`1518394805874→1518394805884\` | \`158570\` | **\`158570→1566B0\`** | **\`22→FFFFFFFF\`** | \`FFFFFFFF→FFFFFFFF\` |
 | seq4092 through seq4114, alternating P1 frames | QPC \`1518394908779\` through \`1518396004030\` | \`1566B0\` | \`1566B0→1566B0\` | \`FFFFFFFF→FFFFFFFF\` | \`FFFFFFFF→FFFFFFFF\` |
 | **seq4116** | QPC **\`1518396105803→1518396105825\`** | **\`1566B0\`** | **\`1566B0→1560B0\`** | \`FFFFFFFF→FFFFFFFF\` | **\`FFFFFFFF→25\`** |
 | **seq4118** | QPC \`1518396204014→1518396204022\` | **\`1560B0\`** | \`1560B0→1560B0\` | \`FFFFFFFF→FFFFFFFF\` | \`25→25\` |

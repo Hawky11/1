@@ -1,5 +1,14 @@
 # Project history
 
+## Stage89 r1 targeted F58E0 reader SOURCE PREPARED — 2026-11-11
+
+- [Stage89 isolated source branch](https://github.com/Hawky11/1/tree/stage89-f58e0-four-call-readers-source-only), [README/install](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Overlay/README_STAGE89_RU.md), [verification JSON](https://github.com/Hawky11/1/blob/stage89-f58e0-four-call-readers-source-only/Stage89_Analysis/source_only_results.json). **22 SHA-pinned native signature/destination checks PASS; x86 MSVC build and gameplay runtime NOT PERFORMED.**
+- Four separate exact five-byte native CALL-site wrappers (`9A870/9AA20/9AB00/AAB55`) pass original `F58E0(P+3A08,0x26)` args exactly once. No F58E0 global detour, no additional EE306 hook, no synthetic inputs, no writes to game/DR; preserves original results/registers/flags/FPU/SSE. Stage81 worker reused for bounded ring and health logs; SHA-guarded apply/rollback supplied.
+- Stage89 captures actual reader AL and before/after P+3A08/0C/10, with fallback bit38 accounted for; `nextBranchPredictedTaken` is **not** an observed EIP. Offline QPC nearest prior Stage88 link remains time context, **not causal proof**. Stage88 remains last runtime-verified stage: 175 exact joins, 13 target-bit sets.
+- Next: Windows x86 Build.bat, installation audit, 3–5 natural COM-vs-COM rounds and same-session Stage89/88/87/24/Dispatch/FinalCommand logs. Keep Stage36 off and back up Stage88 DLL (1,975,296 bytes). No AI/gameplay improvement claimed.
+
+---
+
 ## Stage89 static localization of genuine downstream F58E0 0x26 reader — 2026-11-11
 
 - [Exact original SHA-pinned disassembly and callsite table](Stage89_Analysis/STATIC_ANALYSIS.md): F58E0 special `0x26` predicate reads `[P+3A08]+4=P+3A0C`, tests `0x200`, `0x400`, `0x800`, and returns `AL=1` if any is set; generic fallback also examines `P+3A10` bit `0x40` (bitIndex 38). **Four literal-0x26 callsites** `9A870/9AA20/9AB00/AAB55`, each guarded; at `AAB55`, AL=0 can lead to `AAB65→E8560`.

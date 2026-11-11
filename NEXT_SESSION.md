@@ -1,5 +1,16 @@
 # Next session handoff
 
+## Current — Stage79 RUNTIME VERIFIED, THREE native E89E0 selector transitions (2026-11-11)
+
+**Frozen raw user upload:** [1b2aada](https://github.com/Hawky11/1/commit/1b2aadaeabeebf959fa0575cf59023060e481323). Evidence branch [stage79-runtime-common-selector-positive-evidence](https://github.com/Hawky11/1/tree/stage79-runtime-common-selector-positive-evidence), [report](Stage79_Runtime/RUNTIME_ANALYSIS.md), [results](Stage79_Runtime/results.json). Five raw logs unchanged. Windows x86 BUILD SUCCEEDED, DLL **1,918,976 bytes** (rollback); Stage79 GUARD nativeOK=1 and installed **1/1 EFFE8→E89E0**; 3,808 full-mask Stage79 call windows, 30 health samples zero errors; Stage38/77 4,315 matching windows, Stage76 8,718 phase rows, all masks and error health clean; Stage78 literal one writer **0 hits**. Single session game base 00280000, TID12708 P1=0DF21F78/O1=29DBA020, P2=0DF4CCA0/O2=29DBAC50.
+
+**Direct native family assignments:** Stage79 **seq2901 P1 selector0→1** (Stage38 seq2763→2765), **seq3404 P2 0→1** (Stage38 seq3253→3255), **seq3740 P2 1→0** (Stage38 seq3581→3583). ALL three: `P+3F54 state0→0`, event record current `P+3A30 FFFF→11`, `changedMask=0041`, complete 1FFF masks. Per-actor (not consecutive global row) Stage38 has EXACTLY three between-window changes, none within callback; Stage79 changes precisely within E89E0 call, before next Stage77/Stage38. This is **family-level source attribution**, NOT an individual site EIP. `1→0` implicates a native zero-writer in the call family, not one of ten 1/2 MOV alone.
+
+**NEXT Stage80:** source-first single guarded passive native `E8A8E CALL F7150` boundary within common E89E0 late branch; original site bytes `E8 BD E6 00 00` and original `PUSH ESI` at E8A8D, `ADD ESP,4` at E8A93. Reason: across all three positive Stage79 events `P+3B7C bit15=0`, `P+3F7C=0`, `P+3B90 bit4=0`; native E89E0 branch could reach late E8A8E→F7150 after intermediate helper checks (not yet proven). F7150 has selector sites **F7D22** 1/2, **F7D38** 1/2, **F7D43** 0. One call window can separate this family; if positive, next compare the 3 exact MOV sites; if negative, inspect preceding native helper calls. Preserve DR0/1 Stage59; no blind 10 hooks or gameplay writes. Tested Stage79 DLL **1,918,976 bytes**; prior Stage78 **1,911,808**, Stage77 **1,905,664**.
+
+---
+
+
 ## Current — Stage61 same-run Stage46→47→59 RUNTIME VERIFIED; Stage62 decision linkage NEXT (2026-11-10)
 
 **Provenance:** new exact two-file upload [c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79), frozen unchanged at [stage61-runtime-action-motion-x-evidence](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence), [full Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md). The newly supplied Stage46 `c973b4593a6de15a045220b39c9b8d010db6c764` and Stage47 `d87f182d4cd66fb19aeaf16439428c905c7b6ced` log blobs are unequivocally from **22:07**, same session as earlier Stage59 r2 frozen blob `a5a2e76dcc473e079d0445db6e9d7069a3784879` (previous original upload d2ce2444). Same P1/P2 objects `2A89A020/2A89AC50`, game thread `15132`, monotonic comparable QPC. **Stage61 uses Stage59 r2 already built and verified; no Stage61 DLL was built.**

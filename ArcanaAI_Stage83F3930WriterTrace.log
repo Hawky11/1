@@ -1,0 +1,32 @@
+STAGE83_BUILD=2026-11-11-r1 SOURCE_ONLY F3930 4 exact MOV hooks originalOnce=1
+STAGE83_SITE_AUDIT index=0 rva=0F3DE9 live=898E503F0000 expected=898E503F0000 exact=1
+STAGE83_SITE_AUDIT index=1 rva=0F3E02 live=8996503F0000 expected=8996503F0000 exact=1
+STAGE83_SITE_AUDIT index=2 rva=0F3F50 live=8996503F0000 expected=8996503F0000 exact=1
+STAGE83_SITE_AUDIT index=3 rva=0F3F69 live=898E503F0000 expected=898E503F0000 exact=1
+STAGE83_INSTALLED 4/4 rvas=0F3DE9,0F3E02,0F3F50,0F3F69 lengths=6,6,6,6 originalMOV=once fxsave=1 DRwrites=0 extraGameDataWrites=0 stage82=ready
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_EXACT_WRITE seq=1 writerRVA=0F3F50 side=P2 player=0DF4CCA0 object=29E60C50 tid=17788 qpcBefore=2033462300735 qpcAfter=2033462300737 previous=00000000 proposed=00000001 post=00000001 changed=1 preMask=7F postMask=7F ecx=00000000 edx=00000001 eax=29E60C00 ebx=00000001 edi=00000011 eflags=00000202 f0=00000000>00000001 f1=00000000>00000000 f2=29E60C50>29E60C50 f3=0000FFFF>0000FFFF f4=00000001>00000001 f5=00000000>00000000 f6=00010000>00010000
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=1 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_EXACT_WRITE seq=2 writerRVA=0F3F69 side=P2 player=0DF4CCA0 object=29E60C50 tid=17788 qpcBefore=2033499649029 qpcAfter=2033499649030 previous=00000001 proposed=00000001 post=00000001 changed=0 preMask=7F postMask=7F ecx=00000001 edx=29E60C50 eax=29E60C01 ebx=00000000 edi=00000011 eflags=00000202 f0=00000001>00000001 f1=00000000>00000000 f2=29E60C50>29E60C50 f3=0000FFFF>0000FFFF f4=00000000>00000000 f5=00000001>00000001 f6=00000000>00000000
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_EXACT_WRITE seq=3 writerRVA=0F3F69 side=P1 player=0DF21F78 object=29E60020 tid=17788 qpcBefore=2033541603889 qpcAfter=2033541603890 previous=00000000 proposed=00000001 post=00000001 changed=1 preMask=7F postMask=7F ecx=00000001 edx=29E60020 eax=29E60001 ebx=00000000 edi=00000011 eflags=00000202 f0=00000000>00000001 f1=00000000>00000000 f2=29E60020>29E60020 f3=0000FFFF>0000FFFF f4=00000000>00000000 f5=00000001>00000001 f6=00000000>00000000
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_EXACT_WRITE seq=4 writerRVA=0F3F69 side=P1 player=0DF21F78 object=29E60020 tid=17788 qpcBefore=2033593373613 qpcAfter=2033593373614 previous=00000001 proposed=00000001 post=00000001 changed=0 preMask=7F postMask=7F ecx=00000001 edx=29E60020 eax=29E60001 ebx=00000000 edi=00000011 eflags=00000202 f0=00000001>00000001 f1=00000000>00000000 f2=29E60020>29E60020 f3=0000FFFF>0000FFFF f4=00000000>00000000 f5=00000001>00000001 f6=00000000>00000000
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_EXACT_WRITE seq=5 writerRVA=0F3F69 side=P1 player=0DF21F78 object=29E60020 tid=17788 qpcBefore=2033613497769 qpcAfter=2033613497770 previous=00000001 proposed=00000001 post=00000001 changed=0 preMask=7F postMask=7F ecx=00000001 edx=29E60020 eax=29E60001 ebx=0000000E edi=00000011 eflags=00000202 f0=00000001>00000001 f1=00000000>00000000 f2=29E60020>29E60020 f3=0000FFFF>0000FFFF f4=00000000>00000000 f5=00000001>00000001 f6=000E0000>000E0000
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0
+STAGE83_HEALTH callsF3DE9=0 callsF3E02=0 callsF3F50=0 callsF3F69=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 DRwrites=0

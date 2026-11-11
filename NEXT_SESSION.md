@@ -1,5 +1,26 @@
 # Next session handoff
 
+## Current — Stage74 build + selector-boundary RUNTIME VERIFIED; Stage75 pre-callback origin STATIC FIRST (2026-11-11)
+
+**Frozen raw user upload:** [211f0882e6b8e220877e4c15b072e5a7b8a7b067](https://github.com/Hawky11/1/commit/211f0882e6b8e220877e4c15b072e5a7b8a7b067), captured 11:38:06–11:38:42. **Evidence branch:** [stage74-runtime-selector-transition-evidence](https://github.com/Hawky11/1/tree/stage74-runtime-selector-transition-evidence), rooted at that exact commit, raw logs unchanged. [Full runtime analysis](Stage74_Runtime/RUNTIME_ANALYSIS.md), [RU](Stage74_Runtime/README_STAGE74_RU.md), [results](Stage74_Runtime/results.json). Source is [stage74-callback-selector-boundary-snapshot](https://github.com/Hawky11/1/tree/stage74-callback-selector-boundary-snapshot). **Windows MSVC x86 BUILD SUCCEEDED, DLL 1,893,376 bytes**, original C4754 only; Stage38 installed 2/2, Stage65 1/1, Stage70 1/1, Stage59 armed DR0/DR1. TID 19292, P1=0DF21F78/O1=2A10F020, P2=0DF4CCA0/O2=2A10FC50, game base 00280000. Actual DLL itself not independently uploaded.
+
+**Core Stage74 result:** **3,708** Stage38 windows (P1 1802, P2 1906), all have valid PRE/POST f30=`P+3F50`, f31=`P+3F54` bits and masks FFFFFFFF. **ZERO** selector changes within an instrumented callback. Exactly **five** same-actor between-POST/next-PRE selector transitions:
+- P2 `seq278→280 0→1`, QPC `1832393670534→1832393770261`.
+- P2 `seq651→653 1→0`, QPC `1832413895210→1832413998535`.
+- P1 `seq2528→2530 0→1`, QPC `1832517335179→1832517440561`.
+- P1 `seq2746→2748 1→2`, QPC `1832528246746→1832528347305`.
+- P1 `seq3164→3166 2→1`, QPC `1832549172798→1832549275645`.
+
+All five *next* callback PRE samples already show the changed selector, callback `158570` with **parameter P+3ED4=11h** and post descriptor callback `155160`; `P+3F54=0` at these points. No Stage65 request rows inside these exact same-actor gaps. **Do NOT attribute any write to the callback itself** — PRE is before indirect `EE7BE CALL EDI` and after native `156C00`; other actor/unsampled pre-callback code could act. Native switch table `00558DC4[0x11]` points to `158ACB`, whose conditional path **reads** selector at `158ADC` after `P+3B7C bit15` gate, not a writer proof.
+
+**Other Stage74 facts:** `f31` has 7 within-callback 0→1 transitions (all callback `1580F0`) and 16 between-window transitions. Stage65 **313** rows, Stage70 **three** writes, Stage59 **11,957** X write IDs all present exactly once. Stage59 row file-order is **not monotonic** at a ring flush: seq8179..8192 emitted after 8352. No missing IDs; sort by QPC for cross-log correlation. All available Stage65/70/59 HEALTH errors zero. Stage38 startup header still says `30 fields` but real rows have 32 including f30/f31; cosmetic only.
+
+**Three same-frame request/deferred joins** all nested within a `1566B0` callback: P1 Stage38 2568 Stage65 seq230 `2F`→Stage70 seq1 selector1 `25`; P1 Stage38 2786 Stage65 seq248 `33`→Stage70 seq2 selector2 `26`; P2 Stage38 3081 Stage65 seq274 `2E`→Stage70 seq3 selector0 `24`. Actual selector writer IP remains unknown.
+
+**NEXT Stage75 analyst:** **STATIC FIRST** trace original pre-callback path that determines selector `P+3F50` and arranges callback `P+3ED0=158570` / parameter `P+3ED4=11h` in relation to all 11 possible numeric-one writers. Do not add all-site hooks or DR2/DR3 blindly. Consider timing of prior PRE/POST and 156C00. No new logs required for Stage74; keep tested Stage74 DLL **1,893,376 bytes** and Stage70 r2 **1,892,864 bytes** as rollback. Original EXE and `main` unchanged by analysis; no claims of smarter COM or modified gameplay.
+
+---
+
 ## Current — Stage61 same-run Stage46→47→59 RUNTIME VERIFIED; Stage62 decision linkage NEXT (2026-11-10)
 
 **Provenance:** new exact two-file upload [c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79), frozen unchanged at [stage61-runtime-action-motion-x-evidence](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence), [full Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md). The newly supplied Stage46 `c973b4593a6de15a045220b39c9b8d010db6c764` and Stage47 `d87f182d4cd66fb19aeaf16439428c905c7b6ced` log blobs are unequivocally from **22:07**, same session as earlier Stage59 r2 frozen blob `a5a2e76dcc473e079d0445db6e9d7069a3784879` (previous original upload d2ce2444). Same P1/P2 objects `2A89A020/2A89AC50`, game thread `15132`, monotonic comparable QPC. **Stage61 uses Stage59 r2 already built and verified; no Stage61 DLL was built.**

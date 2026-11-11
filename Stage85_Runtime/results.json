@@ -1,0 +1,86 @@
+{
+  "stage": "Stage85-r1",
+  "status": "RUNTIME_VERIFIED_1_OF_1_NO_RARE_ROUTE",
+  "run_commit": "428b6b27895b1b1fb3015ab225169370e541050c",
+  "build": {
+    "status": "SUCCEEDED",
+    "windows_msvc_x86": true,
+    "dll_size_bytes": 1957376,
+    "warning": "C4754",
+    "started_local": "2026-11-11 18:03:23"
+  },
+  "capture": {
+    "local_start": "2026-11-11 18:03:50",
+    "local_end": "2026-11-11 18:04:53",
+    "same_session": true
+  },
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "installed": {
+    "79": "1/1",
+    "80": "1/1",
+    "81": "3/3",
+    "82": "2/2",
+    "84": "6/6",
+    "85": "1/1"
+  },
+  "counts": {
+    "79": 8598,
+    "80": 7830,
+    "82": 2100,
+    "84": 12,
+    "85": 109
+  },
+  "containment": {
+    "80_in_79": "7830/7830",
+    "82_in_80": "2100/2100",
+    "84_in_82": "12/12",
+    "85_in_80": "109/109"
+  },
+  "join": {
+    "matches_stage80_pre_post": 109,
+    "preceding_stage82_and_matching_post": 103,
+    "predecessor_f3930": 83,
+    "predecessor_f4360": 20,
+    "no_preceding_nested_call_in_same_window": 6,
+    "any_diff_from_stage80_boundary": 0
+  },
+  "selector_changes": {
+    "stage80": 7,
+    "attributed_to_stage84": 7,
+    "unattributed": 0,
+    "stage85_join_overlap_with_changed_stage80": 0
+  },
+  "stage84": {
+    "total_exact": 12,
+    "changed": 7,
+    "idempotent": 5
+  },
+  "transition_stage80_seqs": [
+    10,
+    1716,
+    1955,
+    2063,
+    4198,
+    5096,
+    5705
+  ],
+  "stage81_native_selector_mov_hits": 0,
+  "health": {
+    "stage79": 0,
+    "stage80": 0,
+    "stage81": 0,
+    "stage82": 0,
+    "stage84": 0,
+    "stage85": 0
+  },
+  "prior_stage84_rare_route": {
+    "run_commit": "364429c76dbfbfecd7c1679dd3e4dacd90e4897c",
+    "stage80_seq": 2160,
+    "stage82_seq": 513,
+    "selector": "P2 1>2",
+    "reproduced_in_stage85_run": false
+  },
+  "stage36_enabled": false,
+  "gameplay_modified": false,
+  "next": "Longer same-build Stage85 capture to reproduce missing P2 1>2, then bisect via QPC if checkpoint hit"
+}

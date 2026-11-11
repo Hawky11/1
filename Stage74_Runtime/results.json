@@ -48,7 +48,14 @@
     "rows": 11957,
     "seqContiguous": true,
     "healthErrors": 0,
-    "threadInstallRows": 63
+    "threadInstallRows": 63,
+    "seqAllPresentExactlyOnce": true,
+    "fileOrderMonotonic": false,
+    "delayedFlushSeq": [
+      8179,
+      8192
+    ],
+    "notes": "14 rows seq8179..8192 appear after seq8352; sort by QPC/sequence for time joins"
   },
   "selectorTransitions": [
     {

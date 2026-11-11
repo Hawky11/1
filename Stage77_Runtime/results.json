@@ -1,0 +1,85 @@
+{
+  "stage": 77,
+  "status": "Windows x86 build and same-run Stage77 observation verified; native 156C00 no selector transition; Stage38 positive callback selector transition; exact writer EIP not directly observed",
+  "evidenceCommit": "2ee8534ba314221da8b980f7ebc8cc3458baf22a",
+  "build": {
+    "timestamp": "2026-11-11T12:59:17",
+    "succeeded": true,
+    "bytes": 1905664,
+    "oldWarning": "C4754"
+  },
+  "capture": {
+    "gameBase": "00280000",
+    "threadId": 10968,
+    "p1": "0DF21F78",
+    "p2": "0DF4CCA0",
+    "o1": "29DF4020",
+    "o2": "29DF4C50"
+  },
+  "counts": {
+    "stage38": 4805,
+    "stage77": 4805,
+    "stage76": 9690,
+    "phase0": 4845,
+    "phase1": 4845,
+    "phase2": 0,
+    "stage65": 323,
+    "stage70": 2,
+    "stage77WithinNativeSelectorChanges": 0,
+    "stage38WithinCallbackSelectorChanges": 1,
+    "stage38BetweenWindowSelectorChanges": 1,
+    "stage77HealthErrorRows": 0
+  },
+  "transitions": [
+    {
+      "actor": "P1",
+      "kind": "between_callback_windows",
+      "prevStage38Seq": 1168,
+      "nextStage38Seq": 1170,
+      "selector": "0->1",
+      "stage76Seq": [
+        2335,
+        2336
+      ],
+      "stage76Selector": "0",
+      "stage77BeforeAndAfter": "1->1",
+      "exactWriterEIP": "unknown"
+    },
+    {
+      "actor": "P2",
+      "kind": "within_callback",
+      "stage38Seq": 2910,
+      "callbackRVA": "1560B0",
+      "selector": "0->1",
+      "companion": "1->3",
+      "qpcBefore": "1881491555808",
+      "qpcAfter": "1881491555821",
+      "stage76Phase0Seq": 5819,
+      "eventCodePreEE480": "21",
+      "nativeSourceCandidateRVA": "155D29",
+      "directEIPObserved": false
+    }
+  ],
+  "requestDeferred": [
+    {
+      "stage38Seq": 1208,
+      "stage65Seq": 74,
+      "stage70Seq": 1,
+      "actor": "P1",
+      "request": "2F",
+      "selector": "1",
+      "deferred": "25"
+    },
+    {
+      "stage38Seq": 4458,
+      "stage65Seq": 312,
+      "stage70Seq": 2,
+      "actor": "P1",
+      "request": "2F",
+      "selector": "1",
+      "deferred": "25"
+    }
+  ],
+  "provenNoGameplayModification": true,
+  "stage78Recommended": "read-only positive literal-one writer native-path audit; no new DR owners"
+}

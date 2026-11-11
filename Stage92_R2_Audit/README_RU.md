@@ -1,0 +1,9 @@
+# Stage92 r2 — fail-closed live signature audit
+
+**Observed in uploaded run** [c8530d5](https://github.com/Hawky11/1/commit/c8530d5fd389088bb214010a0b99d19d1f1e1c6f): Windows x86 BUILD SUCCEEDED; dinput8.dll **2,008,576 bytes**; existing nonfatal C4754. Stage92 trace contains only build marker and `STAGE92_ERROR native signature mismatch/already installed; no patch`. No Stage92 F5990 or helper records; no success or AI behavior claim. Stage87–90 emitted logs in the same uploaded session.
+
+Original AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba` passes Stage92 original-file 67/67 static checks. The installer checked additional *live-memory* byte ranges after Stage91 / earlier probes were installed; the exact first failed RVA was not logged in r1, so a dynamic conflict cannot yet be pinpointed.
+
+**r2 diagnostic ZIP delivered in ChatGPT:** includes `UpgradeStage92R2.ps1`, updated `Stage92F5990BranchTrace.inl`, `RestoreStage92R1.ps1`, SHA-gated initial Apply/Rollback. Adds `STAGE92_SIGAUDIT` on preflight failure to report expected/live bytes for all 3 CALLs, near-site instructions and helper prologues/OR/AND/RET4. No signature bypass or new gameplay write. The ZIP is authoritative for source hashes; GitHub r1 file has a text representation that is not asserted byte-identical to the user's r1 ZIP.
+
+**Next:** close AALib.exe; run `UpgradeStage92R2.ps1` with `-Root D:\INCUBATOR\ArcanaAIOverhaul`; rebuild x86 and start game once. If signature still fails, upload `Build.log` and `ArcanaAI_Stage92F5990BranchTrace.log`. The `STAGE92_SIGAUDIT match=0` row(s) identify exact obstruction. No multiple COM rounds needed until installation succeeds. Back up tested Stage91 DLL **1,999,872 bytes**; keep Stage36 disabled. **Windows build and runtime of r2 untested.**

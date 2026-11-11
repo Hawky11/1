@@ -1,2 +1,4 @@
-STAGE82_BUILD=2026-11-11-r1 SOURCE_ONLY nested F7150 call boundaries; original calls once
-STAGE82_ERROR call signature; no patch
+STAGE82_BUILD=2026-11-11-r2 SITE_AUDIT exact original CALLs only; original calls once
+STAGE82_SITE_AUDIT site=0 rva=0F79E4 va=003779E4 expectedTarget=00374360 live=E8374A1E50 expected=E877C9FFFF exact=0 opcode=E8 rel32Target=5055C420 targetOwner=50530000 virtualQuery=1 pageProtect=00000020 regionType=01000000
+STAGE82_SITE_AUDIT site=1 rva=0F7AD1 va=00377AD1 expectedTarget=00373930 live=E85ABEFFFF expected=E85ABEFFFF exact=1 opcode=E8 rel32Target=00373930 targetOwner=00280000 virtualQuery=1 pageProtect=00000020 regionType=01000000
+STAGE82_ERROR call signature; no patch (see STAGE82_SITE_AUDIT for both live sites)

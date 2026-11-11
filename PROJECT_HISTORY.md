@@ -1,5 +1,14 @@
 # Project history
 
+## Stage92 r3 runtime PROVEN — 31,605 reader calls -> 17,788 ticks -> 9,786 helpers (2026-11-12)
+
+- [User upload 7e1df728](https://github.com/Hawky11/1/commit/7e1df728bbfb85b797c06785cd8cf7e407c53a35) x86 **BUILD SUCCEEDED 2,011,648 bytes**, Stage35 compatible pair verified with no guard bypass, `STAGE92_INSTALLED 3/3` and 48/48 health rows clean (drops/readFail/mismatch/overflow zero).
+- **All 17,788 Stage92 ticks** joined by exact Stage91 sequence range, side/player/TID and enclosing QPC to **31,605 Stage91 direct F58E0 bit9/10/11 reads**, 0 mismatches. Branch choices: no reader 6,502; bit9 AL1 753; bit10 AL1 747; bit11 AL1/SET_9ED20 154; bit11 AL0/CLEAR_9ED60 9,632. All 9,786 Stage92 helper events matched parent tick/actor, P1 only SET. Stage90 F57D0 1,742 native calls, P1 bit11 up/down 10/10; all 154 positive bit11 reads have preceding last Stage90 bitmap bit11 set. Exact event: Stage90 seq252 -> Stage91 seq4429–4431 -> Stage92 tick3815/helper3816: P+3B70 0x0→0x8.
+- Stage92 P+3B70 bit3 rose **127** calls (8 with SET helper, **119 without captured helper**), fell **123** (all with CLEAR). So alternative flag setters exist inside F5990, unique SET origin unproven. There were 174 real FinalCommand type1 records and 602 EventDispatch details; 55 FINAL_COMMAND snapshots had bit3 on, but current final-command log lacks QPC and **causal command selection NOT established**.
+- Full [runtime analysis](https://github.com/Hawky11/1/blob/main/Stage92_Runtime/RUNTIME_ANALYSIS.md) / [machine stats](https://github.com/Hawky11/1/blob/main/Stage92_Runtime/results.json). **Next Stage93**: source-only native alternate P+3B70 bit3 writer origin and QPC timestamp at existing F7C62 final-command observer, then strict joins to actor+TID+event. Preserve Stage36 OFF, no synthetic commands or game-state writes.
+
+---
+
 ## Stage92 r2 face-control refusal → r3 Stage35-aware fail-closed check (2026-11-12)
 
 - User r2 Build.log: **BUILD SUCCEEDED** with x86 MSVC, `dinput8.dll` **2,010,112 bytes** and old C4754. Live audit **14/15 region signatures matched**; only `ACAB8_AFTER 0ACABD` mismatched, expected `56E8FD95040056`, live `56E81D8FB17856`. All Stage92 target CALLs and native 9ED20/9ED60 opcodes passed. R2 refused patch, no tick/helper evidence.

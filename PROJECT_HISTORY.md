@@ -1,5 +1,14 @@
 # Project history
 
+## Stage85 r1 verified join (unmatched rare writer remains open) — 2026-11-11
+
+- [Stage85 immutable capture](https://github.com/Hawky11/1/commit/428b6b27895b1b1fb3015ab225169370e541050c), [full report](Stage85_Runtime/RUNTIME_ANALYSIS.md), [results](Stage85_Runtime/results.json): Windows x86 BUILD SUCCEEDED, new DLL **1,957,376 bytes**, one existing C4754 warning. Stage85 guard exact signature F7C68, installed 1/1, 109 join samples, all health errors zero.
+- One-session Stage79 8,598; Stage80 7,830; Stage82 2,100; Stage84 12 exact stores; Stage85 109. Unique exact QPC containment: 7,830/7,830 (80⊂79), 2,100/2,100 (82⊂80), 12/12 (84⊂82), 109/109 (85⊂80). Of the 109 joins, 103 share a preceding Stage82 call inside the same Stage80 and exactly match that call's selector POST; the other six have no preceding nested call.
+- All **seven** Stage80 net selector changes were attributed to actual F3930 Stage84 writers. The **earlier unmatched P2 1→2** in separate [Stage84 long run](Stage84_Runtime/RUNTIME_ANALYSIS.md) was **not reproduced**; do not conflate different runs. Stage81 direct F7150 writer hooks remained zero, so exact native writer of the rare route is still unknown.
+- Next: **longer capture with unchanged Stage85 DLL**, not more speculative instrumentation. Preserve original logs and DLL backups; Stage36 remains disabled due to Stage82 F79E4 collision. No gameplay modification or improved AI demonstrated.
+
+---
+
 ## Stage83–84 exact F3930 selector writers and remaining F7150 alternative path — VERIFIED (2026-11-11)
 
 - Stage83 r1 [Windows capture](https://github.com/Hawky11/1/commit/394d68c567b41012d41a49007229cb4bf1594080): successful x86 build (DLL **1,952,256 bytes**), four exact F3930 store hooks installed 4/4. Five `STAGE83_EXACT_WRITE` events; real selector writes located at **F3F50** (from EDX) and **F3F69** (from ECX). The observed P2 1→0 net change was not captured by its four hooks.

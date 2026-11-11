@@ -1,3 +1,15 @@
+## Current — Stage71 native selector P+3F50=1 source STATIC VERIFIED (2026-11-11)
+
+[Exact original-code analysis](Stage71_Analysis/STATIC_ANALYSIS.md) · [RU findings](Stage71_Analysis/README_STAGE71_RU.md) · [SHA/opcode verifier](Stage71_Analysis/tools/verify_stage71.py) · [JSON](Stage71_Analysis/results.json). Branch [stage71-selector-origin-static-evidence](https://github.com/Hawky11/1/tree/stage71-selector-origin-static-evidence) built on Stage70 r2 frozen user capture. No new DLL, hooks, game test, changes to original EXE or AI behavior.
+
+**New native source:** `AALib+155B70` can set **`P+3F50=1`** via original explicit `155D29 MOV DWORD [ESI+3F50],1`, after either `P+3F54=4` (site 155D1D) or `P+3F54=3` (site 155D74), then `PUSH 21h` and native event helper CALL `155D3C→0F2DE0`. Direct original callers at **1566F0** (inside callback 1566B0 already proven to contain 156769 immediate requester and 156787 deferred store) and **1560B9** (alternate callback). Both take an **early-return on successful setter**, so selection and deferred action are not asserted to occur on the same callback invocation.
+
+**Writer inventory:** 20 SHA-pinned direct DWORD MOV stores to `[reg+3F50]`: **1** literal-one, **9** literal-zero, **10** register-derived that can also produce values 1/2. Hence `155D29` is *one proven code-level source*, **not** the uniquely proven source in the Stage70 game capture. Stage70 measured selector 1 at its *consumer*, not the selector writer IP. The high-level meaning of native predicates and event21 is not yet known. Stage70's P1 2F→25 causal runtime proof remains intact.
+
+**Stage72 NEXT, STATIC FIRST:** audit native callback scheduling and dynamic selector writer ownership, review existing trace coverage and x86 DR/VEH coexistence before deciding whether any new passive selector-write instrumentation is worthwhile. Do not rebuild or request new logs for completed Stage71. Preserve tested Stage70 r2 **1,892,864-byte** DLL and rollback builds. Main and user raw evidence untouched.
+
+---
+
 ## Current — Stage70 r2 native deferred action ID writer RUNTIME VERIFIED (2026-11-11)
 
 **Exact user upload:** [98ff59b](https://github.com/Hawky11/1/commit/98ff59b871e90fb757c787b472d5d5322941ce07). [Full runtime analysis](Stage70_R2_Runtime/RUNTIME_ANALYSIS.md) · [Russian summary](Stage70_R2_Runtime/README_STAGE70_R2_RU.md) · [machine-readable results](Stage70_R2_Runtime/results.json). Analyst's evidence branch [stage70-r2-runtime-evidence](https://github.com/Hawky11/1/tree/stage70-r2-runtime-evidence) preserves user raw logs exactly; tested source [stage70-r2-relocation-aware-guard](https://github.com/Hawky11/1/tree/stage70-r2-relocation-aware-guard).

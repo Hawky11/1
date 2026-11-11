@@ -1,5 +1,15 @@
 # Project history
 
+## Stage88 Windows x86 runtime: selector→F57D0→controller bitmap established — 2026-11-11
+
+- [User's 21:03–21:05 upload](https://github.com/Hawky11/1/commit/ccbbf6a41cd7ed5ba0fdf194f557a4bbf112b3ca) · [Stage88 source-only stage](https://github.com/Hawky11/1/commit/eb92db82bae6afb155a58bef8e8429ef3abf7af3) · [full audited runtime analysis](Stage88_Runtime/RUNTIME_ANALYSIS.md) · [JSON](Stage88_Runtime/results.json).
+- **BUILD SUCCEEDED**, dinput8.dll **1,975,296 bytes**, existing nonfatal C4754; Stage87 EE2F0 and Stage24 EE306→F57D0 installed. Stage88 has no second EE306 hook. **175/175 strict one-to-one** Stage87→Stage88 same-run seq, side, pointer, TID and QPC; Stage88 1482 pre calls/1307 normal filtered/175 joined and completed; stale/mismatch/readFail/dropped all zero.
+- **Confirmed native controller output:** selector0→0x0E→P+3A0C bit0x200 (110 calls, **12** bit 0→1); selector1→0x0F→bit0x400 (65 calls, **1** bit0→1). 58 three-DWORD pre/post changes and 117 unchanged; both COM players. Previous Stage87 had selector2 observations in a **different run**; Stage88 selector2/0x10/bit0x800 **not observed** here.
+- Stage88 dispatch metadata: 171 type0/payload0x22, two type0/payload0x23, two type2/payload0x04. Existing Stage24 legacy has five separate type1/payload0x1E samples; FinalCommand logged 143 type1 events, **not proved causally joined** to Stage88. Bitmap write is **not action animation or hit evidence**.
+- Next Stage89: SHA-pinned static mapping of actual readers of output P+3A08/0C/10, find one safe non-colliding downstream observation boundary, then read-only same-run test. No AI/gameplay changes, synthetic events, or second EE306 hook.
+
+---
+
 ## Stage85 long-run AFTER-JOIN positive alternate selector path / Stage86 source-only — 2026-11-11
 
 - [Frozen user log commit](https://github.com/Hawky11/1/commit/e1fd008f1ed8695f9f7cb53b005112f41f9605b7) and [full analysis](Stage85_Runtime/LONG_RUN_ANALYSIS.md): Stage85 r1 unchanged DLL **1,957,376 bytes** from previous Windows x86 build. New 18:19–18:21 capture 16,747 Stage79, 15,218 Stage80, 3,812 Stage82, 16 Stage84 and 228 Stage85 events. All strict actor/object/TID/QPC parent windows uniquely matched (15,218/15,218, 3,812/3,812, 16/16 and 228/228). All HEALTH errors zero.

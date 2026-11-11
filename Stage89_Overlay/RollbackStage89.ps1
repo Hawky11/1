@@ -18,4 +18,5 @@ if ($record.stage -ne 'Stage89 r1' -or (Hash $stage81) -ne $record.stage81After 
 Copy-Item -LiteralPath $backup -Destination $stage81 -Force
 Remove-Item -LiteralPath $stage89 -Force
 Remove-Item -LiteralPath $state -Force
+Remove-Item -LiteralPath $backup -Force
 Write-Host 'Stage89 rollback OK. Stage88 source restored. Rebuild x86, or restore saved Stage88 DLL.'

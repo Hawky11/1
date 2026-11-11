@@ -1,0 +1,179 @@
+{
+  "stage": 90,
+  "status": "WINDOWS_X86_RUNTIME_VERIFIED_COMPLETE_INTERVENING_F57D0_NET_CLEARS",
+  "date": "2026-11-11",
+  "source_branch": "stage90-f57d0-bitmap-clear-source-only",
+  "runtime_upload_commit": "3a6f9e908ab7e3bc1e18aca4085c5a6b3fdd044b",
+  "build": {
+    "succeeded": true,
+    "dll_bytes": 1991168,
+    "warnings": [
+      "Existing nonfatal C4754 AICommandSiteTrace.cpp(785)"
+    ]
+  },
+  "stage90": {
+    "ready": true,
+    "new_hook": false,
+    "existing_hook": "Stage24 EE306 to F57D0",
+    "events": 1792,
+    "side": {
+      "P1": 910,
+      "P2": 882
+    },
+    "health": {
+      "preCalls": 1792,
+      "tracked": 1792,
+      "completed": 1792,
+      "filtered": 0,
+      "specialCleared": 87,
+      "specialSet": 88,
+      "changed": 718,
+      "noChange": 1074,
+      "readMaskIncomplete": 0,
+      "depthOverflow": 0,
+      "mismatch": 0,
+      "readFail": 0,
+      "dropped": 0
+    },
+    "netClearByBit": {
+      "0x200": 38,
+      "0x400": 41,
+      "0x800": 8
+    },
+    "netSetByBit": {
+      "0x200": 39,
+      "0x400": 41,
+      "0x800": 8
+    },
+    "netClearBySelector": {
+      "0x06": 47,
+      "0x29": 13,
+      "0x1C": 8,
+      "0x00": 8,
+      "0x0E": 3,
+      "0x15": 4,
+      "0x07": 3,
+      "0x0D": 1
+    },
+    "clearWithSetSameCall": 4
+  },
+  "stage87_88": {
+    "events_each": 280,
+    "strict_joins_to_stage90": 280,
+    "unpaired": 0,
+    "read_prepost_mismatch": 0,
+    "selectors": {
+      "0": {
+        "events": 140,
+        "target_bit": "0x200",
+        "zero_to_one": 10
+      },
+      "1": {
+        "events": 119,
+        "target_bit": "0x400",
+        "zero_to_one": 3
+      },
+      "2": {
+        "events": 21,
+        "target_bit": "0x800",
+        "zero_to_one": 2
+      }
+    },
+    "health": {
+      "stage87_calls": 1792,
+      "stage87_filtered": 1512,
+      "stage88_preCalls": 1792,
+      "stage88_filtered": 1512,
+      "stage88_joined": 280,
+      "stage88_completed": 280,
+      "stale": 0,
+      "mismatch": 0,
+      "readFail": 0,
+      "dropped": 0
+    }
+  },
+  "stage89": {
+    "events": 3,
+    "site": "0xAAB55",
+    "sides": {
+      "P1": 3,
+      "P2": 0
+    },
+    "returnAL0": 3,
+    "returnAL1": 0,
+    "health": {
+      "mismatch": 0,
+      "readFail": 0,
+      "overflow": 0,
+      "dropped": 0
+    },
+    "none_special_bits_at_reads": true
+  },
+  "strict_chains": [
+    {
+      "stage89_seq": 1,
+      "side": "P1",
+      "tid": 6820,
+      "stage88_seq": 79,
+      "stage88_selector": 1,
+      "bit": "0x400",
+      "stage90_retention_seq": 536,
+      "stage90_clear_seq": 540,
+      "stage90_clear_selector": "0x06",
+      "stage90_clear_payload": "type0/payload0x12",
+      "stage90_clear_pre": "00000024,00008400,00000000",
+      "stage90_clear_post": "00000006,00001002,00000000",
+      "stage90_clear_to_reader_qpc_ticks": 17224012,
+      "tracked_f57d0_calls_after_clear_before_read": 8,
+      "tracked_special_mutations_after_clear_before_read": 0,
+      "final_stage90_post_equals_stage89_pre": true,
+      "returnAL": 0
+    },
+    {
+      "stage89_seq": 2,
+      "side": "P1",
+      "tid": 6820,
+      "stage88_seq": 158,
+      "stage88_selector": 2,
+      "bit": "0x800",
+      "stage90_retention_seq": 1011,
+      "stage90_clear_seq": 1014,
+      "stage90_clear_selector": "0x06",
+      "stage90_clear_payload": "type0/payload0x12",
+      "stage90_clear_pre": "00000024,00008800,00000000",
+      "stage90_clear_post": "00000006,00001002,00000000",
+      "stage90_clear_to_reader_qpc_ticks": 101261,
+      "tracked_f57d0_calls_after_clear_before_read": 2,
+      "tracked_special_mutations_after_clear_before_read": 0,
+      "final_stage90_post_equals_stage89_pre": true,
+      "returnAL": 0
+    },
+    {
+      "stage89_seq": 3,
+      "side": "P1",
+      "tid": 6820,
+      "stage88_seq": 205,
+      "stage88_selector": 0,
+      "bit": "0x200",
+      "stage90_retention_seq": 1442,
+      "stage90_clear_seq": 1445,
+      "stage90_clear_selector": "0x00",
+      "stage90_clear_payload": "type0/payload0x00",
+      "stage90_clear_pre": "00000024,00008200,00000000",
+      "stage90_clear_post": "00000000,00000001,00000000",
+      "stage90_clear_to_reader_qpc_ticks": 11008773,
+      "tracked_f57d0_calls_after_clear_before_read": 4,
+      "tracked_special_mutations_after_clear_before_read": 0,
+      "final_stage90_post_equals_stage89_pre": true,
+      "returnAL": 0
+    }
+  ],
+  "limitations": [
+    "Stage90 records net pre/post per native F57D0 call, not per-instruction EIP at F57FA",
+    "Other native writers not covered by this observer; no proof all intermediate state transitions are captured",
+    "AAB55 AL0 and JNE-not-taken prediction are not evidence E8560 executed",
+    "No observed active-bit downstream read or causally joined final queue command",
+    "QPC tick gaps are not converted to seconds without confirmed frequency"
+  ],
+  "next": "Stage91: SHA-guarded static analysis of the earliest native active-bit consumers between Stage88 set and Stage90 clear, prioritize fast predicate/queue path. Do not synthesize commands or modify gameplay."
+}

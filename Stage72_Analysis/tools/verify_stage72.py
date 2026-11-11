@@ -38,7 +38,7 @@ OPCODES={
   0x155D29:"c786503f000001000000",   # selector literal one
   0x155D33:"6a0081c62c3a000056",     # event payload pointer P+3A2C
   0x155D3C:"e89fd0f9ff",              # call event field writer F2DE0
-  0x0F2DEB:"8b4d0c",                   # event field writer: arg2 is mode
+  0x0F2DEC:"8b4d0c",                   # event field writer: arg2 is mode
   0x0F2DFC:"8b5510",                   # event field writer: arg3 is event code
   0x0F2E0B:"66895004",                # stores event at [record+4]
   0x0F2E0F:"66894802",                # stores mode at [record+2]

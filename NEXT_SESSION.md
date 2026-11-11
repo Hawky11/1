@@ -1,3 +1,15 @@
+## Stage93 SOURCE READY — next Windows build/runtime handoff (2026-11-12)
+
+**Newest Stage93 source**: [stage93-direct-bit3-final-qpc-source-only](https://github.com/Hawky11/1/tree/stage93-direct-bit3-final-qpc-source-only), with code and SHA-gated Apply/Rollback; complete self-contained ZIP delivered in current ChatGPT conversation. **NOT YET BUILT ON WINDOWS OR TESTED IN GAME**. Preserve the verified Stage92 r3 DLL (2,011,648 bytes) and tested Stage91 DLL (1,999,872 bytes); keep Stage36 OFF and Stage35 untouched.
+
+**Last solid runtime**: Stage92 r3 17,788 F5990 native ticks + 9,786 native helpers, exact joins to 31,605 Stage91 readers, zero health errors; 127 rises of player+3B70 bit3, just **8** with SET_9ED20, **119 with no SET helper**. Original AALib.exe from user's persistent File Library `/AALib.zip` was re-extracted and SHA256-verified (`28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`). It contains exact **F5A68 `83 8E 70 3B 00 00 08`: OR [ESI+3B70],8**, a second native bit3 setter inside F5990. Native branches F5A42 (bit2), F5A57 (bit9 AL1), and F5A66 (bit10 AL1) enter this direct OR. Stage92's bit11 (F5A76) selects 9ED20/9ED60 helpers as previously proven. The 119 are **not yet causally attributed** to F5A68; seek same player/TID/tick and pre/post QPC evidence.
+
+**Stage93 instrumentation**: exact 7-byte signature-guarded F5A68 JMP with original OR once, full GPR/FLAGS/FX state preservation, worker-only 8192-event log `ArcanaAI_Stage93DirectBit3Trace.log`, `STAGE93_OR` including player/side/tid/Stage92 tick/QPC/before-after and `STAGE93_HEALTH`. Stage93 starts only after verified Stage92 installation. No DR writes, no extra game-state writes, no synthetic queue events or duplicate EE306/F7C5D hooks. In **existing** `AICommandSiteTrace.cpp`, Apply script adds game-thread QPC to existing FinalCommand record and worker-only companion `ArcanaAI_Stage93FinalCommandQpcTrace.log` with `STAGE93_FINAL_QPC` and original payload; no extra native callsite detour and historic `FINAL_COMMAND` format unchanged. Stage93 zip contains SHA-gated installer and rollback to Stage92 r3. Original PE + source static **32/32 PASS**, independent x86 encoding exact, two synthetic correlator tests PASS. These tests do not certify MSVC/ABI or runtime.
+
+**Next user action**: Close AALib, save verified Stage92 r3 DLL and source, extract the Stage93 ZIP, execute `powershell -ExecutionPolicy Bypass -File .\ApplyStage93.ps1 -Root 'D:\INCUBATOR\ArcanaAIOverhaul'`, then existing MSVC x86 Build.bat. On success run a short session first, require Stage92 INSTALLED 3/3, Stage93 INSTALLED 1/1, `STAGE93_FINAL_QPC` and zero Stage93 errors; only then run 3–5 ordinary COM-vs-COM rounds. Upload Build.log and both Stage93 logs plus same-run Stage92, Stage91, Stage90, FinalCommand, EventDispatch logs. Compare native Stage93 OR with the 119 no-helper bit3 rises, then temporal command joins; do not claim attacks/hits or AI gameplay improvement from QPC alone. On error use Stage93 rollback and restore last tested DLL.
+
+---
+
 # Next session handoff
 
 ## Stage92 r3 live SUCCESS — immediate Stage93 research handoff (2026-11-12)

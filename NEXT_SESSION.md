@@ -1,5 +1,13 @@
 # Next session handoff
 
+## Current — Stage82 r1 runtime signature mismatch; Stage82 r2 live-byte audit next (2026-11-11)
+
+**Frozen evidence:** [commit de188f0](https://github.com/Hawky11/1/commit/de188f061689f5ed00e594413adec786a6735335), [detailed Stage82 report](Stage82_Runtime/RUNTIME_ANALYSIS.md). Build succeeded (1,942,528-byte DLL); 6,084 Stage79 windows; 5,652 Stage80 calls, **all 5,652 uniquely within Stage79** same P/O/TID/QPC; five matching changes P2 0→1, P1 0→1, P2 1→2, P2 2→1, P2 0→1; zero Stage79/80 HEALTH errors. Stage81 3/3 installed but only two non-changing exact MOV hits; Stage82 r1 could not install: `STAGE82_ERROR call signature; no patch`.
+
+**Important:** original AALib.exe SHA256 `28cd69a7...` has exactly the Stage82 expected E8 bytes at F79E4 and F7AD1, so the *running* bytes must be observed rather than guessing a replacement. **Next concrete task:** Stage82 r2 source-only signature audit logging both original/live CALLs, decoded E8/E9 branch target and memory-protection details. Maintain strict signature refusal/rollback. Rebuild and short COM-vs-COM, capture same-run Build.log/Stage82 log (+79–81 if hooks install). Preserve Stage81 r2 DLL 1,934,336 bytes and Stage82 r1 DLL 1,942,528 bytes as backups. No gameplay edits; writer IP still unknown.
+
+---
+
 ## Current — Stage81 r2 same-run Stage79→80 verified; Stage81 exact writer hooks had zero hits (2026-11-11)
 
 **Current validated build:** Windows MSVC x86 `Build.log` from 15:41:51, `BUILD SUCCEEDED`, DLL **1,934,336 bytes**, one existing C4754 warning. Newest evidence is [runtime commit c003261e](https://github.com/Hawky11/1/commit/c003261e9e63e817c92bd5e58fd4afa35ee34e52) and [Stage81 run report](Stage81_Runtime/RUNTIME_ANALYSIS.md), now also present on `main` via a non-forced two-parent merge.

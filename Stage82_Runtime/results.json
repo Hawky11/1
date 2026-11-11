@@ -1,0 +1,73 @@
+{
+  "stage": "Stage82-r1",
+  "status": "RUNTIME_SIGNATURE_MISMATCH_NO_PATCH",
+  "snapshot_commit": "de188f061689f5ed00e594413adec786a6735335",
+  "build": {
+    "status": "SUCCEEDED",
+    "dll_size_bytes": 1942528,
+    "warning": "C4754"
+  },
+  "stage79": {
+    "windows": 6084,
+    "health_rows": 36
+  },
+  "stage80": {
+    "calls": 5652,
+    "health_rows": 36,
+    "unique_qpc_containment": 5652,
+    "missing": 0,
+    "ambiguous": 0
+  },
+  "selector_transitions": [
+    {
+      "side": "P2",
+      "stage79_seq": 344,
+      "stage80_seq": 96,
+      "selector_before": 0,
+      "selector_after": 1
+    },
+    {
+      "side": "P1",
+      "stage79_seq": 1773,
+      "stage80_seq": 1493,
+      "selector_before": 0,
+      "selector_after": 1
+    },
+    {
+      "side": "P2",
+      "stage79_seq": 3682,
+      "stage80_seq": 3333,
+      "selector_before": 1,
+      "selector_after": 2
+    },
+    {
+      "side": "P2",
+      "stage79_seq": 4360,
+      "stage80_seq": 3984,
+      "selector_before": 2,
+      "selector_after": 1
+    },
+    {
+      "side": "P2",
+      "stage79_seq": 5932,
+      "stage80_seq": 5507,
+      "selector_before": 0,
+      "selector_after": 1
+    }
+  ],
+  "stage81": {
+    "installed_sites": 3,
+    "native_write_hits": 2,
+    "changed_hits": 0,
+    "writer_rvas_hit": [
+      "0F7D38",
+      "0F7D22"
+    ]
+  },
+  "stage82": {
+    "installed": false,
+    "log": "STAGE82_ERROR call signature; no patch",
+    "live_bytes_observed": false
+  },
+  "next": "Stage82-r2 source-only live callsite audit"
+}

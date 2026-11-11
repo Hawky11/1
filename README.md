@@ -1,3 +1,11 @@
+## Current — Stage82 r1 failed closed; Stage79/80 same-run selector transitions VERIFIED (2026-11-11)
+
+[Stage82 runtime report](Stage82_Runtime/RUNTIME_ANALYSIS.md) · [machine summary](Stage82_Runtime/results.json) · [exact five-log upload](https://github.com/Hawky11/1/commit/de188f061689f5ed00e594413adec786a6735335). Windows MSVC x86 **BUILD SUCCEEDED**, DLL **1,942,528 bytes**. Stage79 **6,084** windows; Stage80 **5,652** calls; **5,652/5,652** uniquely nested same P/O/TID/QPC. **Five** agreeing selector transitions: P2 0→1, P1 0→1, P2 1→2, P2 2→1, P2 0→1. All Stage79/80 HEALTH error counters zero. Stage81 3/3 installed, **two native writer hits, both changed=0**. Stage82 r1 emitted **`STAGE82_ERROR call signature; no patch`**; no Stage82 hooks installed.
+
+Both Stage82 expected E8 signatures are correct in the SHA-pinned original AALib.exe. The discrepancy in running memory is **not yet explained**. Stage82 r2 **SOURCE ONLY** diagnostic patch (prepared outside the repository) logs both live callsite bytes and still refuses unknown patches. Next: apply r2 to exact r1 source, rebuild/test, upload Build.log and Stage82 audit. Do not claim an exact selector writer EIP or AI behavior improvement.
+
+---
+
 ## Current — Stage81 r2 Windows runtime VERIFIED; selector writer EIP NOT YET FOUND (2026-11-11)
 
 [Stage81 r2 runtime report](Stage81_Runtime/RUNTIME_ANALYSIS.md) · [machine-readable results](Stage81_Runtime/results.json) · [exact runtime commit](https://github.com/Hawky11/1/commit/c003261e9e63e817c92bd5e58fd4afa35ee34e52) · [Stage80 static/source overlay](Stage80_Overlay/src/Stage80F7150LateBoundary.inl).

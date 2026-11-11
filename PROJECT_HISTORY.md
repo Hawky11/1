@@ -1956,3 +1956,8 @@ Mode (definition+30 low byte) vs net changed X among 4,616 strict triples: mode0
 - Stage81 exact native writer hooks F7D22, F7D38, F7D43 installed but each recorded **zero** hits despite these four positive transitions. This invalidates treating them as proven executed writer EIPs in this session. All observers reported zero dropped/overflow/mismatch/readFail.
 - Reconciled two diverged branches with a **non-force two-parent merge**: original `main` and Stage80 work-branch histories preserved. Latest Stage81 r2 raw logs and Build.log are placed at root; Stage81 r1 conflicting root logs retained under `Stage81_Runtime/r1_failed/`. No AI/gameplay behavior change claimed.
 - Next Stage82: static callgraph / writer provenance analysis of F7150 and nested/indirect paths, then minimal additional read-only instrumentation only if justified.
+
+
+## 2026-11-11 — Stage82 r1 signature check refused; nested selector boundaries still unresolved
+
+[User-uploaded main snapshot](https://github.com/Hawky11/1/commit/de188f061689f5ed00e594413adec786a6735335) and [runtime analysis](Stage82_Runtime/RUNTIME_ANALYSIS.md): MSVC x86 build passed, 1,942,528-byte DLL. Stage79 6,084, Stage80 5,652, perfect 5,652/5,652 QPC containment; five same actor/object selector transitions; all HEALTH errors zero. Stage81 exact MOV hooks hit twice without selector changes. Stage82 failed preflight (`call signature; no patch`), so no nested-call writer attribution. Static verified original AALib.exe retains both expected E8 callsite signatures F79E4→F4360 and F7AD1→F3930. Next is fail-closed Stage82 r2 in-memory byte audit, source-only pending Windows validation. No claimed COM behavior change.

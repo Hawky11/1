@@ -1,0 +1,52 @@
+STAGE86_BUILD=2026-11-11-r1 SOURCE_ONLY F7CF2->E8560 once; original RET4 ABI
+STAGE86_SITE_AUDIT rva=0F7CF2 length=5 live=E86908FFFF expected=E86908FFFF exact=1
+STAGE86_ABI_AUDIT E8560_prologue=exact ret4=3/3 exact=1
+STAGE86_INSTALLED 1/1 callRVA=0F7CF2 targetRVA=0E8560 returnRVA=0F7CF7 originalOnce=1 abi=THIS+RET4 argCopy=1 FXSAVE=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_E8560_CALL seq=1 side=P2 player=0DF4CCA0 object=2A0D7C50 tid=16236 callRVA=0F7CF2 targetRVA=0E8560 returnRVA=0F7CF7 arg=00000001 ecx=0DF4CCA0 esi=00000020 localF8=00000000 localMask=1 qpcBefore=2107695520891 qpcAfter=2107695520894 nativeEax=00040000 preMask=3F postMask=3F f0=00000000>00000000 f1=00000002>00000002 f2=2A0D7C50>2A0D7C50 f3=00000004>00000004 f4=00000800>00000800 f5=00000017>00000017
+STAGE86_HEALTH calls=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_E8560_CALL seq=2 side=P2 player=0DF4CCA0 object=2A0D7C50 tid=16236 callRVA=0F7CF2 targetRVA=0E8560 returnRVA=0F7CF7 arg=00000000 ecx=0DF4CCA0 esi=00000020 localF8=00000000 localMask=1 qpcBefore=2107947849156 qpcAfter=2107947849158 nativeEax=2A0D7C00 preMask=3F postMask=3F f0=00000000>00000000 f1=00000002>00000002 f2=2A0D7C50>2A0D7C50 f3=01000000>01000000 f4=00000000>00000000 f5=00000017>00000017
+STAGE86_HEALTH calls=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_E8560_CALL seq=3 side=P1 player=0DF21F78 object=2A0D7020 tid=16236 callRVA=0F7CF2 targetRVA=0E8560 returnRVA=0F7CF7 arg=00000000 ecx=0DF21F78 esi=00000020 localF8=00000000 localMask=1 qpcBefore=2108226718153 qpcAfter=2108226718155 nativeEax=2A0D7000 preMask=3F postMask=3F f0=00000001>00000001 f1=00000002>00000002 f2=2A0D7020>2A0D7020 f3=01000000>01000000 f4=00000000>00000000 f5=0000000A>0000000A
+STAGE86_E8560_CALL seq=4 side=P2 player=0DF4CCA0 object=2A0D7C50 tid=16236 callRVA=0F7CF2 targetRVA=0E8560 returnRVA=0F7CF7 arg=00000000 ecx=0DF4CCA0 esi=00000020 localF8=00000000 localMask=1 qpcBefore=2108231023131 qpcAfter=2108231023132 nativeEax=2A0D7C00 preMask=3F postMask=3F f0=00000002>00000002 f1=00000002>00000002 f2=2A0D7C50>2A0D7C50 f3=00000000>00000000 f4=00000000>00000000 f5=00000017>00000017
+STAGE86_HEALTH calls=2 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0
+STAGE86_HEALTH calls=0 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=8192 depth=16 nativeCallsOnce=1 DRwrites=0 gameDataWrites=0

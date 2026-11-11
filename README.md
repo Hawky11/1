@@ -1,3 +1,11 @@
+## Current — Stage85 live join verified, unmatched F7150 writer still open (2026-11-11)
+
+[Stage85 runtime report](Stage85_Runtime/RUNTIME_ANALYSIS.md) · [results.json](Stage85_Runtime/results.json) · [same-run upload](https://github.com/Hawky11/1/commit/428b6b27895b1b1fb3015ab225169370e541050c). **BUILD SUCCEEDED** (Windows x86 DLL **1,957,376 bytes**); Stage85 F7C68 hook **INSTALLED 1/1** and verified with **109** join observations. Strict same-player/object/TID/QPC containment: **7,830/7,830** Stage80→79, **2,100/2,100** Stage82→80, **12/12** Stage84→82, **109/109** Stage85→80; all instrumented HEALTH error counters zero.
+
+In this test, **all 7** Stage80 `P+3F50` net transitions came from confirmed Stage84 F3930 exact writers. All Stage85 selector snapshots equal both Stage80 boundaries, so the earlier **unattributed P2 1→2** transition from the separate Stage84 long run **did not recur**, and its exact writer EIP remains unproven. **Next:** retain the known-good Stage85 r1 DLL, run a longer COM-vs-COM test **without new code changes**, capture a rare non-Stage84-matched selector transition and correlate Stage80/82/85; keep Stage36 off. This is passive observation, not an AI improvement.
+
+---
+
 ## Current — Stage84 exact selector writer attribution VERIFIED; Stage85 alternative path next (2026-11-11)
 
 [Stage84 full same-run report](Stage84_Runtime/RUNTIME_ANALYSIS.md) · [machine-readable summary](Stage84_Runtime/results.json) · [frozen 5-log upload](https://github.com/Hawky11/1/commit/364429c76dbfbfecd7c1679dd3e4dacd90e4897c) · [Stage83 writer precursor](https://github.com/Hawky11/1/commit/394d68c567b41012d41a49007229cb4bf1594080). Stage84 Windows MSVC x86 **BUILD SUCCEEDED**, **1,952,768-byte DLL**, `STAGE84_INSTALLED 6/6`, 21 exact MOV observations. Stage79 **15,116** windows; Stage80 **13,849** native F7150 calls; Stage82 **3,784** nested calls. Exact strict QPC containment **13,849/13,849**, **3,784/3,784**, **21/21** across 79→80→82→84, same actor/object/TID; all HEALTH errors zero.

@@ -1,3 +1,13 @@
+## 2026-11-11 — Stage88 F57D0 controller bitmap join, SOURCE ONLY
+
+- Verified Stage87 runtime captured in [main upload 0315870](https://github.com/Hawky11/1/commit/031587014a6f3be7c4ec3bfef0195106dfe8e689): 221/221 correct mapped selector codes 0→0E (142), 1→0F (73), 2→10 (6); 83 P1, 138 P2, `readMask=F` and zero dropped/mismatch/readFail. Stage87 Windows x86 build succeeded, DLL 1,970,176 bytes; Stage87 hook EE2F0 installed. Stage79–86 same-session native nested traces correlated as reported.
+- Stage88 research used SHA-matched original `AALib.exe` from persistent Library; static validator checked 14 opcode signatures, EE306→F57D0 CALL and F57D0 three 3-byte entries. All mapped codes 0E,0F,10 address descriptors `01 26 FF` and the native special 0x26 branch derives a selector-dependent bitmap bit index 9,10,11 (masks 0x200,0x400,0x800). Meaning limited to native controller bitmap; **not an executed/visible game action**.
+- Existing Stage24 wrapper at EE306 already calls F57D0 once. Historic Stage24 log only records dispatch type1/payload1E; Stage87 EDI2C events need separate observational pre/post path. Stage88 therefore adds *no new CALL-site interception*: Stage87 TLS handoff plus two Stage24 helper observations, per-event original arguments and controller output `P+3A08/0C/10`, code/side/thread/QPC guards and Stage81-worker-only event log. Keeps Stage24 old log unchanged and Stage36 disabled.
+- Files: `Stage88_Overlay` (new Stage88Join inl; updated Stage81, Stage87, PowerShell SHA-checked apply/rollback, offline correlator, static verification script and readme) and `Stage88_Analysis/STATIC_ANALYSIS.md`.
+- **Status at commit time**: source-only, SHA-pinned native static PASS, synthetic correlator test PASS; no MSVC x86 build, no native hook installation and no COM-vs-COM Stage88 logs. User next: apply to exact Stage87 source tree, back up Stage87 tested DLL, Build.bat x86 and run; upload same-run Build + Stage24/87/88/EventDispatch/FinalCommand logs. Never call source-only changes an AI improvement.
+
+---
+
 # Project history
 
 ## Stage85 long-run AFTER-JOIN positive alternate selector path / Stage86 source-only — 2026-11-11

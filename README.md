@@ -1,3 +1,13 @@
+## Current — Stage88 F57D0 bitmap join SOURCE ONLY (2026-11-11)
+
+[Stage88 source / setup](Stage88_Overlay/README_STAGE88_RU.md) · [Stage88 original static analysis](Stage88_Analysis/STATIC_ANALYSIS.md) · [Stage87 221-event runtime upload](https://github.com/Hawky11/1/commit/031587014a6f3be7c4ec3bfef0195106dfe8e689).
+
+**Latest runtime-confirmed: Stage87**: 221/221 EDI=0x2C selector mappings (`P+3F50=0/1/2` → `EAX=0E/0F/10`), installed EE2F0, zero dropped/mismatch/readFail. **Stage88 has NOT been built by MSVC x86 nor run in the game.** Offline SHA-pinned static check PASS. Exact original F57D0 table codes 0E/0F/10 all use descriptor `01 26 FF`; expected controller bitmap bit9/10/11 from selector, pending actual runtime verification. Stage88 **adds no hook**: existing Stage24 EE306→F57D0 wrapper is observed before/after through two helper calls, correlated to Stage87 by thread/player/code/QPC, flushes on Stage81 worker. Stage24's historical type1/payload1E trace filter is unchanged. No gameplay behavior modifications.
+
+Next: apply Stage88 source-only overlay to exact Stage87 r1 sources using SHA-guarded script, retain verified Stage87 DLL backup, keep Stage36 disabled, run x86 Build.bat and COM-vs-COM. Upload same-run `Build.log`, `ArcanaAI_Stage87SelectorConsumerTrace.log`, `ArcanaAI_Stage88Stage24JoinTrace.log`, `ArcanaAI_Stage24ResolverConsumerTrace.log`, `ArcanaAI_EventDispatchTrace.log`, `ArcanaAI_FinalCommandTrace.log`. Verify original helper call once, installed Stage24/Stage87, no HEALTH error, same-stage association and observed output bit. Real movement/attack/animation **not demonstrated**; a separate downstream executor trace would be required. Preserve historical branches.
+
+---
+
 ## Current — Stage85 after-join alternate selector path confirmed; Stage86 source-only next (2026-11-11)
 
 [Stage85 long-run report](Stage85_Runtime/LONG_RUN_ANALYSIS.md) · [results.json](Stage85_Runtime/long_run_results.json) · [frozen upload](https://github.com/Hawky11/1/commit/e1fd008f1ed8695f9f7cb53b005112f41f9605b7). New 18:19–18:21 logs confirm **P2 selector 0→1 after Stage85 F7C68**, Stage80 seq5640 / Stage82 F3930 seq1453 / Stage85 join seq82, with companion 1→2 inside F3930. Stage84 saw **no** exact writer in that call window. Exact parent QPC containment: 15,218/15,218 (80⊂79), 3,812/3,812 (82⊂80), 16/16 (84⊂82), 228/228 (85⊂80); HEALTH error counts all zero. Nine other net selector transitions match Stage84 exact writes, Stage81 direct F7150 writer sites remain zero hits.

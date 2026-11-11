@@ -1,3 +1,13 @@
+## Current — Stage88 SOURCE ONLY, Stage87 runtime PASS (2026-11-11)
+
+**Previous runtime:** [Stage87 commit 0315870](https://github.com/Hawky11/1/commit/031587014a6f3be7c4ec3bfef0195106dfe8e689) has `STAGE87_INSTALLED 1/1`, 221 events (P1=83, P2=138); selector `0/1/2` produced mapped EAX `0E/0F/10`, counts 142/73/6. All `readMask=F`, `match=1`; `dropped=mismatch=readFail=0`. Stage87 verified. The Stage87 EXE+hook result does not by itself prove actual COM action output.
+
+**New [Stage88 overlay](Stage88_Overlay/README_STAGE88_RU.md) — SOURCE ONLY, NOT BUILT/RUN**. The exact original EXE SHA256 is `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`; static validator passes 14 opcodes, EE306 E8 target and 0E/0F/10 F57D0 descriptors `01 26 FF`. F57D0 native selector-dependent 0x26 path chooses bit9/10/11; intended runtime output `P+3A0C` mask 0x200/0x400/0x800, not yet observed in Stage88. Stage24 already replaces EE306 and historically logs only type1/payload1E, thus Stage88 adds **no second EE306 hook**. Two passive Stage88 Pre/Post callbacks are wired into Stage24's existing frame in `AIQueueTrace.cpp`, consuming Stage87 TLS event once on same thread/side/player, checking argument code and ≤50ms QPC. Stage81 worker flushes bounded Stage88 ring. The exact original F57D0 still called once; Stage24 legacy log semantics unchanged. No AI mutation.
+
+**Handoff:** use Stage88 `ApplyStage88.ps1` (SHA guards on Stage87 sources; backups/rollback), x86 MSVC Build.bat, natural COM-vs-COM. Preserve working Stage87 DLL (1,970,176 bytes); keep `EnableStage36ControlToCommandTrace=0`, `EnableStage24ResolverConsumerTrace=1`; Stage87 enabled. Upload `Build.log`, Stage87, Stage88, Stage24, EventDispatch and FinalCommand logs from one session. Check Stage88 `STAGE88_HEALTH` counters and same-event joins; no claim of gameplay improvement/animation. If fail, rollback to Stage87 DLL and source. Stage88 source and history remain in their own branch, do not alter older stage evidence.
+
+---
+
 # Next session handoff
 
 ## Current — Stage85 rare AFTER-JOIN selector path VERIFIED; Stage86 single E8560 CALL observer SOURCE READY (2026-11-11)

@@ -1,0 +1,153 @@
+{
+  "stage": 74,
+  "status": "RUNTIME VERIFIED: existing callback selector snapshots; selector writer EIP UNRESOLVED",
+  "upload_commit": "211f0882e6b8e220877e4c15b072e5a7b8a7b067",
+  "timestamp": "2026-11-11T11:38:06",
+  "build": {
+    "status": "SUCCEEDED",
+    "dllBytes": 1893376,
+    "compiler": "MSVC 14.51.36231 x86",
+    "warning": "existing C4754"
+  },
+  "run": {
+    "tid": 19292,
+    "imageBase": "00280000",
+    "players": {
+      "P1": {
+        "P": "0DF21F78",
+        "O": "2A10F020"
+      },
+      "P2": {
+        "P": "0DF4CCA0",
+        "O": "2A10FC50"
+      }
+    }
+  },
+  "s38": {
+    "rows": 3708,
+    "P1": 1802,
+    "P2": 1906,
+    "seqContiguous": true,
+    "maskF30F31ValidRows": 3708,
+    "selectorInsideWindows": 0,
+    "selectorBetweenWindows": 5,
+    "companionStateInsideWindows": 7,
+    "companionStateBetweenWindows": 16
+  },
+  "s65": {
+    "rows": 313,
+    "seqContiguous": true,
+    "healthErrors": 0
+  },
+  "s70": {
+    "rows": 3,
+    "seqContiguous": true,
+    "healthErrors": 0
+  },
+  "s59": {
+    "rows": 11957,
+    "seqContiguous": true,
+    "healthErrors": 0,
+    "threadInstallRows": 63
+  },
+  "selectorTransitions": [
+    {
+      "side": "P2",
+      "previous": 278,
+      "next": 280,
+      "from": 0,
+      "to": 1,
+      "qpcLastPost": "1832393670534",
+      "qpcNextPre": "1832393770261",
+      "nextCallback": "158570",
+      "nextCallbackParameter": "11",
+      "nextAssignedCallback": "155160"
+    },
+    {
+      "side": "P2",
+      "previous": 651,
+      "next": 653,
+      "from": 1,
+      "to": 0,
+      "qpcLastPost": "1832413895210",
+      "qpcNextPre": "1832413998535",
+      "nextCallback": "158570",
+      "nextCallbackParameter": "11",
+      "nextAssignedCallback": "155160"
+    },
+    {
+      "side": "P1",
+      "previous": 2528,
+      "next": 2530,
+      "from": 0,
+      "to": 1,
+      "qpcLastPost": "1832517335179",
+      "qpcNextPre": "1832517440561",
+      "nextCallback": "158570",
+      "nextCallbackParameter": "11",
+      "nextAssignedCallback": "155160"
+    },
+    {
+      "side": "P1",
+      "previous": 2746,
+      "next": 2748,
+      "from": 1,
+      "to": 2,
+      "qpcLastPost": "1832528246746",
+      "qpcNextPre": "1832528347305",
+      "nextCallback": "158570",
+      "nextCallbackParameter": "11",
+      "nextAssignedCallback": "155160"
+    },
+    {
+      "side": "P1",
+      "previous": 3164,
+      "next": 3166,
+      "from": 2,
+      "to": 1,
+      "qpcLastPost": "1832549172798",
+      "qpcNextPre": "1832549275645",
+      "nextCallback": "158570",
+      "nextCallbackParameter": "11",
+      "nextAssignedCallback": "155160"
+    }
+  ],
+  "nativeCase11": {
+    "tableVA": "00558DC4",
+    "entry": "00558ACB",
+    "selectorReadRVA": "158ADC",
+    "gatedBy": "P+3B7C bit15",
+    "writer": false,
+    "observedExecutionIP": false
+  },
+  "deferredPairs": [
+    {
+      "side": "P1",
+      "stage38": 2568,
+      "stage65": 230,
+      "request": "2F",
+      "stage70": 1,
+      "selector": 1,
+      "deferred": "25"
+    },
+    {
+      "side": "P1",
+      "stage38": 2786,
+      "stage65": 248,
+      "request": "33",
+      "stage70": 2,
+      "selector": 2,
+      "deferred": "26"
+    },
+    {
+      "side": "P2",
+      "stage38": 3081,
+      "stage65": 274,
+      "request": "2E",
+      "stage70": 3,
+      "selector": 0,
+      "deferred": "24"
+    }
+  ],
+  "next": "Stage75 STATIC FIRST: trace pre-callback selector producer and callback code 11h setup"
+}

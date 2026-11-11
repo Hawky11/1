@@ -1,3 +1,15 @@
+## Current — Stage91 three direct special-bit F58E0 readers SOURCE READY (2026-11-11)
+
+[Stage91 native static analysis](Stage91_Analysis/STATIC_ANALYSIS.md) · [machine-readable 68/68 checks](Stage91_Analysis/static_results.json) · [Stage91 complete 11-file source branch](https://github.com/Hawky11/1/tree/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay) · [last runtime-verified Stage90](Stage90_Runtime/RUNTIME_ANALYSIS.md).
+
+**Discovery:** the native `F58E0` helper's **generic** bit-index mechanism checks `P+3A0C & 0x200/0x400/0x800` for indices **9/10/11**, not just its special index `0x26`. Inside update function `F5990` (called from `ACAB8`), three exact CALL sites `F5A4D`, `F5A5C`, `F5A76` use these indices. `AL=1` at sites 0/1 reaches the `P+3B70 |= 0x8` state branch; at site 2 it selects call `9ED20` instead of `9ED60`. These are **static** control-flow observations, **not** proof the game reaches an active bit at runtime.
+
+**New Stage91 r1 SOURCE ONLY:** three exact, native signature-guarded CALL-site wrappers, original F58E0 called **once**, P1/P2 PRE/POST 3-DWORD bitmap, QPC, true AL, flags and P+3B70, bounded worker-only trace. Original Stage87/88/89/90 source unchanged except Stage81 adapter Start/Flush/Health integration; **no global F58E0 detour, second EE306 hook, game data writes or DR writes**. SHA-gated Apply/Rollback. **68/68 static checks PASS**, synthetic positive + 3 negative correlator tests PASS, 11 Git blob hashes match ZIP contents. **Windows x86 build and Stage91 runtime NOT TESTED.**
+
+**TEST NEXT:** back up last tested **Stage90 DLL 1,991,168 bytes**, run [Stage91 Apply script](https://github.com/Hawky11/1/blob/stage91-f58e0-direct-bit-readers-source-only/Stage91_Overlay/ApplyStage91.ps1) against exact Stage90 source, build Windows x86, test 3–5 COM-vs-COM rounds; keep `EnableStage36ControlToCommandTrace=0`, Stage89/90/91 enabled (`Stage91ReaderSiteMask=7`). Upload same-run Build.log and Stage91/90/89/88/87/FinalCommand/EventDispatch logs. Treat `AL=1` as a native predicate only; do not claim movement/hit/AI improvement without further causal attribution. Older sections below are historical.
+
+---
+
 ## Current — Stage90 F57D0 bitmap clear route VERIFIED in Windows runtime (2026-11-11)
 
 [Stage90 runtime report](Stage90_Runtime/RUNTIME_ANALYSIS.md) · [machine results](Stage90_Runtime/results.json) · [immutable user upload `3a6f9e9`](https://github.com/Hawky11/1/commit/3a6f9e908ab7e3bc1e18aca4085c5a6b3fdd044b) · [Stage90 source](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay).

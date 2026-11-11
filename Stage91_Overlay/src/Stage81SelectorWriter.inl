@@ -26,7 +26,6 @@ namespace arcana_stage88 { void Start(); void Flush(); void Health(); }
 namespace arcana_stage89 { bool Install(); void Flush(); void Health(); }
 namespace arcana_stage90 { void Pre(const DWORD*); void Post(const DWORD*); void Start(); void Flush(); void Health(); }
 namespace arcana_stage91 { bool Install(); void Flush(); void Health(); }
-namespace arcana_stage92 { bool Install(); void Flush(); void Health(); }
 
 namespace arcana_stage81
 {
@@ -520,7 +519,7 @@ namespace arcana_stage81
         if (arcana_stage82::Install()) {
             if (arcana_stage84::Install()) {
                 if (arcana_stage85::Install()) {
-                    if (arcana_stage86::Install()) { if (arcana_stage87::Install()) { arcana_stage88::Start(); arcana_stage89::Install(); arcana_stage90::Start(); if (arcana_stage91::Install()) arcana_stage92::Install(); } }
+                    if (arcana_stage86::Install()) { if (arcana_stage87::Install()) { arcana_stage88::Start(); arcana_stage89::Install(); arcana_stage90::Start(); arcana_stage91::Install(); } }
                     else Log("STAGE87_SKIPPED Stage86 not installed; Stage81/82/84/85 baseline retained");
                 }
                 else Log("STAGE86_SKIPPED Stage85 not installed; Stage84/85 baseline retained");
@@ -529,9 +528,9 @@ namespace arcana_stage81
         } else Log("STAGE84_SKIPPED Stage82 not installed; original Stage81/82 baseline retained");
         for (;;) {
             for (int i=0;i<8;++i) {
-                Sleep(250); Flush(); arcana_stage82::Flush(); arcana_stage84::Flush(); arcana_stage85::Flush(); arcana_stage86::Flush(); arcana_stage87::Flush(); arcana_stage88::Flush(); arcana_stage89::Flush(); arcana_stage90::Flush(); arcana_stage91::Flush(); arcana_stage92::Flush();
+                Sleep(250); Flush(); arcana_stage82::Flush(); arcana_stage84::Flush(); arcana_stage85::Flush(); arcana_stage86::Flush(); arcana_stage87::Flush(); arcana_stage88::Flush(); arcana_stage89::Flush(); arcana_stage90::Flush(); arcana_stage91::Flush();
             }
-            Health(); arcana_stage82::Health(); arcana_stage84::Health(); arcana_stage85::Health(); arcana_stage86::Health(); arcana_stage87::Health(); arcana_stage88::Health(); arcana_stage89::Health(); arcana_stage90::Health(); arcana_stage91::Health(); arcana_stage92::Health();
+            Health(); arcana_stage82::Health(); arcana_stage84::Health(); arcana_stage85::Health(); arcana_stage86::Health(); arcana_stage87::Health(); arcana_stage88::Health(); arcana_stage89::Health(); arcana_stage90::Health(); arcana_stage91::Health();
         }
     }
     BOOL CALLBACK StartOnce(PINIT_ONCE,PVOID,PVOID*) {
@@ -562,5 +561,3 @@ inline void StartStage81SelectorWriter(HMODULE proxyModule) {
 #include "Stage90AllF57D0.inl"
 
 #include "Stage91DirectSpecialReader.inl"
-
-#include "Stage92F5990BranchTrace.inl"

@@ -1,5 +1,13 @@
 # Next session handoff
 
+## Stage92 r1 runtime refused by live byte signatures; r2 audit required (2026-11-11)
+
+User upload [c8530d5](https://github.com/Hawky11/1/commit/c8530d5fd389088bb214010a0b99d19d1f1e1c6f): **Windows MSVC x86 BUILD SUCCEEDED**, DLL **2,008,576 bytes**, old nonfatal C4754. Stage92 log contains only `STAGE92_BUILD` and `STAGE92_ERROR native signature mismatch/already installed; no patch`. **Not installed**; do not infer branch selection or state effects. Other stages emitted data (Stage87–90). Original exe SHA still verifies Stage92 67/67 static byte tests. Specific live-memory gate unknown: possibly other installed hooks; not established without byte audit.
+
+**Next user action:** use [Stage92 r2 read-only diagnostic note](https://github.com/Hawky11/1/blob/stage92-r2-live-signature-audit-source-only/Stage92_R2_Audit/README_RU.md) and r2 ZIP shared in chat. From exact r1 source (close AALib.exe), execute `UpgradeStage92R2.ps1` then Build.bat; launch the game once and upload `Build.log` + `ArcanaAI_Stage92F5990BranchTrace.log` with `STAGE92_SIGAUDIT name=... rva=... expected=... live=... match=...`. r2 preserves refusal and reveals exact offending opcode/site. No multi-round testing until `STAGE92_INSTALLED 3/3`. Restore tested **Stage91 DLL 1,999,872 bytes** on instability; Stage36=0. Do not force patches or assume combat improvement.
+
+---
+
 ## Current — Stage92 F5990 execution/9ED20 vs 9ED60 source-only prepared; Windows runtime next (2026-11-11)
 
 **Source branch:** [stage92-f5990-branch-consequence-source-only](https://github.com/Hawky11/1/tree/stage92-f5990-branch-consequence-source-only). [Install guide](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Overlay/README_STAGE92_RU.md). [Static analysis](https://github.com/Hawky11/1/blob/stage92-f5990-branch-consequence-source-only/Stage92_Analysis/STATIC_ANALYSIS.md). [Prior tested Stage91](Stage91_Runtime/RUNTIME_ANALYSIS.md). Original AALib SHA 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba.

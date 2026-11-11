@@ -1,5 +1,15 @@
 # Next session handoff
 
+## Stage92 r3 prepared: verified Stage35 ACABE adjacency, awaiting r3 Windows build/run (2026-11-12)
+
+User uploaded r2 Build.log: MSVC x86 **BUILD SUCCEEDED**, DLL **2,010,112** bytes. R2 `STAGE92_SIGAUDIT`: only `ACAB8_AFTER RVA 0ACABD` failed, expected `56E8FD95040056` vs live `56E81D8FB17856`; 14 other region signatures and 3 Stage92 native CALL sites matched. **No Stage92 install**. Preexisting Stage35 Controller Consumer hooks adjacent `ACABE→F60C0` TIMER (the modified CALL), and `ACAC4→F5BD0` FLAGS; configured `EnableStage35ControllerConsumerTrace=1`. The r2 changed call decodes to in-DLL hook at 0x78FC59E0. Do not confuse with Stage92 target modification.
+
+**R3 ZIP distributed in conversation:** `ArcanaAI_Stage92_r3_Stage35_Compatibility_SourceOnly.zip`, SHA-gated `UpgradeStage92R3.ps1` and restore script. R3 only accepts exact native bytes or a **fully verified Stage35 pair** (both CALLs, same DLL executable image, INI enabled, intact opcode boundaries, distinct nonoriginal targets). It does not alter Stage35 CALL sites or bypass unrelated guards. Original SHA-pinned PE 67/67 and 10 simulated cases + 17 structural source guards passed, **Windows r3 untested**. [Audit handoff](https://github.com/Hawky11/1/blob/stage92-r3-stage35-compatible-guard-handoff/Stage92_R3_Analysis/README_RU.md).
+
+**Next:** user rebuild with x86, launch once, upload `Build.log` + `ArcanaAI_Stage92F5990BranchTrace.log`. Verify `STAGE92_STAGE35_COMPAT adjacentACABE=paired verified=1` and `STAGE92_INSTALLED 3/3`. If still error inspect `STAGE92_SIGAUDIT` and `STAGE92_STAGE35_AUDIT` before more gameplay. Once installed, 3–5 natural rounds and same-session Stage91, Stage90, Stage92, FinalCommand, EventDispatch logs for correlations. Stage36=0; rollback `RestoreStage92R2.ps1` (SHA-verified) or tested Stage91 DLL **1,999,872 bytes** on fault. No confirmed r3 runtime conclusions.
+
+---
+
 ## Stage92 r1 runtime refused by live byte signatures; r2 audit required (2026-11-11)
 
 User upload [c8530d5](https://github.com/Hawky11/1/commit/c8530d5fd389088bb214010a0b99d19d1f1e1c6f): **Windows MSVC x86 BUILD SUCCEEDED**, DLL **2,008,576 bytes**, old nonfatal C4754. Stage92 log contains only `STAGE92_BUILD` and `STAGE92_ERROR native signature mismatch/already installed; no patch`. **Not installed**; do not infer branch selection or state effects. Other stages emitted data (Stage87–90). Original exe SHA still verifies Stage92 67/67 static byte tests. Specific live-memory gate unknown: possibly other installed hooks; not established without byte audit.

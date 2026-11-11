@@ -1,0 +1,194 @@
+{
+  "stage": 91,
+  "status": "WINDOWS_X86_RUNTIME_VERIFIED_ALL_3_DIRECT_SPECIAL_READERS_ACTIVE_AL1_POSITIVE",
+  "date": "2026-11-11",
+  "runtime_upload_commit": "4e56101e9095d6f3b04fd4dcedf2ca5d5314ed57",
+  "source_commit": "0516e767be5657118d6950466c5c3dfdfb632a5c",
+  "source_branch": "stage91-f58e0-direct-bit-readers-source-only",
+  "provenance": {
+    "stage91_blob_sha": "84f4f78cb0eeeb68425caea347bb300e4c308e2f",
+    "stage91_file_bytes": 15480170,
+    "note": "GitHub fetch_file returned an empty string for this 15.48 MB blob; fetch_blob by exact tree SHA returned the full 15,480,170-character file, analyzed in memory. Do not conclude the uploaded log is empty."
+  },
+  "build": {
+    "status": "BUILD SUCCEEDED",
+    "dll_size_bytes": 1999872,
+    "compiler": "Windows MSVC x86",
+    "warning": "Old nonfatal C4754 AICommandSiteTrace.cpp:785"
+  },
+  "stage91": {
+    "installed_mask": "0x7",
+    "installed_sites": 3,
+    "total_sites": 3,
+    "original_target": "0xF58E0",
+    "native_once": true,
+    "events": 34790,
+    "sequence_contiguous": true,
+    "sides": {
+      "P1": 18122,
+      "P2": 16668
+    },
+    "by_site": [
+      {
+        "site": "0xF5A4D",
+        "index": 9,
+        "target_bit": "0x200",
+        "events": 12571,
+        "AL1": 1183,
+        "AL0": 11388,
+        "P1_AL1": 265,
+        "P2_AL1": 918
+      },
+      {
+        "site": "0xF5A5C",
+        "index": 10,
+        "target_bit": "0x400",
+        "events": 11388,
+        "AL1": 557,
+        "AL0": 10831,
+        "P1_AL1": 245,
+        "P2_AL1": 312
+      },
+      {
+        "site": "0xF5A76",
+        "index": 11,
+        "target_bit": "0x800",
+        "events": 10831,
+        "AL1": 85,
+        "AL0": 10746,
+        "P1_AL1": 60,
+        "P2_AL1": 25
+      }
+    ],
+    "AL1_total": 1825,
+    "AL0_total": 32965,
+    "AL1_target_bit_present": 1825,
+    "valid_prediction_matches": 34790,
+    "pre_post_same": 34790,
+    "full_read_masks": 34790,
+    "site_index_matches": 34790,
+    "correct_player_labels": 34790,
+    "stage90_previous_snapshot_matches": 34790,
+    "stage90_previous_snapshot_mismatches": 0,
+    "positive_latest_prior_stage90_was_stage88": 49,
+    "positive_latest_prior_stage88_newly_set_bit": 12,
+    "positive_first_set_by_bit": {
+      "0x200": 11,
+      "0x400": 1,
+      "0x800": 0
+    },
+    "positive_later_tracked_F57D0_clears_bit": 1685,
+    "positive_without_later_tracked_clear": 140,
+    "health": {
+      "rows": 58,
+      "summed_calls0": 12253,
+      "summed_calls1": 11209,
+      "summed_calls2": 10652,
+      "summed_events": 34114,
+      "actual_event_rows": 34790,
+      "tail_events_after_last_health": 676,
+      "filtered": 0,
+      "overflow": 0,
+      "dropped": 0,
+      "mismatch": 0,
+      "readFail": 0
+    },
+    "limitations": [
+      "All health counters are periodically reset. They cover 34,114 events through the last health line; another 676 event rows are logged afterward, so these are not missing or dropped events.",
+      "Three native F58E0 callsite readers execute and sometimes return AL=1; this proves the observed bits are actively tested, not an actual movement/hit or an AI command.",
+      "The Stage91 log records predicted downstream branch, not a hook at F5A68 / 9ED20 / 9ED60; no executed branch trace.",
+      "Stage90 only tracks F57D0 calls. The all-event snapshot match means no disagreement at these samples, not that all possible writers are instrumented."
+    ]
+  },
+  "stage90": {
+    "event_rows": 2069,
+    "health_summed": {
+      "preCalls": 2060,
+      "tracked": 2060,
+      "completed": 2060,
+      "specialCleared": 99,
+      "specialSet": 100,
+      "changed": 853,
+      "noChange": 1207,
+      "readMaskIncomplete": 0,
+      "depthOverflow": 0,
+      "mismatch": 0,
+      "readFail": 0,
+      "dropped": 0
+    },
+    "tail_events_after_last_health": 9
+  },
+  "stage88": {
+    "events": 261,
+    "by_selector": {
+      "0": 129,
+      "1": 85,
+      "2": 47
+    },
+    "health_summed": {
+      "preCalls": 2060,
+      "joined": 261,
+      "completed": 261,
+      "filtered": 1799,
+      "stale": 0,
+      "mismatch": 0,
+      "readFail": 0,
+      "dropped": 0
+    }
+  },
+  "stage87": {
+    "events": 261,
+    "health_errors": 0
+  },
+  "stage89": {
+    "events": 4,
+    "site": "0xAAB55",
+    "all_AL0": true
+  },
+  "examples": [
+    {
+      "bit": "0x200",
+      "stage88_seq": 22,
+      "stage88_selector": 0,
+      "stage88_was_new_set": true,
+      "stage90_seq": 129,
+      "stage91_seq": 2469,
+      "stage91_site": "0xF5A4D",
+      "stage91_side": "P2",
+      "stage91_al": 1,
+      "stage91_bitmap": "0000000E,00000200,00000000",
+      "stage91_minus_stage90_qpc_ticks": 96900,
+      "stage91_minus_stage88_qpc_ticks": 96902
+    },
+    {
+      "bit": "0x400",
+      "stage88_seq": 239,
+      "stage88_selector": 1,
+      "stage88_was_new_set": true,
+      "stage90_seq": 1936,
+      "stage91_seq": 32679,
+      "stage91_site": "0xF5A5C",
+      "stage91_side": "P1",
+      "stage91_al": 1,
+      "stage91_bitmap": "0000000F,00000400,00000000",
+      "stage91_minus_stage90_qpc_ticks": 146
+    },
+    {
+      "bit": "0x800",
+      "stage88_seq": 98,
+      "stage88_selector": 2,
+      "stage88_was_new_set": false,
+      "stage90_seq": 678,
+      "stage91_seq": 12415,
+      "stage91_site": "0xF5A76",
+      "stage91_side": "P1",
+      "stage91_al": 1,
+      "stage91_bitmap": "00000010,00000800,00000000",
+      "stage90_clear_seq": 680,
+      "stage90_clear_selector": "0x06",
+      "stage90_clear_mask": "0x800",
+      "qpc_read_to_clear": 621
+    }
+  ],
+  "next": "Stage92: source-only static localization and (if justified) guarded passive observer for F5990 positive-branch effects, especially P+3B70 bit0x8 and 9ED20/9ED60 callsite selection, with native result and queue attribution; preserve Stage91 tested 1,999,872-byte DLL, Stage36 off; do not infer gameplay improvement from AL1 alone."
+}

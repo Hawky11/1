@@ -1,5 +1,17 @@
 # Next session handoff
 
+## Current — Stage85 runtime VERIFIED; rare post-F3930 P2 1→2 path NOT reproduced (2026-11-11)
+
+**Read first:** [Stage85 runtime analysis](Stage85_Runtime/RUNTIME_ANALYSIS.md) · [machine results](Stage85_Runtime/results.json) · [frozen 7-log upload](https://github.com/Hawky11/1/commit/428b6b27895b1b1fb3015ab225169370e541050c). Stage85 r1 **Windows MSVC x86 BUILD SUCCEEDED**, DLL **1,957,376 bytes** (existing C4754), `STAGE85_INSTALLED 1/1` with exact original F7C68 CMP/JNE signature, **109 JOIN samples**. Old Stage84 positive rare-route evidence remains valid but is from a different run.
+
+**Same-run unique QPC containment:** Stage79 **8,598** windows, Stage80 **7,830** calls (all inside Stage79), Stage82 **2,100** nested calls (all inside Stage80), Stage84 **12** exact writes (all inside Stage82), Stage85 **109/109** JOINs (all inside Stage80). Matching uses same P/object/TID/QPC, never approximate wall-clock or inter-run joins. All Stages79/80/81/82/84/85 HEALTH error counters are zero.
+
+**Finding:** 7 selector net changes in Stage80; all 7 matched an actual Stage84 F3930 MOV, none crossed a Stage85 JOIN. Stage85 join selector matched both Stage80 PRE/POST in **109/109**, and matched a preceding Stage82 POST in **103** instances (83 F3930, 20 F4360); six JOINs had no prior nested Stage82 in their own Stage80 call. Stage81 original F7150 direct writer sites had zero hits. **Stage84's separate unmatched P2 1→2 did not recur**; its native instruction EIP remains UNKNOWN.
+
+**NEXT:** preserve both prior Stage84 1,952,768-byte DLL and new Stage85 1,957,376-byte DLL. Run a **longer COM-vs-COM session using unchanged Stage85 r1** until a Stage80 change not covered by a Stage84 exact writer occurs, if obtainable. Keep `EnableStage36ControlToCommandTrace=0`. Upload same-run Build.log and 79/80/81/82/84/85 logs. If the rare 1→2 recurs, test whether Stage85 F7C68 JOIN exists in that exact Stage80 QPC window: its selector separates pre-join from post-join change; if absent, that native path bypasses the checkpoint. **Do not introduce speculative Stage86 detours, mutate game data or claim COM AI improvement before positive localization.**
+
+---
+
 ## Current — Stage84 long-run exact MOV writers VERIFIED; one Stage85 writer path remains (2026-11-11)
 
 **Read first:** [Stage84 full report](Stage84_Runtime/RUNTIME_ANALYSIS.md) · [results.json](Stage84_Runtime/results.json) · [frozen runtime commit](https://github.com/Hawky11/1/commit/364429c76dbfbfecd7c1679dd3e4dacd90e4897c). Current tested build is **Stage84 r1** (Windows MSVC x86 **BUILD SUCCEEDED**, **1,952,768 bytes**, existing C4754), with `STAGE84_INSTALLED 6/6`; exact Stage79/80/81/82/84 log set updated 17:36–17:38. Main is a documentation/evidence index; do not treat historical Stage82 r1 handoff below as current.

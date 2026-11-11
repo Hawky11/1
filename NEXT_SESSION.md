@@ -1,5 +1,18 @@
 # Next session handoff
 
+## Current — Stage78 built/installed, zero literal-one site hits; selector transitions point to alternatives (2026-11-11)
+
+**User raw upload [8fae5d4](https://github.com/Hawky11/1/commit/8fae5d444ab55cb0cc25806499228eec7c7e563d)**, frozen unchanged in [stage78-runtime-no-literal-hit-selector-alternative-evidence](https://github.com/Hawky11/1/tree/stage78-runtime-no-literal-hit-selector-alternative-evidence), [full report](Stage78_Runtime/RUNTIME_ANALYSIS.md), [machine summary](Stage78_Runtime/results.json). MSVC x86 **BUILD SUCCEEDED**, 13:26:13, DLL **1,911,808 bytes**. Stage78 GUARD passed, installed **1/1 exact site `155D29`**, but Stage78 trace contains **only three install banners, zero literal-one hits**, no HEALTH line (expected if idle). No new DLL or code change on evidence branch.
+
+**Same run:** Stage38/77 **5,064 paired** callback/before-native records, all full masks, zero changes inside `156C00`, 22 Stage77 health lines zero errors; Stage76 **9,704** phase records (4,852 phase0 and phase1 each, phase2 0), 22 health lines zero errors. P1/P2 0DF21F78/0DF4CCA0, O=29B22020/29B22C50, TID19736. **Five** upstream between-window transitions after Stage76 phase1, before Stage77 pre-native: P2 0→1 (767→769), P1 0→2 (1034→1036), P1 2→1 (1948→1950), P2 0→2 (2017→2019), P2 2→1 (2658→2660). None had a captured `155D29` hit. A prior Stage77 P2 callback 1560B0 selector 0→1 was from a *different run*, not disproved by this negative capture.
+
+**Additional NEW callback-local reset** P2 Stage38 seq1643 original RVA `154070`: selector **1→0**, state **1→1**, Stage76 seq3285 event current code `22h`, next Stage38 seq1645 callback 158570 arg `22h`. Independent original AALib.exe opcode audit shows direct conditional path `154091→152C90`, on AL=0 `154100 CALL 155640`, then `155669 MOV [P+3F50],0`, `155675 state1`, `155681 PUSH22h`, `15568B CALL F2DE0`. Very strong static/runtime linkage, **no direct writer EIP instrumented**. Original PE SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`.
+
+**NEXT Stage79:** static-first actor/callflow audit of ten 6-byte register-derived `P+3F50` sites that yield 1/2; identify bounded safe probe(s) for upstream transitions. Avoid ten blind patches, new DR2/DR3 or gameplay writes. A zero-hit one-site test doesn't exclude other sites or aliases. Keep user-tested Stage78 DLL **1,911,808 bytes**, Stage77 **1,905,664 bytes**, Stage76 **1,901,568 bytes** rollback. Fresh Stage59/65/70 logs absent in this upload; do not claim their runtime health.
+
+---
+
+
 ## Current — Stage61 same-run Stage46→47→59 RUNTIME VERIFIED; Stage62 decision linkage NEXT (2026-11-10)
 
 **Provenance:** new exact two-file upload [c09bc526](https://github.com/Hawky11/1/commit/c09bc52690f149b0c7159014d01b86deb8ae5f79), frozen unchanged at [stage61-runtime-action-motion-x-evidence](https://github.com/Hawky11/1/tree/stage61-runtime-action-motion-x-evidence), [full Stage61 runtime report](https://github.com/Hawky11/1/blob/main/Stage61_Runtime/RUNTIME_ANALYSIS.md). The newly supplied Stage46 `c973b4593a6de15a045220b39c9b8d010db6c764` and Stage47 `d87f182d4cd66fb19aeaf16439428c905c7b6ced` log blobs are unequivocally from **22:07**, same session as earlier Stage59 r2 frozen blob `a5a2e76dcc473e079d0445db6e9d7069a3784879` (previous original upload d2ce2444). Same P1/P2 objects `2A89A020/2A89AC50`, game thread `15132`, monotonic comparable QPC. **Stage61 uses Stage59 r2 already built and verified; no Stage61 DLL was built.**

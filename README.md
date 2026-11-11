@@ -1,3 +1,17 @@
+## Current — Stage72 native callback dispatch + deferred write continuation VERIFIED (2026-11-11)
+
+[Original switch and frozen runtime report](Stage72_Analysis/STATIC_ANALYSIS.md) · [Russian summary](Stage72_Analysis/README_STAGE72_RU.md) · [SHA + 23-opcode switch/trace verifier](Stage72_Analysis/tools/verify_stage72.py) · [results JSON](Stage72_Analysis/results.json). Branch [stage72-callback-dispatch-static-runtime-correlation](https://github.com/Hawky11/1/tree/stage72-callback-dispatch-static-runtime-correlation) based on Stage71 / archived user Stage70 r2 capture. **No new DLL, instrumentation, or game run**. Original private `AALib.exe` SHA-pinned.
+
+**Native dispatcher:** Original `0F7E70` just sets callback descriptor `P+3ED0=function pointer`, `P+3ED4=parameter`; `156C00` copies the parameter to `[callback frame+0C]`; native COM loop `EE7BE CALL EDI` actually invokes the function. Callback `158570` uses a switch keyed by that parameter, with original table entry **`0x22→158CE0→CALL 156A60`**. Original `156A60` can install callback `1566B0` at `156B84`/setter `156BCE`. Original `1566B0` after Stage65 immediate-request `156769` and Stage70 deferred-store `156787` installs follow-on callback **`1560B0`** via `156794/15679A`.
+
+**Existing frozen user capture ties this together:** Stage38 **seq4090** P1: callback `158570` with parameter `22`, descriptor `158570→1566B0`. Stage38 **seq4116** P1: `1566B0→1560B0` and `O+68 FFFFFFFF→25`, *enclosing* Stage65 seq319 (request2F from `156769`) and Stage70 seq1 (deferred25 from original `156787`). Stage38 **seq4118** next actually executes `1560B0`. P1/O/TID all match, 5109 Stage38 / 369 Stage65 / 1 Stage70 sequences contiguous, all relevant QPC strictly joined. Independently checked original EXE SHA, 23 opcode ranges, exact switch table index 22 and four call targets.
+
+**Do not confuse channels:** Stage71 event `21` from `155D29` setter is recorded in a separate event structure at **P+3A30** by `0F2DE0`; Stage72 callback dispatch parameter `22` is stored at **P+3ED4**. `0F2DE0` writes event fields and `0F7E70` writes a callback descriptor; neither is the later indirect callback execution itself.
+
+**Still unknown:** exact **writer IP** that set `P+3F50=1` before Stage70. Stage38 didn't capture selector; Stage70 only captured value at consumption. Literal-one `155D29` and 10 register-derived writers remain alternatives. Stage73 static-first safety/DR audit before considering multi-source passive selector write attribution. Preserve tested Stage70 r2 **1,892,864-byte DLL** and Stage67/65/59 rollback builds; no new user test required for Stage72. Main and frozen raw logs not altered.
+
+---
+
 ## Current — Stage71 native selector P+3F50=1 source STATIC VERIFIED (2026-11-11)
 
 [Exact original-code analysis](Stage71_Analysis/STATIC_ANALYSIS.md) · [RU findings](Stage71_Analysis/README_STAGE71_RU.md) · [SHA/opcode verifier](Stage71_Analysis/tools/verify_stage71.py) · [JSON](Stage71_Analysis/results.json). Branch [stage71-selector-origin-static-evidence](https://github.com/Hawky11/1/tree/stage71-selector-origin-static-evidence) built on Stage70 r2 frozen user capture. No new DLL, hooks, game test, changes to original EXE or AI behavior.

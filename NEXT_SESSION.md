@@ -1,5 +1,17 @@
 # Next session handoff
 
+## Current — Stage90 full F57D0 bit-clear audit source-only package COMPLETE (2026-11-11)
+
+**First read:** [Stage90 STATIC_ANALYSIS](Stage90_Analysis/STATIC_ANALYSIS.md) · [full package and README](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay) · [last Stage89 Windows run](Stage89_Runtime/RUNTIME_ANALYSIS.md). **Last Windows-built and runtime-tested DLL remains Stage89 1,984,000 bytes; Stage90 is SOURCE ONLY, not Windows-built/tested.** Source branch has 12 verified Git-blob-identical files; original exe SHA `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`; 30 signature/bridge checks PASS and offline correlator positive/negative tests PASS.
+
+**Native discovery:** `F57D0` tests descriptor flag1 at `F57EC`; if set executes `F57FA MOV [EDI+4],0` (P+3A0C) and `F57FD MOV [EDI+8],0` (P+3A10), then `F5800 MOV [EDI],ESI` and may re-OR bitmap bits at `F5856/F58AC`. Stage87 selector codes `0x0E,0x0F,0x10` have descriptor `01 26 FF`. **This is STATIC proof of potential clearing, NOT runtime identification of a specific clear between Stage88 and Stage89.** Alternative writers, including initializer F57A0, are not covered.
+
+**Code:** Stage90 adds no patch; existing Stage24 `EE306→F57D0` pre/post bridge calls Stage90::Pre before Stage88::Pre and Stage90::Post after Stage88::Post. Logs all P1/P2 selectors with net `clearMask/setMask = 0xE00`, full bitmap triples, QPC, table, dispatch data, return registers, read masks; optionally carries Stage87 seq without consuming handoff. Stage89 four F58E0 hook wrappers remain.
+
+**NEXT USER ACTION:** Backup Stage89 DLL 1,984,000 bytes; game closed, extract ZIP, run `ApplyStage90.ps1 -Root 'D:\INCUBATOR\ArcanaAIOverhaul'`, x86 `Build.bat`. Keep INI Stage24/88 enabled; Stage90 enabled with `Stage90LogAllF57D0=1`; keep `EnableStage36ControlToCommandTrace=0`. Run 3–5 COM-vs-COM rounds and upload **Build.log + Stage90/Stage88/Stage87/Stage89/Stage24 + FinalCommand + EventDispatch logs from the same session** to main. Analyze with `tools/correlate_stage90.py`. If build/game/health fails, `RollbackStage90.ps1` and known-good DLL; no gameplay edits or artificial inputs. Do not assume that missing bits were cleared by F57D0 without positive intervening timestamps.
+
+---
+
 ## Current — Stage89 Windows live reader test, Stage88 selector2 runtime VERIFIED (2026-11-11)
 
 **Read first:** [Stage89 runtime report](Stage89_Runtime/RUNTIME_ANALYSIS.md) · [JSON results](Stage89_Runtime/results.json) · [user upload `7475572`](https://github.com/Hawky11/1/commit/7475572ea25d04edb01f383367af83ceb2ad7711) · [Stage89 source branch](https://github.com/Hawky11/1/tree/stage89-f58e0-four-call-readers-source-only). Last tested Windows MSVC x86 DLL **1,984,000 bytes** (`BUILD SUCCEEDED`, existing C4754). Stage89 **4/4** guarded CALL sites installed, but only `AAB55` emitted **4** events (P1=3, P2=1), all `AL=0`, pre/post read masks 7/7, predictionMatch=1, bitmap unchanged. `STAGE89_HEALTH` summed calls0/1/2/3 = 0/0/0/4, no mismatch/readFail/dropped/overflow. All four had **special selector bits 0x200/0x400/0x800 clear** and no generic bit38. No positive reader of active Stage88 output, and predicted AAB55 JNE-not-taken is NOT instrumented E8560 execution.

@@ -1,3 +1,15 @@
+## Current — Stage90 read-only full F57D0 clear/rewrite audit SOURCE READY (2026-11-11)
+
+[Native static analysis](Stage90_Analysis/STATIC_ANALYSIS.md) · [full 12-file source-only package](https://github.com/Hawky11/1/tree/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay) · [Stage89 tested predecessor](Stage89_Runtime/RUNTIME_ANALYSIS.md).
+
+**New static finding:** original SHA-pinned F57D0 at `F57FA MOV [EDI+4],EAX` and `F57FD MOV [EDI+8],EAX` zeroes `P+3A0C/P+3A10` when descriptor flag bit0 is set; at `F5856/F58AC` it can subsequently OR a new bit. The observed selector codes `0x0E/0x0F/0x10` all have descriptor `01 26 FF`, flag bit0 set. This explains a **candidate native clearing mechanism** for Stage89's AL=0 after Stage88 had set a special bit, but the exact intervening call is **not yet runtime proven**.
+
+Stage90 uses the **existing Stage24 EE306→F57D0 hook only**; extends the Stage88 C++ pre/post bridge to log **all P1/P2 calls**, not just EDI=2C: before/after triple `P+3A08/0C/10`, net `clearMask/setMask` for 0xE00, selector/code, native return, QPC, dispatcher metadata, optional same-thread Stage87 seq, bounded worker ring. Retains Stage87/88/89 unchanged. **30/30 original PE/source static checks PASS**, synthetic offline correlator positive and negative tests PASS, source parity verified against all 12 GitHub files. **Windows x86 build and runtime NOT YET TESTED.**
+
+**Install:** back up tested Stage89 DLL (**1,984,000 bytes**). Apply [Stage90 installer](https://github.com/Hawky11/1/blob/stage90-f57d0-bitmap-clear-source-only/Stage90_Overlay/ApplyStage90.ps1) to exact Stage89 r1 source baseline, rebuild x86, keep `EnableStage24ResolverConsumerTrace=1`, `EnableStage88=1`, `EnableStage90AllF57D0Trace=1`, `Stage90LogAllF57D0=1`, and `EnableStage36ControlToCommandTrace=0`. Capture same-session Stage90/87/88/89/24 and Build.log. No gameplay writes, no new native hook, no claimed AI improvement. Older “Current” sections below are historical.
+
+---
+
 ## Current — Stage89 live: 4/4 F58E0 hooks installed, AAB55 executed; Stage88 selector2 output VERIFIED (2026-11-11)
 
 [Stage89 full live report](Stage89_Runtime/RUNTIME_ANALYSIS.md) · [machine results](Stage89_Runtime/results.json) · [user's raw upload `7475572`](https://github.com/Hawky11/1/commit/7475572ea25d04edb01f383367af83ceb2ad7711) · [Stage89 source `7ede68b`](https://github.com/Hawky11/1/commit/7ede68b825faadea5caed2a59b9afa4881cc24a0).

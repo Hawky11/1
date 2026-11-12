@@ -1,0 +1,66 @@
+{
+  "stage": 132,
+  "status": "STAGE132_STATIC_DESIGN_PASS",
+  "date_local": "2026-11-13",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "original_exe_bytes": 175556608,
+  "site_signature_checks": 6,
+  "original_call_target_checks": 8,
+  "Stage131_reverified_opcodes": 162,
+  "Stage131_reverified_calls": 13,
+  "Stage131_reverified_branches": 20,
+  "exclusion_envelopes_nonexhaustive": 26,
+  "Stage84_sites": 6,
+  "Stage129_sites": 3,
+  "candidate_site_to_owner_and_mutual_nonoverlap": 171,
+  "offline_tests_pass": 27,
+  "new_hooks": 0,
+  "gameplay_writes": 0,
+  "Windows_build": false,
+  "proposed_required_sites": [
+    {
+      "rva": "F34D0",
+      "length": 6,
+      "role": "F34D0 entry positive control"
+    },
+    {
+      "rva": "F3930",
+      "length": 6,
+      "role": "F3930 entry positive control"
+    },
+    {
+      "rva": "F3579",
+      "length": 7,
+      "role": "group 0x24 literal 0x27 store"
+    },
+    {
+      "rva": "F35F9",
+      "length": 7,
+      "role": "group 0x25 literal 0x27 store"
+    },
+    {
+      "rva": "F3C15",
+      "length": 5,
+      "role": "table candidate commit; must replay MOV [EBP+10],EAX and MOV EAX,[EBX]"
+    }
+  ],
+  "optional_site": {
+    "rva": "F3B71",
+    "length": 8,
+    "role": "raw table READ only; not commit"
+  },
+  "source_archive": "ArcanaAI_Stage132_Upstream27_ExactProvenance_Feasibility_Design.zip",
+  "source_archive_bytes": 23537,
+  "source_archive_sha256": "b6b23572c01b3be2513a7f547c55ef859e3ea47e09cf6198b3a7b3bc9dd983dd",
+  "source_archive_in_github": false,
+  "source_archive_crc_pass": true,
+  "source_archive_file_count": 14,
+  "caveats": [
+    "Nonexhaustive hook owner inventory, live ownership not checked",
+    "Parent exit/unwind and stale TLS scope must be solved before actual hook",
+    "Stage129 bridge needs all interesting candidate 0x27, not sampled-only events",
+    "F3C15 detour comprises two original instructions",
+    "No Windows build, no runtime event, no gameplay action acceptance proven"
+  ],
+  "next": "Stage133 source/ABI and parent-exit lifecycle review before any new opt-in patches"
+}

@@ -1,0 +1,53 @@
+{
+  "stage": 109,
+  "date": "2026-11-12",
+  "status": "ORIGINAL_CEBE0_STATIC_GUARD_CFG_VERIFIED_RUNTIME_CAUSE_UNRESOLVED",
+  "original_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "checks": {
+    "signatures": 38,
+    "original_calls": 7,
+    "branch_targets": 8,
+    "direct_cebe0_call_scan": 1,
+    "table_first_byte_0x27": 1,
+    "table_size": 1,
+    "passed": 56,
+    "total": 56
+  },
+  "offline_tests": {
+    "passed": 26,
+    "total": 26
+  },
+  "direct_cebe0_calls": [
+    "988EA",
+    "98948",
+    "CAD79",
+    "CADDA"
+  ],
+  "guards": [
+    "fourth-arg optional decrement of active byte",
+    "ID equals -1",
+    "unsigned ID greater than 0x1EE",
+    "table sentinel first byte FF",
+    "record active zero"
+  ],
+  "id_27_table_first_byte": "0C",
+  "id_27_table_row": "0c 84 ff ff ff ff ff ff ff ff ff ff ff ff 0a 0a ff",
+  "prior_stage108": {
+    "stage107_installed": "2/2",
+    "stage107_dll_bytes": 2065920,
+    "cea20_pre": 13,
+    "post": 13,
+    "cec64_native_read": 0
+  },
+  "stage104_esi_equals_cebe0_id_proven": false,
+  "cebe0_runtime_entry_seen": false,
+  "actual_guard_outcome_known": false,
+  "zip_sha256": "2dd01072437eda1e82b77e1038b77865a6ab4f9cf8c6484cc4b34583120f1c05",
+  "new_dll": false,
+  "new_hook": false,
+  "new_game_run": false,
+  "game_data_write": false,
+  "dr_write": false,
+  "stage36_off": true,
+  "next": "Stage110 guarded passive CEBE0 entry/branch audit, only if needed"
+}

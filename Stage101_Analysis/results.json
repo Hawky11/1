@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-12",
+  "stage": 101,
+  "status": "real_existing_runtime_log_join_verified",
+  "runtime_commit": "8919f8ec242f1137c447d2eb4afc7ba0ed0c0e1e",
+  "context": {
+    "tid": "11260",
+    "frame": "0E58FC2C",
+    "P1": "0DDA1F78",
+    "P2": "0DDCCCA0"
+  },
+  "sources": {
+    "stage98": "fdac35245f47c3b19bee346aa6b53e964ab14cf7",
+    "stage96": "1e98d712ac78549e46e4e2e0719fc8995d1706fd",
+    "stage95": "3dba2624412b23842b9bd0a2a9a33647e256954c",
+    "stage94": "fba1df695c4fcac0af357c782cf521af24b91b93",
+    "stage93": "4fa6b5dd3747e9c2abed7ea4daa11d77a637453b"
+  },
+  "counts": {
+    "routes": 14107,
+    "post_f34d0_site_F7A8F": 461,
+    "stage95_bypass": 12474,
+    "stage94_producer": 1633,
+    "stage94_gate": 201,
+    "stage93_final_type1": 167,
+    "class5": 461,
+    "class5_mode0": 208,
+    "class5_mode1": 253,
+    "class5_unique_writer_bypass": 461,
+    "class5_preESI_eq_resultEAX_eq_nativeNextESI_eq_bypass": 461,
+    "class5_return_changes": 0,
+    "class5_return_to_0x27": 0,
+    "class5_unchanged_FFFFFFFF": 459,
+    "class5_unchanged_00000029": 2,
+    "class5_gate_forward": 2,
+    "class5_gate_absent": 459,
+    "class5_matched_real_FinalCommand": 2,
+    "ambiguous": 0,
+    "missing": 0
+  },
+  "lags_qpc": {
+    "route_writer": {
+      "min": 4,
+      "median": 14,
+      "max": 75,
+      "p99": 61
+    },
+    "writer_bypass": {
+      "min": 1,
+      "median": 2,
+      "max": 168,
+      "p99": 17
+    },
+    "route_bypass": {
+      "min": 6,
+      "median": 16,
+      "max": 173,
+      "p99": 67
+    }
+  },
+  "finite_chains": [
+    {
+      "p": "P1",
+      "route": 7833,
+      "writer": 10228,
+      "bypass": 6897,
+      "gate": 1050,
+      "final": 93,
+      "payload": "00000029",
+      "qpc_deltas": [
+        22,
+        6,
+        3,
+        7
+      ]
+    },
+    {
+      "p": "P1",
+      "route": 8665,
+      "writer": 11036,
+      "bypass": 7668,
+      "gate": 1122,
+      "final": 103,
+      "payload": "00000029",
+      "qpc_deltas": [
+        21,
+        6,
+        4,
+        8
+      ]
+    }
+  ],
+  "offline_package_sha256": "a54e5441b83173ee834e58086e86d0bcde4896ff69a0fcf4b7db15117735b95c",
+  "synthetic_unittest_pass": 10,
+  "new_dll": false,
+  "new_run": false,
+  "new_hooks": 0,
+  "stage36_off": true,
+  "gameplay_improvement_proven": false
+}

@@ -1,0 +1,120 @@
+{
+  "stage": 119,
+  "date": "2026-11-12",
+  "kind": "ORIGINAL_NATIVE_STATIC_ONLY",
+  "original_exe": {
+    "size_bytes": 175556608,
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "format": "PE32 x86",
+    "imagebase": "0x00400000"
+  },
+  "verification": {
+    "exact_relocated_refs": 45,
+    "relocated_xrefs_per_va": {
+      "0E10BEDC": 29,
+      "05146280": 7,
+      "05146284": 5,
+      "05146288": 2,
+      "0514628C": 2
+    },
+    "distinct_original_instruction_sites": 42,
+    "verified_E8_calls": 135,
+    "verified_native_Jcc": 7,
+    "offline_unit_tests_passed": 46,
+    "offline_unit_tests_failed": 0
+  },
+  "helper_call_counts": {
+    "F9900": 91,
+    "F9920": 1,
+    "F9940": 23,
+    "F9980": 9,
+    "X165D20": 11
+  },
+  "selector": {
+    "address": "0x0E10BEDC",
+    "direct_store_count": 11,
+    "store_rvas": [
+      "0FB487",
+      "19F542",
+      "19F676",
+      "19FB8B",
+      "19FCC6",
+      "1A041F",
+      "1A2D2E",
+      "1A34AF",
+      "1A354B",
+      "1A3597",
+      "1A35DC"
+    ],
+    "derived_value8_possible": "1A352A decrement 9->8 or 1A3572 increment 7->8, subject to surrounding gates",
+    "value8_observed_in_game": false
+  },
+  "map": {
+    "base": "0x05146280",
+    "map1": "0x05146284",
+    "reset_all_to_neg1": "0F9920 (caller 1A2D13)",
+    "indexed_writer": "0F9940 (23 direct call sites)",
+    "direct_index1_neg1_examples": [
+      "165F6F",
+      "165FFE",
+      "16BF52"
+    ],
+    "direct_index1_one_example": "19F36E",
+    "swap_map0_map1": "0F9980 (9 direct call sites)",
+    "map1_runtime_value_observed": false
+  },
+  "object_flag": {
+    "object_updater": "0x19EF30",
+    "search_helper": "0x165D20",
+    "searched_array_base": "FDF70() + 0x5104, 4 DWORDs",
+    "set_2a_site": "0x19F143",
+    "set_2b_site": "0x19F160",
+    "clear_2a_2b_sites": [
+      "0x19EDBA",
+      "0x19EF7E",
+      "0x19EFD3",
+      "0x19F3D0"
+    ],
+    "object_flag_runtime_values_observed": false
+  },
+  "stage118_target": {
+    "indirect_G4_or_G5_writer": "0x19F2AD",
+    "object_state3_writer": "0x19F295",
+    "first_slot_conditions": [
+      "object[2A] != 0",
+      "selector==8",
+      "map[1]==-1",
+      "reaches target CFG"
+    ],
+    "last_writer_proven": false
+  },
+  "previous_stage116_runtime": {
+    "G1_G2_G3_G4_G5": [
+      0,
+      0,
+      3,
+      7,
+      0
+    ],
+    "complete_snapshots": 1455,
+    "parentA_gate_skips": 16760
+  },
+  "zip": {
+    "name": "ArcanaAI_Stage119_SelectorMapFlag_StaticAudit_Clean.zip",
+    "size_bytes": 22631,
+    "sha256": "024a1259c9f95195276b3a9d90a29a4c20b276106ce3280c87f819d0c28f7e37",
+    "binary_included": false
+  },
+  "windows_build": false,
+  "dll_changed": false,
+  "new_hook_count": 0,
+  "gameplay_data_writes": 0,
+  "DR_writes": 0,
+  "stage36": "OFF",
+  "known_good_dll_bytes": {
+    "stage115": 2082304,
+    "stage113": 2079744,
+    "stage110": 2073088
+  },
+  "next": "Stage120 STATIC-first parent/object lifetime analysis; only narrow passive positive-controlled last-writer trace if required"
+}

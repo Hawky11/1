@@ -1,3 +1,13 @@
+## Stage93 r3 installer — duplicate-field fix (2026-11-12)
+
+First install r1 failed with `Stage93 ambiguous duplicate: DWORD TickCount;`. r2 was still overly broad **inside its struct-to-global scope**, and the user confirmed the same refusal when running `ApplyStage93_r2.ps1`. This is a source-installer preflight failure, not Windows compile or runtime evidence. The second PowerShell call prompted for `Root:` only because it omitted `-Root`; cancel with Ctrl+C.
+
+**r3** restricts insertion to the unique neighboring `ThreadId; / TickCount; / LocalTime;` member triplet inside the `FinalCommandRecord` declaration (until the next `};`), preserving indentation and LF/CRLF. The other four targeted edits retain their scoped checks. All source edits are validated in memory before backup or writes. Stage92 r3 SHA checks, Stage93 native observer, and rollback are unchanged. Offline on preserved Stage9 code, the five source transformations passed, plus **7/7** structural tests (duplicate TickCount in old scope, LF/CRLF, negative cases), 2/2 correlator tests, and **32/32** original AALib.exe checks. The archive manifest was rebuilt and every file hash verified. **PowerShell execution on the current user's project, MSVC build, and game runtime still need testing.**
+
+**Install**: extract the latest complete Stage93 r3 ZIP sent in chat; run `powershell -ExecutionPolicy Bypass -File .\ApplyStage93.ps1 -Root 'D:\INCUBATOR\ArcanaAIOverhaul'` from the extracted folder. Alternatively replace the separate script and call `ApplyStage93_r3.ps1` with the same `-Root`. Do not mix an old script with an unrelated ZIP. If a different C++ source signature fails, stop rather than bypassing protections; upload the current `AICommandSiteTrace.cpp` to make exact-source adaptations.
+
+---
+
 ## Stage93 r2 installer correction (2026-11-12)
 
 r1 installer failed safely before touching source: `Stage93 ambiguous duplicate: DWORD TickCount;`. The working `AICommandSiteTrace.cpp` has more than one globally matching field. The r2 `ApplyStage93.ps1` restricts edits to `FinalCommandRecord`, `AppendLogAtTime`, `QueueFinalCommandRecord` and `FlushReadyRecords`, requiring uniqueness **within** each target scope. Stage92 r3 exact SHA256 gates and reversible backup are unchanged. No native Stage93 hook implementation was modified. Archived FinalCommand structural test with injected unrelated duplicate members/statements and a fail-closed in-scope duplicate passed 3/3; Windows PowerShell/MSVC/game testing remains pending.

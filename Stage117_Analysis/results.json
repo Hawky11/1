@@ -1,0 +1,138 @@
+{
+  "stage": 117,
+  "date": "2026-11-12",
+  "status": "ORIGINAL_NATIVE_STATIC_ONLY",
+  "source_user_exe": {
+    "file": "AALib.exe",
+    "bytes": 175556608,
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "arch": "PE32-x86",
+    "imagebase": "0x00400000"
+  },
+  "original_pe": {
+    "highlow_relocations": 212051,
+    "relocated_operands_verified": 371,
+    "original_opcode_signatures": 18,
+    "direct_writer_sites_verified": 34
+  },
+  "python_offline_tests": {
+    "passed": 21,
+    "failed": 0
+  },
+  "globals": {
+    "G1": {
+      "preferred_va": "0x0E3C3EFC",
+      "relocated_xrefs": 29,
+      "direct_store_sites": [
+        "0x1F3EB6",
+        "0x1F3F4D",
+        "0x1F3F96",
+        "0x1F400B",
+        "0x1F44D9",
+        "0x1F44F3",
+        "0x1F450D",
+        "0x1F4527",
+        "0x1F4559",
+        "0x1F456E",
+        "0x1F459E",
+        "0x1F45B8",
+        "0x1F4615"
+      ]
+    },
+    "G2": {
+      "preferred_va": "0x0E3C4930",
+      "relocated_xrefs": 9,
+      "direct_store_sites": [
+        "0x1F4142",
+        "0x1F41CB"
+      ]
+    },
+    "G3": {
+      "preferred_va": "0x0E10B37C",
+      "relocated_xrefs": 148,
+      "direct_store_sites": [
+        "0x4CFA8",
+        "0x4D011",
+        "0xF9805",
+        "0xF9AE5",
+        "0xFB472",
+        "0x19EDD0",
+        "0x19F973",
+        "0x19FA5A",
+        "0x1A09D0",
+        "0x1A0C79",
+        "0x1A2D18"
+      ]
+    },
+    "G4": {
+      "preferred_va": "0x0E10B640",
+      "relocated_xrefs": 136,
+      "direct_store_sites": [
+        "0x19F669",
+        "0x19FA6F",
+        "0x19FB7F",
+        "0x19FCBB",
+        "0x1A0414",
+        "0x1A05B8",
+        "0x1A09BE"
+      ]
+    },
+    "G5": {
+      "preferred_va": "0x0E10B8B8",
+      "relocated_xrefs": 49,
+      "direct_store_sites": [
+        "0x1A05ED"
+      ]
+    }
+  },
+  "native_call_counts": {
+    "FA480": 229,
+    "helper_1F4700": 31,
+    "writer_1F3EB0": 49,
+    "reset_1F4140": 5,
+    "setflag_1F41B0": 2,
+    "bulkreset_F97E0": 3,
+    "indexreset_F9830": 4,
+    "slot_swap_F99A0": 9
+  },
+  "record_geometry": {
+    "G4_G5_stride_bytes": 632,
+    "bulk_two_slots_bytes": 1264,
+    "swap_copy_dwords": 158
+  },
+  "confirmed_CFG": {
+    "path1": "G1 in {8,14} && G2!=0",
+    "path2": "G3==1 && G4==4",
+    "path3": "G3==2 && G5==4",
+    "site_19FA42_positive": "1F4700 returns nonzero -> G3=1 at 19FA5A -> G4=4 at 19FA6F",
+    "F99A0": "two 0x278-byte REP MOVSD record swaps and G3=1/2 update"
+  },
+  "previous_runtime_sample": {
+    "g1": 0,
+    "g2": 0,
+    "g3": 3,
+    "g4": 7,
+    "g5": 0,
+    "stage116_samples": 1455,
+    "stage116_full_parentA_gate_skips": 16760
+  },
+  "caveats": [
+    "Direct address-literal stores are not an exhaustive inventory of indirect/bulk-copy writes",
+    "The exact Stage116 G3=3 and G4=7 last-writers are not identified",
+    "G1/G2 and G3/G4/G5 semantic mode names not verified",
+    "Stage113 observes one of 229 direct FA480 call sites",
+    "No Stage117 Windows build or runtime work"
+  ],
+  "artifact": {
+    "filename": "ArcanaAI_Stage117_FA480_GlobalWriter_StaticAudit.zip",
+    "bytes": 22541,
+    "sha256": "bf9cef7f76c877f20e150892134f27ff41043290d1165833798d891b561e8fd8",
+    "contents_count": 8
+  },
+  "next": "Stage118 STATIC-first state object G3=3 and indirect G4=7 provenance, no forced native-state changes",
+  "rollback_dll_bytes": {
+    "Stage115": 2082304,
+    "Stage113": 2079744,
+    "Stage110": 2073088
+  }
+}

@@ -1,3 +1,13 @@
+## 2026-11-12 — Stage93 r3 Windows runtime success, direct F5A68 native setter established
+
+- User upload [c623b607](https://github.com/Hawky11/1/commit/c623b607a) brought real MSVC x86 Build.log, 2,019,840-byte `dinput8.dll` BUILD SUCCEEDED (only prior C4754), new Stage93 direct-bit3 and final-command QPC logs, and fresh Stage92/91/90 data. Stage93 `INSTALLED 1/1`, Stage92 3/3 with Stage35 compatibility, 47 clean health intervals. Report: `Stage93_Runtime/RUNTIME_ANALYSIS.md`; counters `results.json`.
+- Exactly 15,814 Stage92 F5990 ticks; 25,898 Stage91 bit-index reads (all predictionMatch=1); 7,907 direct F5A68 OR events and 7,907 helper events (SET10/CLEAR7897). Direct OR branch distribution: 6,526 early bit2 bypass, 585 positive bit9, 796 positive bit10. Exact unique OR-to-F5990 joins, zero errors.
+- 81 Stage92 P+3B70 bit3 0→1 transitions: 77 directly captured native F5A68 OR 0→1 (44 P1/33 P2), four on original 9ED20 SET helper ticks, zero unexplained. This gives the previously missing direct-writer evidence, without claiming all historical Stage92 events can be joined across sessions or no other native writers exist.
+- Added QPC to existing FinalCommand recorder without another native detour: 133/133 exact original FinalCommand matches (P1 70/P2 63, 43 unique payloads). 46 command snapshots bit3=1; 87 bit3=0. 133/133 last completed Stage92 same actor/TID snapshots agree bit3, QPC delay 533–2,303 raw ticks. EventDispatch has 430 detailed rows (287 type0,143 type1); bit3→specific payload causality not yet established.
+- Stage90 has 1,392 fresh native F57D0 calls; Stage87/88 logs in root came from earlier run and are **not** joined. Keep tested DLL and rollback, Stage36 OFF. Next stage should target action-selection cause with a narrowly guarded passive native observation, not assume temporal correlation implies control.
+
+---
+
 ## 2026-11-12 — Stage93 r1 prepared, source-only (not Windows tested)
 
 - Confirmed Stage92 r3 live report: 17,788 F5990 ticks, 9,786 helper selections, 31,605 exact Stage91 reader joins; 127 bit3 rises, of which 119 without observed 9ED20 SET. Report in `Stage92_Runtime/RUNTIME_ANALYSIS.md`.

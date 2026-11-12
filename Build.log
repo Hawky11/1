@@ -1,7 +1,7 @@
 ArcanaAIOverhaul Stage 11 build log
-Started: 12.11.2026  0:30:01,54
+Started: 12.11.2026  8:04:13,23
 Project: D:\INCUBATOR\ArcanaAIOverhaul
-Temporary work: C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Build_25954_31667_21474
+Temporary work: C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Build_16644_1318_21698
 
 [1/6] Project files: OK
 [2/6] Using vswhere: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe
@@ -33,7 +33,7 @@ AIQueueTrace.cpp
 
 ===== Compiling AICommandSiteTrace.cpp =====
 AICommandSiteTrace.cpp
-D:\INCUBATOR\ArcanaAIOverhaul\src\AICommandSiteTrace.cpp(785) : warning C4754: Правила преобразования арифметических операций в сравнении по адресу D:\INCUBATOR\ArcanaAIOverhaul\src\AICommandSiteTrace.cpp(782) означают, что одна ветвь не может быть выполнена. Приведите "(i * ...)" к "ULONG64" (или к аналогичному типу из 8 байт).
+D:\INCUBATOR\ArcanaAIOverhaul\src\AICommandSiteTrace.cpp(786) : warning C4754: Правила преобразования арифметических операций в сравнении по адресу D:\INCUBATOR\ArcanaAIOverhaul\src\AICommandSiteTrace.cpp(783) означают, что одна ветвь не может быть выполнена. Приведите "(i * ...)" к "ULONG64" (или к аналогичному типу из 8 байт).
 
 ===== Compiling AIProducerContextTrace.cpp =====
 AIProducerContextTrace.cpp
@@ -44,4 +44,4 @@ AIParentFlowTrace.cpp
 [6/6] Linking build\dinput8.dll
    Создается библиотека build\dinput8.lib и объект build\dinput8.exp
 
-BUILD SUCCEEDED. DLL size: 2011648 bytes.
+BUILD SUCCEEDED. DLL size: 2019840 bytes.

@@ -1,4 +1,4 @@
-# Stage93 r2 installer: scope source edits to the existing final-command record and functions.
+# Stage93 r3 installer: identify the exact FinalCommandRecord field triplet.
 # Apply ONLY to unmodified, source-verified Stage92 r3 Windows project.
 param([Parameter(Mandatory=$true)][string]$Root)
 $ErrorActionPreference='Stop'
@@ -24,6 +24,28 @@ function ReplaceScopedOne([string]$text,[string]$startMarker,[string]$endMarker,
  $patched=ReplaceOne $scope $find $replace
  return $text.Substring(0,$a)+$patched+$text.Substring($b)
 }
+function InsertStage93RecordField([string]$text){
+ # Target the actual member triplet, not a generic TickCount identifier.
+ # Additional TickCount fields elsewhere in this source/record are immaterial.
+ $cmp=[StringComparison]::Ordinal
+ $marker='struct FinalCommandRecord'
+ $a=$text.IndexOf($marker,$cmp)
+ Require ($a -ge 0) 'Stage93 FinalCommandRecord declaration absent.'
+ Require ($text.IndexOf($marker,$a+$marker.Length,$cmp) -lt 0) 'Stage93 duplicate FinalCommandRecord declarations.'
+ $open=$text.IndexOf('{',$a+$marker.Length)
+ Require ($open -ge 0 -and $open -lt $a+180) 'Stage93 FinalCommandRecord opening brace absent.'
+ $close=$text.IndexOf('};',$open+1,$cmp)
+ Require ($close -gt $open) 'Stage93 FinalCommandRecord closing brace absent.'
+ $section=$text.Substring($open,$close-$open)
+ $pattern='(?m)^[ \t]*DWORD[ \t]+ThreadId[ \t]*;[ \t]*\r?\n(?<indent>[ \t]*)DWORD[ \t]+TickCount[ \t]*;(?=[ \t]*\r?\n[ \t]*SYSTEMTIME[ \t]+LocalTime[ \t]*;)'
+ $matches=[System.Text.RegularExpressions.Regex]::Matches($section,$pattern)
+ Require ($matches.Count -eq 1) "Stage93 FinalCommandRecord exact ThreadId/TickCount/LocalTime triplet count=$($matches.Count); no files modified."
+ $m=$matches[0]
+ $newline=if($m.Value.Contains("`r`n")){"`r`n"}else{"`n"}
+ $addition=$newline+$m.Groups['indent'].Value+'ULONGLONG Stage93Qpc;'
+ $at=$open+$m.Index+$m.Length
+ return $text.Substring(0,$at)+$addition+$text.Substring($at)
+}
 $rootFull=(Resolve-Path -LiteralPath $Root).Path
 $src=Join-Path $rootFull 'src'
 $stage81=Join-Path $src 'Stage81SelectorWriter.inl'
@@ -44,7 +66,7 @@ $enc=New-Object System.Text.UTF8Encoding($false)
 $text=[System.IO.File]::ReadAllText($final,[System.Text.Encoding]::UTF8)
 Require (!$text.Contains('Stage93Qpc') -and !$text.Contains('STAGE93_FINAL_QPC')) 'Final-command source already patched.'
 # Isolate all mutations to the existing FinalCommand record producer/worker.
-$text=ReplaceScopedOne $text 'struct FinalCommandRecord' 'INIT_ONCE g_startOnce' 'DWORD TickCount;' "DWORD TickCount;`r`n        ULONGLONG Stage93Qpc;"
+$text=InsertStage93RecordField $text
 $text=ReplaceScopedOne $text 'void AppendLogAtTime(' 'void AppendLog(const char* message)' 'void AppendLogAtTime(const SYSTEMTIME* timestamp, const char* message)' 'void AppendLogAtTime(const SYSTEMTIME* timestamp, const char* message, const wchar_t* filename = L"ArcanaAI_FinalCommandTrace.log")'
 $text=ReplaceScopedOne $text 'void AppendLogAtTime(' 'void AppendLog(const char* message)' 'GetSiblingPath(logPath, MAX_PATH, L"ArcanaAI_FinalCommandTrace.log")' 'GetSiblingPath(logPath, MAX_PATH, filename)'
 $text=ReplaceScopedOne $text 'void QueueFinalCommandRecord(' 'void FlushReadyRecords()' 'record.TickCount = GetTickCount();' @'

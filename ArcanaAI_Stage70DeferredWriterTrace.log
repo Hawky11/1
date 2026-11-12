@@ -1,7 +1,9 @@
-[2026-11-11 12:59:44] STAGE70_DEFERRED_BUILD=2026-11-11-r2 relocation-aware original signature; DRwrites=0.
-[2026-11-11 12:59:44] STAGE70_GUARD x86=1 xmm=1 stage67=2 stage65=1 stage59Started=0 stage70=0 nativeOK=1 gameBase=00280000 tableRead=1 runtimeTableVA=006A54E8 expectedTableVA=006A54E8
-[2026-11-11 12:59:44] STAGE70_INSTALLED 1/1 site=156784 store=156787 resume=15678A; source MOV executes once; DRwrites=0
-[2026-11-11 13:00:05] STAGE70_DEFERRED_WRITE seq=1 side=P1 player=0DF21F78 object=29DF4020 tid=10968 qpcBefore=1881399826715 qpcAfter=1881399826716 siteRVA=156784 originalStoreRVA=156787 valueEDX=00000025 eaxBefore=00000001 eaxAfter=29DF4020 edxAfter=00000025 preMask=07 postMask=07 deferred=FFFFFFFF>00000025 selector=00000001>00000001 objectPtr=29DF4020>29DF4020
-[2026-11-11 13:00:05] STAGE70_HEALTH calls=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=4096 depth=8
-[2026-11-11 13:00:23] STAGE70_DEFERRED_WRITE seq=2 side=P1 player=0DF21F78 object=29DF4020 tid=10968 qpcBefore=1881574356505 qpcAfter=1881574356506 siteRVA=156784 originalStoreRVA=156787 valueEDX=00000025 eaxBefore=00000001 eaxAfter=29DF4020 edxAfter=00000025 preMask=07 postMask=07 deferred=FFFFFFFF>00000025 selector=00000001>00000001 objectPtr=29DF4020>29DF4020
-[2026-11-11 13:00:23] STAGE70_HEALTH calls=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=4096 depth=8
+[2026-11-12 10:00:11] STAGE70_DEFERRED_BUILD=2026-11-11-r2 relocation-aware original signature; DRwrites=0.
+[2026-11-12 10:00:11] STAGE70_GUARD x86=1 xmm=1 stage67=2 stage65=1 stage59Started=0 stage70=0 nativeOK=1 gameBase=00100000 tableRead=1 runtimeTableVA=005254E8 expectedTableVA=005254E8
+[2026-11-12 10:00:11] STAGE70_INSTALLED 1/1 site=156784 store=156787 resume=15678A; source MOV executes once; DRwrites=0
+[2026-11-12 10:00:50] STAGE70_DEFERRED_WRITE seq=1 side=P1 player=0DDA1F78 object=29DB5020 tid=17636 qpcBefore=2637868937949 qpcAfter=2637868937950 siteRVA=156784 originalStoreRVA=156787 valueEDX=00000025 eaxBefore=00000001 eaxAfter=29DB5020 edxAfter=00000025 preMask=07 postMask=07 deferred=FFFFFFFF>00000025 selector=00000001>00000001 objectPtr=29DB5020>29DB5020
+[2026-11-12 10:00:50] STAGE70_HEALTH calls=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=4096 depth=8
+[2026-11-12 10:00:54] STAGE70_DEFERRED_WRITE seq=2 side=P1 player=0DDA1F78 object=29DB5020 tid=17636 qpcBefore=2637903682793 qpcAfter=2637903682794 siteRVA=156784 originalStoreRVA=156787 valueEDX=00000025 eaxBefore=00000001 eaxAfter=29DB5020 edxAfter=00000025 preMask=07 postMask=07 deferred=FFFFFFFF>00000025 selector=00000001>00000001 objectPtr=29DB5020>29DB5020
+[2026-11-12 10:00:54] STAGE70_HEALTH calls=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=4096 depth=8
+[2026-11-12 10:01:22] STAGE70_DEFERRED_WRITE seq=3 side=P1 player=0DDA1F78 object=29DB5020 tid=17636 qpcBefore=2638186863233 qpcAfter=2638186863234 siteRVA=156784 originalStoreRVA=156787 valueEDX=00000026 eaxBefore=00000002 eaxAfter=29DB5020 edxAfter=00000026 preMask=07 postMask=07 deferred=FFFFFFFF>00000026 selector=00000002>00000002 objectPtr=29DB5020>29DB5020
+[2026-11-12 10:01:22] STAGE70_HEALTH calls=1 filtered=0 dropped=0 overflow=0 mismatch=0 readFail=0 ring=4096 depth=8

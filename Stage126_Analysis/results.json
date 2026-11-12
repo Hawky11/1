@@ -1,0 +1,133 @@
+{
+  "stage": 126,
+  "date": "2026-11-13",
+  "kind": "ORIGINAL_PE32_NATIVE_STATIC_ONLY",
+  "no_new_windows_build": true,
+  "no_new_hooks": true,
+  "no_gameplay_state_writes": true,
+  "source": {
+    "original_user_exe": "AALib.exe",
+    "bytes": 175556608,
+    "pe": "PE32 i386",
+    "preferred_imagebase": "0x00400000",
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba"
+  },
+  "native": {
+    "handler_table_preferredVA": "0x007F8380",
+    "handler_table_rva": "0x3F8380",
+    "table_entries": 236,
+    "unique_handlers": 59,
+    "all_table_HIGHLOW_rel32": false,
+    "table_HIGHLOW_relocation_count": 236,
+    "table_address_literal_xrefs": 31,
+    "all_table_address_literals_HIGHLOW": true,
+    "exact_original_instruction_anchor_pass": 146,
+    "branch_edges_pass": 38,
+    "selected_direct_E8_calls_pass": 41,
+    "record_flag_writers_scoped": 11,
+    "handler_0x27": {
+      "rva": "0x0CC5F0",
+      "index_values": [
+        "0x27",
+        "0x28",
+        "0x29",
+        "0x2A"
+      ],
+      "logic": "masked context+0x18010 boolean, native SETNE AL/RET 10h, not attack execution"
+    },
+    "indexed_indirect_calls": [
+      "0xCEB4A CALL EAX",
+      "0xCEBB0 CALL EDX",
+      "0xCEE04 CALL EDX",
+      "0xCEE31 CALL EDX",
+      "0xCEF50 CALL EDX",
+      "0xCEF7C CALL EAX",
+      "0xCEFFF CALL EAX",
+      "0xCF040 CALL EDX",
+      "0xCF14D CALL EDX"
+    ],
+    "direct_call_counts": {
+      "CEBE0": 4,
+      "CEAD0": 3,
+      "CBE00": 2,
+      "CEA20": 18,
+      "CBDE0": 12,
+      "CE8C0": 2
+    },
+    "CEBE0_direct_call_RVAs": [
+      "0x0988EA",
+      "0x098948",
+      "0x0CAD79",
+      "0x0CADDA"
+    ],
+    "activation": {
+      "site_rva": "0x0CF0FB",
+      "opcode": "88 43 10",
+      "value_source": "AL read from [EBP-0x2C] at CF0F8",
+      "meaning": "native selected record+0x10 state update, not proven game action commit",
+      "dynamically_executed_in_stage123": false
+    },
+    "original_CBE00": {
+      "rva": "0x0CBE00",
+      "reader_sites": [
+        "0x0F3216",
+        "0x0F3234"
+      ],
+      "result": "Boolean of record+0x10 nonzero"
+    },
+    "producer_fallback": {
+      "caller": "F3930",
+      "callee": "F30B0",
+      "original_direct_call_RVAs": [
+        "0x0F3654",
+        "0x0F3CBC"
+      ],
+      "scanned_record_groups": [
+        40,
+        176
+      ],
+      "stride": "0x24",
+      "return_rva": "0x0F325A",
+      "return_eax": "0x27",
+      "requires_prior_guards_and_no_active_records": true,
+      "observed_runtime_last_return": false
+    }
+  },
+  "offline": {
+    "portable_unittest_passed": 532,
+    "portable_unittest_failed": 0,
+    "crc_zip_pass": true
+  },
+  "prior_runtime": {
+    "stage": 123,
+    "mode0_0x27_to_cea20_pre": 25,
+    "cea20_pre_to_post": 25,
+    "CEBE0_entry": 0,
+    "CEC64_nativeRead": 0,
+    "FA480_parentA_gate_skips": 16490,
+    "stage122_G4_writer_site_positive": true
+  },
+  "limitations": [
+    "All values are from original on-disk private AALib.exe, not the live detoured F2DE0",
+    "No fresh Stage126 runtime hooks, no game run and no gameplay acceptance/hit proof",
+    "Same numeric 0x27 does not establish actual F30B0 branch executed in all Stage123 MODE0 events",
+    "Only selected 11 direct record flag writers in related native functions; not exhaustive of all alias/bulk writers",
+    "Zero observed CEBE0 entry is scoped to Stage123; other action paths remain possible"
+  ],
+  "archive": {
+    "name": "ArcanaAI_Stage126_DispatchTable_RecordActivation_StaticAudit.zip",
+    "bytes": 31158,
+    "sha256": "4ad1dd44e7d4dedc2edd32d201210d13b711c0329b979507db25b19a9b9eee62",
+    "files": 16,
+    "includes_exe": false,
+    "includes_dll": false
+  },
+  "next": "Stage127 original F3930/F30B0/CBE00 record presence and gameplay consumer CFG; only consider narrow passive read-only probe with positive control if necessary",
+  "stage36": "OFF",
+  "rollback_dll_bytes": {
+    "Stage122": 2089984,
+    "Stage115": 2082304,
+    "Stage113": 2079744,
+    "Stage110": 2073088
+  }
+}

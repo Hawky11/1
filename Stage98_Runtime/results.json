@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-12",
+  "stage": "Stage98",
+  "revision": "r1",
+  "runtime_upload_commit": "aace9cd5b4eb001ddddfdb338fd8416471e3b0a9",
+  "build": {
+    "succeeded": true,
+    "toolchain": "MSVC x86",
+    "dll_bytes": 2051584,
+    "preexisting_warning": "C4754 at AICommandSiteTrace.cpp:786"
+  },
+  "native_install": {
+    "stage94": "2/2",
+    "stage95": "2/2",
+    "stage96": "5/5",
+    "stage97": "1/1",
+    "stage98": "1/1"
+  },
+  "health_snapshots_per_stage": 49,
+  "health_zero_filtered_dropped_mismatch_readFail": true,
+  "events": {
+    "stage98_route": 13926,
+    "stage97_inherited": 13926,
+    "stage96_writer": 17946,
+    "stage95_bypass": 12032,
+    "stage94_producer": 1894,
+    "stage94_gate": 224
+  },
+  "r1_tid_bug": {
+    "stage98_tid": "0",
+    "companion_unique_tid": "11956",
+    "cause": "e.tid=GetCurrentThreadId() commented out in source",
+    "stock_strict_correlator_valid": false
+  },
+  "single_thread_qpc_recovered": {
+    "scope": "Stage98 r1 single-threaded same-run logs only; join by player/frame/QPC",
+    "routes": 13926,
+    "matched": 13926,
+    "missing": 0,
+    "max_lag_qpc": 10000,
+    "lag_min_qpc": 1,
+    "lag_max_qpc": 538,
+    "first_outcome_before_next_snapshot": true,
+    "predicted_matches": 13229,
+    "predicted_mismatches": 0,
+    "class1": {
+      "count": 1894,
+      "producer": 1894
+    },
+    "class3": {
+      "count": 11335,
+      "bypass": 11335
+    },
+    "class5": {
+      "count": 697,
+      "bypass": 697,
+      "unresolved_predicate": true
+    },
+    "class2": 0,
+    "class4": 0
+  },
+  "stage93_final_log_same_session": false,
+  "r2": {
+    "status": "source-only, not MSVC-built or runtime-validated",
+    "branch": "stage98-r2-f7a00-tid-logger-fix-source-only",
+    "source_commit": "1299c79324621ab1c286ce91e244ef36daa8c56f",
+    "only_change": "restore executable e.tid=GetCurrentThreadId();",
+    "source_sha256_old": "a2548073f73fd7967ecece70cb278b32c162c0dfd07d9f63be7f132f628d5ba1",
+    "source_sha256_new": "a56fe5692b3284fae37822e6f08438e3a32a800accbad5ff4c72d36ea97a1591",
+    "offline_checks_r1": 86,
+    "offline_checks_r2": 72,
+    "stage36_off": true
+  }
+}

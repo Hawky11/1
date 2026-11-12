@@ -1,3 +1,14 @@
+## ACTIVE CHECKPOINT — Stage98 r2 LIVE verified; Stage99 class5 static analysis next (2026-11-12)
+
+- [**Full Stage98 r2 runtime report**](Stage98_R2_Runtime/RUNTIME_ANALYSIS.md) · [counts/results JSON](Stage98_R2_Runtime/results.json) · [new runtime upload `8919f8e`](https://github.com/Hawky11/1/commit/8919f8ec242f1137c447d2eb4afc7ba0ed0c0e1e) · [r2 source, updater and rollback](https://github.com/Hawky11/1/tree/stage98-r2-f7a00-tid-logger-fix-source-only/Stage98_R2_TID_Fix). Historical Stage98 r1/r2 source-only pending headings below are superseded.
+- `Build.log`: **BUILD SUCCEEDED**, MSVC x86 `dinput8.dll` **2,051,584 bytes**, only existing nonfatal C4754. Stage98 F7A00 INSTALLED 1/1, Stage97 1/1, Stage96 5/5, Stage95 2/2, Stage94 2/2. Each stage 94–98 has **49** clean HEALTH snapshots (filtered,dropped,mismatch,readFail zero). Stage36 OFF; no reported added game/DR writes.
+- **TID FIX PROVEN:** Stage98 r2 logs **14,107/14,107 native ROUTE events at tid=11260**, exactly same as upstream Stage94/95/96/97; prior r1 tid=0 comment bug no longer present. Old log `STAGE98_BUILD=2026-11-12-r1` is static marker, NOT proof that r2 fix was absent.
+- **STRICT JOIN:** 14,107/14,107 Stage98 routes match unique next Stage94 producer or Stage95 bypass in exact player/TID/frame and QPC order (lag 1–322 ticks, no missing/duplicates). class1 **1,633/1,633 producer**, class3 **12,013/12,013 bypass**, **13,646/13,646** deterministic early matches. class5 **461** are observed bypass but late predicate UNKNOWN (mode0000=208, mode0001=253; P1=139 P2=322). Classes2/4 not observed.
+- **SAME-RUN FINAL PROOF:** 201/201 Stage94 gates have 151 finite F3930 producer +50 Stage95 bypass sources; 50/50 finite bypass→gate; 167 forward/34 reject; **167/167** forwarded gate→real Stage93 FinalCommand, QPC 1–85. Fresh Stage93 QPC file is now same-session, unlike Stage98 r1.
+- **NEXT:** Stage99 focused *static* audit of F7A49–F7A94 and helper `525CD0` to explain class5 without broad instrumentation. Any new hook must be guarded, passive, reversible, owner-compatible and tested offline first. Preserve tested Stage98 r2 DLL **2,051,584 B** and Stage97 fallback **2,045,440 B**. Stage36 OFF. Native route choice != gameplay hit/AI improvement.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage98 r1 LIVE verified, r2 TID logging fix SOURCE ONLY (2026-11-12)
 
 - [**Stage98 full verified runtime report**](Stage98_Runtime/RUNTIME_ANALYSIS.md) · [machine counts](Stage98_Runtime/results.json) · [same-run user upload](https://github.com/Hawky11/1/commit/aace9cd5b4eb001ddddfdb338fd8416471e3b0a9) · [Stage98 r2 SHA-gated patch and rollback](https://github.com/Hawky11/1/tree/stage98-r2-f7a00-tid-logger-fix-source-only/Stage98_R2_TID_Fix). Older Stage98 source-only pending headings below are historical.

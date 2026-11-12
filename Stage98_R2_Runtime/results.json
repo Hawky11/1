@@ -1,0 +1,108 @@
+{
+  "date": "2026-11-12",
+  "stage": "Stage98",
+  "revision": "r2",
+  "status": "windows_built_and_live_verified",
+  "runtime_upload_commit": "8919f8ec242f1137c447d2eb4afc7ba0ed0c0e1e",
+  "build": {
+    "succeeded": true,
+    "dll_bytes": 2051584,
+    "compiler": "MSVC x86",
+    "preexisting_C4754": true
+  },
+  "installed": {
+    "stage94": "2/2",
+    "stage95": "2/2",
+    "stage96": "5/5",
+    "stage97": "1/1",
+    "stage98": "1/1"
+  },
+  "health_snapshots_each": 49,
+  "health_nonzero_filtered_dropped_mismatch_readFail": 0,
+  "stage98": {
+    "route_events": 14107,
+    "valid_events": 14107,
+    "tid": "11260",
+    "tid_zero_count": 0
+  },
+  "native_route_join": {
+    "strict_context": "player+tid+frame",
+    "qpc_lag_max": 10000,
+    "matched": 14107,
+    "missing": 0,
+    "duplicate_outcome_assignment": 0,
+    "observed_lag_min": 1,
+    "observed_lag_max": 322,
+    "by_class": {
+      "1": {
+        "observed": "PRODUCER",
+        "events": 1633,
+        "expected_correct": 1633
+      },
+      "3": {
+        "observed": "BYPASS",
+        "events": 12013,
+        "expected_correct": 12013
+      },
+      "5": {
+        "observed": "BYPASS",
+        "events": 461,
+        "prediction": "unresolved"
+      }
+    },
+    "deterministic_prediction_correct": 13646,
+    "deterministic_prediction_mismatch": 0
+  },
+  "class5": {
+    "count": 461,
+    "P1": 139,
+    "P2": 322,
+    "modes": {
+      "0000": 208,
+      "0001": 253
+    },
+    "status_counts": {
+      "0000001A": 124,
+      "00000302": 108,
+      "00000303": 83,
+      "00000012": 64,
+      "00000304": 62,
+      "0000001B": 14,
+      "00000131": 6
+    },
+    "later_helper_predicate": "unobserved"
+  },
+  "native_event_counts": {
+    "stage97_inherited": 14107,
+    "stage96_writer": 18129,
+    "stage95_bypass": 12474,
+    "stage95_finite_bypass": 50,
+    "stage94_producer": 1633,
+    "stage94_finite_producer": 151,
+    "stage94_gate": 201,
+    "stage94_gate_forward": 167,
+    "stage94_gate_reject": 34,
+    "stage93_final_qpc": 167
+  },
+  "gate_source_join": {
+    "f3930_producer": 151,
+    "f7a94_bypass": 50,
+    "unattributed": 0,
+    "ambiguous": 0
+  },
+  "bypass_to_gate": {
+    "matched": 50,
+    "missing": 0,
+    "lag_min": 2,
+    "lag_max": 51
+  },
+  "gate_to_final": {
+    "matched": 167,
+    "missing": 0,
+    "ambiguous": 0,
+    "lag_min": 1,
+    "lag_max": 85
+  },
+  "stage36_off": true,
+  "gameplay_improvement_proven": false
+}

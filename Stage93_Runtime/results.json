@@ -1,0 +1,81 @@
+{
+  "source_commit": "c623b607a",
+  "date": "2026-11-12",
+  "build": {
+    "windows_x86": "BUILD SUCCEEDED",
+    "dll_bytes": 2019840,
+    "warning": "C4754 existing"
+  },
+  "stage93": {
+    "installed": "1/1",
+    "native_OR_events": 7907,
+    "valid": 7907,
+    "or_rises": 77,
+    "or_rises_by_side": {
+      "P1": 44,
+      "P2": 33
+    },
+    "matched_stage92": 7907,
+    "unmatched": 0,
+    "health_rows": 47,
+    "health_bad": 0
+  },
+  "stage92": {
+    "installed": "3/3",
+    "stage35_compat": true,
+    "ticks": 15814,
+    "helpers": 7907,
+    "set": 10,
+    "clear": 7897,
+    "flag3_rises": 81,
+    "rises_without_set": 77,
+    "rises_with_set": 4,
+    "rises_without_set_matched_direct_or": 77,
+    "unexplained_rises": 0,
+    "branch": {
+      "bit2_bypass": 6526,
+      "bit9_positive": 585,
+      "bit10_positive": 796,
+      "all_three_reads": 7907
+    },
+    "health_rows": 47,
+    "health_bad": 0
+  },
+  "stage91": {
+    "installed": "3/3",
+    "reads": 25898,
+    "valid_and_prediction_match": 25898,
+    "reads_missing_from_stage92_ticks": 0,
+    "health_rows": 47,
+    "health_bad": 0
+  },
+  "final_command": {
+    "original_rows": 133,
+    "companion_qpc_rows": 133,
+    "exact_matches": 133,
+    "P1": 70,
+    "P2": 63,
+    "unique_payloads": 43,
+    "bit3_set": 46,
+    "bit3_clear": 87,
+    "same_bit3_as_last_stage92_tick": 133,
+    "prior_tick_gap_qpc_min": 533,
+    "prior_tick_gap_qpc_max": 2303
+  },
+  "dispatch": {
+    "detail": 430,
+    "type0": 287,
+    "type1": 143
+  },
+  "stage90": {
+    "native_F57D0_rows": 1392,
+    "health_rows": 47,
+    "health_bad": 0
+  },
+  "warnings": [
+    "Stage87 and Stage88 root logs are from older session; do not join with new Stage93 capture",
+    "QPC/state matches are temporal evidence, not payload causality",
+    "No visual game action behavior demonstrated"
+  ],
+  "next": "Inspect passive command-choice boundary and same-event producer path; preserve Stage93 and Stage92 DLL backups; Stage36 OFF"
+}

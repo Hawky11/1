@@ -1,3 +1,15 @@
+## ACTIVE CHECKPOINT — Stage97 r1 LIVE verified (2026-11-12)
+
+- [**Full Stage97 runtime analysis**](Stage97_Runtime/RUNTIME_ANALYSIS.md) · [results JSON](Stage97_Runtime/results.json) · [same-run GitHub upload](https://github.com/Hawky11/1/commit/61e62b6de57b47fdeb1767a71f931e5463ca782a) · [Stage97 source branch](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay). Stage97 source-only pending statements below are **historical**.
+- Windows MSVC x86 **BUILD SUCCEEDED**: `dinput8.dll` **2,045,440 B**. Stage97 F77D4 **INSTALLED 1/1** with Stage96 **5/5**, Stage95 **2/2**, Stage94 **2/2**; Stage94's Stage82 call-chain verified. **46** clean health snapshots each, no observer-reported drop/mismatch/read fail. No reported additional game/DR writes; keep Stage36 OFF.
+- Complete same-run Stage97 INHERITED **12,997** (finite 66), Stage96 WRITER **14,071**, Stage95 BYPASS **11,563** (finite 61), Stage94 GATE **200** (162 forward/38 reject), Stage93 FINAL_QPC **162**.
+- **61/61** finite bypasses have an exact last native writer with same player/TID/frame and <=10,000 QPC ticks: Stage96 **59** (F79F0=39, F7924=13, F7A8F=7), Stage97 F77D4 **2**. No mismatches or stale candidates. 200/200 gate source routes: 139 F3930 producer +61 bypass, and **162/162** real FinalCommands match forwarded gates.
+- **CRITICAL POSITIVE:** P1 ESI **0x2C** route reproduced twice: Stage97 seq3471→Stage95 bypass3140→Stage94 gate386→Stage93 final46 (68 ticks Stage97→Stage95); Stage97 seq8905→Stage95 bypass7987→Stage94 gate1058→Stage93 final114 (72 ticks). Both Stage97 localD4=0x2C, localM8=1, predictedJneTo789E=1; no Stage96 writer of 0x2C in the run.
+- Scope: These new same-run chains explain **the missing native inheritance mechanism** and close the observed attribution gap; the old Stage96 bypass seq9461 remains a historical event which cannot be directly joined across runs. F7756 is statically supported but not instrumented in this run.
+- **NEXT:** Do not start Stage98 instrumentation merely to duplicate proven provenance. Preserve working Stage97 DLL and Stage96 fallback; continue with a specific AI-selection/gameplay hypothesis, high-value branch predicate or natural COM event, keeping guards exact, Stage36 OFF, no synthetic writes. No claims of improved attacks/hits without additional causal evidence.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage97 r1 SOURCE-ONLY (2026-11-12); Windows build/live test PENDING
 
 - **Source:** [Stage97 r1 full overlay](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay) · [installer](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/ApplyStage97.ps1) · [native static audit](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/analysis/STATIC_ANALYSIS.md) · [Stage96 verified runtime](https://github.com/Hawky11/1/blob/main/Stage96_Runtime/RUNTIME_ANALYSIS.md).

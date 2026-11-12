@@ -1,3 +1,11 @@
+## Stage97 r1 — LIVE verified; missing native ESI path closed for observed sample (2026-11-12)
+
+[**Stage97 live runtime report**](Stage97_Runtime/RUNTIME_ANALYSIS.md) · [latest user logs](https://github.com/Hawky11/1/commit/61e62b6de57b47fdeb1767a71f931e5463ca782a) · [Stage97 source and rollback](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay). MSVC x86 **BUILD SUCCEEDED**, DLL **2,045,440 bytes**, Stage97 **1/1 installed** alongside Stage96 **5/5**, Stage95 **2/2**, Stage94 **2/2**. **46/46** clean health records for each of Stages94–97.
+
+Across **61/61 finite Stage95 bypasses**, the latest same-context native ESI witness matches: **59 Stage96 (39 F79F0 / 13 F7924 / 7 F7A8F)** and **2 Stage97 F77D4**. The two P1 `0x2C` cases passed F77D4→F7A94→F7B0A→real FinalCommand with 68/72 QPC ticks between Stage97 and Stage95. **200/200 gates** have disjoint value-supported producer (139) or bypass (61) routes; **162/162** forward gates match real FinalCommand. Earlier Stage96 seq9461 belongs to another run, so the explanation is independently reproduced, not a cross-run event join. Stage36 remains OFF; this does not prove gameplay improvement.
+
+---
+
 ## Stage97 r1 — inherited ESI F77D4 (SOURCE ONLY, 2026-11-12)
 
 [Stage97 overlay, installer, rollback and tests](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay) · [Static analysis](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/analysis/STATIC_ANALYSIS.md) · [Latest verified Stage96 runtime](https://github.com/Hawky11/1/blob/main/Stage96_Runtime/RUNTIME_ANALYSIS.md). The next narrowly scoped passive native witness observes `MOV ESI,[EBP-2C]` at F77D8. This instruction and a bypass to F7A94 can explain the **still-unresolved Stage96 55/56** writer coverage (the P1 ESI=0x2C case), but **no Stage97 live evidence exists yet**. Original AALib.exe SHA256 verified; 66/66 offline tests pass. **Windows build/game run PENDING**; Stage96 r1 DLL 2,039,808 B remains last live-confirmed. Stage36 stays OFF; no synthetic commands or extra gameplay/DR writes. Installation / rollback commands are in [Stage97 README](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/README_STAGE97_RU.md).

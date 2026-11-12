@@ -1,0 +1,88 @@
+{
+  "stage": "97",
+  "variant": "r1",
+  "date": "2026-11-12",
+  "status": "windows_built_and_live_installed",
+  "runtime_upload_commit": "61e62b6de57b47fdeb1767a71f931e5463ca782a",
+  "msvc_x86_build_succeeded": true,
+  "dll_bytes": 2045440,
+  "stage_install": {
+    "94": "2/2",
+    "95": "2/2",
+    "96": "5/5",
+    "97": "1/1"
+  },
+  "health_snapshots_each": {
+    "94": 46,
+    "95": 46,
+    "96": 46,
+    "97": 46
+  },
+  "health_nonzero_error_snapshots_each": {
+    "94": 0,
+    "95": 0,
+    "96": 0,
+    "97": 0
+  },
+  "events": {
+    "stage97_inherited": 12997,
+    "stage97_finite": 66,
+    "stage97_predicted_jne_taken": 66,
+    "stage96_writer": 14071,
+    "stage95_bypass": 11563,
+    "stage95_finite_bypass": 61,
+    "stage94_producer": 1434,
+    "stage94_finite_producer": 139,
+    "stage94_gate": 200,
+    "stage94_forward": 162,
+    "stage94_reject": 38,
+    "stage93_final_qpc": 162
+  },
+  "gate_routes": {
+    "f3930_producer": 139,
+    "f7a94_bypass": 61,
+    "unattributed": 0
+  },
+  "finite_bypass_to_gate": {
+    "matched": 61,
+    "missing": 0,
+    "ambiguous": 0,
+    "lag_qpc_min": 2,
+    "lag_qpc_max": 49
+  },
+  "forward_gate_to_final": {
+    "matched": 162,
+    "missing": 0,
+    "ambiguous": 0,
+    "lag_qpc_min": 3,
+    "lag_qpc_max": 73
+  },
+  "finite_bypass_latest_writer": {
+    "stage96_f79f0": 39,
+    "stage96_f7924": 13,
+    "stage96_f7a8f": 7,
+    "stage97_f77d4": 2,
+    "unmatched": 0,
+    "invalid_or_value_mismatch": 0,
+    "lag_limit_qpc": 10000
+  },
+  "stage97_native_esi_2c_events": [
+    {
+      "stage97_seq": 3471,
+      "stage97_qpc": 2762727495409,
+      "stage95_seq": 3140,
+      "stage95_qpc": 2762727495477,
+      "stage94_gate_seq": 386,
+      "stage93_final_seq": 46
+    },
+    {
+      "stage97_seq": 8905,
+      "stage97_qpc": 2763072551015,
+      "stage95_seq": 7987,
+      "stage95_qpc": 2763072551087,
+      "stage94_gate_seq": 1058,
+      "stage93_final_seq": 114
+    }
+  ],
+  "caveat": "Two new 0x2C recurrences prove Stage97->Stage95->Stage94->Stage93 native route; prior Stage96 seq9461 belongs to a different run; upstream F7756 store not directly observed."
+}

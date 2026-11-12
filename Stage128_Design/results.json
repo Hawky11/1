@@ -1,0 +1,106 @@
+{
+  "stage": 128,
+  "date": "2026-11-13",
+  "status": "STATIC_FEASIBILITY_ONLY_NO_RUNTIME_INSTALL",
+  "binary": {
+    "name": "AALib.exe",
+    "format": "PE32/x86",
+    "size_bytes": 175556608,
+    "preferred_base": "0x00400000",
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba"
+  },
+  "static_verification": {
+    "original_instruction_anchors": 188,
+    "branch_edges": 30,
+    "candidate_site_signatures": 3,
+    "context_signatures": 12,
+    "full_e8_reldisplacement_sites": 5,
+    "full_text_F30B0_direct_callers": 2,
+    "full_text_CBE00_direct_callers": 2,
+    "known_detour_exclusion_envelopes": 17,
+    "nonoverlap_comparisons": 54,
+    "stage122_adapter_sha_pinned": true,
+    "stage122_module_sha_pinned": true,
+    "offline_tests_pass": 294,
+    "offline_tests_fail": 0
+  },
+  "proposed_but_NOT_installed": [
+    {
+      "role": "entry",
+      "RVA": "0x0F30B0",
+      "bytes": "558BEC83EC08",
+      "length": 6,
+      "original_replay": "push ebp;mov ebp,esp;sub esp,8"
+    },
+    {
+      "role": "fallback27",
+      "RVA": "0x0F325A",
+      "bytes": "B827000000",
+      "length": 5,
+      "original_replay": "mov eax,0x27"
+    },
+    {
+      "role": "returnInput",
+      "RVA": "0x0F326A",
+      "bytes": "8B450C5F5E",
+      "length": 5,
+      "original_replay": "mov eax,[ebp+0xc];pop edi;pop esi"
+    }
+  ],
+  "source_sha": {
+    "stage122_adapter": "3a78a8b6b68fda0999d33a2d392dd781fffa4c5bfd67a31b7fa2cdb5b8fadd1d",
+    "stage122_module": "4ae2a8f42774733f572b25d7f64df0c58ec005e52ae55080a6a718be4a75c1c1",
+    "source_files_modified": 0
+  },
+  "original_caller_sites": [
+    {
+      "rva": "0x0F3654",
+      "return_rva": "0x0F3659"
+    },
+    {
+      "rva": "0x0F3CBC",
+      "return_rva": "0x0F3CC1",
+      "contains_in_F3930": true
+    }
+  ],
+  "native_scope_model": {
+    "input_candidate_at_entry": "DWORD[original_ESP+8]",
+    "object_pointer_on_entry": "EAX",
+    "original_return_address": "DWORD[original_ESP]",
+    "new_frame_EBP_predicted": "original_ESP-4",
+    "exit_frame_reference": "EBP",
+    "requires_unique_per_entry_id": true,
+    "frame_address_reuse_risk": true,
+    "numeric_EAX_0x27_not_route_proof": true
+  },
+  "archived_artifact": {
+    "name": "ArcanaAI_Stage128_F30B0_Fallback27_PositiveControl_DesignAudit.zip",
+    "size_bytes": 26804,
+    "sha256": "35416a8c3c8086fa0921ef849d1271c7dc2393533280193861d5c7ab500ea142",
+    "entries": 19,
+    "zip_crc_pass": true,
+    "original_exe_dll_included": false
+  },
+  "synthetic_log": {
+    "contract": "STAGE129_PRODUCER_EVENT_V1",
+    "real_runtime_events": false,
+    "synthetic_scopes": 2,
+    "synthetic_fallback_count": 1,
+    "synthetic_retained_input_count": 1,
+    "one_retained_input_is_0x27": true
+  },
+  "caveats": [
+    "No Stage129 DLL or native runtime log",
+    "Original callsite census is direct E8 only",
+    "No unknown third-party live patch ownership determined",
+    "No accepted game action, hit, or AI improvement established"
+  ],
+  "next_stage": "Stage129 standalone source-only opt-in implementation with 3 fail-closed positive-controlled sites, then separate Windows x86 build and natural gameplay test",
+  "preserve_dll_bytes": {
+    "Stage122": 2089984,
+    "Stage115": 2082304,
+    "Stage113": 2079744,
+    "Stage110": 2073088
+  },
+  "Stage36": "OFF"
+}

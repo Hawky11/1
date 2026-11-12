@@ -1,3 +1,9 @@
+## Stage98 r1 — F7A00 command-route conditions (SOURCE ONLY, 2026-11-12)
+
+[**Stage98 source and installer**](https://github.com/Hawky11/1/tree/stage98-f7a00-command-route-source-only/Stage98_Overlay) · [static source audit](https://github.com/Hawky11/1/tree/stage98-f7a00-command-route-source-only/Stage98_Overlay/analysis/STATIC_ANALYSIS.md) · [rollback guide](https://github.com/Hawky11/1/tree/stage98-f7a00-command-route-source-only/Stage98_Overlay/README_STAGE98_RU.md). New passive observer of the native F7A00 shared branch between **F7A94 bypass** and **F7A99→F3930 producer**; reads flags, action-state and ESI, and compares its early-route prediction against existing Stage94/95 traces. Exactly **one** 6-byte guarded F7A00 hook, original MOV EAX,[EDI+3B78] replayed once. Original EXE SHA256 verified; **86/86 offline tests PASS**; **not yet Windows-built or game-tested**. Last verified Windows DLL is Stage97 r1 **2,045,440 bytes**. Keep Stage36 OFF, no extra gameplay/DR writes, no synthetic AI commands.
+
+---
+
 ## Stage97 r1 — LIVE verified; missing native ESI path closed for observed sample (2026-11-12)
 
 [**Stage97 live runtime report**](Stage97_Runtime/RUNTIME_ANALYSIS.md) · [latest user logs](https://github.com/Hawky11/1/commit/61e62b6de57b47fdeb1767a71f931e5463ca782a) · [Stage97 source and rollback](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay). MSVC x86 **BUILD SUCCEEDED**, DLL **2,045,440 bytes**, Stage97 **1/1 installed** alongside Stage96 **5/5**, Stage95 **2/2**, Stage94 **2/2**. **46/46** clean health records for each of Stages94–97.

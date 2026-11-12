@@ -118,21 +118,46 @@ bool SuspendAll(Suspended& peers){
  }
  CloseHandle(snap);if(!ok)Resume(peers);return ok;
 }
+// Stage82 already owns the original F7AD1 CALL and preserves the actual F3930
+// return value in EAX. Stage94 observes F7AD6, never replaces that CALL.
+// Accept precisely the original native CALL or Stage82's known Call1 wrapper;
+// a CALL merely landing somewhere inside dinput8.dll is NOT sufficient.
+bool ProducerCallChainOK(const BYTE* b,DWORD* targetOut=nullptr,bool* stage82Out=nullptr){
+ if(!b)return false;
+ if(targetOut)*targetOut=0u;
+ if(stage82Out)*stage82Out=false;
+ const DWORD site=kResult-5u;
+ if(b[site]!=0xE8u)return false;
+ std::int32_t rel=0;
+ std::memcpy(&rel,b+site+1u,sizeof(rel));
+ const DWORD target=static_cast<DWORD>(arcana_stage81::g_gameBase+kResult+rel);
+ if(targetOut)*targetOut=target;
+ // Untouched executable CALL F3930: both native bytes and decoded target.
+ if(std::memcmp(b+site,kProducerCall,sizeof(kProducerCall))==0)
+  return target==arcana_stage81::g_gameBase+0xF3930u;
+ // Only the *exact* current Stage82 Call1 wrapper is accepted.
+ if(InterlockedCompareExchange(&arcana_stage82::g_installed,0,0)!=1)return false;
+ if(g_Stage82Target1!=arcana_stage81::g_gameBase+0xF3930u)return false;
+ const DWORD knownStub=static_cast<DWORD>(reinterpret_cast<uintptr_t>(&Stage82Call1));
+ if(target!=knownStub)return false;
+ // Exact linker symbol &Stage82Call1 is defined inside this same dinput8.dll.
+ // Do NOT query the Windows loader lock here: SignatureOK is also called
+ // while peer threads are suspended during patch installation. 
+ if(stage82Out)*stage82Out=true;
+ return true;
+}
 bool SignatureOK(){
  const BYTE* b=reinterpret_cast<const BYTE*>(static_cast<uintptr_t>(arcana_stage81::g_gameBase));
  if(std::memcmp(b+kResult,kResultOriginal,sizeof(kResultOriginal))!=0||
     std::memcmp(b+kGate,kGateOriginal,sizeof(kGateOriginal))!=0||
-    std::memcmp(b+kResult-5u,kProducerCall,sizeof(kProducerCall))!=0||
     std::memcmp(b+kResultResume,kProducerNext,sizeof(kProducerNext))!=0||
     std::memcmp(b+kGate-3u,kGateCmp,sizeof(kGateCmp))!=0||
     std::memcmp(b+kGateAllow,kGateNext,sizeof(kGateNext))!=0||
-    std::memcmp(b+0xF7C59u,kFinalArgs,sizeof(kFinalArgs))!=0)return false;
- std::int32_t callRel=0,jneRel=0;
- std::memcpy(&callRel,b+kResult-4u,4u);
+    std::memcmp(b+0xF7C59u,kFinalArgs,sizeof(kFinalArgs))!=0||
+    !ProducerCallChainOK(b))return false;
+ std::int32_t jneRel=0;
  std::memcpy(&jneRel,b+kGate+2u,4u);
- if(static_cast<DWORD>(kResult+callRel)!=0xF3930u||
-    static_cast<DWORD>(kGateAllow+jneRel)!=kGateReject)return false;
- return true;
+ return static_cast<DWORD>(kGateAllow+jneRel)==kGateReject;
 }
 // Diagnostics ONLY: read the live code bytes after earlier stages have installed.
 // Never trust an original-file comparison as proof of untouched runtime code.
@@ -150,8 +175,10 @@ void DescribeSignatureFailure(){
   {"FINAL_PUSH",0xF7C59u,kFinalArgs,sizeof(kFinalArgs)}
  };
  DWORD bad=0u;
+ const bool acceptedProducer=ProducerCallChainOK(b);
  for(const Guard& check:checks){
-  if(std::memcmp(b+check.rva,check.expected,check.length)==0)continue;
+  if((check.rva==kResult-5u&&acceptedProducer)||
+     std::memcmp(b+check.rva,check.expected,check.length)==0)continue;
   ++bad;
   char actual[48]{},reference[48]{};
   for(DWORD j=0;j<check.length;++j){
@@ -174,13 +201,13 @@ void DescribeSignatureFailure(){
  std::int32_t relCall=0,relJne=0;
  std::memcpy(&relCall,b+kResult-4u,4u);
  std::memcpy(&relJne,b+kGate+2u,4u);
- const DWORD callDst=static_cast<DWORD>(kResult+relCall);
+ const DWORD callDst=static_cast<DWORD>(arcana_stage81::g_gameBase+kResult+relCall);
  const DWORD jneDst=static_cast<DWORD>(kGateAllow+relJne);
- if(callDst!=0xF3930u||jneDst!=kGateReject){
+ if(!acceptedProducer||jneDst!=kGateReject){
   ++bad;
-  char line[240]{};
-  sprintf_s(line,"STAGE94_SIGFAIL_TARGET callF3930Expected=0F3930 actualRVA=%06lX "
-   "jneExpected=0F7C68 actualRVA=%06lX",callDst,jneDst);
+  char line[260]{};
+  sprintf_s(line,"STAGE94_SIGFAIL_TARGET producerChainValid=%u callActualVA=%08lX "
+   "jneExpected=0F7C68 actualRVA=%06lX",acceptedProducer?1u:0u,callDst,jneDst);
   Log(line);
  }
  if(!bad)Log("STAGE94_SIGFAIL_UNEXPLAINED signature guard refused but no mismatched bytes found");
@@ -254,7 +281,7 @@ extern "C" __declspec(naked) void Stage94GateHook(){
 }
 namespace arcana_stage94 {
 bool Install(){
- Log("STAGE94_BUILD=2026-11-12-r2 DIAGNOSTIC_SOURCE_ONLY F7AD6 after-F3930 producer+F7B0A native JNE; originalOnce=1 gameWrites=0 DRwrites=0");
+ Log("STAGE94_BUILD=2026-11-12-r3 STAGE82_CALL_CHAIN_COMPAT F7AD6 after-F3930 producer+F7B0A native JNE; originalOnce=1 gameWrites=0 DRwrites=0");
  wchar_t ini[MAX_PATH+1]{};
  if(arcana_stage81::GetPath(ini,_countof(ini),L"ArcanaAI.ini")&&
     GetPrivateProfileIntW(L"AIResearch",L"EnableStage94ProducerGateTrace",1,ini)==0){
@@ -272,6 +299,19 @@ bool Install(){
  if(!SignatureOK()){
   DescribeSignatureFailure();
   Log("STAGE94_ERROR native signature already modified/not exact; no patch");return false;
+ }
+ {
+  const BYTE* code=reinterpret_cast<const BYTE*>(static_cast<uintptr_t>(arcana_stage81::g_gameBase));
+  DWORD callTarget=0u;bool viaStage82=false;
+  if(!ProducerCallChainOK(code,&callTarget,&viaStage82)){
+   Log("STAGE94_ERROR trusted producer CALL changed after preflight; no patch");return false;
+  }
+  char msg[240]{};
+  sprintf_s(msg,"STAGE94_PRODUCER_CHAIN_OK viaStage82=%u "
+   "callRVA=0F7AD1 targetVA=%08lX stage82Installed=%ld originalF3930TargetVA=%08lX",
+   viaStage82?1u:0u,callTarget,
+   InterlockedCompareExchange(&arcana_stage82::g_installed,0,0),g_Stage82Target1);
+  Log(msg);
  }
  BYTE* base=reinterpret_cast<BYTE*>(static_cast<uintptr_t>(arcana_stage81::g_gameBase));
  const void* hooks[2]={reinterpret_cast<const void*>(&Stage94ResultHook),

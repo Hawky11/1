@@ -1,4 +1,4 @@
-# Stage93 r2 installer: scope source edits to existing FinalCommand record and functions.
+# Stage93 r2 installer: scope source edits to the existing final-command record and functions.
 # Apply ONLY to unmodified, source-verified Stage92 r3 Windows project.
 param([Parameter(Mandatory=$true)][string]$Root)
 $ErrorActionPreference='Stop'

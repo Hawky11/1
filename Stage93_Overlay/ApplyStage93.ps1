@@ -1,4 +1,5 @@
-# Stage93 r1. Apply ONLY to unmodified, source-verified Stage92 r3 Windows project.
+# Stage93 r2 installer: scope source edits to existing FinalCommand record and functions.
+# Apply ONLY to unmodified, source-verified Stage92 r3 Windows project.
 param([Parameter(Mandatory=$true)][string]$Root)
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
@@ -9,6 +10,19 @@ function ReplaceOne([string]$text,[string]$find,[string]$replace){
  Require ($a -ge 0) "Stage93 anchor absent: $find"
  Require ($text.IndexOf($find,$a+$find.Length,[StringComparison]::Ordinal) -lt 0) "Stage93 ambiguous duplicate: $find"
  return $text.Substring(0,$a)+$replace+$text.Substring($a+$find.Length)
+}
+function ReplaceScopedOne([string]$text,[string]$startMarker,[string]$endMarker,
+                          [string]$find,[string]$replace){
+ $cmp=[StringComparison]::Ordinal
+ $a=$text.IndexOf($startMarker,$cmp)
+ Require ($a -ge 0) "Stage93 scope start absent: $startMarker"
+ Require ($text.IndexOf($startMarker,$a+$startMarker.Length,$cmp) -lt 0) "Stage93 scope start ambiguous: $startMarker"
+ $b=$text.IndexOf($endMarker,$a+$startMarker.Length,$cmp)
+ Require ($b -gt $a) "Stage93 scope end absent: $endMarker"
+ Require ($text.IndexOf($endMarker,$b+$endMarker.Length,$cmp) -lt 0) "Stage93 scope end ambiguous: $endMarker"
+ $scope=$text.Substring($a,$b-$a)
+ $patched=ReplaceOne $scope $find $replace
+ return $text.Substring(0,$a)+$patched+$text.Substring($b)
 }
 $rootFull=(Resolve-Path -LiteralPath $Root).Path
 $src=Join-Path $rootFull 'src'
@@ -30,16 +44,16 @@ $enc=New-Object System.Text.UTF8Encoding($false)
 $text=[System.IO.File]::ReadAllText($final,[System.Text.Encoding]::UTF8)
 Require (!$text.Contains('Stage93Qpc') -and !$text.Contains('STAGE93_FINAL_QPC')) 'Final-command source already patched.'
 # Isolate all mutations to the existing FinalCommand record producer/worker.
-$text=ReplaceOne $text 'DWORD TickCount;' "DWORD TickCount;`r`n        ULONGLONG Stage93Qpc;"
-$text=ReplaceOne $text 'void AppendLogAtTime(const SYSTEMTIME* timestamp, const char* message)' 'void AppendLogAtTime(const SYSTEMTIME* timestamp, const char* message, const wchar_t* filename = L"ArcanaAI_FinalCommandTrace.log")'
-$text=ReplaceOne $text 'GetSiblingPath(logPath, MAX_PATH, L"ArcanaAI_FinalCommandTrace.log")' 'GetSiblingPath(logPath, MAX_PATH, filename)'
-$text=ReplaceOne $text 'record.TickCount = GetTickCount();' @'
+$text=ReplaceScopedOne $text 'struct FinalCommandRecord' 'INIT_ONCE g_startOnce' 'DWORD TickCount;' "DWORD TickCount;`r`n        ULONGLONG Stage93Qpc;"
+$text=ReplaceScopedOne $text 'void AppendLogAtTime(' 'void AppendLog(const char* message)' 'void AppendLogAtTime(const SYSTEMTIME* timestamp, const char* message)' 'void AppendLogAtTime(const SYSTEMTIME* timestamp, const char* message, const wchar_t* filename = L"ArcanaAI_FinalCommandTrace.log")'
+$text=ReplaceScopedOne $text 'void AppendLogAtTime(' 'void AppendLog(const char* message)' 'GetSiblingPath(logPath, MAX_PATH, L"ArcanaAI_FinalCommandTrace.log")' 'GetSiblingPath(logPath, MAX_PATH, filename)'
+$text=ReplaceScopedOne $text 'void QueueFinalCommandRecord(' 'void FlushReadyRecords()' 'record.TickCount = GetTickCount();' @'
 record.TickCount = GetTickCount();
         LARGE_INTEGER stage93Qpc{};
         QueryPerformanceCounter(&stage93Qpc);
         record.Stage93Qpc = static_cast<ULONGLONG>(stage93Qpc.QuadPart);
 '@
-$text=ReplaceOne $text 'AppendLogAtTime(&record.LocalTime, message);' @'
+$text=ReplaceScopedOne $text 'void FlushReadyRecords()' 'bool MakeRelativeCall(' 'AppendLogAtTime(&record.LocalTime, message);' @'
 AppendLogAtTime(&record.LocalTime, message);
             // Same original FinalCommand callsite and same pre-queue record.
             // QPC captured on game thread; file I/O stays on the existing worker.

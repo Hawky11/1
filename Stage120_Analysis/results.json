@@ -1,0 +1,172 @@
+{
+  "stage": 120,
+  "date": "2026-11-12",
+  "class": "ORIGINAL_NATIVE_STATIC_ONLY",
+  "source": {
+    "name": "AALib.exe (private)",
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "size_bytes": 175556608,
+    "pe": "PE32/i386",
+    "preferred_imagebase": "0x00400000"
+  },
+  "verification": {
+    "native_instruction_sites": 122,
+    "native_instruction_sites_passed": 122,
+    "vtable_entries": 6,
+    "vtable_entries_passed": 6,
+    "conditional_and_unconditional_branches": 11,
+    "branch_edges_passed": 11,
+    "E8_call_edges": 4,
+    "E8_call_edges_passed": 4,
+    "independent_original_opcode_anchors": 28,
+    "opcode_anchors_passed": 28,
+    "stdlib_tests": 55,
+    "stdlib_tests_passed": 55
+  },
+  "vtable": {
+    "preferred_va": "0x00810A18",
+    "constructor_pointer_store_rva": "19EAD3",
+    "entries": [
+      [
+        "0x00",
+        "19EDA0"
+      ],
+      [
+        "0x04",
+        "19F410"
+      ],
+      [
+        "0x08",
+        "19EE70"
+      ],
+      [
+        "0x0C",
+        "19EE00"
+      ],
+      [
+        "0x10",
+        "02B270"
+      ],
+      [
+        "0x14",
+        "19EF00"
+      ]
+    ],
+    "native_pe_HIGHLOW_all_six": true
+  },
+  "child": {
+    "function_rva": "19EF30",
+    "direct_E8_callsites": [
+      "1A0C81"
+    ],
+    "ecx_to_esi_rva": "19EF3E",
+    "entry_global_early_skip": [
+      "19EF40",
+      "19EF4D"
+    ],
+    "early_nonzero_state_branch_sites": [
+      "19EFC1",
+      "19F007"
+    ],
+    "timer_branch_rva": "19F20F",
+    "both_object_flags_zero_skip_rva": "19F22D"
+  },
+  "parent": {
+    "function_rva": "19F410",
+    "virtual_table_slot": 1,
+    "ecx_to_edi_rva": "19F433",
+    "earlier_G3_copy_rvas": [
+      "19F96D",
+      "19F973"
+    ],
+    "later_G3_copy_rvas": [
+      "1A0C76",
+      "1A0C79"
+    ],
+    "ecx_same_object_rva": "1A0C7F",
+    "direct_child_call_rva": "1A0C81"
+  },
+  "selected_slot": {
+    "selector_rva": "19F250",
+    "slot_calc_rvas": [
+      "19F255",
+      "19F25B"
+    ],
+    "selector_test8_rva": "19F289",
+    "state3_rva": "19F295",
+    "F9900_map_rva": "19F2A0",
+    "map_not_minus_one_skip_rva": "19F2AB",
+    "G4_or_G5_write7_rva": "19F2AD",
+    "normal_jmp_to_cleanup_rva": "19F2CC",
+    "clear_flags_2A2B_rva": "19F3D0"
+  },
+  "reset": {
+    "vtable_slot0_rva": "19EDA0",
+    "object_state_zero_rva": "19EDC7",
+    "flags_word_zero_rva": "19EDBA",
+    "G3_global_zero_rva": "19EDD0"
+  },
+  "possible_temporal_witness": [
+    {
+      "when": "T0 pre-call",
+      "old_object_state": 0,
+      "G3": 0,
+      "G4": "prior"
+    },
+    {
+      "when": "T0 child after state/write conditions",
+      "object_state": 3,
+      "G3": 0,
+      "G4": 7
+    },
+    {
+      "when": "T1 future callback, same-object conditional",
+      "object_state": 3,
+      "G3": 3,
+      "G4": 7
+    }
+  ],
+  "facts_not_proven": [
+    "Any virtual 19F410 dynamic hit in Stage116",
+    "same-object survival across T0/T1",
+    "19F2AD last writer to observed G4=7",
+    "global G3 immediate 3 in same child call",
+    "any gameplay or AI improvement"
+  ],
+  "prior_runtime": {
+    "stage": 116,
+    "full_snapshots": 1455,
+    "globals": [
+      0,
+      0,
+      3,
+      7,
+      0
+    ],
+    "parentA_gate_bypass": 16760,
+    "writer_site_hits": "not_observed"
+  },
+  "artifact": {
+    "file": "ArcanaAI_Stage120_ObjectLifecycle_G3G4_CFG_StaticAudit.zip",
+    "bytes": 21834,
+    "sha256": "c9927f2cabdaa4ca6fc1ba8d836800f88fb6cd7783b914bd0b152283172d9675",
+    "file_count": 10,
+    "includes_original_exe": false,
+    "includes_dll": false
+  },
+  "runtime_modifications": {
+    "new_hooks": 0,
+    "source_overlays": 0,
+    "gameplay_data_writes": 0,
+    "DR_writes": 0,
+    "windows_build": false,
+    "game_run": false
+  },
+  "backup_windows_dll_bytes": {
+    "Stage115": 2082304,
+    "Stage113": 2079744,
+    "Stage110": 2073088
+  },
+  "Stage36": "OFF",
+  "next": "Stage121 optional passive writer observer design only if last-writer provenance materially advances AI diagnosis; maintain source SHA controls and positive hook reachability gates"
+}

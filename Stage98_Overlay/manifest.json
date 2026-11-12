@@ -1,0 +1,50 @@
+{
+  "stage": "Stage98 r1",
+  "date": "2026-11-12",
+  "type": "source-only native F7A00 command route predicate witness",
+  "status": "86/86 PE/source/synthetic offline checks PASS; Windows build/game NOT TESTED",
+  "original_aalib_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "based_on": "verified Stage97 r1 source-only overlay; live Stage97 DLL 2045440 bytes",
+  "files": [
+    {
+      "path": "ApplyStage98.ps1",
+      "sha256": "41abbccd37c4989357688127328696950578a64189cb3d5ba77474c733761eb1",
+      "bytes": 4102
+    },
+    {
+      "path": "README_STAGE98_RU.md",
+      "sha256": "1cbe031d6f937db0d490b9ada6374a57efa961e8d91dc8342fa7b97d0751875e",
+      "bytes": 3919
+    },
+    {
+      "path": "RollbackStage98.ps1",
+      "sha256": "ca66492344c499f545dfdca30b5cb6b56fb7e0f64a76ef37fd6d20471d0b20a9",
+      "bytes": 2192
+    },
+    {
+      "path": "analysis/STATIC_ANALYSIS.md",
+      "sha256": "a0e68c484f7e34a0dc005f215e299d63b3cce38a823f43ab41824bfd7c84809c",
+      "bytes": 4463
+    },
+    {
+      "path": "src/Stage81SelectorWriter.inl",
+      "sha256": "12f2afbee4cf427f2b13cce7e9baeb7d525fc4e4b23bc42cc1c3d0a86463a192",
+      "bytes": 26491
+    },
+    {
+      "path": "src/Stage98CommandRouteDecision.inl",
+      "sha256": "a2548073f73fd7967ecece70cb278b32c162c0dfd07d9f63be7f132f628d5ba1",
+      "bytes": 12543
+    },
+    {
+      "path": "tools/correlate_stage98.py",
+      "sha256": "b68b153f64adc448106cabbd3fb933c4eaeb1cd24cfad3ac921b99e5eb6a3ce2",
+      "bytes": 3262
+    },
+    {
+      "path": "tools/test_stage98_offline.py",
+      "sha256": "16385f2efd550fd6a35e87df0b3ed500c0de1f09ef8aba8061e069a97d0722f8",
+      "bytes": 6578
+    }
+  ]
+}

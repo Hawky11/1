@@ -1,0 +1,115 @@
+{
+  "stage": 114,
+  "date": "2026-11-12",
+  "classification": "WINDOWS_SAME_RUN_RUNTIME_AUDIT_PLUS_ORIGINAL_NATIVE_STATIC",
+  "source_commit": "0a990a8801bd5538c482aa4f6572c633217f05ca",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "build": {
+    "success": true,
+    "arch": "x86",
+    "msvc": "14.51.36231",
+    "dll_bytes": 2079744
+  },
+  "ini": {
+    "EnableStage113ParentGateTrace": 1,
+    "EnableStage110Cebe0GuardTrace": 1,
+    "EnableStage107ConsumerTrace": 1,
+    "EnableStage36ControlToCommandTrace": 0
+  },
+  "sessions": {
+    "first": {
+      "tid": 5480,
+      "stage113": "DISABLED"
+    },
+    "second": {
+      "tid": 12204,
+      "stage113_installed": "4/4"
+    }
+  },
+  "stage113": {
+    "health_windows": 46,
+    "parentA": 15726,
+    "gateA": 15726,
+    "gateApass": 0,
+    "gateAskip": 15726,
+    "parentB": 0,
+    "gateB": 0,
+    "gateBpass": 0,
+    "gateBskip": 0,
+    "dropped": 0,
+    "mismatch": 0,
+    "readFail": 0,
+    "sampled_rows": 2734,
+    "parentA_sampled": 1367,
+    "gateA_sampled": 1367,
+    "kind1_sampled_P1_arg0_plus30": 630,
+    "kind1_sampled_P2_arg0_plus30": 737,
+    "sampled_gate_al0_zf1_valid1": 1367
+  },
+  "second_run": {
+    "stage94_producer": 1553,
+    "stage94_gate": 212,
+    "gate_forward_type1": 173,
+    "gate_mode0": 39,
+    "stage93_final": 173,
+    "stage104_mode0": 39,
+    "stage104_mode0_27": 18,
+    "stage104_cea20": 18,
+    "stage107_post": 18,
+    "stage110_entry": 0,
+    "stage110_guard": 0,
+    "stage107_nativeRead": 0
+  },
+  "unique_qpc_joins": {
+    "gate_to_final": {
+      "matched": 173,
+      "miss": 0,
+      "ambiguous": 0,
+      "lag_ticks": [
+        4,
+        73
+      ]
+    },
+    "gate_to_mode0": {
+      "matched": 39,
+      "miss": 0,
+      "ambiguous": 0,
+      "lag_ticks": [
+        10,
+        85
+      ]
+    },
+    "mode0_27_to_cea20": {
+      "matched": 18,
+      "miss": 0,
+      "ambiguous": 0,
+      "lag_ticks": [
+        6,
+        27
+      ]
+    },
+    "cea20_to_post": {
+      "matched": 18,
+      "miss": 0,
+      "ambiguous": 0,
+      "lag_ticks": [
+        5,
+        9
+      ]
+    }
+  },
+  "chosen_0x27": {
+    "gate_total": 19,
+    "forward_type1": 1,
+    "mode0": 18
+  },
+  "original_FA480_allow_criteria": [
+    "(mem32[0x0E3C3EFC] in {8,14} && mem32[0x0E3C4930] != 0)",
+    "(mem32[0x0E10B37C] == 1 && mem32[0x0E10B640] == 4)",
+    "(mem32[0x0E10B37C] == 2 && mem32[0x0E10B8B8] == 4)"
+  ],
+  "raw_global_runtime_values_known": false,
+  "other_CEBE0_callers_excluded": false,
+  "gameplay_hit_or_AI_improvement_proven": false,
+  "next": "Stage115: passive snapshots at already owned 9888D; five globals, original AL/ZF, same-run health and source SHA guard; no additional native detour"
+}

@@ -1,0 +1,187 @@
+{
+  "stage": 123,
+  "date": "2026-11-12",
+  "status": "WINDOWS_X86_BUILD_AND_NATIVE_RUNTIME_HITS_VERIFIED",
+  "source_user_upload_commit": "4f1cc5b47d9c138d5f5bdea82bd843f7112d9e0f",
+  "upload_fresh_files": 11,
+  "stale_root_files_not_fresh": [
+    "ArcanaAI.log (old 21:19:30 COMvsCOM marker)",
+    "ArcanaAI_Stage93FinalCommandQpcTrace.log",
+    "ArcanaAI_Stage94ProducerGateTrace.log"
+  ],
+  "build": {
+    "datetime": "2026-11-12 23:47:30",
+    "msvc": "14.51.36231",
+    "target": "MSVC/x86",
+    "success": true,
+    "dll_bytes": 2089984,
+    "nonfatal_warning": "C4754 AICommandSiteTrace.cpp(786)"
+  },
+  "config": {
+    "EnableStage122ObjectWriterTrace": 1,
+    "EnableStage115Fa480Trace": 1,
+    "EnableStage113ParentGateTrace": 1,
+    "EnableStage110Cebe0GuardTrace": 1,
+    "EnableStage107ConsumerTrace": 1,
+    "EnableStage36ControlToCommandTrace": 0,
+    "ForceCpuForBoth": 1
+  },
+  "install": {
+    "stage122": "3/3",
+    "stage113": "4/4",
+    "stage115": "INSTALLED piggyback",
+    "stage110": "2/2",
+    "stage107": "2/2",
+    "stage104": "2/2"
+  },
+  "stage122": {
+    "sid": "01DD72E71C8AE662",
+    "tid": 10720,
+    "obj": "0x24EB0788",
+    "health_windows": 51,
+    "all_hit_counter_sums_over_reported_health_windows": {
+      "parent": 10978,
+      "state3": 1,
+      "slot7": 1,
+      "slotG4": 1,
+      "slotG5": 0,
+      "slotOther": 0,
+      "dropped": 0,
+      "mismatch": 0,
+      "readFail": 0
+    },
+    "detail_events": 1770,
+    "kind1_parent_sampled": 1768,
+    "kind2_state3_sampled": 1,
+    "kind3_slot7_sampled": 1,
+    "valid": 1770,
+    "detailed_parent_matches_unique_same_invocation": false,
+    "writer_context": {
+      "seq2_state3": 68,
+      "seq3_G4": 69,
+      "seq_later_parent": 70,
+      "same_sid_tid_obj": true,
+      "kind2_kind3_lag_QPC_ticks": 4,
+      "kind2": {
+        "qpc": 3134234648365,
+        "object_state_before": 1,
+        "obj_flags_2a": 1,
+        "obj_flags_2b": 0,
+        "G3_before": 0,
+        "G4_before": 0,
+        "G5_before": 0,
+        "selector": 8,
+        "map0": 1,
+        "map1_hex": "FFFFFFFF"
+      },
+      "kind3": {
+        "qpc": 3134234648369,
+        "actual_EDI_hex": "0DE0B640",
+        "slot": 1,
+        "slot_meaning": "G4",
+        "readMask": "3FF",
+        "valid": 1,
+        "object_state_before_slot_write": 3,
+        "G3_before": 0,
+        "G4_before": 0,
+        "G5_before": 0,
+        "selector": 8,
+        "map0": 1,
+        "map1_hex": "FFFFFFFF",
+        "preTarget": 0
+      },
+      "seq70": {
+        "qpc": 3134240547165,
+        "observed_after_kind3_QPC_ticks": 5898796,
+        "object_state": 3,
+        "G3": 3,
+        "G4": 7,
+        "G5": 0,
+        "obj_flags_2a": 0,
+        "obj_flags_2b": 0,
+        "selector": 8,
+        "map0": 1,
+        "map1_hex": "FFFFFFFF"
+      },
+      "nearest_sampled_parent_seq": 67,
+      "nearest_parent_to_kind2_lag_QPC_ticks": 909769,
+      "unique_parent_same_call_join_proven": false
+    },
+    "limitations": [
+      "G4 writer event is a before-original-store snapshot; later parent event proves G4=7 after",
+      "A positive hit does not prove this was the only/last G4 writer globally",
+      "Stage122 parent trace uses sampling so cannot prove exact nested parent invocation from seq67",
+      "Trailing unreported HEALTH windows may exist"
+    ]
+  },
+  "stage113": {
+    "health_windows": 51,
+    "parentA": 16490,
+    "gateA": 16490,
+    "gateAskip": 16490,
+    "gateApass": 0,
+    "parentB": 0,
+    "gateB": 0,
+    "dropped": 0,
+    "mismatch": 0,
+    "readFail": 0,
+    "sampled_gateA": 1498,
+    "sampled_parentA": 1498
+  },
+  "stage115": {
+    "sampled_snapshots": 1498,
+    "all_readMask_1F": true,
+    "all_consistent": true,
+    "all_predictionAL0": true,
+    "all_observedAL0_ZF1": true,
+    "P1": 688,
+    "P2": 810,
+    "globals_decimal": [
+      0,
+      0,
+      3,
+      7,
+      0
+    ],
+    "unique_exact_QPC_matching_Stage113_gateA": 1498,
+    "sampled_last_window_not_in_all_health_possible": true
+  },
+  "stage104": {
+    "mode0": 50,
+    "special_0x27": 25,
+    "CEA20_pre": 25,
+    "P1": 8,
+    "P2": 17,
+    "join_to_pre": 25,
+    "join_missing": 0,
+    "join_ambiguous": 0,
+    "lag_QPC_ticks": [
+      5,
+      16
+    ]
+  },
+  "stage107": {
+    "post": 25,
+    "nativeRead": 0,
+    "pre_to_post_join": 25,
+    "pre_to_post_missing": 0,
+    "pre_to_post_ambiguous": 0,
+    "lag_QPC_ticks": [
+      5,
+      204
+    ]
+  },
+  "stage110": {
+    "health_windows": 51,
+    "CEBE0_entry": 0,
+    "CEC57_guard": 0
+  },
+  "conclusion": "New run confirms one actual original G4-slot write-site hit under selector8, map1=-1, flag+2A=1 and later G4=7 / G3=3. Original FA480 gate remains AL0 under tuple (0,0,3,7,0). Not proof of exclusive/historic last writer, AI hit, accepted action, or quality.",
+  "next": "Stage124 static original FA480 caller classification and relation to genuine AI action-selection/acceptance; no additional detours without a specific evidence gap",
+  "rollback_dll_bytes": {
+    "Stage122": 2089984,
+    "Stage115": 2082304,
+    "Stage113": 2079744,
+    "Stage110": 2073088
+  }
+}

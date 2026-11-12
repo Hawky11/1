@@ -1,0 +1,45 @@
+{
+  "stage": "Stage98 r2",
+  "date": "2026-11-12",
+  "type": "source-only Stage98 current-thread ID logging fix",
+  "status": "72/72 source-only patch tests PASS; 86/86 Stage98 r1 exact PE/source offline PASS; Windows r2 build/game pending",
+  "original_aalib_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "based_on": "Stage98 r1 LIVE built 2051584 bytes, STAGE98_INSTALLED 1/1, 49 clean health, 13926 route events; installed original source SHA a2548073f73fd7967ecece70cb278b32c162c0dfd07d9f63be7f132f628d5ba1",
+  "files": [
+    {
+      "path": "README_STAGE98_R2_RU.md",
+      "sha256": "a24fc4f79c56af7bbfb142e748fb3668770d43d42dcca0173273bb908c3e2165",
+      "bytes": 5383
+    },
+    {
+      "path": "RollbackStage98r2.ps1",
+      "sha256": "95a99a6710ede69ad95e6c075ead770dc718bc894262bf24a63b0468f457e9c4",
+      "bytes": 2979
+    },
+    {
+      "path": "UpdateStage98r2.ps1",
+      "sha256": "0ef310cc31bfc633a091ef9d6383e1bd5fe8669a58ba1e6ce547b1f3fb48fe8a",
+      "bytes": 4521
+    },
+    {
+      "path": "src/Stage98CommandRouteDecision.inl",
+      "sha256": "a56fe5692b3284fae37822e6f08438e3a32a800accbad5ff4c72d36ea97a1591",
+      "bytes": 12534
+    },
+    {
+      "path": "tests/Stage98_r1_reference.inl",
+      "sha256": "a2548073f73fd7967ecece70cb278b32c162c0dfd07d9f63be7f132f628d5ba1",
+      "bytes": 12543
+    },
+    {
+      "path": "tools/correlate_stage98.py",
+      "sha256": "b68b153f64adc448106cabbd3fb933c4eaeb1cd24cfad3ac921b99e5eb6a3ce2",
+      "bytes": 3262
+    },
+    {
+      "path": "tools/test_stage98_r2.py",
+      "sha256": "14398c9c20a67715ea55c3838bdfffb49737e79fe69c57b9089ff895c526a6cb",
+      "bytes": 6307
+    }
+  ]
+}

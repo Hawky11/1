@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-12",
+  "stage": 99,
+  "status": "offline_static_verified_only",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "core_rva": "0F7A49",
+  "core_bytes": 80,
+  "helper_rva": "125CD0",
+  "helper_bytes": 37,
+  "native_checks_passed": 10,
+  "synthetic_tests_passed": 100,
+  "helper_zero_codes": [
+    0,
+    1,
+    2,
+    9,
+    10
+  ],
+  "class5_route": "BYPASS_F7A94",
+  "class5_always_producer": false,
+  "stage98_r2_class5_events": 461,
+  "stage98_r2_modes": {
+    "0000": 208,
+    "0001": 253
+  },
+  "stage98_r2_f34d0_forced_static": 461,
+  "stage98_r2_helper_525cd0_called_static": 0,
+  "new_windows_build": false,
+  "new_runtime_test": false,
+  "new_hooks": 0,
+  "stage36_off": true,
+  "gameplay_improvement_proven": false,
+  "next": "F34D0 result semantics with existing Stage96/95 logs; natural mode2 evidence"
+}

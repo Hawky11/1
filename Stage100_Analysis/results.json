@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-12",
+  "stage": 100,
+  "status": "STATIC_VERIFIED_REAL_LOG_JOIN_PENDING",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "original_bytes": {
+    "f34d0": 412,
+    "f30b0": 452
+  },
+  "native_checks": {
+    "full_regions": 3,
+    "exact_opcode_contracts": 10,
+    "direct_call_targets": 2,
+    "pass": 15
+  },
+  "synthetic_tests": {
+    "unittest_pass": 8,
+    "return_model_cases": 270,
+    "synthetic_class5_join_rows": 120
+  },
+  "native_esi_result_domain": [
+    "incoming ESI",
+    "0x27"
+  ],
+  "prior_stage98_r2": {
+    "class5": 461,
+    "mode0": 208,
+    "mode1": 253,
+    "all_bypass": 461
+  },
+  "live_return_0x27_count": null,
+  "full_log_join_run": false,
+  "live_windows_build": false,
+  "new_dll": false,
+  "new_hooks": 0,
+  "new_game_writes": 0,
+  "new_DR_writes": 0,
+  "stage36_off": true,
+  "next": "run offline same-session Stage98/96/95/94 full-log join; investigate output side effects separately; do not double-hook F7A8F or F7A94"
+}

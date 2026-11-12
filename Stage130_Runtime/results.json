@@ -1,0 +1,103 @@
+{
+  "stage": 130,
+  "status": "WINDOWS_BUILD_AND_SAME_SESSION_RUNTIME_AUDITED",
+  "date_local": "2026-11-13",
+  "evidence_main_sha": "19290b916e0f7ece195beab9067915cf28272250",
+  "build": {
+    "status": "SUCCEEDED",
+    "dll_size_bytes": 2099200,
+    "msvc": "14.51.36231",
+    "arch": "x86",
+    "warning": "C4754 preexisting"
+  },
+  "stage129": {
+    "sid": "01DD72F704247563",
+    "installed": "3/3",
+    "health_windows": 53,
+    "entry": 3000,
+    "fallback27": 0,
+    "returnInput": 3000,
+    "paired": 3000,
+    "dropped": 0,
+    "mismatch": 0,
+    "readFail": 0,
+    "overflow": 0,
+    "orphan": 0,
+    "unknownCaller": 0,
+    "sampled_entry": 87,
+    "sampled_return_input": 87,
+    "paired_sample_mismatches": 0
+  },
+  "stage104": {
+    "mode0": 36,
+    "special27": 17,
+    "by_side": {
+      "P1_special27": 7,
+      "P2_special27": 10
+    },
+    "cea20": 17
+  },
+  "stage107": {
+    "post": 17,
+    "nativeRead": 0
+  },
+  "staged_matches": [
+    {
+      "scope": 43,
+      "caller": "F3659",
+      "tid": 13856,
+      "player": "0DDCCCA0",
+      "candidate": "00000027",
+      "returned": "00000027",
+      "entry_qpc": 3202788970136,
+      "exit_qpc": 3202788970137,
+      "mode0_qpc": 3202788970231,
+      "cea20_qpc": 3202788970244,
+      "post_qpc": 3202788970250
+    },
+    {
+      "scope": 56,
+      "caller": "F3CC1",
+      "tid": 13856,
+      "player": "0DDCCCA0",
+      "candidate": "00000027",
+      "returned": "00000027",
+      "entry_qpc": 3202805788363,
+      "exit_qpc": 3202805788365,
+      "mode0_qpc": 3202805788398,
+      "cea20_qpc": 3202805788406,
+      "post_qpc": 3202805788412
+    }
+  ],
+  "stage122": {
+    "parent": 11301,
+    "state3": 1,
+    "slot7": 1,
+    "slotG4": 1,
+    "dropped": 0,
+    "mismatch": 0,
+    "readFail": 0
+  },
+  "stage115": {
+    "full": 1282,
+    "predAllFalse": 1282,
+    "predictionDiff": 0
+  },
+  "stage113": {
+    "parentA": 14510,
+    "gateA": 14510,
+    "gateAskip": 14510,
+    "gateApass": 0
+  },
+  "stage110": {
+    "entry": 0,
+    "guard": 0
+  },
+  "caveats": [
+    "Same-session temporal/player/TID correlations are not propagated downstream scope IDs.",
+    "Stage129 detailed EVENT lines are sampled; HEALTH counts are exhaustive for reporting windows.",
+    "No success/failure gameplay action or attack commit proven.",
+    "Stage93/94 existing root logs use another earlier session and were excluded."
+  ],
+  "next": "Stage131 static original input candidate provenance at two direct F30B0 callers F3654 and F3CBC."
+}

@@ -1,3 +1,9 @@
+## Stage93 r2 installer correction (2026-11-12)
+
+r1 installer failed safely before touching source: `Stage93 ambiguous duplicate: DWORD TickCount;`. The working `AICommandSiteTrace.cpp` has more than one globally matching field. The r2 `ApplyStage93.ps1` restricts edits to `FinalCommandRecord`, `AppendLogAtTime`, `QueueFinalCommandRecord` and `FlushReadyRecords`, requiring uniqueness **within** each target scope. Stage92 r3 exact SHA256 gates and reversible backup are unchanged. No native Stage93 hook implementation was modified. Archived FinalCommand structural test with injected unrelated duplicate members/statements and a fail-closed in-scope duplicate passed 3/3; Windows PowerShell/MSVC/game testing remains pending.
+
+---
+
 # Stage93 r1 — F5A68 native bit3 OR + FinalCommand QPC bridge (SOURCE ONLY)
 
 **Status:** static/source verification only. Windows x86 MSVC build and runtime installation have NOT yet been tested. Preserve the working **Stage92 r3 DLL (2,011,648 bytes)** and last tested Stage91 DLL (1,999,872 bytes). **Stage36 disabled.**

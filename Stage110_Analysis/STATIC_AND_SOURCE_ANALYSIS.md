@@ -1,0 +1,31 @@
+# Stage110 — guarded CEBE0 entry + CEC57 activity gate, source-only (2026-11-12)
+
+**Source-only diagnostic overlay READY. No Windows build, no new DLL, no new game run, no demonstrated CEBE0 runtime entry or AI improvement. Stage36 OFF.**
+
+## Why Stage110
+[Stage108 same-session](https://github.com/Hawky11/1/blob/stage108-cea20-post-runtime-verified-read-unobserved/Stage108_Runtime/RUNTIME_ANALYSIS.md) verified **13/13 Stage104 CEA20 PRE → Stage107 F7DA8 POST** but **0 Stage107 CEC64 native reads**, with Stage107 installed 2/2, 43 clean HEALTH intervals. [Stage109](https://github.com/Hawky11/1/blob/stage109-cebe0-guard-cfg-static-audit/Stage109_Analysis/STATIC_GUARD_CFG_AUDIT.md) identified original early CEBE0 conditions: ID -1, unsigned >0x1EE, table first byte FF, or record active byte zero (optionally decremented by fourth argument).
+
+## Exact native observer sites (RVA relative to original AALib.exe)
+- **CEBE0 (6-byte hook):** original `55 8B EC 83 EC 50` = PUSH EBP / MOV EBP,ESP / SUB ESP,50. A naked x86 wrapper snapshots the **original entry** stack (return address, ID, record ptr, third/fourth args), incoming ECX state and pre-decay activity, then replays the exact original six bytes **once** and jumps to CEBE6. PRE-entry snapshot predicts a potential path, not the path that was actually executed.
+- **CEC57 (6-byte hook):** original `80 7E 10 00 76 79` = CMP BYTE [ESI+10],0; JBE CECD6. The wrapper records *actual arrival* at this activity gate, reads active byte in the native record, replays original CMP/JBE **once**, preserves its flags, jumps to CECD6 on skip or falls through at CEC5D. The existing Stage107 CEC64 read hook is unchanged.
+- Both native locations and nearby original bytes checked; original CEBE0 is not already detoured in the Stage107-tested baseline. Install guard requires original AALib.exe PE fingerprint; Stage104 and Stage107 prior installed; Stage104 F7DA3 CALL still target-owned by Stage104; Stage107 F7DA8 and CEC64 JMP targets owned by the **current** DLL, exact original CEBE0 and CEC57 byte signatures, patch mutex/suspended peer EIP checking/revalidation/rollback. Existing pre-detoured F2DE0 is **not** modified.
+
+## Event interpretation
+- `STAGE110_ENTRY` sample rows carry **ID as first actual CEBE0 argument**, unlike Stage104 ESI 0x27. Six entry categories: unreadable, minus-one, unsigned-out-range, table-FF, inactive-after-optional-decrement, candidate. The classifier uses **LOW BYTE** of native 4th argument, matching original CEBE6 CMP BYTE [EBP+14],0.
+- `STAGE110_GUARD` sample rows prove that CEBE0 advanced beyond the table guard to the native CEC57 active test; `guardActive` and `guardSkip` counters classify the value **at the actual guarded instruction**, while `guardUnknown` tracks unreadable guard snapshots. The guard's own EBP is not the caller's EBP: **do not correlate by equal frame**.
+- `STAGE110_HEALTH` contains **all** entry and guard hook counts, before sampling. Ring holds 2048 sample rows, with first 8 + exponential-power-of-two representatives for each class in each 2-second interval. No per-event disk writes on game thread; worker Flush/Health uses existing Stage81 service loop.
+- If Stage110 entry=0, CEBE0 entry not observed in that captured window; if entry>0 and guard=0, calls did not reach the active gate, conditional on accurate instrumentation; if guardSkip>0, inactive native records occur. guardActive>0 should be examined against *same-session* Stage107 nativeRead; reader count of 0 would merit hook/ABI/incomplete log investigation. **None of these counters alone proves the mode0 record caused a move, hit or better AI.**
+
+## Source-only distribution and actual tests
+- User ZIP in ChatGPT: **`ArcanaAI_Stage110_CEBE0_Entry_Guard_SourceOnly.zip`**, **45,460 bytes**, SHA256 **`3dbde3bf24fe10140e0948f1263a06d8be876870da9ccf147f0b4b61989ccecd`**. Contains 15 files: new module, updated Stage81 adapter, SHA-guarded Apply/Rollback, source SHA manifests/parent adapter for offline diff, read-only original verifier, runtime log correlator, tests, machine results and RU instructions. No original private EXE, runtime logs or DLL.
+- Exact new source hashes: Stage110 module **`e183d8ba84ac07e9dcdcd8fd740604bb42e48bed1c52c36892354353bf8511b2`**, updated Stage81 adapter **`fe8dece53058b7d36427aa01452aec13e246e73e9e31acfafb1c6acdeba744c3`**. Prerequisites: Stage107 adapter `9581b85fd38000f6b1f79b4c214aeeea4ee4c05706d0274dc2b30de59258a333`, Stage107 module `a3d2d74b7cb5c0b4858850fe0b55d8ab76c262b5b40bd19b7c8319b38472368f`, unchanged Stage104 r2 `4e1bed4fc46b92ad23bae47feeeb8a9910273044fb0de24d343c2c578c211a69`, unchanged Stage98 `a56fe5692b3284fae37822e6f08438e3a32a800accbad5ff4c72d36ea97a1591`.
+- Original private AALib.exe SHA256 **`28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`**. **56/56 Stage109 original native checks plus 4/4 additional exact entry/guard/branch checks PASS**; **69/69 source/installer contracts PASS**; **42/42 synthetic/negative offline unit tests PASS**. These **do not** establish that MSVC compiled the DLL or that runtime hooks are ABI-equivalent.
+- Opt-in flag `[AIResearch] EnableStage110Cebe0GuardTrace=1`, default **0**. No new DR settings, no force status/AI actions or gameplay data writes. Only two reversible code patches when enabled.
+
+## Stage111 runtime handoff
+1. Preserve Windows-tested Stage107 x86 DLL **2,065,920 bytes** (Stage104 r2 fallback 2,058,240; Stage98 r2 2,051,584; Stage97 2,045,440). Close AALib.exe.
+2. Extract Stage110 ZIP in separate directory; run its exact SHA-guarded `ApplyStage110.ps1 -Root 'D:\INCUBATOR\ArcanaAIOverhaul'`, enable both Stage107 and Stage110 in the game's INI, Stage36 OFF. Build Win32 with Build.bat. Do not replace another owner's unrelated dinput8.dll.
+3. Short natural COM-vs-COM. Require `STAGE104_INSTALLED 2/2`, `STAGE107_INSTALLED 2/2`, `STAGE110_INSTALLED 2/2`, no SIGFAIL, and healthy error counters.
+4. Upload one-session `Build.log`, `ArcanaAI.ini`, `ArcanaAI.log`, `ArcanaAI_Stage104Mode0NativeTrace.log`, `ArcanaAI_Stage107ConsumerReadTrace.log`, `ArcanaAI_Stage110Cebe0GuardTrace.log`. Stage94/96/98 optionally assist native producer linkage.
+
+**No user Windows build/runtime has occurred for Stage110; previous Stage107 DLL is still the last runtime-verified binary.**

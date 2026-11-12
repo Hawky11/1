@@ -1,0 +1,71 @@
+{
+  "stage": 110,
+  "date": "2026-11-12",
+  "status": "SOURCE_ONLY_OFFLINE_VERIFIED_WINDOWS_RUNTIME_PENDING",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "checks": {
+    "original_stage109": {
+      "passed": 56,
+      "total": 56
+    },
+    "additional_site_and_branch": {
+      "passed": 4,
+      "total": 4
+    },
+    "source_and_installer": {
+      "passed": 69,
+      "total": 69
+    },
+    "unit_tests": {
+      "passed": 42,
+      "total": 42
+    }
+  },
+  "zip": {
+    "filename": "ArcanaAI_Stage110_CEBE0_Entry_Guard_SourceOnly.zip",
+    "bytes": 45460,
+    "files": 15,
+    "sha256": "3dbde3bf24fe10140e0948f1263a06d8be876870da9ccf147f0b4b61989ccecd"
+  },
+  "files_sha256": {
+    "module": "e183d8ba84ac07e9dcdcd8fd740604bb42e48bed1c52c36892354353bf8511b2",
+    "adapter": "fe8dece53058b7d36427aa01452aec13e246e73e9e31acfafb1c6acdeba744c3",
+    "required_stage107_adapter": "9581b85fd38000f6b1f79b4c214aeeea4ee4c05706d0274dc2b30de59258a333",
+    "required_stage107_module": "a3d2d74b7cb5c0b4858850fe0b55d8ab76c262b5b40bd19b7c8319b38472368f",
+    "required_stage104r2": "4e1bed4fc46b92ad23bae47feeeb8a9910273044fb0de24d343c2c578c211a69",
+    "required_stage98": "a56fe5692b3284fae37822e6f08438e3a32a800accbad5ff4c72d36ea97a1591"
+  },
+  "hooks": [
+    {
+      "rva": "000CEBE0",
+      "length": 6,
+      "native_bytes": "55 8B EC 83 EC 50",
+      "continuation": "000CEBE6",
+      "replay_once": true
+    },
+    {
+      "rva": "000CEC57",
+      "length": 6,
+      "native_bytes": "80 7E 10 00 76 79",
+      "fallthrough": "000CEC5D",
+      "branch": "000CECD6",
+      "replay_once": true
+    }
+  ],
+  "optin": "EnableStage110Cebe0GuardTrace=1",
+  "optin_default_off": true,
+  "stage36_off": true,
+  "stage107_cec64_unchanged": true,
+  "stage104_detour_unchanged": true,
+  "new_windows_build": false,
+  "new_runtime": false,
+  "new_dll": false,
+  "no_gameplay_data_writes": true,
+  "no_dr_writes": true,
+  "ai_quality_proven": false,
+  "last_windows_tested_dll": {
+    "stage": 107,
+    "bytes": 2065920
+  },
+  "next": "Stage111 Windows build/install and same-session entry/guard/native-read counts"
+}

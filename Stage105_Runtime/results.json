@@ -1,0 +1,115 @@
+{
+  "stage": 105,
+  "status": "WINDOWS_BUILD_HOOK_INSTALLED_RUNTIME_CONFIRMED",
+  "date": "2026-11-12",
+  "input_commit": "24885c90922251cd065ae812c7f1d30b000c7b66",
+  "build": {
+    "success": true,
+    "msvc_x86": "14.51.36231",
+    "dll_bytes": 2058240,
+    "known_warning": "C4754"
+  },
+  "install": {
+    "stage104_build": "2026-11-12-r2",
+    "installed_hooks": 2,
+    "expected_hooks": 2,
+    "f2de0_detour_preserved": true,
+    "f2de0_target_va": "78E3F920",
+    "owner_known": false
+  },
+  "same_run": {
+    "tid": 16500,
+    "frame": "0E58FC74",
+    "players": {
+      "P1": "0DDA1F78",
+      "P2": "0DDCCCA0"
+    },
+    "stage94_gates": 245,
+    "ecx1": 199,
+    "ecx0": 46,
+    "stage93_type1": 199,
+    "stage104_mode0": 46,
+    "mode0_27": 17,
+    "mode0_27_P1": 6,
+    "mode0_27_P2": 11,
+    "mode0_other": {
+      "0x0E": 12,
+      "0x10": 8,
+      "0x26": 4,
+      "0x25": 2,
+      "0x20": 3
+    },
+    "stage104_cea20": 17,
+    "strict_gate_terminal_matches": 245,
+    "ambiguous": 0,
+    "missing": 0,
+    "strict_mode0_27_cea20_matches": 17,
+    "mode0_to_cea20_qpc_lag": {
+      "min": 7,
+      "median": 13,
+      "max": 82
+    },
+    "gate_to_terminal_qpc_lag": {
+      "min": 2,
+      "max": 80
+    },
+    "source_27_producer": 15,
+    "source_27_bypass": 2,
+    "source_27_missing": 0,
+    "health_snapshots_each": {
+      "stage104": 55,
+      "stage94": 55,
+      "stage95": 55,
+      "stage96": 55,
+      "stage97": 55,
+      "stage98": 55
+    },
+    "health_errors_total": 0
+  },
+  "class5": {
+    "previous_run_unchanged_461": true,
+    "current_routes": 479,
+    "current_writer_f7a8f": 479,
+    "returns": {
+      "FFFFFFFF": 476,
+      "0x60": 1,
+      "0x22": 1,
+      "0x27": 1
+    },
+    "actual_changed_esi": 1,
+    "change_from": "FFFFFFFF",
+    "change_to": "00000027",
+    "confirmed_chain": {
+      "route": 12768,
+      "writer": 14812,
+      "bypass": 11195,
+      "gate": 1755,
+      "mode0": 43,
+      "cea20": 44
+    }
+  },
+  "class3_bypass_27": {
+    "stage96_writer_f79b6": 1052,
+    "stage96_f79f0": 1053,
+    "route": 1095,
+    "bypass": 826,
+    "gate": 287,
+    "mode0": 5,
+    "cea20": 6
+  },
+  "source_blobs": {
+    "Build.log": "328667f251750a73327563702f6b275e074152a8",
+    "Stage104": "7fee1be00c73a367bf72cb4d60dc3a62988bf6d8",
+    "Stage94": "768cda1820f9c31a7f484b5e6dab91581e135061",
+    "Stage93": "b7b36b07d0d60e6dcfdec596307061ee3236d967",
+    "Stage95": "22617acf9c15d253bea58d066a8bde148e33a8bf",
+    "Stage96": "0ff729ed265b544a391353af094ab58eb7cde200",
+    "Stage97": "672d88e9fbc8cb07d83d1b0a7932da107584e45b",
+    "Stage98": "997664586965e7bca5a3d9701698da7e7857c137"
+  },
+  "new_build_by_analyst": false,
+  "new_hook_by_analyst": false,
+  "stage36_off": true,
+  "ai_hits_improved_proven": false,
+  "next": "Stage106 CEA20 downstream consumption/source provenance without modification"
+}

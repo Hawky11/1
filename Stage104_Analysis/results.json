@@ -1,0 +1,43 @@
+{
+  "stage": 104,
+  "status": "SOURCE_READY_STATIC_VERIFIED_NOT_WINDOWS_TESTED",
+  "date": "2026-11-12",
+  "original_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "archive_name": "ArcanaAI_Stage104_Mode0_CEA20_Passive_SourceOnly.zip",
+  "archive_sha256": "d55f025ee38c4b066c37a076f086654d63006a75f16940d9702367fe8ed51b7e",
+  "native_checks": {
+    "passed": 39,
+    "total": 39
+  },
+  "source_contracts": {
+    "passed": 25,
+    "total": 25
+  },
+  "offline_tests": {
+    "passed": 25,
+    "total": 25
+  },
+  "native_sites": [
+    {
+      "site": "F7CC0",
+      "callee": "F2DE0",
+      "mode": 0,
+      "returnRva": "F7CC5"
+    },
+    {
+      "site": "F7DA3",
+      "callee": "CEA20",
+      "returnRva": "F7DA8"
+    }
+  ],
+  "source_sha256": {
+    "stage81_adapter": "3b0f6e22194b0c6385a7030ea6aa101b3f8ba2e80f32feec2b93b6cf1ccb5ef7",
+    "stage104_observer": "1fd486068bdc9b023623fdd662eded12231e36e5cf7cf320ec7d6e0b24048905"
+  },
+  "last_tested_stage98r2_dll_bytes": 2051584,
+  "rollback_stage97_dll_bytes": 2045440,
+  "new_dll": false,
+  "new_runtime": false,
+  "stage36_off": true,
+  "ai_improvement_proven": false
+}

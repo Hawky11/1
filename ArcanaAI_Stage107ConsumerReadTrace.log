@@ -1,0 +1,58 @@
+STAGE107_BUILD=2026-11-12-r1 SOURCE_ONLY POST_F7DA8 READ_CEC64 originalCmpOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE107_INSTALLED 2/2 post=0F7DA8 read=0CEC64 replayCMP=once postBranch=0F7D8D fall=0F7DAE readReturn=0CEC6B DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=1 side=P1 player=0DDA1F78 tid=11052 frame=0E58FAB4 qpc=2945251570808 state=0403C138 index=0 record=00000000 esi=00000027 edx=00000000 v10=00000000 v18=00000000 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_POST_CEA20 seq=2 side=P2 player=0DDCCCA0 tid=11052 frame=0E58FAB4 qpc=2945263785406 state=040641A4 index=0 record=00000000 esi=00000027 edx=00000000 v10=00000000 v18=00000000 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=2 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=3 side=P2 player=0DDCCCA0 tid=11052 frame=0E58FAB4 qpc=2945323264308 state=040641A4 index=0 record=00000000 esi=00000027 edx=00000000 v10=000002F0 v18=000002F0 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=1 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=4 side=P2 player=0DDCCCA0 tid=11052 frame=0E58FAB4 qpc=2945360407051 state=040641A4 index=0 record=00000000 esi=00000027 edx=00000000 v10=00000542 v18=00000542 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_POST_CEA20 seq=5 side=P1 player=0DDA1F78 tid=11052 frame=0E58FAB4 qpc=2945371820655 state=0403C138 index=0 record=00000000 esi=00000027 edx=00000000 v10=00000268 v18=00000268 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=2 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=6 side=P2 player=0DDCCCA0 tid=11052 frame=0E58FAB4 qpc=2945390349003 state=040641A4 index=0 record=00000000 esi=00000027 edx=00000000 v10=000006B4 v18=000006B4 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=1 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=7 side=P2 player=0DDCCCA0 tid=11052 frame=0E58FAB4 qpc=2945553362727 state=040641A4 index=0 record=00000000 esi=00000027 edx=00000000 v10=000007DF v18=000007DF v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=1 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=8 side=P1 player=0DDA1F78 tid=11052 frame=0E58FAB4 qpc=2945605529255 state=0403C138 index=0 record=00000000 esi=00000027 edx=00000000 v10=0000071B v18=0000071B v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=1 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=9 side=P2 player=0DDCCCA0 tid=11052 frame=0E58FAB4 qpc=2945711970906 state=040641A4 index=0 record=00000000 esi=00000027 edx=00000000 v10=00000E0A v18=00000E0A v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=1 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=10 side=P1 player=0DDA1F78 tid=11052 frame=0E58FAB4 qpc=2945756230103 state=0403C138 index=0 record=00000000 esi=00000027 edx=00000000 v10=00001018 v18=00001018 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=1 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=11 side=P2 player=0DDCCCA0 tid=11052 frame=0E58FAB4 qpc=2945879096540 state=040641A4 index=0 record=00000000 esi=00000027 edx=00000000 v10=00001434 v18=00001434 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=1 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_POST_CEA20 seq=12 side=P2 player=0DDCCCA0 tid=11052 frame=0E58FAB4 qpc=2945954697905 state=040641A4 index=0 record=00000000 esi=00000027 edx=00000000 v10=00001AB9 v18=00001AB9 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_POST_CEA20 seq=13 side=P1 player=0DDA1F78 tid=11052 frame=0E58FAB4 qpc=2945957395877 state=0403C138 index=0 record=00000000 esi=00000027 edx=00000000 v10=00001C14 v18=00001C14 v20=0000000A recordIndex=0 active=0 code=0 parentPost=0 postLagTicks=0 valuesEqual=0 callerRva=000000 callerKnown=0 readMask=07 valid=1
+STAGE107_HEALTH post=2 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1
+STAGE107_HEALTH post=0 nativeRead=0 matched=0 filtered=0 dropped=0 mismatch=0 readFail=0 ring=4096 windowSec=10 originalCmpOnce=1 DRwrites=0 noGameplayWrites=1

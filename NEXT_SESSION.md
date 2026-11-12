@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage130 fresh Windows Stage129 F30B0 observer RUNTIME audited (2026-11-13)
+
+- **Stage130 complete runtime audit:** [full report](https://github.com/Hawky11/1/blob/stage130-stage129-producer-runtime-audit/Stage130_Runtime/RUNTIME_ANALYSIS.md) · [machine results](https://github.com/Hawky11/1/blob/stage130-stage129-producer-runtime-audit/Stage130_Runtime/results.json). Immutable evidence branch `stage130-stage129-producer-runtime-audit` stems from user-uploaded root logs at commit `19290b916e0f7ece195beab9067915cf28272250`; Build.log MSVC x86 **SUCCESS**, DLL **2,099,200 B**, only old C4754.
+- Stage129 **INSTALLED 3/3**, same-session sid `01DD72F704247563`, 53 exhaustive HEALTH windows: **3000 F30B0 entries, 0 F325A fallback27, 3000 F326A returnInput, 3000 paired**, all error/drop counters **0**. 87 sampled valid entry/return pairs. **Two direct** sampled input-candidate `0x27` returns (scopes **43** and **56**, P2) precede Stage104 `MODE0 0x27` for same actor+TID at **94/33** QPC ticks. This is runtime provenance evidence that 0x27 can pre-exist F30B0; do not assume every unsampled MODE0 event is uniquely linked to F30B0.
+- Same session: Stage104 **36 MODE0**, **17 special27**, **17 CEA20**, Stage107 **17 POST**, **0 native CEC64 read**; all 17 special MODE0 match their corresponding CEA20 and POST in nearby QPC. Stage122 **11301 parent positive-control hits, 1 state3 and 1 G4 slot7 write**; Stage113 **14510 gateA skips**; Stage115 **1282 all-false full snapshots**, Stage110 **CEBE0 entry 0**. Old Stage93/94 root logs use different TID/QPC and were not cross-joined.
+- **NEXT Stage131 STATIC-FIRST**: original binary producer *input candidate 0x27* provenance before direct callers **F3654** and **F3CBC**. Clarify argument setup and selection gates, no new hooks by default. Retain Windows-tested Stage129 DLL **2,099,200 B** and Stage122 rollback **2,089,984 B**. Stage36 OFF, no DR/additional gameplay writes, no speculative commit claims.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage129 opt-in F30B0 producer observer SOURCE ONLY (2026-11-13)
 
 - **Stage129 SOURCE ONLY**: `ArcanaAI_Stage129_F30B0_Forced_vs_Input_SourceOnly.zip` delivered in ChatGPT conversation (30,781 B; SHA256 `186c587dffa51e216cd212d8b23f6bb8857b31882125477dd4a14ffbbd44d541`; 13 text/source/test files; ZIP CRC PASS). **Not uploaded to GitHub**: this main checkpoint preserves the handoff, not the ZIP contents. No game EXE/DLL included. **Not compiled with MSVC or tested in Windows game**.

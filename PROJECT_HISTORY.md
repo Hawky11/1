@@ -1,3 +1,13 @@
+## Stage94 r1 runtime signature preflight refused; diagnostic r2 prepared (2026-11-12)
+
+User's game log: `STAGE94_BUILD=2026-11-12-r1 SOURCE_ONLY F7AD6 after-F3930 producer+F7B0A native JNE; originalOnce=1 gameWrites=0 DRwrites=0`, then `STAGE94_ERROR native signature already modified/not exact; no patch`. This means r1 did **not install any Stage94 native hook**, and the active **runtime bytes** at one or more of seven guarded sites or the two relative targets disagree with the expected original bytes. Re-examined exact user original AALib.exe: **7/7 guard byte sequences plus two relative call/JNE destinations pass (9/9)**. No evidence currently identifying the responsible prior hook; don't force/skip the signature test.
+
+**Latest Stage94 r2 diagnostic**: [source branch](https://github.com/Hawky11/1/tree/stage94-f3930-producer-type1-gate-source-only/Stage94_Overlay) now contains revised `src/Stage94Type1ProducerGate.inl` with `DescribeSignatureFailure()` executed before refusing the hook: `STAGE94_SIGFAIL region=... rva=... expected=... actual=...`, optional `STAGE94_SIGFAIL_JMP` with native JMP targetVA and owner UNKNOWN, optional `STAGE94_SIGFAIL_TARGET`. Live capture still refuses all patches until exact signature matches; Stage93 native observer unchanged. SHA-gated `UpdateStage94Diagnostic.ps1` upgrades **existing installed Stage94 r1 source only** (Stage94 observer and backup manifest's `installed_stage94_sha`), preserving Stage81/92/93 and fully functional `RollbackStage94.ps1`. Separate ZIP `ArcanaAI_Stage94_r2_RuntimeSignatureDiagnostic_SourceOnly.zip` provided in ChatGPT, verified all files SHA. **15/15** offline checks PASS; Windows r2 build/runtime pending. Backup original 2,019,840-byte Stage93 DLL; extract r2 and run `powershell -ExecutionPolicy Bypass -File .\UpdateStage94Diagnostic.ps1 -Root 'D:\INCUBATOR\ArcanaAIOverhaul'`, then Build.bat, one game launch, upload Build.log + full `ArcanaAI_Stage94ProducerGateTrace.log`. Do not try full Stage94 installer again on an already installed Stage94 source; that installer only accepts exact Stage93 input. New clean-install script in GitHub expects r2 observer SHA `80f5d540387c2e0df30898a0cb32d60050a8917104e816e4a63bdd135bec772e`.
+
+Stage36 stays OFF. Do not infer final-command causality or claim native Stage94 hook is working until `STAGE94_INSTALLED 2/2` and clean same-session trace are observed.
+
+---
+
 ## 2026-11-12 — Stage94 r1 produced SOURCE-ONLY (not Windows built)
 
 - Goal: advance beyond Stage93's 133/133 temporal state-to-FinalCommand joins toward same-event native origin of final type1 payload. Original AALib.exe verified SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba, x86 PE32.

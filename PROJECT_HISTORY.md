@@ -1,3 +1,9 @@
+## Stage97 r1 — inherited ESI candidate witness (SOURCE ONLY; 2026-11-12)
+
+**Code:** [Stage97 branch](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay); [static audit](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/analysis/STATIC_ANALYSIS.md); [Stage96 evidence](https://github.com/Hawky11/1/blob/main/Stage96_Runtime/RUNTIME_ANALYSIS.md). From user Library original SHA256-pinned AALib.exe, statically reconstructed F7756 writer to `[EBP-2C]`, F77D8 `MOV ESI,[EBP-2C]`, F77DB conditional jump, and branch to F789E/F7A94 bypassing five Stage96 writers. A single exact-signature guarded hook at F77D4 replays original CMP/MOV once and logs pre/local/post ESI context. Includes SHA-gated ApplyStage97, rollback, source/tests and Stage95/96 join correlator. Stage36 OFF, no extra game-data/DR writes or synthetic commands. **Offline 66/66 PASS. Windows compilation and live installation NOT performed.** Stage96 remains last confirmed build (2,039,808 B); runtime writer attribution remains **55/56**, bypass→gate **56/56**. Stage95 bypass seq9461, ESI=0x2C remains unexplained until Stage97 live evidence. Preserve project history and source branches. Next: source update → x86 Build.bat → short test and upload complete same-run logs.
+
+---
+
 ## 2026-11-12 — Stage96 r1 LIVE verified; source provenance resolved 55/56, one ESI gap remains
 
 **Evidence:** [runtime upload 7922935](https://github.com/Hawky11/1/commit/7922935697265f370148fa3fadf06b710e88e395) and [full Stage96 analysis](Stage96_Runtime/RUNTIME_ANALYSIS.md). This supersedes the older Stage94 source-only pending status below, without removing historical text.

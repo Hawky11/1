@@ -1,3 +1,9 @@
+## Stage97 r1 — inherited ESI F77D4 (SOURCE ONLY, 2026-11-12)
+
+[Stage97 overlay, installer, rollback and tests](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay) · [Static analysis](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/analysis/STATIC_ANALYSIS.md) · [Latest verified Stage96 runtime](https://github.com/Hawky11/1/blob/main/Stage96_Runtime/RUNTIME_ANALYSIS.md). The next narrowly scoped passive native witness observes `MOV ESI,[EBP-2C]` at F77D8. This instruction and a bypass to F7A94 can explain the **still-unresolved Stage96 55/56** writer coverage (the P1 ESI=0x2C case), but **no Stage97 live evidence exists yet**. Original AALib.exe SHA256 verified; 66/66 offline tests pass. **Windows build/game run PENDING**; Stage96 r1 DLL 2,039,808 B remains last live-confirmed. Stage36 stays OFF; no synthetic commands or extra gameplay/DR writes. Installation / rollback commands are in [Stage97 README](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/README_STAGE97_RU.md).
+
+---
+
 ## Current verified runtime — Stage96 r1 (2026-11-12)
 
 Stage96 is **Windows-built and live-installed (5/5)**, not merely source-only. Stage94 and Stage95 also installed 2/2; 51 clean HEALTH snapshots for each. [Latest user runtime upload](https://github.com/Hawky11/1/commit/7922935697265f370148fa3fadf06b710e88e395) · [full Stage96 runtime analysis](Stage96_Runtime/RUNTIME_ANALYSIS.md) · [latest handoff](NEXT_SESSION.md).

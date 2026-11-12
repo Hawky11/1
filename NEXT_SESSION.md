@@ -1,3 +1,15 @@
+## ACTIVE CHECKPOINT — Stage97 r1 SOURCE-ONLY (2026-11-12); Windows build/live test PENDING
+
+- **Source:** [Stage97 r1 full overlay](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay) · [installer](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/ApplyStage97.ps1) · [native static audit](https://github.com/Hawky11/1/tree/stage97-inherited-esi-source-only/Stage97_Overlay/analysis/STATIC_ANALYSIS.md) · [Stage96 verified runtime](https://github.com/Hawky11/1/blob/main/Stage96_Runtime/RUNTIME_ANALYSIS.md).
+- **Source-only Stage97 is NOT Windows-built or live-installed.** Last confirmed Windows build remains Stage96 r1, dinput8.dll 2,039,808 bytes, STAGE96_INSTALLED 5/5, Stage95 2/2 and Stage94 2/2; 51 clean health records.
+- **Motivation:** Stage96 matched 55/56 bypass native ESI writers. The exception is Stage95 seq9461 → Stage94 gate seq1484, P1 ESI=0x2C, whereas last Stage96 F79F0 writer was stale (~2,606,909 QPC ticks) and 0x2B. The 56/56 bypass→gate join remains complete; only writer→bypass attribution is 55/56.
+- Original Library AALib.exe SHA256 `28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba`: F7756 can set `[EBP-2C]`, F77D8 executes `MOV ESI,[EBP-2C]`, and an alternate F789E→F7A94 path can skip all five Stage96 post-call writer witnesses. **Static plausible path, NOT proven provenance of prior 0x2C event.**
+- Stage97 adds a single guarded passive witness at F77D4 (7 original bytes `83 7D F8 FF 8B 75 D4`; native CMP+MOV each executed once), with native branch unchanged at F77DB. Output: `ArcanaAI_Stage97InheritedEsiTrace.log` / `STAGE97_INHERITED`. No gameplay/DR writes, synthetic commands, other-stage hook overlap or Stage36.
+- **Offline 66/66 PASS** including original PE and synthetic joins; cannot claim Windows build, patch install or gameplay benefit until next runtime.
+- **NEXT USER ACTION:** back up working Stage96 `build/dinput8.dll`, close game, use Stage97 ZIP/branch and run `powershell -ExecutionPolicy Bypass -File .\ApplyStage97.ps1 -Root 'D:\INCUBATOR\ArcanaAIOverhaul'` then `Build.bat`. One short COM-vs-COM run. Require `STAGE97_INSTALLED 1/1`, `STAGE96_INSTALLED 5/5`, zero Stage97 HEALTH errors, Stage95 bypass, Stage94 gates and Stage93 final QPC in same run. Upload Build.log plus Stage97/96/95/94 logs and Stage93FinalCommandQpc. If source signature/build fails, stop and roll back with included `RollbackStage97.ps1`; Stage36 stays OFF.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage96 r1 LIVE verified (2026-11-12); Stage97 analysis next
 
 **Read [Stage96 runtime analysis](Stage96_Runtime/RUNTIME_ANALYSIS.md) first** and use the same-run [runtime commit 7922935](https://github.com/Hawky11/1/commit/7922935697265f370148fa3fadf06b710e88e395). Preserve all earlier documented stage history beneath this heading; older Stage94 r3 source-only pending statements below are historical, NOT the current runtime status.

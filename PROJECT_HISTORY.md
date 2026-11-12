@@ -1,3 +1,13 @@
+## 2026-11-12 — Stage94 r1 produced SOURCE-ONLY (not Windows built)
+
+- Goal: advance beyond Stage93's 133/133 temporal state-to-FinalCommand joins toward same-event native origin of final type1 payload. Original AALib.exe verified SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba, x86 PE32.
+- Static native route: CALL F3930 at F7AD1 -> F7AD6 ADD ESP,14h / MOV ESI,EAX (result becomes ESI); branches may override ESI at F7AEE; F7B07 CMP ECX,1 -> F7B0A JNE F7C68 gate; downstream F7C59 PUSH ESI / PUSH 1 / PUSH EBX -> original F7C5D CALL F2DE0. Not all commands originate at F3930.
+- Prepared reversible SHA-gated Stage94 observer overlay on exact Stage93 r3: F7AD6 5-byte native result replay, F7B0A 6-byte JNE replay with original branch targets; 8192 bounded worker-only log, GPR/FLAGS/FPU restoration, install mutex, peer EIP guard and failure rollback. Stage94 requires Stage93 installed. No changed AI decisions, synthetic events, DR watchpoints, duplicate F7C5D/EE306 hooks, Stage36 enabled or extra game-state writes.
+- [Stage94 source branch](https://github.com/Hawky11/1/tree/stage94-f3930-producer-type1-gate-source-only/Stage94_Overlay) and ChatGPT ZIP `ArcanaAI_Stage94_F3930_Producer_Type1_Gate_SourceOnly.zip` preserve exact source, installer, rollback, original PE/static analysis and offline correlator. Source/PE 38/38 PASS, synthetic/installer 13/13 PASS, raw native encodings verified. **Not tested in Windows MSVC or game.**
+- Next runtime evidence required: new Build.log, Stage94 2/2 installation and clean Health, `STAGE94_PRODUCER`/ `STAGE94_GATE`, existing `STAGE93_FINAL_QPC` and original FinalCommand same-session. Backup last confirmed Stage93 DLL 2,019,840 bytes. Strong temporally bounded native ESI agreement may demonstrate a path but does not alone prove unique gameplay causes.
+
+---
+
 ## 2026-11-12 — Stage93 r3 Windows runtime success, direct F5A68 native setter established
 
 - User upload [c623b607](https://github.com/Hawky11/1/commit/c623b607a) brought real MSVC x86 Build.log, 2,019,840-byte `dinput8.dll` BUILD SUCCEEDED (only prior C4754), new Stage93 direct-bit3 and final-command QPC logs, and fresh Stage92/91/90 data. Stage93 `INSTALLED 1/1`, Stage92 3/3 with Stage35 compatibility, 47 clean health intervals. Report: `Stage93_Runtime/RUNTIME_ANALYSIS.md`; counters `results.json`.

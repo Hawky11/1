@@ -1,0 +1,123 @@
+{
+  "stage": 116,
+  "date": "2026-11-12",
+  "kind": "WINDOWS_RUNTIME_VERIFIED",
+  "user_upload_commit": "ad3a541b9eeced167901d6f82e2617d0485c67fa",
+  "build": {
+    "success": true,
+    "started": "2026-11-12 21:18:41",
+    "target": "win32_x86",
+    "msvc": "14.51.36231",
+    "dll_bytes": 2082304,
+    "warning": "C4754 at AICommandSiteTrace.cpp:786 (preexisting, nonfatal)"
+  },
+  "run": {
+    "general_start": "2026-11-12 21:19:30",
+    "tid": 10288,
+    "ini": {
+      "EnableStage115Fa480Trace": 1,
+      "EnableStage113ParentGateTrace": 1,
+      "EnableStage110Cebe0GuardTrace": 1,
+      "EnableStage107ConsumerTrace": 1,
+      "EnableStage36ControlToCommandTrace": 0
+    }
+  },
+  "install": {
+    "stage115": "piggyback INSTALLED / zero added hooks",
+    "stage113": "4/4",
+    "stage110": "2/2",
+    "stage107": "2/2",
+    "stage104": "2/2"
+  },
+  "stage115": {
+    "health_snapshots": 52,
+    "snapshot_count": 1455,
+    "full": 1455,
+    "partial": 0,
+    "pred1or2or3": 0,
+    "predAllFalse": 1455,
+    "predictionDiff": 0,
+    "addedHooks": 0,
+    "readMask_1F": 1455,
+    "p1_sampled": 670,
+    "p2_sampled": 785,
+    "all_tid": 10288,
+    "predictionAL0_observedAL0_zf1_consistent1": 1455,
+    "globals_hex": {
+      "gE3C3EFC": "00000000",
+      "gE3C4930": "00000000",
+      "gE10B37C": "00000003",
+      "gE10B640": "00000007",
+      "gE10B8B8": "00000000"
+    },
+    "unique_matched_to_stage113_kind3_qpc": 1455,
+    "unmatched": 0
+  },
+  "stage113": {
+    "health_snapshots": 52,
+    "parentA": 16760,
+    "gateA": 16760,
+    "gateAskip": 16760,
+    "gateApass": 0,
+    "parentB": 0,
+    "gateB": 0,
+    "sampled_parentA_kind1": 1455,
+    "sampled_gateA_kind3": 1455,
+    "dropped": 0,
+    "mismatch": 0,
+    "readFail": 0,
+    "stage113_side_P0_is_nested_pointer_issue": true
+  },
+  "stage104": {
+    "health_snapshots": 52,
+    "mode0": 58,
+    "mode0_27": 24,
+    "cea20_pre": 24,
+    "cea20_pre_p1": 9,
+    "cea20_pre_p2": 15
+  },
+  "stage107": {
+    "health_snapshots": 52,
+    "post": 24,
+    "read_CEC64": 0
+  },
+  "stage110": {
+    "health_snapshots": 52,
+    "entry_CEBE0": 0,
+    "guard_CEC57": 0
+  },
+  "joins": {
+    "stage104_mode0_27_to_cea20": {
+      "matched": 24,
+      "missing": 0,
+      "ambiguous": 0,
+      "qpc_lag_min": 6,
+      "qpc_lag_max": 78
+    },
+    "stage104_cea20_to_stage107_post": {
+      "matched": 24,
+      "missing": 0,
+      "ambiguous": 0,
+      "qpc_lag_min": 5,
+      "qpc_lag_max": 12
+    },
+    "stage115_snapshot_to_stage113_gateA_kind3": {
+      "matched": 1455,
+      "missing": 0,
+      "ambiguous": 0,
+      "qpc_difference": 0
+    }
+  },
+  "fresh_stage94_93_logs_uploaded": false,
+  "old_stage94_93_tid": [
+    5480,
+    12204
+  ],
+  "limitations": [
+    "Five globals sampled on 1455 selected events, not all 16760 full-hit events",
+    "Global snapshots taken after FA480 returned, not from internal helpers",
+    "P0 in Stage113 is nested pointer not a third side",
+    "No native gameplay/AI improvement proven"
+  ],
+  "next": "Stage117 static-only xrefs/writer provenance for the five native FA480 gate globals; no additional hook or forced gameplay changes until needed"
+}

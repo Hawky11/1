@@ -1,0 +1,155 @@
+{
+  "stage": 111,
+  "date": "2026-11-12",
+  "status": "WINDOWS_STAGE110_INSTALLED_NO_CEBE0_ENTRY_214_OF_214_UPSTREAM_GATE_JOINS",
+  "evidence_commit": "3ed706cb9be5e9d13f9202c0606080f304ba5070",
+  "blobs": {
+    "build": "60d09673d40e3b0ba33a3bdbb5e5f2e60cd9dbb3",
+    "stage104": "a1157bb674a9d1e6889613545fb14288d805c150",
+    "stage107": "05f4271541b090b630bf75674b8e2e6805627901",
+    "stage110": "36892266b0fee4072e5d094862221cb9dd03b28a",
+    "stage93_final": "f65f11c1b3e263317933781a29b8bb9451dd43bc",
+    "stage94": "0e600b5815a80f607766ff10fc83f08d69d7c55a"
+  },
+  "build": {
+    "success": true,
+    "dll_bytes": 2073088,
+    "toolchain": "Windows MSVC x86",
+    "nonfatal_warning": "C4754"
+  },
+  "install": {
+    "stage104": "2/2",
+    "stage107": "2/2",
+    "stage110": "2/2",
+    "stage36_off_this_run_verified_from_ini": false,
+    "f2de0_previous_detour_preserved": true
+  },
+  "health_intervals": {
+    "stage94": 47,
+    "stage104": 47,
+    "stage107": 47,
+    "stage110": 47
+  },
+  "stage94": {
+    "producer": 2044,
+    "gate": 214,
+    "forward_type1": 171,
+    "reject_mode0": 43,
+    "producer_gate27_matched": 16,
+    "producer_gate27_unmatched": 4
+  },
+  "joins": {
+    "stage94_forward_to_stage93_final": {
+      "matched": 171,
+      "total": 171,
+      "missing": 0,
+      "ambiguous": 0,
+      "qpc_lag_min": 2,
+      "qpc_lag_max": 49
+    },
+    "stage94_reject_to_stage104_mode0": {
+      "matched": 43,
+      "total": 43,
+      "missing": 0,
+      "ambiguous": 0,
+      "qpc_lag_min": 10,
+      "qpc_lag_max": 29
+    },
+    "stage94_27_to_stage104_27": {
+      "matched": 20,
+      "total": 20,
+      "missing": 0,
+      "ambiguous": 0
+    },
+    "stage104_cea20_to_stage107_post": {
+      "matched": 20,
+      "total": 20,
+      "missing": 0,
+      "ambiguous": 0,
+      "side_P1": 7,
+      "side_P2": 13,
+      "qpc_lag_min": 4,
+      "qpc_lag_median": 7,
+      "qpc_lag_max": 15
+    }
+  },
+  "stage104": {
+    "mode0": 43,
+    "mode0_codes": {
+      "0x10": 7,
+      "0x0E": 11,
+      "0x27": 20,
+      "0x26": 2,
+      "0x25": 3
+    },
+    "cea20_pre": 20,
+    "cea20_arg0_player_offsets": {
+      "0x930": 17,
+      "0x954": 3
+    }
+  },
+  "stage107": {
+    "post": 20,
+    "post_valid": 20,
+    "post_index_zero": 20,
+    "post_v10_equals_v18": 20,
+    "post_v20_equals_0xA": 20,
+    "native_read_cec64": 0,
+    "matched_read": 0
+  },
+  "stage110": {
+    "entry": 0,
+    "guard": 0,
+    "guardActive": 0,
+    "guardSkip": 0,
+    "guardUnknown": 0,
+    "idMinus1": 0,
+    "outRange": 0,
+    "tableFF": 0,
+    "inactivePred": 0,
+    "candidatePred": 0,
+    "unreadable": 0,
+    "unknownCaller": 0
+  },
+  "health_errors": {
+    "stage94": {
+      "filtered": 0,
+      "dropped": 0,
+      "mismatch": 0,
+      "readFail": 0
+    },
+    "stage104": {
+      "filtered": 0,
+      "dropped": 0,
+      "mismatch": 0,
+      "readFail": 0
+    },
+    "stage107": {
+      "filtered": 0,
+      "dropped": 0,
+      "mismatch": 0,
+      "readFail": 0
+    },
+    "stage110": {
+      "dropped": 0,
+      "mismatch": 0,
+      "readFail": 0
+    }
+  },
+  "empty_traces": [
+    "Stage93DirectBit3",
+    "Stage95AlternateEsi",
+    "Stage96EsiWriter",
+    "Stage97InheritedEsi",
+    "Stage98CommandRoute"
+  ],
+  "fresh_ini_not_uploaded": true,
+  "fresh_general_log_not_uploaded": true,
+  "cebe0_entry_observed": false,
+  "actual_guard_failure_observed": false,
+  "full_function_never_called_proven": false,
+  "gameplay_acceptance_or_hit_proven": false,
+  "new_source_patch": false,
+  "new_dll_by_analyst": false,
+  "next": "Stage112 static CBDE0 and CEBE0 direct caller reachability audit; optional guarded passive witness if needed"
+}

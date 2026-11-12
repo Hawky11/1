@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-12",
+  "stage": 102,
+  "status": "source_sha_verified_and_existing_runtime_matched",
+  "input_run": "8919f8ec242f1137c447d2eb4afc7ba0ed0c0e1e",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "native_checks_passed": 35,
+  "offline_synthetic_tests_passed": 19,
+  "archive_sha256": "d9645e9eebce860a69db8875ec0b648e032ce288e362850576063af712c42b62",
+  "observed": {
+    "stage96_F79B6_total": 1813,
+    "F79B6_FFFFFFFF_to_00000027": 3,
+    "stage96_F7A8F_class5_total": 461,
+    "F7A8F_0x27_substitutions": 0,
+    "stage94_total_gates": 201,
+    "stage94_0x27_gates": 15,
+    "stage94_0x27_rejected": 15,
+    "stage94_0x27_from_producer": 12,
+    "stage94_0x27_from_bypass": 3,
+    "stage93_final_type1": 167,
+    "stage93_final_payload_0x27": 0
+  },
+  "chains": [
+    {
+      "side": "P1",
+      "writer": [
+        975,
+        976,
+        977
+      ],
+      "route": 806,
+      "bypass": 608,
+      "gate": 209,
+      "gate_ecx": 0,
+      "forward": false
+    },
+    {
+      "side": "P2",
+      "writer": [
+        6076,
+        6077,
+        6078
+      ],
+      "route": 4630,
+      "bypass": 4085,
+      "gate": 612,
+      "gate_ecx": 0,
+      "forward": false
+    },
+    {
+      "side": "P2",
+      "writer": [
+        15102,
+        15103,
+        15104
+      ],
+      "route": 11658,
+      "bypass": 10356,
+      "gate": 1468,
+      "gate_ecx": 0,
+      "forward": false
+    }
+  ],
+  "static": {
+    "F5210_divisor": 17000,
+    "table_action0": 39,
+    "table_action34": 39,
+    "table_both_allow_0x27": true,
+    "class5_exact_failed_dynamic_guard": "unobserved"
+  },
+  "no_new_dll": true,
+  "no_new_hook": true,
+  "stage36_off": true,
+  "gameplay_improvement_proven": false,
+  "next": "Stage103 upstream ECX=0 before F7B0A; no forced commands"
+}

@@ -1,3 +1,16 @@
+## 2026-11-12 — Stage96 r1 LIVE verified; source provenance resolved 55/56, one ESI gap remains
+
+**Evidence:** [runtime upload 7922935](https://github.com/Hawky11/1/commit/7922935697265f370148fa3fadf06b710e88e395) and [full Stage96 analysis](Stage96_Runtime/RUNTIME_ANALYSIS.md). This supersedes the older Stage94 source-only pending status below, without removing historical text.
+
+- MSVC x86 **BUILD SUCCEEDED**, dinput8.dll **2,039,808 bytes** (only pre-existing nonfatal C4754 warning). Stage94 **2/2**, Stage95 **2/2**, Stage96 **5/5** native hook installation verified in the same run; 51 clean HEALTH records for each stage, no drops/mismatches/read failures. Stage36 OFF; no extra game-state/DR writes reported.
+- Stage96 **17,558 writer events** across F7924 11,804 / F79B6 1,693 / F79D4 1,270 / F79F0 2,286 / F7A8F 505. Stage95 12,484 bypass events; Stage94 208 gates (163 forwarded, 45 rejected); Stage93 163 real FinalCommand QPC rows.
+- **163/163** forwarded gate → real FinalCommand events match player, TID, side, command payload and order (2–62 QPC-tick lag). **152** gate events match finite F3930 result. The other **56/56** gates uniquely match Stage95 finite ESI bypass events (2–58 QPC ticks).
+- Of those 56 bypass-gate events, **55/56** have an exact-value latest Stage96 writer (1–16 QPC ticks before bypass): F79F0 **39**, F7924 **12**, F7A8F **4**. The exceptional P1 bypass seq 9461 → gate seq 1484 forwarded ESI **0x2C**, but latest Stage96 writer returned **0x2B** about 2,606,909 QPC ticks before: provenance UNKNOWN; never claim 56/56 writer attribution.
+- **Stage94 heuristic false-positive corrected:** gate seq 1487 ESI **0x23** had `sourceCandidateSeq=1486` F3930 EAX=FFFFFFFF and `sourceValueMatches=0`; actual measured route Stage96 F7924 → Stage95 bypass seq 9707 → Stage94 gate. Stage94 heuristics alone do not prove source.
+- Next Stage97: disassemble original game control flow into F7A94 and investigate inherited/unobserved ESI writer that yields 0x2C. Keep passive, signature-gated, original native behavior, Stage36 OFF. The complete case-by-case limitations are in `Stage96_Runtime/RUNTIME_ANALYSIS.md`.
+
+---
+
 ## Stage94 r3 exact Stage82-callchain compatibility — source only, Windows test pending (2026-11-12)
 
 Stage94 r2 diagnostics from user's fresh game log: `STAGE94_SIGFAIL region=F3930_CALL rva=0F7AD1 expected=E85ABEFFFF actual=E87A679B50 gameBase=00100000`, and `STAGE94_SIGFAIL_TARGET callF3930Expected=0F3930 actualRVA=50AAE250 jneExpected=0F7C68 actualRVA=0F7C68`. **The actual CALL target VA is 0x50BAE250**, not 0x50AAE250: old diagnostic printed target relative to gameBase. The previously installed **Stage82 r2** is the identified owner: its source `Stage82NestedSelector.inl` (user Library source archive `ArcanaAI_Stage82_r2_SignatureAudit_SourceOnly.zip`) installs an exact CALL detour at F7AD1 targeting its local `Stage82Call1`. That wrapper invokes the original F3930 with five copied args, returns native EAX, and returns to F7AD6. This was a **false rejection of an authorized earlier patch** by Stage94's original-only producer-call guard, not evidence of corrupt game code.

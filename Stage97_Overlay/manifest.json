@@ -1,0 +1,51 @@
+{
+  "stage": "Stage97 r1",
+  "date": "2026-11-12",
+  "type": "source-only passive inherited ESI witness",
+  "status": "66/66 offline tests PASS; Windows x86/game UNTESTED",
+  "original_aalib_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "stage96_loader_sha256": "7ea9938883f8a7b5e3db6142d64750902d51a49f9ce6603ba617f9f7e1644f81",
+  "stage96_witness_sha256": "d3defa5befc6cb8a1fc1b1d51ab72d3c8445e319ac40762a14679bc74e4f8516",
+  "files": [
+    {
+      "path": "ApplyStage97.ps1",
+      "sha256": "157bd5f390dd9153313a12b5bd36ebe0d4fc637868a74519644933f1d280d725",
+      "bytes": 3945
+    },
+    {
+      "path": "README_STAGE97_RU.md",
+      "sha256": "7d114d77220f5ba0a14aae7e6128922dcd32cf2a3904169b5db645f16e6d8ee0",
+      "bytes": 4550
+    },
+    {
+      "path": "RollbackStage97.ps1",
+      "sha256": "5ea6cce9d98f59ac6ef261e81175a34388e8d655741fdf0c55fadb212db70a88",
+      "bytes": 1938
+    },
+    {
+      "path": "analysis/STATIC_ANALYSIS.md",
+      "sha256": "c6177f2b0c5d6e7e076dfdbb821aaa4e37601b1adaf6649a7a62324c32cba617",
+      "bytes": 3539
+    },
+    {
+      "path": "src/Stage81SelectorWriter.inl",
+      "sha256": "a7d8aef49b68d5b30090b313e3cb2f94cebf51ab6a23d7af40766f01a941fe43",
+      "bytes": 26288
+    },
+    {
+      "path": "src/Stage97InheritedEsiTrace.inl",
+      "sha256": "f368037433b3baaec4f322428875edbbb8f3c12e1c89486c5d9ba8ff49c2f78c",
+      "bytes": 11447
+    },
+    {
+      "path": "tools/correlate_stage97.py",
+      "sha256": "2a98869c2a3f9612798f7646e2f1c211ace161c32184edab610cbe8dac7bfaeb",
+      "bytes": 3146
+    },
+    {
+      "path": "tools/test_stage97_offline.py",
+      "sha256": "cc36f7ddabe388e5ed14e3bbde2889827d5d345b9ad6cc153fe3870c10c77e04",
+      "bytes": 5730
+    }
+  ]
+}

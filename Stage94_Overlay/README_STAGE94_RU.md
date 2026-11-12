@@ -1,3 +1,13 @@
+## Stage94 r2 diagnostic correction — actual live signature mismatch (2026-11-12)
+
+User's Windows run of Stage94 r1 showed `STAGE94_BUILD=2026-11-12-r1`, followed by `STAGE94_ERROR native signature already modified/not exact; no patch`. Stage94 therefore **refused native patching safely**; there is no Stage94 2/2 installation evidence. Fresh original `AALib.exe` reverified: all seven code byte ranges and both relative call/JNE targets match exactly; the mismatch is **in live memory after previous hooks**, at an as-yet unknown RVA. Do not assume which prior stage owns it and **do not remove SignatureOK**.
+
+The diagnostic-only r2 `Stage94Type1ProducerGate.inl` logs `STAGE94_SIGFAIL region=... rva=... expected=... actual=...`, `STAGE94_SIGFAIL_JMP` (when an existing E9 jump is observed, targetVA only; owner remains UNKNOWN), and any changed native relative call/jump target; no additional detours or gameplay writes. The source-only zip `ArcanaAI_Stage94_r2_RuntimeSignatureDiagnostic_SourceOnly.zip` contains `UpdateStage94Diagnostic.ps1`, revised observer and SHA manifest. Existing **Stage94 r1** installations should extract this r2 ZIP and execute **`powershell -ExecutionPolicy Bypass -File .\UpdateStage94Diagnostic.ps1 -Root 'D:\INCUBATOR\ArcanaAIOverhaul'`**. This is a strict SHA-gated replacement of *only* Stage94 observer source and `installed_stage94_sha` in the existing rollback manifest. It does not rewrite Stage81/92/93. Backup tested Stage93 DLL (2,019,840 bytes), rebuild MSVC x86, run once, upload complete `ArcanaAI_Stage94ProducerGateTrace.log` and Build.log. Existing `RollbackStage94.ps1` remains functional after the update and fully restores Stage93 source if required. No bypass or force-patching until actual live bytes are diagnosed. **Offline** r2: 15/15 native-signature/integration/ZIP checks PASS; Windows r2 compile and live outcome pending.
+
+**For new installs from current GitHub source:** `ApplyStage94.ps1` now expects r2 observer SHA `80f5d540387c2e0df30898a0cb32d60050a8917104e816e4a63bdd135bec772e`; the originally published r1 ZIP and its installer still expect the old SHA and should not be mixed with changed branch files.
+
+---
+
 # Stage94 r1 — F3930 producer result → native type1 gate → real FINAL_COMMAND (SOURCE ONLY)
 
 **СТАТУС:** исходники подготовлены и проверены офлайн. **Windows x86-сборки и запуска Stage94 пока не было.** Рабочий Stage93 DLL **2 019 840 байт** обязателен как резервная копия. Stage36 остаётся **OFF**.

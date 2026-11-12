@@ -1,0 +1,87 @@
+{
+  "stage": 108,
+  "date": "2026-11-12",
+  "status": "WINDOWS_BUILD_INSTALLED_POST_CONFIRMED_READ_NOT_OBSERVED",
+  "evidence_commit": "db7a9967a8f3ac6c85d0fc2072c96638a2a46e65",
+  "raw_blob_sha": {
+    "ini": "832d957303e29bb4f3d4759b45c1c8753a97afa4",
+    "general": "08a6a8874e263badd8301e801090056286e1ade1",
+    "stage104": "cb5555faa3a27e26101e6b50f90e951e5308e116",
+    "stage107": "7ba4d78fd08acb19677b1bda764d54dae759065c",
+    "build": "827fcaba0d6a9278985a76bd7e9b08a499250ef1"
+  },
+  "build": {
+    "success": true,
+    "msvc_x86": "14.51.36231",
+    "dll_bytes": 2065920,
+    "warning": "C4754"
+  },
+  "install": {
+    "stage107_hooks": 2,
+    "stage107_expected": 2,
+    "stage104_hooks": 2,
+    "stage104_expected": 2,
+    "stage36_off": true,
+    "stage107_optin_on": true,
+    "f2de0_prior_detour_target_va": "78E40E30"
+  },
+  "counts": {
+    "health_stage104": 43,
+    "health_stage107": 43,
+    "stage104_mode0": 29,
+    "stage104_mode0_27": 13,
+    "stage104_mode0_other": 16,
+    "stage104_cea20": 13,
+    "stage107_post": 13,
+    "stage107_read_cec64": 0,
+    "stage107_nativeRead": 0,
+    "stage107_filtered": 0,
+    "stage107_matched": 0,
+    "health_dropped": 0,
+    "health_mismatch": 0,
+    "health_readFail": 0
+  },
+  "joins": {
+    "stage104_mode0_27_to_cea20": 13,
+    "cea20_to_stage107_post": 13,
+    "missing": 0,
+    "ambiguous": 0,
+    "reused": 0,
+    "P1": 5,
+    "P2": 8,
+    "tid": 11052,
+    "frame": "0E58FAB4",
+    "pre_post_qpc_lag_ticks": {
+      "min": 4,
+      "median": 5,
+      "max": 58
+    }
+  },
+  "post_fields": {
+    "valid": 13,
+    "readMask": "07",
+    "state_P1": "0403C138",
+    "state_P2": "040641A4",
+    "index": 0,
+    "v10_equals_v18": 13,
+    "v20": "0000000A",
+    "nonnull_pre_cea20_arg0": 13,
+    "record_offsets": {
+      "0x930": 12,
+      "0x954": 1
+    },
+    "record_offset_954_side": "P1",
+    "post_record_field": "not initialized in emitter; zero is not a null pre-call argument"
+  },
+  "read_counter_pre_filter": true,
+  "cea20_post_seen": true,
+  "cebe0_cec64_executed_observed": false,
+  "downstream_consumption_proven": false,
+  "attack_hit_proven": false,
+  "gamewide_stability_proven": false,
+  "new_analyst_build": false,
+  "new_analyst_hook": false,
+  "game_writes": false,
+  "dr_writes": false,
+  "next": "Stage109 static CEBE0 entry/branch audit before any further passive observers"
+}

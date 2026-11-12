@@ -1,3 +1,9 @@
+## Stage93 installer r2 correction — Windows test pending (2026-11-12)
+
+User's first Stage93 apply failed **before any source writes**: `Stage93 ambiguous duplicate: DWORD TickCount;` in `AICommandSiteTrace.cpp`. This was an overly broad global string match in the PowerShell installer, not a Windows compile/runtime error. Updated [Stage93 branch installer](https://github.com/Hawky11/1/blob/stage93-direct-bit3-final-qpc-source-only/Stage93_Overlay/ApplyStage93.ps1) to replace all five anchors only within their intended C++ struct/functions and still refuse ambiguous matches *inside* a target. Stage92 r3 SHA source guards are unchanged; native Stage93 hooks unchanged. Revised ZIP `ArcanaAI_Stage93_r2_InstallerFix_SourceOnly.zip` and standalone `ApplyStage93_r2.ps1` delivered in chat. Python structural tests 3/3 (including simulated duplicate global TickCount), Stage93 correlator 2/2, native source verifier 32/32 passed; **PowerShell script on user's actual source, MSVC build, and live game test have not been performed**. User should use the corrected script (rename to ApplyStage93.ps1 if using standalone) with the original Stage92 r3 project, then build and upload Build.log + Stage93/Stage92/Stage91/FinalCommand logs. On a new anchor mismatch, do not force changes; inspect exact source segment.
+
+---
+
 ## Stage93 SOURCE READY — next Windows build/runtime handoff (2026-11-12)
 
 **Newest Stage93 source**: [stage93-direct-bit3-final-qpc-source-only](https://github.com/Hawky11/1/tree/stage93-direct-bit3-final-qpc-source-only), with code and SHA-gated Apply/Rollback; complete self-contained ZIP delivered in current ChatGPT conversation. **NOT YET BUILT ON WINDOWS OR TESTED IN GAME**. Preserve the verified Stage92 r3 DLL (2,011,648 bytes) and tested Stage91 DLL (1,999,872 bytes); keep Stage36 OFF and Stage35 untouched.

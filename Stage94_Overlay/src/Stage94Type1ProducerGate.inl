@@ -134,6 +134,57 @@ bool SignatureOK(){
     static_cast<DWORD>(kGateAllow+jneRel)!=kGateReject)return false;
  return true;
 }
+// Diagnostics ONLY: read the live code bytes after earlier stages have installed.
+// Never trust an original-file comparison as proof of untouched runtime code.
+// Called outside peer-thread suspension; no disassembler or memory modifications.
+void DescribeSignatureFailure(){
+ const BYTE* b=reinterpret_cast<const BYTE*>(static_cast<uintptr_t>(arcana_stage81::g_gameBase));
+ struct Guard { const char* label; DWORD rva; const BYTE* expected; DWORD length; };
+ const Guard checks[]={
+  {"RESULT_ADD_MOV",kResult,kResultOriginal,sizeof(kResultOriginal)},
+  {"GATE_JNE",kGate,kGateOriginal,sizeof(kGateOriginal)},
+  {"F3930_CALL",kResult-5u,kProducerCall,sizeof(kProducerCall)},
+  {"RESULT_NEXT",kResultResume,kProducerNext,sizeof(kProducerNext)},
+  {"GATE_CMP",kGate-3u,kGateCmp,sizeof(kGateCmp)},
+  {"GATE_NEXT",kGateAllow,kGateNext,sizeof(kGateNext)},
+  {"FINAL_PUSH",0xF7C59u,kFinalArgs,sizeof(kFinalArgs)}
+ };
+ DWORD bad=0u;
+ for(const Guard& check:checks){
+  if(std::memcmp(b+check.rva,check.expected,check.length)==0)continue;
+  ++bad;
+  char actual[48]{},reference[48]{};
+  for(DWORD j=0;j<check.length;++j){
+   sprintf_s(actual+j*2u,sizeof(actual)-j*2u,"%02X",b[check.rva+j]);
+   sprintf_s(reference+j*2u,sizeof(reference)-j*2u,"%02X",check.expected[j]);
+  }
+  char line[320]{};
+  sprintf_s(line,"STAGE94_SIGFAIL region=%s rva=%06lX expected=%s actual=%s gameBase=%08lX",
+   check.label,check.rva,reference,actual,arcana_stage81::g_gameBase);
+  Log(line);
+  // A preexisting near JMP is probably another installed hook, but do not infer its owner.
+  if(b[check.rva]==0xE9&&check.length>=5u){
+   std::int32_t rel=0;std::memcpy(&rel,b+check.rva+1u,4u);
+   const DWORD target=static_cast<DWORD>(arcana_stage81::g_gameBase+check.rva+5u+rel);
+   sprintf_s(line,"STAGE94_SIGFAIL_JMP region=%s siteRVA=%06lX liveTargetVA=%08lX owner=UNKNOWN",
+    check.label,check.rva,target);
+   Log(line);
+  }
+ }
+ std::int32_t relCall=0,relJne=0;
+ std::memcpy(&relCall,b+kResult-4u,4u);
+ std::memcpy(&relJne,b+kGate+2u,4u);
+ const DWORD callDst=static_cast<DWORD>(kResult+relCall);
+ const DWORD jneDst=static_cast<DWORD>(kGateAllow+relJne);
+ if(callDst!=0xF3930u||jneDst!=kGateReject){
+  ++bad;
+  char line[240]{};
+  sprintf_s(line,"STAGE94_SIGFAIL_TARGET callF3930Expected=0F3930 actualRVA=%06lX "
+   "jneExpected=0F7C68 actualRVA=%06lX",callDst,jneDst);
+  Log(line);
+ }
+ if(!bad)Log("STAGE94_SIGFAIL_UNEXPLAINED signature guard refused but no mismatched bytes found");
+}
 bool Patch(BYTE* p,const BYTE* bytes,DWORD len){
  DWORD old=0,unused=0;
  if(!VirtualProtect(p,len,PAGE_EXECUTE_READWRITE,&old))return false;
@@ -203,7 +254,7 @@ extern "C" __declspec(naked) void Stage94GateHook(){
 }
 namespace arcana_stage94 {
 bool Install(){
- Log("STAGE94_BUILD=2026-11-12-r1 SOURCE_ONLY F7AD6 after-F3930 producer+F7B0A native JNE; originalOnce=1 gameWrites=0 DRwrites=0");
+ Log("STAGE94_BUILD=2026-11-12-r2 DIAGNOSTIC_SOURCE_ONLY F7AD6 after-F3930 producer+F7B0A native JNE; originalOnce=1 gameWrites=0 DRwrites=0");
  wchar_t ini[MAX_PATH+1]{};
  if(arcana_stage81::GetPath(ini,_countof(ini),L"ArcanaAI.ini")&&
     GetPrivateProfileIntW(L"AIResearch",L"EnableStage94ProducerGateTrace",1,ini)==0){
@@ -215,7 +266,11 @@ bool Install(){
     InterlockedCompareExchange(&arcana_stage93::g_installed,0,0)!=1){
   Log("STAGE94_ERROR missing Stage93/fingerprint/x86 prerequisites; no patch");return false;
  }
- if(InterlockedCompareExchange(&g_installed,0,0)!=0||!SignatureOK()){
+ if(InterlockedCompareExchange(&g_installed,0,0)!=0){
+  Log("STAGE94_ERROR observer already installed; no patch");return false;
+ }
+ if(!SignatureOK()){
+  DescribeSignatureFailure();
   Log("STAGE94_ERROR native signature already modified/not exact; no patch");return false;
  }
  BYTE* base=reinterpret_cast<BYTE*>(static_cast<uintptr_t>(arcana_stage81::g_gameBase));

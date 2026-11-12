@@ -47,7 +47,7 @@ Before the writer, the sampled object sees selector=8 starting at seq34 and map0
 ## Independent same-run Stage104/107/110/113/115 results
 
 - Stage104: **50** MODE0 events; **25** native special ESI=0x27, **25** CEA20 PRE. **25/25** unique ordered same-TID=10720/P1-P2/player/frame/ESI joins, **+5..16** QPC ticks; P1=8, P2=17.
-- Stage107: **25** POST after PRE. **25/25** unique same-run joins, **+5..204** QPC ticks. **52? Do not infer**; this upload has **51 Stage107 HEALTH windows**, all nativeRead=0, error counters 0.
+- Stage107: **25** POST after PRE. **25/25** unique same-run joins, **+5..204** QPC ticks. this upload has **51 Stage107 HEALTH windows**, all nativeRead=0, error counters 0.
 - Stage113: **51 HEALTH** windows, `parentA=16,490`, `gateA=16,490`, `gateAskip=16,490`, `gateApass=0`, `parentB=gateB=0`, dropped/mismatch/readFail=0. **2,996 sampled events**, 1,498 parentA and 1,498 gateA.
 - Stage115: **1,498 sampled post-FA480 5-DWORD snapshots** (P1=688, P2=810). **Every snapshot** has `(G1,G2,G3,G4,G5)=(0,0,3,7,0)`, `readMask=1F`, `pred1=pred2=pred3=0`, `predictedAL=0`, `observedAL=00`, `zf=1`, `consistent=1`; **1,498/1,498** match Stage113 sampled gateA kind3 by **identical QPC and TID**, no unmatched. Its 51 reported HEALTH windows contain no partial reads or prediction differences; the final partial window may not be covered by its last HEALTH counter, so do not treat sum(full) as all sample count.
 - Stage110 CEBE0 `entry=0, guard=0` in all **51 HEALTH** snapshots; Stage107 original CEC64 nativeRead=0. These results are **compatible** with the observed parent-A gate bypass, but do not classify all 229 possible original FA480 callsites.

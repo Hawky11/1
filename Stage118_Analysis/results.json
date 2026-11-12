@@ -1,0 +1,128 @@
+{
+  "stage": 118,
+  "date": "2026-11-12",
+  "classification": "ORIGINAL_NATIVE_STATIC_ONLY",
+  "source_executable": {
+    "file": "AALib.exe",
+    "bytes": 175556608,
+    "pe": "x86 PE32",
+    "image_base": "0x00400000",
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba"
+  },
+  "checks": {
+    "original_instruction_signatures": {
+      "passed": 35,
+      "failed": 0
+    },
+    "pe_highlow_relocated_immediates": {
+      "passed": 9,
+      "failed": 0
+    },
+    "rel32_calls": {
+      "passed": 3,
+      "failed": 0
+    },
+    "native_short_jne_edges": {
+      "passed": 2,
+      "failed": 0
+    },
+    "offline_unittest": {
+      "passed": 31,
+      "failed": 0
+    }
+  },
+  "indirect_writer": {
+    "rva": "0x19F2AD",
+    "opcode": "C7 07 07 00 00 00",
+    "operand": "DWORD[EDI]=7",
+    "EDI_formula": "0x0E10B640 + 0x278 * (byte[ESI+0x2A]==0)",
+    "object_state_writer_rva": "0x19F295",
+    "object_state_value": 3,
+    "outer_skip_when_both_flags_zero": true
+  },
+  "first_slot": {
+    "when": "byte[ESI+0x2A]!=0",
+    "slot": "G4",
+    "slot_address": "0x0E10B640",
+    "map_index": 1,
+    "map_value_address": "0x05146284",
+    "mode_selector_address": "0x0E10BEDC",
+    "mode_value_required": 8,
+    "map_value_required": "0xFFFFFFFF"
+  },
+  "second_slot": {
+    "when": "byte[ESI+0x2A]==0 AND byte[ESI+0x2B]!=0",
+    "slot": "G5",
+    "slot_address": "0x0E10B8B8",
+    "map_index": 0,
+    "map_value_address": "0x05146280",
+    "mode_selector_address": "0x0E10BEDC",
+    "mode_value_required": 8,
+    "map_value_required": "0xFFFFFFFF"
+  },
+  "map": {
+    "lookup_rva": "0x0F9900",
+    "reset_rva": "0x0F9920",
+    "index_writer_rva": "0x0F9940",
+    "direct_original_E8_call_counts": {
+      "lookup": 91,
+      "reset": 1,
+      "index_writer": 23
+    },
+    "four_entry_reset_value": "0xFFFFFFFF"
+  },
+  "G3": {
+    "address": "0x0E10B37C",
+    "distinct_from_object_state": true,
+    "object_sync_sites": [
+      {
+        "object_read": "0x19F96D",
+        "global_store": "0x19F973"
+      },
+      {
+        "object_read": "0x1A0C76",
+        "global_store": "0x1A0C79"
+      }
+    ],
+    "other_object_state3_sites": [
+      "0x19EFDD",
+      "0x19F768"
+    ],
+    "object_update_call_from_sync": "0x1A0C81 -> 0x19EF30",
+    "potential_later_update": true
+  },
+  "stage116_prior_runtime": {
+    "sampled_5_DWORD_tuples": 1455,
+    "tuple_decimal": [
+      0,
+      0,
+      3,
+      7,
+      0
+    ],
+    "full_gateA_skips": 16760,
+    "source_session_distinct": true,
+    "dynamic_mode_observed": false,
+    "dynamic_map_index_observed": false,
+    "write_hit_observed": false,
+    "last_writer_known": false
+  },
+  "archive": {
+    "filename": "ArcanaAI_Stage118_G3_3_G4_7_IndirectWriter_StaticAudit.zip",
+    "bytes": 17227,
+    "sha256": "c6ee16c20a0cf0b16bb45d43b032ca371bae82a668fddffe7f3885f612a058dd",
+    "files": 8,
+    "original_executable_bundled": false
+  },
+  "no_new_hooks": true,
+  "no_new_gameplay_writes": true,
+  "windows_built": false,
+  "game_run": false,
+  "next_stage": "Stage119 static writers/callgraph of 0xE10BEDC, map[0/1], object+0x2A/2B, then consider narrow passive instrument only with source SHA guards and rollback",
+  "known_dll_bytes": {
+    "Stage115": 2082304,
+    "Stage113": 2079744,
+    "Stage110": 2073088
+  },
+  "Stage36_enable": 0
+}

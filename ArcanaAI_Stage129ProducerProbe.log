@@ -1,0 +1,229 @@
+STAGE129_BUILD=2026-11-13-r1 SOURCE_ONLY entry=F30B0 forced=F325A input=F326A originalReplayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_INSTALLED 3/3 sid=01DD72F704247563 entry=F30B0 forced=F325A input=F326A replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1 frame=0E58F028 caller=F3CC1 kind=entry seq=1 qpc=3202779856406 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1 frame=0E58F028 caller=F3CC1 kind=returnInput seq=2 qpc=3202779856408 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2 frame=0E58F028 caller=F3CC1 kind=entry seq=3 qpc=3202779856893 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2 frame=0E58F028 caller=F3CC1 kind=returnInput seq=4 qpc=3202779856894 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=3 frame=0E58F028 caller=F3CC1 kind=entry seq=5 qpc=3202779956157 candidate=0000001A result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=3 frame=0E58F028 caller=F3CC1 kind=returnInput seq=6 qpc=3202779956159 candidate=0000001A result=0000001A object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=4 frame=0E58F028 caller=F3CC1 kind=entry seq=7 qpc=3202779956856 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=4 frame=0E58F028 caller=F3CC1 kind=returnInput seq=8 qpc=3202779956857 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=5 frame=0E58F028 caller=F3CC1 kind=entry seq=9 qpc=3202780057664 candidate=00000043 result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=5 frame=0E58F028 caller=F3CC1 kind=returnInput seq=10 qpc=3202780057665 candidate=00000043 result=00000043 object=0DDCCCA0 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=5 fallback27=0 returnInput=5 paired=5 queuedPairs=5 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=6 frame=0E58F054 caller=F3659 kind=entry seq=11 qpc=3202783467330 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=6 frame=0E58F054 caller=F3659 kind=returnInput seq=12 qpc=3202783467332 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=7 frame=0E58F054 caller=F3659 kind=entry seq=13 qpc=3202783567404 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=7 frame=0E58F054 caller=F3659 kind=returnInput seq=14 qpc=3202783567406 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=8 frame=0E58F054 caller=F3659 kind=entry seq=15 qpc=3202783665189 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=8 frame=0E58F054 caller=F3659 kind=returnInput seq=16 qpc=3202783665191 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=9 frame=0E58F054 caller=F3659 kind=entry seq=17 qpc=3202783763096 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=9 frame=0E58F054 caller=F3659 kind=returnInput seq=18 qpc=3202783763098 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=10 frame=0E58F054 caller=F3659 kind=entry seq=19 qpc=3202783869481 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=10 frame=0E58F054 caller=F3659 kind=returnInput seq=20 qpc=3202783869483 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=11 frame=0E58F054 caller=F3659 kind=entry seq=21 qpc=3202783964946 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=11 frame=0E58F054 caller=F3659 kind=returnInput seq=22 qpc=3202783964948 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=12 frame=0E58F054 caller=F3659 kind=entry seq=23 qpc=3202784064560 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=12 frame=0E58F054 caller=F3659 kind=returnInput seq=24 qpc=3202784064562 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=13 frame=0E58F054 caller=F3659 kind=entry seq=25 qpc=3202784163075 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=13 frame=0E58F054 caller=F3659 kind=returnInput seq=26 qpc=3202784163077 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=14 frame=0E58F054 caller=F3659 kind=entry seq=27 qpc=3202784262291 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=14 frame=0E58F054 caller=F3659 kind=returnInput seq=28 qpc=3202784262293 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=15 frame=0E58F054 caller=F3659 kind=entry seq=29 qpc=3202784361064 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=15 frame=0E58F054 caller=F3659 kind=returnInput seq=30 qpc=3202784361066 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=16 frame=0E58F054 caller=F3659 kind=entry seq=31 qpc=3202784478837 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=16 frame=0E58F054 caller=F3659 kind=returnInput seq=32 qpc=3202784478839 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=17 frame=0E58F054 caller=F3659 kind=entry seq=33 qpc=3202784562555 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=17 frame=0E58F054 caller=F3659 kind=returnInput seq=34 qpc=3202784562557 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=18 frame=0E58F054 caller=F3659 kind=entry seq=35 qpc=3202784664965 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=18 frame=0E58F054 caller=F3659 kind=returnInput seq=36 qpc=3202784664967 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=19 frame=0E58F054 caller=F3659 kind=entry seq=37 qpc=3202784764865 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=19 frame=0E58F054 caller=F3659 kind=returnInput seq=38 qpc=3202784764867 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=20 frame=0E58F054 caller=F3659 kind=entry seq=39 qpc=3202784864596 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=20 frame=0E58F054 caller=F3659 kind=returnInput seq=40 qpc=3202784864598 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=21 frame=0E58F054 caller=F3659 kind=entry seq=41 qpc=3202784962503 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=21 frame=0E58F054 caller=F3659 kind=returnInput seq=42 qpc=3202784962505 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=22 frame=0E58F054 caller=F3659 kind=entry seq=43 qpc=3202785063854 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=22 frame=0E58F054 caller=F3659 kind=returnInput seq=44 qpc=3202785063856 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=23 frame=0E58F054 caller=F3659 kind=entry seq=45 qpc=3202785164798 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=23 frame=0E58F054 caller=F3659 kind=returnInput seq=46 qpc=3202785164800 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=24 frame=0E58F054 caller=F3659 kind=entry seq=47 qpc=3202785263982 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=24 frame=0E58F054 caller=F3659 kind=returnInput seq=48 qpc=3202785263984 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=25 frame=0E58F054 caller=F3659 kind=entry seq=49 qpc=3202785364431 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=25 frame=0E58F054 caller=F3659 kind=returnInput seq=50 qpc=3202785364434 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=26 frame=0E58F054 caller=F3659 kind=entry seq=51 qpc=3202786866980 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=26 frame=0E58F054 caller=F3659 kind=returnInput seq=52 qpc=3202786866982 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=27 frame=0E58F054 caller=F3659 kind=entry seq=53 qpc=3202786966874 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=27 frame=0E58F054 caller=F3659 kind=returnInput seq=54 qpc=3202786966875 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=28 frame=0E58F054 caller=F3659 kind=entry seq=55 qpc=3202787063244 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=28 frame=0E58F054 caller=F3659 kind=returnInput seq=56 qpc=3202787063245 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=29 frame=0E58F054 caller=F3659 kind=entry seq=57 qpc=3202787165748 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=29 frame=0E58F054 caller=F3659 kind=returnInput seq=58 qpc=3202787165750 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=30 frame=0E58F054 caller=F3659 kind=entry seq=59 qpc=3202787264179 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=30 frame=0E58F054 caller=F3659 kind=returnInput seq=60 qpc=3202787264180 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=31 frame=0E58F028 caller=F3CC1 kind=entry seq=61 qpc=3202787264626 candidate=00000006 result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=31 frame=0E58F028 caller=F3CC1 kind=returnInput seq=62 qpc=3202787264627 candidate=00000006 result=00000006 object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=32 frame=0E58F054 caller=F3659 kind=entry seq=63 qpc=3202787364764 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=32 frame=0E58F054 caller=F3659 kind=returnInput seq=64 qpc=3202787364766 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=33 frame=0E58F054 caller=F3659 kind=entry seq=65 qpc=3202787466614 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=33 frame=0E58F054 caller=F3659 kind=returnInput seq=66 qpc=3202787466615 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=34 frame=0E58F028 caller=F3CC1 kind=entry seq=67 qpc=3202787665808 candidate=00000004 result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=34 frame=0E58F028 caller=F3CC1 kind=returnInput seq=68 qpc=3202787665811 candidate=00000004 result=00000004 object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=35 frame=0E58F054 caller=F3659 kind=entry seq=69 qpc=3202788166696 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=35 frame=0E58F054 caller=F3659 kind=returnInput seq=70 qpc=3202788166698 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=36 frame=0E58F054 caller=F3659 kind=entry seq=71 qpc=3202788268312 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=36 frame=0E58F054 caller=F3659 kind=returnInput seq=72 qpc=3202788268315 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=37 frame=0E58F054 caller=F3659 kind=entry seq=73 qpc=3202788367916 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=37 frame=0E58F054 caller=F3659 kind=returnInput seq=74 qpc=3202788367919 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=38 frame=0E58F054 caller=F3659 kind=entry seq=75 qpc=3202788468762 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=38 frame=0E58F054 caller=F3659 kind=returnInput seq=76 qpc=3202788468764 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=39 frame=0E58F054 caller=F3659 kind=entry seq=77 qpc=3202788584143 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=39 frame=0E58F054 caller=F3659 kind=returnInput seq=78 qpc=3202788584146 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=40 frame=0E58F054 caller=F3659 kind=entry seq=79 qpc=3202788666650 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=40 frame=0E58F054 caller=F3659 kind=returnInput seq=80 qpc=3202788666652 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=41 frame=0E58F054 caller=F3659 kind=entry seq=81 qpc=3202788772940 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=41 frame=0E58F054 caller=F3659 kind=returnInput seq=82 qpc=3202788772943 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=42 frame=0E58F054 caller=F3659 kind=entry seq=83 qpc=3202788869979 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=42 frame=0E58F054 caller=F3659 kind=returnInput seq=84 qpc=3202788869982 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=43 frame=0E58F054 caller=F3659 kind=entry seq=85 qpc=3202788970136 candidate=00000027 result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=43 frame=0E58F054 caller=F3659 kind=returnInput seq=86 qpc=3202788970137 candidate=00000027 result=00000027 object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=44 frame=0E58F054 caller=F3659 kind=entry seq=87 qpc=3202792670973 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=44 frame=0E58F054 caller=F3659 kind=returnInput seq=88 qpc=3202792670975 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=45 frame=0E58F054 caller=F3659 kind=entry seq=89 qpc=3202792770299 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=45 frame=0E58F054 caller=F3659 kind=returnInput seq=90 qpc=3202792770301 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=46 frame=0E58F054 caller=F3659 kind=entry seq=91 qpc=3202792875070 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=46 frame=0E58F054 caller=F3659 kind=returnInput seq=92 qpc=3202792875074 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=47 frame=0E58F054 caller=F3659 kind=entry seq=93 qpc=3202792973180 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=47 frame=0E58F054 caller=F3659 kind=returnInput seq=94 qpc=3202792973183 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=48 frame=0E58F054 caller=F3659 kind=entry seq=95 qpc=3202793075270 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=48 frame=0E58F054 caller=F3659 kind=returnInput seq=96 qpc=3202793075272 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=49 frame=0E58F054 caller=F3659 kind=entry seq=97 qpc=3202793170478 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=49 frame=0E58F054 caller=F3659 kind=returnInput seq=98 qpc=3202793170480 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=50 frame=0E58F054 caller=F3659 kind=entry seq=99 qpc=3202793270757 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=50 frame=0E58F054 caller=F3659 kind=returnInput seq=100 qpc=3202793270759 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=51 frame=0E58F028 caller=F3CC1 kind=entry seq=101 qpc=3202793370908 candidate=0000001B result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=51 frame=0E58F028 caller=F3CC1 kind=returnInput seq=102 qpc=3202793370910 candidate=0000001B result=0000001B object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=52 frame=0E58F028 caller=F3CC1 kind=entry seq=103 qpc=3202793470937 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=52 frame=0E58F028 caller=F3CC1 kind=returnInput seq=104 qpc=3202793470938 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=53 frame=0E58F028 caller=F3CC1 kind=entry seq=105 qpc=3202793575589 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=53 frame=0E58F028 caller=F3CC1 kind=returnInput seq=106 qpc=3202793575591 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=48 fallback27=0 returnInput=48 paired=48 queuedPairs=48 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=54 frame=0E58F028 caller=F3CC1 kind=entry seq=107 qpc=3202803686886 candidate=00000004 result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=54 frame=0E58F028 caller=F3CC1 kind=returnInput seq=108 qpc=3202803686887 candidate=00000004 result=00000004 object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=55 frame=0E58F028 caller=F3CC1 kind=entry seq=109 qpc=3202805695603 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=55 frame=0E58F028 caller=F3CC1 kind=returnInput seq=110 qpc=3202805695605 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=56 frame=0E58F028 caller=F3CC1 kind=entry seq=111 qpc=3202805788363 candidate=00000027 result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=56 frame=0E58F028 caller=F3CC1 kind=returnInput seq=112 qpc=3202805788365 candidate=00000027 result=00000027 object=0DDCCCA0 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=57 frame=0E58F054 caller=F3659 kind=entry seq=113 qpc=3202807795937 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=57 frame=0E58F054 caller=F3659 kind=returnInput seq=114 qpc=3202807795940 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=58 frame=0E58F054 caller=F3659 kind=entry seq=115 qpc=3202807892326 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=58 frame=0E58F054 caller=F3659 kind=returnInput seq=116 qpc=3202807892327 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=59 frame=0E58F054 caller=F3659 kind=entry seq=117 qpc=3202807992504 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=59 frame=0E58F054 caller=F3659 kind=returnInput seq=118 qpc=3202807992506 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=60 frame=0E58F054 caller=F3659 kind=entry seq=119 qpc=3202808092764 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=60 frame=0E58F054 caller=F3659 kind=returnInput seq=120 qpc=3202808092766 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=61 frame=0E58F054 caller=F3659 kind=entry seq=121 qpc=3202808194251 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=61 frame=0E58F054 caller=F3659 kind=returnInput seq=122 qpc=3202808194252 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=62 frame=0E58F054 caller=F3659 kind=entry seq=123 qpc=3202808296805 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=62 frame=0E58F054 caller=F3659 kind=returnInput seq=124 qpc=3202808296807 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=63 frame=0E58F054 caller=F3659 kind=entry seq=125 qpc=3202808395068 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=63 frame=0E58F054 caller=F3659 kind=returnInput seq=126 qpc=3202808395070 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=64 frame=0E58F028 caller=F3CC1 kind=entry seq=127 qpc=3202808593763 candidate=00000026 result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=64 frame=0E58F028 caller=F3CC1 kind=returnInput seq=128 qpc=3202808593765 candidate=00000026 result=00000026 object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=53 fallback27=0 returnInput=53 paired=53 queuedPairs=11 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=128 frame=0E58F028 caller=F3CC1 kind=entry seq=255 qpc=3202825513465 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=128 frame=0E58F028 caller=F3CC1 kind=returnInput seq=256 qpc=3202825513467 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=149 fallback27=0 returnInput=149 paired=149 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=256 frame=0E58F054 caller=F3659 kind=entry seq=511 qpc=3202845851567 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=256 frame=0E58F054 caller=F3659 kind=returnInput seq=512 qpc=3202845851569 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=112 fallback27=0 returnInput=112 paired=112 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=9 fallback27=0 returnInput=9 paired=9 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=384 frame=0E58F028 caller=F3CC1 kind=entry seq=767 qpc=3202893126198 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=384 frame=0E58F028 caller=F3CC1 kind=returnInput seq=768 qpc=3202893126200 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=512 frame=0E58F028 caller=F3CC1 kind=entry seq=1023 qpc=3202906923380 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=512 frame=0E58F028 caller=F3CC1 kind=returnInput seq=1024 qpc=3202906923382 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=158 fallback27=0 returnInput=158 paired=158 queuedPairs=2 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=640 frame=0E58F028 caller=F3CC1 kind=entry seq=1279 qpc=3202924645090 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=640 frame=0E58F028 caller=F3CC1 kind=returnInput seq=1280 qpc=3202924645092 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=140 fallback27=0 returnInput=140 paired=140 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=768 frame=0E58F054 caller=F3659 kind=entry seq=1535 qpc=3202941265745 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=768 frame=0E58F054 caller=F3659 kind=returnInput seq=1536 qpc=3202941265747 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=159 fallback27=0 returnInput=159 paired=159 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=896 frame=0E58F054 caller=F3659 kind=entry seq=1791 qpc=3202965600877 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=896 frame=0E58F054 caller=F3659 kind=returnInput seq=1792 qpc=3202965600879 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=119 fallback27=0 returnInput=119 paired=119 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1024 frame=0E58F028 caller=F3CC1 kind=entry seq=2047 qpc=3202981119453 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1024 frame=0E58F028 caller=F3CC1 kind=returnInput seq=2048 qpc=3202981119455 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=154 fallback27=0 returnInput=154 paired=154 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1152 frame=0E58F054 caller=F3659 kind=entry seq=2303 qpc=3203004753686 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1152 frame=0E58F054 caller=F3659 kind=returnInput seq=2304 qpc=3203004753688 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=70 fallback27=0 returnInput=70 paired=70 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=90 fallback27=0 returnInput=90 paired=90 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1280 frame=0E58F054 caller=F3659 kind=entry seq=2559 qpc=3203065245668 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1280 frame=0E58F054 caller=F3659 kind=returnInput seq=2560 qpc=3203065245670 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=74 fallback27=0 returnInput=74 paired=74 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=19 fallback27=0 returnInput=19 paired=19 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=47 fallback27=0 returnInput=47 paired=47 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1408 frame=0E58F028 caller=F3CC1 kind=entry seq=2815 qpc=3203132122513 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1408 frame=0E58F028 caller=F3CC1 kind=returnInput seq=2816 qpc=3203132122515 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=57 fallback27=0 returnInput=57 paired=57 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=5 fallback27=0 returnInput=5 paired=5 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1536 frame=0E58F054 caller=F3659 kind=entry seq=3071 qpc=3203193098806 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1536 frame=0E58F054 caller=F3659 kind=returnInput seq=3072 qpc=3203193098808 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=69 fallback27=0 returnInput=69 paired=69 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=67 fallback27=0 returnInput=67 paired=67 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1664 frame=0E58F054 caller=F3659 kind=entry seq=3327 qpc=3203232563889 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1664 frame=0E58F054 caller=F3659 kind=returnInput seq=3328 qpc=3203232563891 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=89 fallback27=0 returnInput=89 paired=89 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=3 fallback27=0 returnInput=3 paired=3 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=86 fallback27=0 returnInput=86 paired=86 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1792 frame=0E58F028 caller=F3CC1 kind=entry seq=3583 qpc=3203307654377 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1792 frame=0E58F028 caller=F3CC1 kind=returnInput seq=3584 qpc=3203307654379 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1920 frame=0E58F054 caller=F3659 kind=entry seq=3839 qpc=3203321772569 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=1920 frame=0E58F054 caller=F3659 kind=returnInput seq=3840 qpc=3203321772571 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=166 fallback27=0 returnInput=166 paired=166 queuedPairs=2 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=31 fallback27=0 returnInput=31 paired=31 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2048 frame=0E58F028 caller=F3CC1 kind=entry seq=4095 qpc=3203359922845 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2048 frame=0E58F028 caller=F3CC1 kind=returnInput seq=4096 qpc=3203359922847 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=123 fallback27=0 returnInput=123 paired=123 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2176 frame=0E58F028 caller=F3CC1 kind=entry seq=4351 qpc=3203391559534 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2176 frame=0E58F028 caller=F3CC1 kind=returnInput seq=4352 qpc=3203391559536 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=75 fallback27=0 returnInput=75 paired=75 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=100 fallback27=0 returnInput=100 paired=100 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2304 frame=0E58F028 caller=F3CC1 kind=entry seq=4607 qpc=3203420601310 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2304 frame=0E58F028 caller=F3CC1 kind=returnInput seq=4608 qpc=3203420601311 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=30 fallback27=0 returnInput=30 paired=30 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2432 frame=0E58F028 caller=F3CC1 kind=entry seq=4863 qpc=3203495997327 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2432 frame=0E58F028 caller=F3CC1 kind=returnInput seq=4864 qpc=3203495997329 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=200 fallback27=0 returnInput=200 paired=200 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2560 frame=0E58F054 caller=F3659 kind=entry seq=5119 qpc=3203507819135 candidate=FFFFFFFF result=00000000 object=0DDCCCA0 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2560 frame=0E58F054 caller=F3659 kind=returnInput seq=5120 qpc=3203507819136 candidate=FFFFFFFF result=FFFFFFFF object=0DDCCCA0 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=143 fallback27=0 returnInput=143 paired=143 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2688 frame=0E58F054 caller=F3659 kind=entry seq=5375 qpc=3203528344175 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2688 frame=0E58F054 caller=F3659 kind=returnInput seq=5376 qpc=3203528344177 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=104 fallback27=0 returnInput=104 paired=104 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=54 fallback27=0 returnInput=54 paired=54 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2816 frame=0E58F028 caller=F3CC1 kind=entry seq=5631 qpc=3203566496315 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2816 frame=0E58F028 caller=F3CC1 kind=returnInput seq=5632 qpc=3203566496317 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=126 fallback27=0 returnInput=126 paired=126 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2944 frame=0E58F028 caller=F3CC1 kind=entry seq=5887 qpc=3203588824280 candidate=FFFFFFFF result=00000000 object=0DDA1F78 readMask=03 valid=1
+STAGE129_EVENT sid=01DD72F704247563 tid=13856 scope=2944 frame=0E58F028 caller=F3CC1 kind=returnInput seq=5888 qpc=3203588824282 candidate=FFFFFFFF result=FFFFFFFF object=0DDA1F78 readMask=07 valid=1
+STAGE129_HEALTH sid=01DD72F704247563 entry=21 fallback27=0 returnInput=21 paired=21 queuedPairs=1 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=45 fallback27=0 returnInput=45 paired=45 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0
+STAGE129_HEALTH sid=01DD72F704247563 entry=0 fallback27=0 returnInput=0 paired=0 queuedPairs=0 dropped=0 mismatch=0 readFail=0 overflow=0 orphan=0 unknownCaller=0 ring=8192 replayOnce=1 noGameplayWrites=1 DRwrites=0

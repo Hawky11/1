@@ -1,0 +1,43 @@
+{
+  "stage": 103,
+  "date": "2026-11-12",
+  "status": "original_sha_and_native_cfg_verified; existing_runtime_reclassified",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "archive_sha256": "1c65ddd6f62be935d07b2738b6fe4075f0f9dc4e030a74e75c4f16151f1ac6c4",
+  "native_checks": {
+    "passed": 37,
+    "total": 37
+  },
+  "offline_tests": {
+    "passed": 12,
+    "total": 12
+  },
+  "stage94_log_blob": "fba1df695c4fcac0af357c782cf521af24b91b93",
+  "observed": {
+    "gates": 201,
+    "type1": 167,
+    "not_type1": 34,
+    "zero_status_0x27": 15,
+    "zero_status_0x27_producer": 12,
+    "zero_status_0x27_bypass": 3,
+    "other_zero_status": {
+      "0x0E": 5,
+      "0x10": 8,
+      "0x20": 1,
+      "0x25": 4,
+      "0x26": 1
+    }
+  },
+  "static": {
+    "status_source": "[EBP-8] outparam",
+    "type1_call": "F7C5D F2DE0 mode1",
+    "special_27_zero_status_call": "F7CC0 F2DE0 mode0",
+    "subsequent_call": "F7DA3 CEA20"
+  },
+  "new_runtime": false,
+  "new_dll": false,
+  "new_hook": false,
+  "stage36_off": true,
+  "ai_improvement_proven": false,
+  "next": "Stage104: runtime confirm mode0 without forcing actions"
+}

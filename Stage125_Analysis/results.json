@@ -1,0 +1,84 @@
+{
+  "stage": 125,
+  "date": "2026-11-13",
+  "status": "ORIGINAL_PE32_X86_STATIC_ONLY",
+  "source": {
+    "name": "AALib.exe (private user binary)",
+    "bytes": 175556608,
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "preferred_imagebase": "0x00400000"
+  },
+  "verification": {
+    "native_anchor_sites": 149,
+    "branch_edges": 16,
+    "direct_E8_calls": 173,
+    "state_field_xref_sites": 50,
+    "offline_python_unittest_pass": 50,
+    "offline_python_unittest_fail": 0,
+    "full_text_E8_scan_reconciled_with_original_disassembly": true
+  },
+  "direct_call_counts": {
+    "F2DE0": 137,
+    "CEA20": 18,
+    "CBDE0": 12,
+    "CBF20": 1,
+    "CBE60": 5
+  },
+  "state_field_xref_counts": {
+    "0x28010": 11,
+    "0x28014": 4,
+    "0x28018": 17,
+    "0x2801C": 6,
+    "0x28020": 8,
+    "0x28024": 4
+  },
+  "confirmed_original_native": {
+    "candidate_producer": "F7AD1 -> F3930 then F7B0A Type1 vs MODE0 branch",
+    "packet_fill": "F7C5D or F7CC0 CALL F2DE0; F7CC5 MOV EAX,[EBP-4] overwrites callee EAX",
+    "cea20_record_null": "tick into context+28010,+28014,+28018,+2801C; 0x7fffffff into +28020,+28024; CEA60 RET4",
+    "cea20_record_nonnull": "record+10 byte=0; index record+14; if record+18 nonzero, put record+8 into context idx+28010,idx+28018 and byte record+11 into idx+28020; otherwise put record+0 into idx+28010, record+8 into idx+28018, record+11 into idx+28020; RET4",
+    "special_mode0_27": "F7D9F state ptr; F7DA3 CALL CEA20; F7DA8 CMP BYTE [EBX+55],0; zero -> F7D8D AL=0; nonzero -> two CBDE0 resets then AL=0 F7DCB",
+    "downstream_guard": "CEC57 record+10 byte >0 needed before CEC64 threshold compare against +28020; other fields +28010/+28018 read",
+    "additional_field_read": "CF0BF reads context+28020, CF0C8 context+28010; no Stage123 dynamic CF0BF counter",
+    "original_F2DE0_loaded_runtime_unknown": "Existing unknown owner E9+NOP detour at F2DE0 Stage104_COMPAT",
+    "CEA20_is_explicit_accept_ack": false,
+    "POST_is_attack_accept_ack": false
+  },
+  "prior_verified_stage123": {
+    "user_COMvsCOM_log": "2026-11-12 23:48:01",
+    "mode0_0x27_CEA20_pre": 25,
+    "CEA20_pre_stage107_post": 25,
+    "original_CEC64_nativeRead": 0,
+    "original_CEBE0_entry": 0,
+    "stage122_G4_writer_positive": true
+  },
+  "limitations": [
+    "Original source-only code, not loaded or detoured F2DE0 implementation",
+    "CEA20 entry/return demonstrates context writes, not real command accept/attack execution",
+    "Unknown runtime EBX+0x55 and F7xx return consumer semantics",
+    "No Stage123 positive runtime reads at CEC64 or CF0BF; CF0BF is uninstrumented",
+    "149 anchor checks and 50 xrefs are not execution counts",
+    "No new gameplay/AI improvement demonstrated"
+  ],
+  "artifact": {
+    "filename": "ArcanaAI_Stage125_NativeCommandPacket_CEA20_Consumer_StaticAudit.zip",
+    "bytes": 23966,
+    "sha256": "c2627add99b5c32debffcf255128614f94fc0b6c45ab3964a403b65721a888a9",
+    "file_count": 12,
+    "zip_crc_pass": true,
+    "original_exe_included": false,
+    "DLL_included": false
+  },
+  "stage36": "OFF",
+  "source_changed": false,
+  "new_runtime_hooks": 0,
+  "windows_build": false,
+  "game_run": false,
+  "backups": {
+    "Stage122_dll_bytes": 2089984,
+    "Stage115_dll_bytes": 2082304,
+    "Stage113_dll_bytes": 2079744,
+    "Stage110_dll_bytes": 2073088
+  },
+  "next": "Stage126 static original function-pointer dispatch table 0x7F8380 and record+0x10 activation and consumers, identify genuine action commit before any new hooks"
+}

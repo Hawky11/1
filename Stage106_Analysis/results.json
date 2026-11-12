@@ -1,0 +1,55 @@
+{
+  "stage": 106,
+  "date": "2026-11-12",
+  "status": "STATIC_WRITER_READER_VERIFIED_CONSUMPTION_UNPROVEN",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "native_checks": {
+    "passed": 37,
+    "total": 37
+  },
+  "offline_tests": {
+    "passed": 8,
+    "total": 8
+  },
+  "caller": "F7DA3",
+  "writer": "CEA20",
+  "reader": "CEBE0",
+  "record_field_writer": "F2DE0",
+  "state_base_va": "0433C138",
+  "state_stride": "2806C",
+  "state_fields": [
+    "28010",
+    "28018",
+    "28020"
+  ],
+  "reader_calls": [
+    "988EA",
+    "98948",
+    "CAD79",
+    "CADDA"
+  ],
+  "trace_blob": "7fee1be00c73a367bf72cb4d60dc3a62988bf6d8",
+  "runtime_pre_callee": {
+    "special27": 17,
+    "valid": 17,
+    "nonnull": 17,
+    "player_P1": 6,
+    "player_P2": 11,
+    "record_offsets": {
+      "0x930": 16,
+      "0x954": 1
+    },
+    "class5_exception_seq": 44
+  },
+  "cea20_post_writes_observed": false,
+  "cebe0_same_run_read_observed": false,
+  "gameplay_effect_proven": false,
+  "new_dll": false,
+  "new_hook": false,
+  "new_game_run": false,
+  "game_writes": false,
+  "dr_writes": false,
+  "stage36_off": true,
+  "zip_sha256": "c1a889b2b1ba3b148ac9d73810c656b08966fb727c5830d88633204190d2ef62",
+  "next": "Stage107 passive post-CEA20/CEBE0 same-event verification after strict ABI and detour guard audit"
+}

@@ -1,0 +1,98 @@
+{
+  "stage": 124,
+  "status": "STATIC_ONLY_ORIGINAL_NATIVE_VERIFIED",
+  "analysis_date": "2026-11-13",
+  "user_comvscom_confirmation": {
+    "date": "2026-11-12",
+    "time": "23:48:01",
+    "text": "COMvsCOM active: P1 and P2 control DWORDs are being forced to 1 (CPU)."
+  },
+  "source_original_exe": {
+    "bytes": 175556608,
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "pe": "PE32/i386",
+    "preferred_imagebase": "0x00400000"
+  },
+  "direct_e8_call_FA480": {
+    "count": 229,
+    "independent_original_text_byte_scan_matches_objdump_exactly": true,
+    "extra": 0,
+    "missing": 0,
+    "immediate_test_al_je": 164,
+    "immediate_test_al_jne": 56,
+    "other_or_deferred": 9,
+    "rva_blocks_0x10000": {
+      "12": 7,
+      "13": 4,
+      "15": 2,
+      "16": 22,
+      "17": 6,
+      "18": 41,
+      "19": 4,
+      "07": 1,
+      "08": 1,
+      "09": 16,
+      "0A": 54,
+      "0B": 2,
+      "0C": 3,
+      "0D": 1,
+      "0E": 28,
+      "0F": 7,
+      "1A": 1,
+      "1B": 4,
+      "1D": 2,
+      "1F": 23
+    },
+    "examples": {
+      "observed_098886": "TEST AL,AL; JE 098965",
+      "g3_2_0A6B33": "TEST AL,AL; JE 0A6C0B; CMP [G3],2",
+      "g3_1_0A6C45": "TEST AL,AL; JE 0A6C85; CMP [G3],1",
+      "reverse_0A6CA6": "TEST AL,AL; JNE 0A6CBE",
+      "other_0A2146": "POP, POP, POP, MOV AL,1"
+    },
+    "direct_calls_in_F7CC0_plus_minus_0x400": 0,
+    "nearest_F7CC0": {
+      "callsite": "0x0F6484",
+      "distance_bytes": 6204
+    }
+  },
+  "offline_test_suite": {
+    "passed": 25,
+    "failed": 0,
+    "independent_executable_scan": true
+  },
+  "prior_stage123_runtime": {
+    "stage122_dll_bytes": 2089984,
+    "stage113_gateA_skip": 16490,
+    "stage115_full_snapshots": 1498,
+    "stage104_mode0_27_to_pre": 25,
+    "stage107_post_matched": 25,
+    "observed_G4_writer_count": 1
+  },
+  "caveats": [
+    "Direct original E8 calls only, not indirect dispatch or runtime hook calls",
+    "Branch pattern is not gameplay intent; JE/JNE polarity alone does not show accept/reject",
+    "Original static site proximity does not establish dynamic reachability",
+    "Only one FA480 caller was monitored by Stage113",
+    "COMvsCOM user log confirms P1/P2 CPU override at 23:48:01, not any AI command acceptance"
+  ],
+  "archive": {
+    "filename": "ArcanaAI_Stage124_FA480_229Caller_OriginalNative_StaticAudit.zip",
+    "bytes": 29473,
+    "sha256": "9508fb0f7799ef468c982fea8a93832e1b96373db8e00d49b44b6afa3e623c23",
+    "entries": 7,
+    "includes_original_executable": false,
+    "includes_dll": false
+  },
+  "new_dll": false,
+  "new_native_hooks": 0,
+  "no_gameplay_data_writes": true,
+  "Stage36": "OFF",
+  "rollbacks": {
+    "Stage122_dll_bytes": 2089984,
+    "Stage115_dll_bytes": 2082304,
+    "Stage113_dll_bytes": 2079744,
+    "Stage110_dll_bytes": 2073088
+  },
+  "next": "Stage125 static original command-acceptance and commit function CFG, only narrow passive positive control if needed"
+}

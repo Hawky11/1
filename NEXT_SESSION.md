@@ -1,3 +1,17 @@
+## Stage93 live success — immediate next-stage handoff (2026-11-12)
+
+**FIRST READ:** [Stage93 complete runtime analysis](Stage93_Runtime/RUNTIME_ANALYSIS.md) and [results.json](Stage93_Runtime/results.json). User live GitHub upload [c623b607](https://github.com/Hawky11/1/commit/c623b607a). **Current tested Windows DLL: 2,019,840 bytes**; Stage93 r3 applied, MSVC x86 BUILT, F5A68 native hook `STAGE93_INSTALLED 1/1`, Stage92 3/3 and verified Stage35 coexistence, Stage91 3/3, 47 health rows each with no errors. Preserve current DLL as fallback and Stage92 r3 **2,011,648-byte** earlier DLL; Stage36 disabled.
+
+**Native conclusions:** 15,814 native F5990 ticks and exactly 25,898 stage91 readers. 7,907 direct F5A68 OR records, **all** valid/unique joined to Stage92 same actor/TID/QPC. They arise from 6,526 no-reader bit2 bypass ticks, 585 bit9 AL1 and 796 bit10 AL1; the other 7,907 ticks go through 10 SET_9ED20 or 7,897 CLEAR_9ED60. 81 rising bit3 ticks: **77** directly traced to F5A68 0→1 (P1 44, P2 33) and **four** from 9ED20; zero unexplained 0→1 in this run. The previous run's 119 no-helper rises were previously **unattributed**, now the exact alternate native setter is observed in the fresh capture, though cannot map historical individual events to this run.
+
+**Real FinalCommand QPC:** 133 original FINAL_COMMAND type1 events (P1 70, P2 63, 43 unique payloads), **133/133** exact companion STAGE93_FINAL_QPC by actor/TID/tick/type1/payload/full flag DWORD, and **133/133** bit3 matches with latest completed same actor/TID Stage92 tick (time gap 533–2,303 raw QPC ticks). Snapshot bit3 1 in 46 commands and bit3 0 in 87. 430 EVENT_DISPATCH_DETAIL records (287 type0/143 type1); not assumed one-to-one with final. These establish runtime consistency, not proof that bit3 causes or chooses specific payload.
+
+**Session trap:** Stage90 root log is fresh (1,392 F57D0 native calls, 47 clean health). Stage87/Stage88 root logs have old-session addresses/QPC (P2 0DF4CCA0 vs latest 0DDCCCA0), so **do not merge** them with Stage93. Old log headers and build markers may contain SOURCE_ONLY but actual Windows build/Stage93 installed are confirmed.
+
+**Next research:** inspect original fingerprinted AALib.exe (`/AALib.zip` in persistent ChatGPT Library, SHA256 28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba) and existing native hooks for a precise, noncolliding passive command-choice boundary. Goal: same-event native predicates or state -> specific type1 `FINAL_COMMAND` payload, not nearest-QPC guess. No broad watchpoints, Stage36 OFF, no synthetic commands, no second EE306/F7C5D hooks. A new source-only stage requires ABI, signature, installer and rollback validation; no claim of gameplay improvement or hit causality without actual observation. Preserve all historical source/evidence branches.
+
+---
+
 ## Stage93 r3 installer repair (2026-11-12; Windows run pending)
 
 The r1 and r2 `ApplyStage93` scripts both failed safely with `Stage93 ambiguous duplicate: DWORD TickCount;`, prior to backup or source writes. r2's `FinalCommandRecord .. INIT_ONCE` search scope remained too broad. The user also invoked r2 without the mandatory `-Root` argument, causing an interactive `Root:` prompt unrelated to the duplicate-field error. Use Ctrl+C to cancel that prompt.

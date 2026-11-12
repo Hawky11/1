@@ -1,0 +1,91 @@
+{
+  "stage": 121,
+  "date": "2026-11-12",
+  "classification": "STATIC_DESIGN_ONLY_NO_RUNTIME_HOOK",
+  "original_exe": {
+    "format": "PE32 i386",
+    "bytes": 175556608,
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "preferred_base": "0x00400000"
+  },
+  "prior_module": {
+    "name": "Stage113ParentGateTrace.inl (Stage115 exact baseline)",
+    "sha256": "273059538a37cb1cfb82ab9c6eb891d0e535c59bcae1e41c42f06c27ff336d3a",
+    "modified": false
+  },
+  "verification": {
+    "pinned_original_instruction_sites": 30,
+    "pinned_original_instruction_sites_pass": 30,
+    "original_rel32_calls_verified": [
+      "1A0C81 -> 19EF30",
+      "19F2A0 -> 0F9900"
+    ],
+    "prior_known_native_hook_overlaps": 0,
+    "offline_unit_tests_total": 55,
+    "offline_unit_tests_pass": 55,
+    "negative_tests_included": true
+  },
+  "proposed_not_installed": [
+    {
+      "rva": "0x1A0C81",
+      "expected_bytes": "E8AAE2FFFF",
+      "length": 5,
+      "kind": "parent",
+      "callee": "0x19EF30",
+      "role": "positive reachability control"
+    },
+    {
+      "rva": "0x19F295",
+      "expected_bytes": "C7461003000000",
+      "length": 7,
+      "kind": "state3",
+      "role": "original object state store"
+    },
+    {
+      "rva": "0x19F2AD",
+      "expected_bytes": "C70707000000",
+      "length": 6,
+      "kind": "slot7",
+      "role": "original G4/G5 selected slot writer"
+    }
+  ],
+  "future_log_schema": {
+    "marker": "STAGE122_EVENT",
+    "fields": [
+      "sid",
+      "kind",
+      "tid",
+      "obj",
+      "qpc",
+      "readMask",
+      "valid",
+      "slot (if slot7)"
+    ],
+    "acceptance": "unique ordered same-session/thread/object joins; positive parent hit; clean health; actual slot=G4 for G4 writer"
+  },
+  "limitations": [
+    "historic Stage116 last writer cannot be reconstructed from missing events",
+    "one candidate-writer hit cannot establish globally last or only writer",
+    "unknown third-party runtime patches not excluded by static overlap check",
+    "future trace is design-only synthetic fixture, not runtime evidence",
+    "no observed game/AI behavior improvement"
+  ],
+  "archive": {
+    "name": "ArcanaAI_Stage121_Passive_WriterTrace_DesignAudit.zip",
+    "size_bytes": 18862,
+    "sha256": "6f8a23e52b4b04d5d5f886cd0bbcc0fffd0e950ac5d60aa564375b3ac97ce082",
+    "files": 11,
+    "verified_zip_integrity": true
+  },
+  "source_overlay_created": false,
+  "dll_created": false,
+  "game_run": false,
+  "gameplay_modification": false,
+  "stage36": "OFF",
+  "rollbacks": {
+    "Stage115_dll_bytes": 2082304,
+    "Stage113_dll_bytes": 2079744,
+    "Stage110_dll_bytes": 2073088
+  },
+  "recommended_next": "Stage122 source-only implementation only if a new current-run object-writer provenance question materially advances the actual AI diagnosis"
+}

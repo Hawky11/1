@@ -1,0 +1,80 @@
+{
+  "stage": 133,
+  "date_local": "2026-11-13",
+  "status": "STATIC_SOURCE_ABI_PASS_RUNTIME_INSTALL_BLOCKED",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "original_exe_bytes": 175556608,
+  "archive": "ArcanaAI_Stage133_ParentScope_ABI_ExitCoverage_StaticAudit.zip",
+  "archive_sha256": "e2fa357a573324d7111d9618a5c5c11a864451bac1cc707bb8dacf7829c6587a",
+  "archive_zip_crc": "PASS",
+  "archive_files": 11,
+  "archive_location": "ChatGPT artifact only; not GitHub",
+  "native_site_signatures": 21,
+  "original_direct_f30b0_calls": 2,
+  "native_ret_census": {
+    "F34D0": [
+      "F3662",
+      "F366B"
+    ],
+    "F3930": [
+      "F3E4A",
+      "F3E5D",
+      "F4017"
+    ]
+  },
+  "normal_return_exit_observer_sites": [
+    "F365C",
+    "F3666",
+    "F3E42",
+    "F3E55",
+    "F4011"
+  ],
+  "proposed_mandatory_sites": [
+    "F34D0",
+    "F3930",
+    "F3579",
+    "F35F9",
+    "F3C11",
+    "F365C",
+    "F3666",
+    "F3E42",
+    "F3E55",
+    "F4011"
+  ],
+  "optional_table_read": "F3B71",
+  "deprecated_table_commit_site": "F3C15",
+  "safer_table_commit": {
+    "rva": "F3C11",
+    "length_bytes": 7,
+    "stolen_original": [
+      "CMP DWORD PTR [EBP+14h],0",
+      "MOV DWORD PTR [EBP+10h],EAX"
+    ],
+    "next_native_load_rva": "F3C18",
+    "preserve_CMP_flags_for": "F3C27 JE F3D6E"
+  },
+  "direct_branches_in_two_functions": 150,
+  "direct_branches_into_stolen_bytes": 0,
+  "indirect_switch": {
+    "rva": "F3B12",
+    "jump_table_va": "004F4018",
+    "destinations": [
+      "004F3C49",
+      "004F3B19"
+    ],
+    "index_table_va": "004F4020"
+  },
+  "known_nonexhaustive_hook_envelopes": 26,
+  "nonoverlap_checks": 305,
+  "nonoverlap_mismatches": 0,
+  "standalone_synthetic_tests": 39,
+  "standalone_test_errors": 0,
+  "runtime_windows_build_this_stage": false,
+  "installed_new_hooks": 0,
+  "owner_inventory_complete": false,
+  "parent_active_callee_preflight_proven": false,
+  "exceptional_unwind_tls_cleanup_proven": false,
+  "all_candidate27_unsampled_bridge_exists": false,
+  "safe_to_install": false,
+  "next": "Stage134 full integrated hook owner source + startup-quiescence/exception cleanup proof"
+}

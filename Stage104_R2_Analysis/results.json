@@ -1,0 +1,43 @@
+{
+  "stage": "104-r2",
+  "status": "source_ready_not_windows_built",
+  "date": "2026-11-12",
+  "r1_user_build": {
+    "success": true,
+    "dll_bytes": 2057728,
+    "warning": "C4754"
+  },
+  "r1_user_trace": {
+    "installed": false,
+    "signature_failure": "CALLEE_F2DE0",
+    "original": "558BEC8B450880780F00752F",
+    "runtime": "E94BC9C4789080780F00752F",
+    "preexisting_detour_owner": "unknown",
+    "stage104_patch_applied": false
+  },
+  "native_checks": {
+    "passed": 39,
+    "total": 39
+  },
+  "source_contracts": {
+    "passed": 36,
+    "total": 36
+  },
+  "offline_tests": {
+    "passed": 35,
+    "total": 35
+  },
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "archive_sha256": "8a0c83f49117eccabc815102000959f22a22ef3aa2b707579136e00f0d89b7a0",
+  "source_sha256": {
+    "r1_hook": "1fd486068bdc9b023623fdd662eded12231e36e5cf7cf320ec7d6e0b24048905",
+    "r2_hook": "4e1bed4fc46b92ad23bae47feeeb8a9910273044fb0de24d343c2c578c211a69",
+    "unchanged_adapter": "3b0f6e22194b0c6385a7030ea6aa101b3f8ba2e80f32feec2b93b6cf1ccb5ef7",
+    "unchanged_stage98": "a56fe5692b3284fae37822e6f08438e3a32a800accbad5ff4c72d36ea97a1591"
+  },
+  "stage36_off": true,
+  "ai_improvement_proven": false,
+  "new_windows_r2_build": false,
+  "new_game_r2_run": false,
+  "next": "Stage105: test r2 build/install and runtime mode0/CEA20 correlation"
+}

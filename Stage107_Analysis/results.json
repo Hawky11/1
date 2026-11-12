@@ -1,0 +1,50 @@
+{
+  "stage": 107,
+  "date": "2026-11-12",
+  "status": "SOURCE_ONLY_OFFLINE_VERIFIED_WINDOWS_RUNTIME_PENDING",
+  "original_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "native_checks": {
+    "passed": 23,
+    "total": 23
+  },
+  "source_checks": {
+    "passed": 23,
+    "total": 23
+  },
+  "offline_tests": {
+    "passed": 21,
+    "total": 21
+  },
+  "source_sha256": {
+    "stage107": "a3d2d74b7cb5c0b4858850fe0b55d8ab76c262b5b40bd19b7c8319b38472368f",
+    "adapter_stage107": "9581b85fd38000f6b1f79b4c214aeeea4ee4c05706d0274dc2b30de59258a333",
+    "stage104r2": "4e1bed4fc46b92ad23bae47feeeb8a9910273044fb0de24d343c2c578c211a69",
+    "adapter_stage104r2": "3b0f6e22194b0c6385a7030ea6aa101b3f8ba2e80f32feec2b93b6cf1ccb5ef7",
+    "stage98r2": "a56fe5692b3284fae37822e6f08438e3a32a800accbad5ff4c72d36ea97a1591"
+  },
+  "zip_sha256": "fec9d0597d72aa7947686dee7e44cdd9f7f1f3d37efc745555845dda70e032ee",
+  "hooks": [
+    {
+      "site": "F7DA8",
+      "overwrite_bytes": 6,
+      "replay": "CMP and JE to F7D8D or fallthrough F7DAE",
+      "event": "POST_CEA20"
+    },
+    {
+      "site": "CEC64",
+      "overwrite_bytes": 7,
+      "replay": "CMP then JMP CEC6B preserving flags",
+      "event": "READ_CEC64"
+    }
+  ],
+  "correlation": "Stage104 PRE to Stage107 POST exact same F7150 frame+actor+tid+state+qpc; reader to POST state+index+tid+qpc+parentPost; reader frame intentionally distinct",
+  "opt_in_default_off": true,
+  "stage36_off": true,
+  "source_only": true,
+  "new_dll": false,
+  "new_game_run": false,
+  "gameplay_write": false,
+  "dr_write": false,
+  "ai_hit_proven": false,
+  "next": "Stage108 Windows runtime validation and strict same-run PRE-POST-READ joins"
+}

@@ -1,0 +1,115 @@
+{
+  "stage": 127,
+  "date": "2026-11-13",
+  "classification": "ORIGINAL_PE32_STATIC_ONLY_NO_NEW_HOOKS",
+  "source": {
+    "name": "AALib.exe user-owned",
+    "bytes": 175556608,
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "architecture": "PE32/i386",
+    "preferred_imagebase": "0x00400000"
+  },
+  "verified": {
+    "anchored_native_instruction_bytes": 752,
+    "decoded_native_branch_edges": 154,
+    "full_original_text_E8_direct_calls": 31,
+    "decision_sites": 28,
+    "offline_unittest_passed": 1096,
+    "offline_unittest_failed": 0,
+    "raw_E8_scan_matches_original_objdump": true
+  },
+  "scoped_native_direct_E8_census": {
+    "F30B0": 2,
+    "F3930": 3,
+    "CBE00": 2,
+    "CBF50": 7,
+    "CBFD0": 1,
+    "CBDE0": 12,
+    "CBE90": 1,
+    "CBF20": 1,
+    "F38D0": 2
+  },
+  "F30B0": {
+    "possible_fallback_0x27_site": "0x0F325A",
+    "original_candidate_return_site": "0x0F326A",
+    "output_pointers_required": true,
+    "first_output_sentinel_required": "0xFFFFFFFF",
+    "object_byte_plus_0x1A9_nonzero_required": true,
+    "preconditions": [
+      "CC330 nonzero",
+      "F58E0 results for IDs 0x1D,0x1E,0x1F all false",
+      "C99F0 nonzero",
+      "CB9C0 nonzero",
+      "indexed byte-table entry equals 0x27",
+      "at least one of two C9B40 checks passes",
+      "C9A30 rejects none of the 16 intersecting-bitfield conditions"
+    ],
+    "active_records_scanned": {
+      "first_group": 40,
+      "second_group": 176,
+      "total": 216,
+      "stride_bytes": 36,
+      "reader": "0x0CBE00",
+      "first_reader_call": "0x0F3216",
+      "second_reader_call": "0x0F3234"
+    },
+    "fallback_0x27_requires_all_prerequisites_and_no_active_record": true,
+    "early_exit_returns_input_candidate_not_necessarily_0x27": true,
+    "runtime_branch_observed_in_stage123": false
+  },
+  "F3930": {
+    "conditional_F30B0_call": "0x0F3CBC",
+    "CBF50_comparison_call": "0x0F3B55",
+    "comparison_failure_skips_candidate": "0x0F3B5C",
+    "returned_candidate_check": "0x0F3CC7/0F3CCD",
+    "known_producer_invocation": "0x0F7AD1 -> 0x0F3930"
+  },
+  "CBF50": {
+    "non_gameplay_predicate": true,
+    "callsite_count": 7,
+    "producer_mode_argument": 1,
+    "early_true_if_context_byte_plus8_zero_and_mode_nonzero": "0x0CBF5F -> 0x0CBFB2 AL=1",
+    "without_fastpath_candidate_record_plus10_zero_yields_false": "0x0CBF6C -> 0x0CBFC6",
+    "second_record_null_or_inactive_yields_true": [
+      "0x0CBF73",
+      "0x0CBF79"
+    ],
+    "further_comparisons_of_record_offsets": [
+      "0x04",
+      "0x10",
+      "0x11",
+      "0x20"
+    ],
+    "runtime_calls_observed_in_stage123": false
+  },
+  "stage123_previous_runtime": {
+    "MODE0_0x27_CEA20_PRE_POST_matched": 25,
+    "CEBE0_entry": 0,
+    "stage122_positive_G4_writer": true,
+    "F30B0_F325A_CBF50_sites_monitored": false
+  },
+  "artifact": {
+    "filename": "ArcanaAI_Stage127_Producer_RecordFlag_Gates_StaticAudit.zip",
+    "bytes": 32935,
+    "sha256": "eadce91cdcb8b91db701ba738d2c34438438779ec128223c3ccbb4384c42efa1",
+    "file_count": 13,
+    "zip_crc_pass": true,
+    "original_executable_distributed": false,
+    "built_dll_distributed": false
+  },
+  "limitations": [
+    "Conditional native code and predicates only; no direct Stage123 dynamic join at F30B0 F325A or CBF50",
+    "CBF50 AL1 is not an accepted attack or gameplay commit",
+    "CEBE0 zero entrances limited to Stage123 observed path/windows",
+    "Selected native direct call and record writer inventories are not all indirect code paths",
+    "Source-only no Windows build or game run for Stage127"
+  ],
+  "recommended_next": "Stage128 SHA-guarded passive producer fallback observability review only if needed, positive entry and precise return/call-scope joins; no forced state",
+  "stage36": "OFF",
+  "current_windows_dll_bytes": {
+    "Stage122": 2089984,
+    "Stage115": 2082304,
+    "Stage113": 2079744,
+    "Stage110": 2073088
+  }
+}

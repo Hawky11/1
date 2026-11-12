@@ -17,7 +17,6 @@
     "handler_table_rva": "0x3F8380",
     "table_entries": 236,
     "unique_handlers": 59,
-    "all_table_HIGHLOW_rel32": false,
     "table_HIGHLOW_relocation_count": 236,
     "table_address_literal_xrefs": 31,
     "all_table_address_literals_HIGHLOW": true,

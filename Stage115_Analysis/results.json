@@ -1,0 +1,54 @@
+{
+  "stage": 115,
+  "date": "2026-11-12",
+  "type": "SOURCE_ONLY",
+  "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "zip_name": "ArcanaAI_Stage115_FA480_Globals_SourceOnly.zip",
+  "zip_bytes": 36799,
+  "zip_sha256": "e77ad4f0a54774439c3b687423d2d1b947dfdee2d8ec269a120acfdab8328efe",
+  "source_before_sha256": "a5c8edecfceadd60716cf3a51f70d06619eb6d2ec8f9269ff9c5a0d0096a755b",
+  "source_after_sha256": "273059538a37cb1cfb82ab9c6eb891d0e535c59bcae1e41c42f06c27ff336d3a",
+  "adapter_unchanged_sha256": "d4026d45217188213aad701e278b00067815c4f7bae9ce9f5d88013e414de2d0",
+  "stage110_unchanged_sha256": "e183d8ba84ac07e9dcdcd8fd740604bb42e48bed1c52c36892354353bf8511b2",
+  "native_source_checks": {
+    "passed": 42,
+    "failed": 0
+  },
+  "offline_tests": {
+    "passed": 27,
+    "failed": 0
+  },
+  "native_reloc_operand_rvas": [
+    "0x1F4701",
+    "0x1F470C",
+    "0xFA48D",
+    "0xFA498",
+    "0xFA4A9"
+  ],
+  "preferred_va_globals": [
+    "0x0E3C3EFC",
+    "0x0E3C4930",
+    "0x0E10B37C",
+    "0x0E10B640",
+    "0x0E10B8B8"
+  ],
+  "stage113_native_hook_count": 4,
+  "stage115_new_native_hook_count": 0,
+  "stage115_new_game_data_writes": 0,
+  "stage115_new_DR_writes": 0,
+  "mode": "sampled_Stage113_gateA_9888D_after_FA480_return",
+  "log": "ArcanaAI_Stage115Fa480GlobalsTrace.log",
+  "ini": {
+    "EnableStage107ConsumerTrace": 1,
+    "EnableStage110Cebe0GuardTrace": 1,
+    "EnableStage113ParentGateTrace": 1,
+    "EnableStage115Fa480Trace": 1,
+    "EnableStage36ControlToCommandTrace": 0
+  },
+  "caveat": "predicate booleans derived from post-return sampled globals, not observed inner helper branches",
+  "windows_compiled": false,
+  "runtime_installed": false,
+  "gameplay_change_proven": false,
+  "rollback_dll_Stage113_bytes": 2079744,
+  "rollback_dll_Stage110_bytes": 2073088
+}

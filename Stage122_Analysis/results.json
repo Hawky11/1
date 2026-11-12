@@ -1,0 +1,92 @@
+{
+  "stage": 122,
+  "date": "2026-11-12",
+  "status": "SOURCE_ONLY_NOT_WINDOWS_BUILT",
+  "zip": {
+    "name": "ArcanaAI_Stage122_PositiveControl_ObjectWriterTrace_SourceOnly.zip",
+    "size_bytes": 48883,
+    "sha256": "5d0abe6f5bab87aad38a766509ec6e67baa45bf34d16cbb52d74d5aee65426c6",
+    "file_count": 17,
+    "crc_verified": true,
+    "exe_dll_included": false
+  },
+  "source": {
+    "original_exe_bytes": 175556608,
+    "original_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "previous_stage115_adapter_sha256": "d4026d45217188213aad701e278b00067815c4f7bae9ce9f5d88013e414de2d0",
+    "new_adapter_sha256": "3a78a8b6b68fda0999d33a2d392dd781fffa4c5bfd67a31b7fa2cdb5b8fadd1d",
+    "stage122_module_sha256": "4ae2a8f42774733f572b25d7f64df0c58ec005e52ae55080a6a718be4a75c1c1",
+    "stage115_module_unchanged_sha256": "273059538a37cb1cfb82ab9c6eb891d0e535c59bcae1e41c42f06c27ff336d3a",
+    "stage110_unchanged_sha256": "e183d8ba84ac07e9dcdcd8fd740604bb42e48bed1c52c36892354353bf8511b2",
+    "project_file_modified_count": 1,
+    "project_file_created_count": 1
+  },
+  "offline_checks": {
+    "original_native_signatures_pass": 9,
+    "rel32_direct_calls_pass": 2,
+    "known_hook_nonoverlap_pairs_pass": 33,
+    "strict_incremental_adapter_diff_pass": true,
+    "source_baselines_sha_match": true,
+    "installer_and_rollback_hash_guard_pass": true,
+    "python_unit_tests_pass": 59,
+    "python_unit_tests_fail": 0
+  },
+  "proposed_hook_sites": [
+    {
+      "rva": "1A0C81",
+      "original_hex": "E8AAE2FFFF",
+      "bytes": 5,
+      "kind": 1,
+      "original_replay": "PUSH original ret (1A0C86), JMP original 19EF30"
+    },
+    {
+      "rva": "19F295",
+      "original_hex": "C7461003000000",
+      "bytes": 7,
+      "kind": 2,
+      "original_replay": "MOV DWORD [ESI+10],3; JMP 19F29C"
+    },
+    {
+      "rva": "19F2AD",
+      "original_hex": "C70707000000",
+      "bytes": 6,
+      "kind": 3,
+      "original_replay": "MOV DWORD [EDI],7; JMP 19F2B3"
+    }
+  ],
+  "config": {
+    "EnableStage113ParentGateTrace": 1,
+    "EnableStage115Fa480Trace": 1,
+    "EnableStage122ObjectWriterTrace": 1,
+    "EnableStage36ControlToCommandTrace": 0
+  },
+  "logging": {
+    "file": "ArcanaAI_Stage122ObjectWriterTrace.log",
+    "session_id": true,
+    "thread_id": true,
+    "object_pointer": true,
+    "qpc": true,
+    "slot_from_actual_EDI": true,
+    "full_hit_counters": true,
+    "sampled_detail": true,
+    "buffer_capacity": 4096,
+    "readMask_and_error_counters": true
+  },
+  "installation": {
+    "win32_project_root_example": "D:\\INCUBATOR\\ArcanaAIOverhaul",
+    "apply": "ApplyStage122.ps1",
+    "rollback": "RollbackStage122.ps1",
+    "backs_up_adapter": ".stage122_backup",
+    "backups_stage115_dll_bytes": 2082304,
+    "game_closed_required": true
+  },
+  "limitations": [
+    "No Windows MSVC compilation performed this turn",
+    "No live Stage122 hooks installed or exercised",
+    "Source-only instrumentation does not prove unique or last G4 writer in historical Stage116 run",
+    "Normal native game-state stores are replayed once; no extra gameplay data writes intended",
+    "Positive parent call does not establish full virtual method reachability",
+    "Unknown third-party runtime code hooks outside exact sites are not excluded"
+  ],
+  "next": "Stage123 Windows MSVC x86 build, native install 3/3, positive parent then candidate writer hits, clean health, strict same-session correlation"
+}

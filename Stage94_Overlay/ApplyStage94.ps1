@@ -1,4 +1,4 @@
-# Stage94 r1: exact Stage93-r3 source-only upgrade. Never change live AALib.exe.
+# Stage94 r2: exact Stage93-r3 source-only upgrade with signature diagnostics. Never change live AALib.exe.
 param([Parameter(Mandatory=$true)][string]$Root)
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -20,7 +20,7 @@ $expected81 = 'be577c23c8f7b0bfeada6240d7d205fb7d18f28ae1f74ba377ea77334bb6d0ab'
 $expected92 = '34d4e6845594e1e107e412614211eddfd2a1e882ffe0e43669d14848e97f40f7'
 $expected93 = 'bb5653e40579fd22ba26b436040dc6403998b71b6837a70ebec3ae96940823b9'
 $package81Sha = '06602381692d903b8141cd7e735480c091ed8aa21f0adef5882afadc839aa4e6'
-$package94Sha = '43e5fb93446b1da9868f5e0d354ce7bc1d83c1e185f078956ab6349cf2394606'
+$package94Sha = '80f5d540387c2e0df30898a0cb32d60050a8917104e816e4a63bdd135bec772e'
 Require ((Test-Path -LiteralPath $stage81 -PathType Leaf) -and
          (Test-Path -LiteralPath $stage92 -PathType Leaf) -and
          (Test-Path -LiteralPath $stage93 -PathType Leaf)) 'Stage93 r3 source files missing; no changes.'

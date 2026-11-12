@@ -1,3 +1,13 @@
+## Current verified runtime — Stage96 r1 (2026-11-12)
+
+Stage96 is **Windows-built and live-installed (5/5)**, not merely source-only. Stage94 and Stage95 also installed 2/2; 51 clean HEALTH snapshots for each. [Latest user runtime upload](https://github.com/Hawky11/1/commit/7922935697265f370148fa3fadf06b710e88e395) · [full Stage96 runtime analysis](Stage96_Runtime/RUNTIME_ANALYSIS.md) · [latest handoff](NEXT_SESSION.md).
+
+**208 Stage94 gates = 152 value-matched F3930 producer + 56 uniquely matched Stage95 bypass**. All **163/163** forwarded gates match real Stage93 FinalCommand. Stage96 identifies the latest native ESI writer for **55/56** bypass gates (F79F0: 39; F7924: 12; F7A8F: 4). **One P1 ESI=0x2C writer remains unobserved**; Stage94 seq 1487 is a known producer-candidate false positive corrected by Stage95/96 evidence. DLL build size 2,039,808 bytes. Stage97 should analyze this remaining writer gap, with Stage36 OFF and no gameplay writes.
+
+Older source-only pending entries below are preserved as historical records; the heading above is the active state.
+
+---
+
 ## Stage94 r3 exact Stage82-callchain compatibility — source only, Windows test pending (2026-11-12)
 
 Stage94 r2 diagnostics from user's fresh game log: `STAGE94_SIGFAIL region=F3930_CALL rva=0F7AD1 expected=E85ABEFFFF actual=E87A679B50 gameBase=00100000`, and `STAGE94_SIGFAIL_TARGET callF3930Expected=0F3930 actualRVA=50AAE250 jneExpected=0F7C68 actualRVA=0F7C68`. **The actual CALL target VA is 0x50BAE250**, not 0x50AAE250: old diagnostic printed target relative to gameBase. The previously installed **Stage82 r2** is the identified owner: its source `Stage82NestedSelector.inl` (user Library source archive `ArcanaAI_Stage82_r2_SignatureAudit_SourceOnly.zip`) installs an exact CALL detour at F7AD1 targeting its local `Stage82Call1`. That wrapper invokes the original F3930 with five copied args, returns native EAX, and returns to F7AD6. This was a **false rejection of an authorized earlier patch** by Stage94's original-only producer-call guard, not evidence of corrupt game code.

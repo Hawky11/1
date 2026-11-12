@@ -1,0 +1,129 @@
+{
+  "stage": 124,
+  "date": "2026-11-13",
+  "classification": "ORIGINAL_PE32_STATIC_ONLY",
+  "original_exe": {
+    "name": "AALib.exe",
+    "bytes": 175556608,
+    "sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+    "arch": "PE32/i386",
+    "preferred_base": "0x00400000"
+  },
+  "native": {
+    "direct_FA480_E8_calls": 229,
+    "unique_verified_call_sites": 229,
+    "immediate_TEST_AL_JE": 164,
+    "immediate_TEST_AL_JNE": 56,
+    "delayed_MOV_TEST_AL_Jcc": 3,
+    "immediate_TEST_AL_other": 1,
+    "non_immediate_AL_test": 5,
+    "regions_64KiB": 20,
+    "direct_CEBE0_E8_calls": [
+      "0x0988EA",
+      "0x098948",
+      "0x0CAD79",
+      "0x0CADDA"
+    ],
+    "verified_original_opcode_anchors": 28,
+    "verified_native_JE_JNE_edges": 9,
+    "direct_calls": {
+      "0x098886": "0x0FA480",
+      "0x0F3B19": "0x0FA480",
+      "0x0CE13C": "0x0FA480",
+      "0x0F7AD1": "0x0F3930",
+      "0x0F7DA3": "0x0CEA20"
+    },
+    "producer_conditional_store": {
+      "caller": "0x0F3B19",
+      "conditions": [
+        "FA480 returned AL!=0",
+        "DWORD[0x0E2D6718]==3"
+      ],
+      "store": "BYTE[ESI+0x252]=1 at RVA 0F3B2B",
+      "on_false": "JMP/JE to RVA 0F3B32; producer still has other flow"
+    },
+    "parent_A_CEBE0": {
+      "FA480_call": "0x098886",
+      "JE_gate": "0x09888D",
+      "skip_rva": "0x098965",
+      "direct_CEBE0_sites": [
+        "0x0988EA",
+        "0x098948"
+      ]
+    },
+    "parent_B_CEBE0": {
+      "function": "0x0CACE0",
+      "local_FA480_direct_call": false,
+      "guard": "CMP DWORD[EBX+0x10CC], -1",
+      "JE_guard": "0x0CACF1",
+      "skip_rva": "0x0CADF9",
+      "direct_CEBE0_sites": [
+        "0x0CAD79",
+        "0x0CADDA"
+      ]
+    },
+    "other_examples": [
+      {
+        "caller": "0x0A6B33",
+        "extra_condition": "G3==2"
+      },
+      {
+        "caller": "0x0A6C45",
+        "extra_condition": "G3==1"
+      },
+      {
+        "caller": "0x0A6CA6",
+        "condition": "JNE on AL!=0"
+      }
+    ],
+    "native_F7900_F7FFF_direct_FA480": 0
+  },
+  "windows_previous_run": {
+    "stage": 123,
+    "new_user_general_log_line": "2026-11-12 23:48:01 COMvsCOM active: P1 and P2 control DWORDs are being forced to 1 (CPU)",
+    "general_log_line_from_current_conversation_not_previous_upload": true,
+    "build_start": "2026-11-12 23:47:30",
+    "tested_dll_bytes": 2089984,
+    "stage113_parentA_gate_skips": 16490,
+    "stage115_postgate_snapshots": 1498,
+    "stage104_0x27_PRE": 25,
+    "stage107_POST": 25,
+    "stage110_CEBE0_entry": 0
+  },
+  "offline": {
+    "regression_tests_passed": 45,
+    "regression_tests_failed": 0,
+    "independent_static_PE_E8_scan": true,
+    "independent_GNU_objdump_confirmation": true,
+    "sha_required": true
+  },
+  "archive": {
+    "file": "ArcanaAI_Stage124_FA480_Caller_AIFlow_StaticAudit.zip",
+    "bytes": 47993,
+    "sha256": "e938abc332278489b3d5f1efa99a0f611b39eed2671ebb13b33cf83a9a448b2d",
+    "files": 10,
+    "zip_integrity_passed": true,
+    "contains_original_game_exe": false,
+    "contains_dll": false
+  },
+  "scope_caveats": [
+    "229 counts are original static direct E8 CALL sites, not observed runtime hits",
+    "local branch polarity does not imply accept/reject semantics",
+    "Stage123 FA480 observed return only at native 0x09888D gate",
+    "F3930 conditional FA480 site not dynamically logged in Stage123",
+    "zero CEBE0 entry doesn't mean no CEA20 calls or native action rejection",
+    "unexamined indirect calls/alternate callsites not excluded"
+  ],
+  "new_game_hooks": 0,
+  "new_dll": false,
+  "Windows_rebuild": false,
+  "gameplay_memory_writes": 0,
+  "Stage36": "OFF",
+  "next": "Stage125 static-first command acceptance/commit path from observed F3930/F7B0A/F7CC0/F7DA3/CEA20/F7DA8; no bulk FA480 hooks or forced native returns",
+  "known_backups_bytes": {
+    "stage122": 2089984,
+    "stage115": 2082304,
+    "stage113": 2079744,
+    "stage110": 2073088
+  }
+}

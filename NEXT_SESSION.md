@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage157 r3 structural scanner ready, current Windows run pending (2026-11-14)
+
+- Current `src/Stage38CallbackWindow.inl:325–353` **directly supplied by user**: success-only Stage54→55→56→57→58 chain, `InstallStage58Hooks(){` at 329, optional Stage65/67/70/76/78/79/80 called in the block, **`StartStage59Watch()` at 346 back at Stage58 body depth**. Under normal returns, Stage59 not blocked by Stage67/70/76/78/79/80 returning false. The r2 single-statement regex was overly strict; that explains 11/12 without implying a game failure. No runtime exception/early stop proof.
+- Prepared **Stage157 r3 SOURCE_ONLY** ZIP `ArcanaAI_Stage157_r3_Stage38_StructuralLifecycle_SOURCE_ONLY.zip`, **16,368 bytes SHA256 `3df439d0066516b5efa9db69c7e7dc03442c1f5eea39ad3649bcb0fc487cd757`**, 6 entries CRC PASS and 5/5 manifest PASS. R3 source bracket-depth/direct-statement/order checker with all r2 safety checks; **32/32 synthetic Python tests PASS offline**, no Windows r3 run yet.
+- **NEXT Windows** extract ZIP, from `Stage157_r3_SourceOnly` run `.\Invoke-Stage157Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` after process-local `Set-ExecutionPolicy -Scope Process Bypass -Force`. Reuses Stage156 JSON; no MSVC or game process. Expected if valid: `STAGE157_STAGE38_BRANCH shape=BRACED_STAGE58_DIRECT_STAGE59 structure=MATCH reason=MATCH`, signatures 12/12, nine sites 9/9, then `STAGE157_R3_LOCAL_SOURCE_ONLY_TESTS_PASS`. Static PASS never implies live DLL safety.
+- [Detailed Stage157 r3 checkpoint](STAGE157_R3_CHECKPOINT.md); prior r1/r2 Windows evidence [Stage157](STAGE157_CHECKPOINT.md). Worker stop/join, three VEH retirement, raw callers/native ABI/SEH/unwind and live ownership remain unproven; Stage36 OFF, origin(0x27)=UNKNOWN, `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; preserve Stage129 DLL 2,099,200B and Stage122 fallback 2,089,984B.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage157 Stage38 current braced conditional found; source block body still missing (2026-11-14)
 
 - User current Windows `src/Stage38CallbackWindow.inl:329`: `if(InstallStage58Hooks()){`; `:346`: `StartStage59Watch();`.

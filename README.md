@@ -1,3 +1,9 @@
+## Stage157 r3 — source-level Stage38 branch nesting validated; Windows scanner rerun pending (2026-11-14)
+
+User's exact Windows `Stage38CallbackWindow.inl:325–353` shows Stage59 call at line346 **directly within Stage58 successful block**, outside nested optional Stage67/70/76/78/79/80 conditions. R2 single-line unbraced regex was a false negative. New Stage157 r3 read-only brace-structure parser keeps all fail-closed game safety gates; **32/32 synthetic tests PASS**, ZIP 16,368B SHA256 `3df439d0066516b5efa9db69c7e7dc03442c1f5eea39ad3649bcb0fc487cd757` (6 entries, 5/5 manifest, CRC PASS). **Actual Windows r3 audit not yet run**. Full audit [STAGE157_R3_CHECKPOINT.md](STAGE157_R3_CHECKPOINT.md), next run [NEXT_SESSION.md](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; DLL unchanged.
+
+---
+
 ## Stage157 source mismatch: regex limitation confirmed, current nested logic unverified (2026-11-14)
 
 Current Windows Stage38 line329 is `if(InstallStage58Hooks()){`, line346 is `StartStage59Watch();`; Stage157 r2 requires unbraced single-statement immediate call. So the lexical 11/12 regex miss is explained, but intervening code is **not provided** and could affect Stage59 admission. Need read-only numbered lines 325–353 before implementing a bounded structural checker. No game DLL change or unload approval. [Full checkpoint](STAGE157_CHECKPOINT.md); `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.

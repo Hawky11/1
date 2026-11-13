@@ -2,6 +2,10 @@
 
 **Status: Stage157 Windows r2 SOURCE_ONLY executed; 18/18 tests PASS; 9/9 worker sites MATCH; 11/12 source signatures; exact unmatched Stage38 chain identified; REVIEW_REQUIRED.** No game process access, native build, DLL installation/unload, extra JMP, Arm() or gameplay write. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`.
 
+## Stage157 r3 follow-up (2026-11-14)
+
+Full Stage38 lines 325–353 have now been provided by the user. They establish the Stage59 call at direct Stage58 body depth (outside Stage67/70/76/78/79/80 nested branches). The earlier r2 11/12 was an overly strict unbraced-regex **false negative** for this structure. A new bounded static Stage157 r3 scanner and 32/32 synthetic offline tests are documented at [STAGE157_R3_CHECKPOINT.md](STAGE157_R3_CHECKPOINT.md); actual Windows r3 output is pending, and game DLL unload remains blocked.
+
 ## Stage157 current Windows Stage38 line confirmation (2026-11-14)
 
 The user ran a **read-only local** `Select-String -Context 5,7` against `D:\INCUBATOR\ArcanaAIOverhaul\src\Stage38CallbackWindow.inl` and pasted these two exact matching line fragments:

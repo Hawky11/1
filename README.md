@@ -1,3 +1,9 @@
+## Stage159 — SOURCE_ONLY native RVA/writer/trampoline/raw caller provenance gap graph (2026-11-14)
+
+New metadata-only Stage159 ZIP **17,451B SHA256 `23486989d255c0d137398ed5ff5b94e02214a34c5ccb2bb13c4d849d76c01ffa`**, **7 ZIP entries CRC PASS, manifest 6/6, 40/40 offline negative/synthetic tests PASS**. Rehashes 66 current source paths against Stage156/Stage158 r2, inventories 11 historically pinned target declarations, 3 Stage67/70 known rollback risks, and writer API lexical/proximity candidates; **does not infer writer→target dataflow, installed live owners or safe module unload**. **Stage159 Windows project run pending**. [Checkpoint and exact read-only Windows command](STAGE159_CHECKPOINT.md), [handoff](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; no game DLL changes.
+
+---
+
 ## Stage158 r2 Windows source-only PASS; Stage159 provenance mapping next (2026-11-14)
 
 User confirmed `STAGE158_R2_LOCAL_SOURCE_ONLY_TESTS_PASS` on actual Windows project: **45/45 Python tests, manifest 7/7, 66/66 source hashes, 9 worker source triplets, 3 VEH registrations, all 5 RVA candidates** with C++ suffix-aware matching; F325A and F326A r1 misses resolved. This is **only static source/metadata proof**, not owner/foreign raw caller/ABI/SEH/worker join/VEH retirement safety. [Full Stage158 current Windows checkpoint](STAGE158_CHECKPOINT.md) and [Stage159 scope](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; game DLL untouched.

@@ -1,9 +1,10 @@
-## ACTIVE CHECKPOINT — Stage140 SOURCE-ONLY isolated native harness; Windows x86 run PENDING (2026-11-13)
+## ACTIVE CHECKPOINT — Stage140 Windows x86 isolated native harness 15/15 PASS; next Stage141 (2026-11-13)
 
-- **Stage139 MSVC x86 syntax is PASS** (3 source files, `/Zs`, no DLL). **Stage140 Windows native build/link/15 scenario execution is NOT RUN**. Full artifact and exact evidence: [Stage140 isolated Win32 ABI/SEH/FLS + sink fault harness](STAGE140_CHECKPOINT.md). Chat-only archive `ArcanaAI_Stage140_IsolatedWin32_ABI_SEH_FLS_SinkFaultHarness_SourceOnly.zip` (30,026 bytes, SHA256 `30e55725ee79266c1d00bd4528554391c36c57478286ac155a79e32c897f2cf2`, 15 files, ZIP CRC PASS).
-- Stage140 synthetic/portable verified: 40/40 static, 20/20 writer-fault policy model, Stage139 policy regression 39/39 GCC + 39/39 Clang. Windows test script compiles an **isolated %TEMP% Stage140Harness.exe** only and does not modify project/game/DLL; native test run pending.
-- **New source-proven concurrency issue:** Stage139 event `sequence` assigned before ring SRW lock; concurrent file event order can be 2,1. Stage140 `order_repro` intentionally reproduces this defect; pass means defect exposed, NOT fixed. Stage141 source-only fix planned.
-- **NEXT:** user runs `Stage140_IsolatedHarness\\tests\\Test-Stage140NativeHarness.ps1` in PowerShell 5.1 and returns full MSVC/link/scenario output; then Stage141 sequence-order fix plus FLS teardown / x86 native safety gates. **SAFE_TO_INSTALL=false**, Stage36 OFF, preserve Stage129 DLL 2,099,200 B and rollback Stage122 2,089,984 B, origin=UNKNOWN.
+- **Verified from user's console:** Stage140 MSVC x86 `Stage140Win32Harness.cpp` test-only EXE build/link PASS, **15/15 deterministic native scenarios PASS**. Exact full output: [Stage140 checkpoint](STAGE140_CHECKPOINT.md). Stage139 MSVC /Zs syntax PASS previously confirmed. These runs do not touch the game DLL, hooks, or real process.
+- `parallel`: ACK/queued/finalized = 400/400/400, `sinkTainted=0`; expected loss/exception cases correctly report taint and no false ACK. `order_repro` **reproduces Stage139 sequence number vs FIFO race**; test PASS explicitly does not mean fixed.
+- Stage140 portable earlier: 40/40 static, 20/20 sink model and 39/39 Stage139 GCC/Clang policy regressions. ZIP artifact chat-only: `ArcanaAI_Stage140_IsolatedWin32_ABI_SEH_FLS_SinkFaultHarness_SourceOnly.zip`, SHA256 `30e55725ee79266c1d00bd4528554391c36c57478286ac155a79e32c897f2cf2`.
+- **NEXT Stage141:** source-only fix event sequence allocation under the ring lock, re-run deterministic 2-thread order regression, review FLS callback/DLL unload lifecycle and persistent sink fault states; only isolated MSVC tests, never automatic game install.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, origin of input `0x27` remains UNKNOWN, no new JMP/Arm. Preserve working Stage129 DLL **2,099,200 B** and Stage122 rollback **2,089,984 B**.
 
 ---
 

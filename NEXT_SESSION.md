@@ -1,3 +1,14 @@
+## ACTIVE CHECKPOINT — Stage146 read-only complete current source/config census prepared; Windows 70-file comparison PENDING (2026-11-13)
+
+- **Last user-confirmed Windows evidence Stage145:** 11/11 archival source hashes, **5/5** current Windows source hashes; ledger 38/38 surfaces, 17/17 **listed but unproven** obligations. This does NOT verify 70 current files or loaded hook owner state.
+- **Stage146:** [Stage146 source/config/owner inventory checkpoint](STAGE146_CHECKPOINT.md). Source-only PowerShell 5.1 collector `Stage146_SourceOnly/tests/Capture-Stage146CurrentSources.ps1` hashes all current source/config files, compares each of Stage134's **70** archival file paths as `MATCH/DRIFT/MISSING`, lists additional current files, extracts .vcxproj/include edges, non-sensitive INI key names, five **historic** Stage10/Stage129 owner intervals and heuristic RVA text references. Produces ZIP under **%TEMP%**, refuses output inside project. Explicit `-IncludeSourceSnapshot` copies only source/project files (review for embedded secrets before sharing).
+- **Verified offline:** 104/104 static, 24/24 Python cases, Stage146 source-only ZIP 60,443 B SHA256 `b9bc8317aae43a29a024f65f3581b61d4bb4d277a46eeea63642e064bff9f9db`, 22 files CRC PASS/21 SHA manifest PASS. **Stage146 Windows collector NOT RUN; 70/70 current result NOT CLAIMED**.
+- **NEXT Windows command:** From extracted `Stage146_SourceOnly\\tests` run `Set-ExecutionPolicy Bypass -Scope Process -Force` then `.\\Capture-Stage146CurrentSources.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul' -IncludeSourceSnapshot`. Send complete console and generated `STAGE146_EVIDENCE_ZIP` (inspect source for secrets first). If PowerShell errors, keep all diagnostics and repair only the source-only test tool.
+- **Next Stage147:** classify actual current native hook owner conflicts using received source, static provenance and isolated read-only live evidence plan. Literal 0xRVA mention ≠ owner; known 5 intervals nonoverlap ≠ complete owner census. No game code modification.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, origin(0x27)=UNKNOWN, preserve Stage129 DLL 2,099,200 B and Stage122 fallback DLL 2,089,984 B.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage145 Windows source evidence PASS 11/11 refs, 5/5 current; Stage146 next (2026-11-13)
 
 - **User-confirmed Windows read-only test:** `Stage145_SourceOnly/tests/Test-Stage145LocalEvidence.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` printed `STAGE145_LOCAL_EVIDENCE_PASS refs=11 current=5 obligations=17; source-only, SAFE_TO_INSTALL=false`. Exact full transcript: [Stage145 checkpoint](STAGE145_CHECKPOINT.md). 11 archived original/candidate/test reference files match; five specified current Windows project files match Nov 12 Stage134 capture; static ledger covers 38/38 *selected* surfaces and 17/17 listed obligations. **Coverage bookkeeping does not mean obligations are fulfilled.**

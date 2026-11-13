@@ -1,10 +1,10 @@
-## ACTIVE CHECKPOINT — Stage141 source-only FIFO sequence correction; Windows x86 16/16 PENDING (2026-11-13)
+## ACTIVE CHECKPOINT — Stage141 Windows x86 isolated native 16/16 PASS; next Stage142 (2026-11-13)
 
-- **Stage141 source-only:** [Stage141 sequence FIFO and FLS unload preflight](STAGE141_CHECKPOINT.md). Candidate `Stage141Win32Bridge.cpp` allocates `g_finalSeq` inside the queue publication `g_ringLock` after the full/tainted rejection check, repairing Stage139 concurrency sequence inversion (Stage140 `order_repro` native test demonstrated the bug). Baseline Stage139 bridge/header/contract untouched. No new JMP, `Arm()`, game DLL or gameplay changes.
-- **Verified offline:** **52/52** static audit; **19/19** GCC and **19/19** Clang portable tests; 256 FLS predicate combinations modeled. Chat-only source ZIP 36,059 B SHA256 `8097b0e05a3ee308824b33f79cd129cea56c63283fac346f098a6d55f9c860f5` (19 files, CRC PASS).
-- **Windows status:** Stage140 isolated MSVC x86 **15/15 PASS** from user. **Stage141 native build/link and 16 scenarios NOT RUN**. `order_fixed` must show FIFO-monotonic `sequence`, `parallel` strict monotonic sequence over 400 events; new `fls_preflight` only tests requirements, does NOT call `FlsFree` or prove module unload.
-- **NEXT:** Windows PowerShell in `Stage141_SourceOnly\\tests`: `Set-ExecutionPolicy Bypass -Scope Process -Force` then `.\\Test-Stage141NativeHarness.ps1`; capture complete output. Stage142 should separately investigate FLS live-context registry, shutdown barrier and safe DLL unload in an isolated environment, not in game.
-- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin=UNKNOWN`, preserve Stage129 DLL **2,099,200 B** and Stage122 rollback **2,089,984 B**.
+- **User Windows result:** VS2026 Community MSVC x86 compiled/linked `Stage141Win32Harness.cpp` into **isolated EXE** (not game DLL); all **16/16** deterministic scenarios passed. Full transcript: [Stage141 checkpoint](STAGE141_CHECKPOINT.md).
+- **Sequence race fixed in Stage141 candidate model:** Stage140 `order_repro` confirmed defect; Stage141 `order_fixed` PASS verifies FIFO monotonicity under controlled competing-thread schedule. `parallel` ACK=queued=finalized=**400**, taint=0. Injected writer failures correctly taint without false ACK. Source changes remain uninstalled.
+- **FLS gate:** `fls_preflight` PASS is predicate-only; `fls_exit` taint=1 with no false ACK. There is **no FlsFree/unload test** and no proof the game DLL can safely unload. Other previous offline evidence: 52/52 static, 19/19 GCC+Clang, 256 FLS predicate combinations.
+- **NEXT Stage142:** isolated test DLL/host for FLS callback lifecycle and unload barrier; explore thread/fiber registry, quiescence, callback code pinning, loader lock, safe shutdown/fault injection. No game attachment, no automatic deployment.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin=UNKNOWN`; preserve Stage129 DLL 2,099,200 bytes and Stage122 rollback DLL 2,089,984 bytes. No extra JMP or `Arm()` enabled.
 
 ---
 

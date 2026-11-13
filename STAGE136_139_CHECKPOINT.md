@@ -32,16 +32,20 @@ This checkpoint records source-only bridge work and the user-reported Windows sy
 - Do **not** conflate `VerifiedParent` (which call owned the child) with candidate provenance: origin of `0x27` remains **`UNKNOWN`** (literal vs table vs inherited unproven).
 - Sink policy: single flush lock, queue **peek -> WriteFile -> FlushFileBuffers -> ACK/pop**. An ambiguous or partial write freezes the stream rather than blindly retrying, records incomplete evidence and does **not** promise durable exactly-once delivery or crash safety. Unobservable candidate inputs mean `candidate27Seen` is only a **lower bound**.
 - Offline checks: **39/39 GCC and 39/39 Clang** policy tests, **20/20** sink-model tests, **51/51** static checks. Regression: Stage136 **20/20** GCC/Clang, Stage137 **22/22** GCC/Clang, Stage138 **31/31**. No new JMP, no `Arm()` call, no gameplay writes, default build not changed.
-- **Latest user Windows log (2026-11-13):** after running `Test-Stage139CompileOnly.ps1`, output currently provided is only
+- **User-confirmed Windows MSVC x86 syntax PASS (2026-11-13):** `Test-Stage139CompileOnly.ps1` selected the installed VS2026 Community C++ toolchain, processed all three translation units and printed the final success marker:
   ```text
   STAGE139_MSVC_SELECTED C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+  Stage139Win32Bridge.cpp
+  AIProducerContextTrace.cpp
+  Proxy.cpp
+  STAGE139_MSVC_SYNTAX PASS: /Zs only, no object/DLL emitted; original project untouched.
   ```
-  **Stage139 `/Zs` has NOT been confirmed PASS or FAIL**. The `Stage139Win32Bridge.cpp`, `AIProducerContextTrace.cpp`, `Proxy.cpp` compiler output and final `STAGE139_MSVC_SYNTAX PASS` or errors have not yet been received. Do not infer success from compiler selection.
+  This closes the **syntax-only** Stage139 MSVC x86 gate. It is not MSVC full compilation/linkage, SEH/FLS native fault injection, ABI parity, hook installation or gameplay proof.
 - Chat artifact: `ArcanaAI_Stage139_PendingExit_Verification_LossSafeSink_SourceOnly.zip`, **61,188 B**, SHA-256 `b3a514b6349aa5603c2623583f15b82eabe9f3007380f857f518984ea863f934`, **23 files**, ZIP CRC PASS. Artifact is attached in ChatGPT **and is not automatically committed to GitHub**.
 
 ## Safety / next handoff
 
 - **SAFE_TO_INSTALL=false** for Stage136–139. The Stage139 bridge has not been linked or installed in the game. No evidence here of live `2/2` Stage10 and `3/3` Stage129 owner readback, complete startup quiescence (including parent frames inside callees), native x86 ABI/SEH/FLS teardown safety, or controlled Win32 concurrent/partial-write fault-injection.
 - Preserve user's existing Windows-tested Stage129 `dinput8.dll` **2,099,200 bytes**, Stage122 rollback DLL **2,089,984 bytes**, **Stage36 OFF**. No DR writes, F2DE0 repatch, new hooks or gameplay writes in these source-only stages.
-- **Immediate next action:** capture remainder of Stage139 Windows `/Zs` output and verify it independently; then Stage140 isolated ABI/SEH/FLS and Win32 sink-failure harness (no automatic installation). If `/Zs` fails, fix only the source-only candidate and rerun.
+- **Immediate next action:** Stage139 Windows `/Zs` syntax PASS is confirmed; proceed to Stage140 isolated ABI/SEH/FLS and Win32 sink-failure harness (no automatic installation).
 - The ZIP files above are available in the user's ChatGPT conversation, not linked as GitHub binary artifacts. Hashes/size/inventory were rechecked against current session files.

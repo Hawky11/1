@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage140 SOURCE-ONLY isolated native harness; Windows x86 run PENDING (2026-11-13)
+
+- **Stage139 MSVC x86 syntax is PASS** (3 source files, `/Zs`, no DLL). **Stage140 Windows native build/link/15 scenario execution is NOT RUN**. Full artifact and exact evidence: [Stage140 isolated Win32 ABI/SEH/FLS + sink fault harness](STAGE140_CHECKPOINT.md). Chat-only archive `ArcanaAI_Stage140_IsolatedWin32_ABI_SEH_FLS_SinkFaultHarness_SourceOnly.zip` (30,026 bytes, SHA256 `30e55725ee79266c1d00bd4528554391c36c57478286ac155a79e32c897f2cf2`, 15 files, ZIP CRC PASS).
+- Stage140 synthetic/portable verified: 40/40 static, 20/20 writer-fault policy model, Stage139 policy regression 39/39 GCC + 39/39 Clang. Windows test script compiles an **isolated %TEMP% Stage140Harness.exe** only and does not modify project/game/DLL; native test run pending.
+- **New source-proven concurrency issue:** Stage139 event `sequence` assigned before ring SRW lock; concurrent file event order can be 2,1. Stage140 `order_repro` intentionally reproduces this defect; pass means defect exposed, NOT fixed. Stage141 source-only fix planned.
+- **NEXT:** user runs `Stage140_IsolatedHarness\\tests\\Test-Stage140NativeHarness.ps1` in PowerShell 5.1 and returns full MSVC/link/scenario output; then Stage141 sequence-order fix plus FLS teardown / x86 native safety gates. **SAFE_TO_INSTALL=false**, Stage36 OFF, preserve Stage129 DLL 2,099,200 B and rollback Stage122 2,089,984 B, origin=UNKNOWN.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage139 MSVC x86 /Zs PASS, source-only; next Stage140 (2026-11-13)
 
 - **Detailed history:** [Stage136–139 checkpoint](STAGE136_139_CHECKPOINT.md). Stage136 unsampled-0x27 owner model; Stage137 r2 guarded Win32 FLS bridge; Stage138 ABI/SEH and data-loss audit; Stage139 pending/exit-verified parent linkage and serialized, loss-accounted sink candidate. No additional JMP at Stage10 F34D0/F3930, no Arm(), no default project integration.

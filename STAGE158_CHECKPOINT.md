@@ -1,6 +1,40 @@
 # ArcanaAIOverhaul — Stage158 native/raw ingress, worker and VEH lifecycle SOURCE_ONLY (2026-11-14)
 
-**Status: Stage158 r1 user Windows read-only 33/33 tests and 66/66 SHA PASS; review required for two unrecognized Stage129 RVA literal spellings. Stage158 r2 suffix-aware parser offline 45/45 tests PASS; Windows r2 still PENDING.** Stage157 r3 *was* user-confirmed on Windows (32/32; nine CreateThread site reconciliation; 12/12 Stage38/59 source signatures) and is not confused with this separate Stage158 work.
+**Status: Stage158 r2 user-confirmed Windows SOURCE_ONLY PASS (45/45 Python tests, 66/66 source SHA, 9/9 worker triplets, 3/3 VEH registration anchors, 5/5 RVA lexical candidates). Live game DLL install/unload remains DENY.** Stage157 r3 *was* user-confirmed on Windows (32/32; nine CreateThread site reconciliation; 12/12 Stage38/59 source signatures) and is not confused with this separate Stage158 work.
+
+## User-confirmed Stage158 r2 Windows current-source audit — PASS (2026-11-14)
+
+The user ran `Invoke-Stage158Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` in `Stage158_r2_SourceOnly` on their Windows computer, after process-scoped PowerShell execution-policy bypass. Their console confirms:
+
+```text
+STAGE158_R2_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE158_MANIFEST_PASS files=7
+Ran 45 tests in 2.048s
+OK
+STAGE158_SOURCE_HASHES matched=66 checked=66 roots=8 reachable=66
+STAGE158_WORKERS source_sites=9 create_close_loop_anchored=9
+STAGE158_VEH register_anchors=3 retirement_proof=NO
+STAGE158_NATIVE_SOURCE_RVAS candidates=5 lexical_literals=16 live_owner_proof=NO
+STAGE158_RVA_SOURCE stage=STAGE10 rva=F34D0 path=src/AIProducerContextTrace.cpp lexical_matches=6 cpp_suffix_matches=1 owner=UNKNOWN
+STAGE158_RVA_SOURCE stage=STAGE10 rva=F3930 path=src/AIProducerContextTrace.cpp lexical_matches=5 cpp_suffix_matches=1 owner=UNKNOWN
+STAGE158_RVA_SOURCE stage=STAGE129 rva=F30B0 path=src/Stage129ProducerProbe.inl lexical_matches=3 cpp_suffix_matches=2 owner=UNKNOWN
+STAGE158_RVA_SOURCE stage=STAGE129 rva=F325A path=src/Stage129ProducerProbe.inl lexical_matches=1 cpp_suffix_matches=1 owner=UNKNOWN
+STAGE158_RVA_SOURCE stage=STAGE129 rva=F326A path=src/Stage129ProducerProbe.inl lexical_matches=1 cpp_suffix_matches=1 owner=UNKNOWN
+STAGE158_RAW_CALLER_PROOF=NO WORKER_JOIN_PROOF=NO FUTURE_VEH_RETIREMENT=NO
+STAGE158_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage158_r2_SourceOnly\stage158_r2_native_lifecycle_metadata.json
+STAGE158_R2_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE158_R2_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Conclusion:** The old Stage158 r1 `NATIVE_RVA_LITERAL_REVIEW_REQUIRED` for Stage129 `F325A`/`F326A` is resolved at **source lexical matching** scope. Their source occurrences match C++ integer suffix-aware parsing (each one `cpp_suffix_matches=1`); all five target RVA constants have at least one lexical match. There are **16 matches across 5 targets**, not 16 distinct installed hooks. The 66 SHA matched current source files, 9 worker triplets and 3 VEH registration sites also remain consistent. `45/45` applies to the packaged Python tests; current source preflight independently passed its limited gates. This is **user-reported PowerShell evidence**, not an independently uploaded source JSON, live hook scan, runtime install test, or game DLL ownership proof.
+
+**Live safety remains DENY:** `RAW_CALLER_PROOF=NO`, `WORKER_JOIN_PROOF=NO`, `FUTURE_VEH_RETIREMENT=NO`. No external owner lease/proven raw callers, native ABI/SEH/unwind, nine cooperative joins, three VEH callback retirement, hook ownership/transaction rollback. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. Preserve Stage129 working game DLL 2,099,200 B and Stage122 fallback 2,089,984 B; no new builds or DLL changes.
+
+### Next Stage159 — SOURCE_ONLY provenance, not more RVA spelling fixes
+
+Use the Stage158 r2 metadata ledger and pinned user sources to build a bounded `source site → install writer → code bytes/RVA → generated trampoline → native entry → caller → callback/worker` evidence graph. First target Stage10 `F34D0/F3930` and Stage129 `F30B0/F325A/F326A`, then enumerate additional reachable patch writers and unknown/unattributed sites; treat all unexplained dynamic callers and future callbacks as UNKNOWN. Include standalone negative tests for missing owner/writer edge, duplicate target owners, patch rollback failure, retained raw-pointer and re-entry. **No gameplay writes, no hook install, no Arm/FreeLibrary, no declaration that a static graph proves unload safety.** Stage159 NOT YET EXECUTED.
+
+---
 
 ## User-confirmed Stage158 r1 Windows current-source audit (2026-11-14) — REVIEW_REQUIRED, one bounded RVA issue
 

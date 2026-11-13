@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage158 r2 Windows PASS; Stage159 SOURCE_ONLY native raw owner/caller provenance next (2026-11-14)
+
+- **User-confirmed Stage158 r2 Windows source-only pass:** manifest **7/7** payloads, Python **45/45 PASS** (2.048s), current 66/66 SHA matches, nine worker create/close/loop source triplets, 3 VEH registration anchors, all five Stage10/129 target RVAs found with suffix-aware lexical matcher. Exact r2 source matches: F34D0=6 (suffix1); F3930=5 (suffix1); F30B0=3 (suffix2); F325A=1 (suffix1); F326A=1 (suffix1). **16 textual occurrences ≠ 16 installed native hooks.** Stage158 r1 `NATIVE_RVA_LITERAL_REVIEW_REQUIRED` is CLOSED for lexical parsing; r2 returned `STAGE158_R2_LOCAL_SOURCE_ONLY_TESTS_PASS`.
+- Local generated metadata `%TEMP%\ArcanaAI_Stage158_r2_SourceOnly\stage158_r2_native_lifecycle_metadata.json` remains on user's Windows machine; not independently uploaded. Full console and strict evidence scope in [STAGE158_CHECKPOINT.md](STAGE158_CHECKPOINT.md).
+- **NEXT Stage159 SOURCE_ONLY:** trace original real-source `Stage10 F34D0/F3930` and `Stage129 F30B0/F325A/F326A` target declarations to actual writer functions, guards, stolen-byte sizes, trampolines, raw/game caller edges and rollback; separately list unproven native owner/return/ABI/SEH paths. Identify additional reachable patch sites rather than declaring a five-RVA complete inventory. Continue nine-worker stop/join, 3 VEH callback retirement/future dispatch obligations. Use metadata-only Python/PowerShell negative checks; no live installation or unload.
+- **Hard gate** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; no new hooks, Arm(), FreeLibrary, game process access, native build or project code modification. Working Stage129 game DLL 2,099,200 B and Stage122 backup 2,089,984 B unchanged.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage158 r1 Windows SHA/worker/VEH PASS, RVA spelling REVIEW; r2 scanner next (2026-11-14)
 
 - User Windows Stage158 r1 `Invoke-Stage158Audit.ps1` **33/33 unittest PASS, manifest 6/6**, **66/66 SHA matches**, **9/9 CreateThread→CloseHandle→loop** source triplets, **3/3 VEH register anchors**. Stage10 RVA F34D0 5, F3930 4, Stage129 F30B0 1, F325A 0, F326A 0 by text pattern; `STAGE158_REVIEW_REQUIRED reason=NATIVE_RVA_LITERAL_REVIEW_REQUIRED`. This is **lexical review**, not proof those native hooks are absent.

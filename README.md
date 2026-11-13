@@ -1,3 +1,9 @@
+## Stage158 r2 Windows source-only PASS; Stage159 provenance mapping next (2026-11-14)
+
+User confirmed `STAGE158_R2_LOCAL_SOURCE_ONLY_TESTS_PASS` on actual Windows project: **45/45 Python tests, manifest 7/7, 66/66 source hashes, 9 worker source triplets, 3 VEH registrations, all 5 RVA candidates** with C++ suffix-aware matching; F325A and F326A r1 misses resolved. This is **only static source/metadata proof**, not owner/foreign raw caller/ABI/SEH/worker join/VEH retirement safety. [Full Stage158 current Windows checkpoint](STAGE158_CHECKPOINT.md) and [Stage159 scope](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; game DLL untouched.
+
+---
+
 ## Stage158 Windows current-source SHA PASS; r2 RVA suffix parser needs Windows check (2026-11-14)
 
 User Stage158 r1: 33/33 Windows Python PASS, manifest 6/6 PASS, 66/66 source SHA, nine workers and three VEH anchors match; `F325A`/`F326A` Stage129 RVA text matches 0 with r1 regex while F30B0=1. This is `REVIEW_REQUIRED` for **source literal spelling only**, not a game DLL error. New Stage158 r2 suffix-aware whole-token source scanner ZIP **18,415B SHA256 `7d2d0041aadb167a571b5d5e67d2c81834f849ea9996f2fc4fc8425288ddbf1d`** (8 file CRC/7 SHA PASS) with **45/45 offline synthetic tests PASS**. **Current Windows r2 NOT RUN.** Next `Stage158_r2_SourceOnly/Invoke-Stage158Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`; if still missing, read-only Stage129 lines 1–30 review. [Full Stage158 checkpoint](STAGE158_CHECKPOINT.md). **`SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`**, Stage36 OFF, origin(0x27)=UNKNOWN, no DLL changes.

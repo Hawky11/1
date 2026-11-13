@@ -1,0 +1,61 @@
+{
+  "stage": 135,
+  "status": "CURRENT_SOURCE_HASH_PASS_NEW_INSTALL_BLOCKED",
+  "captured_zip_sha256": "e1ae1b0bb74b508a2d47ce600c37f67f730b64306c52fc3d4e6d16cf2077a84f",
+  "captured_zip_files": 70,
+  "captured_files_sha256_and_size_verified": 70,
+  "unlisted_files": 0,
+  "prior_archive_source_modules_same_hash": 21,
+  "prior_archive_site_ranges_now_bound_to_current_source": 52,
+  "stage133_future_sites": 10,
+  "stage10_existing_parent_hooks": [
+    {
+      "rva": "F34D0",
+      "length": 5,
+      "owner": "src/AIProducerContextTrace.cpp",
+      "overlap_with_stage133": 5
+    },
+    {
+      "rva": "F3930",
+      "length": 6,
+      "owner": "src/AIProducerContextTrace.cpp",
+      "overlap_with_stage133": 6
+    }
+  ],
+  "future_vs_archival_current52_overlaps": 0,
+  "future_vs_stage10_overlaps": 2,
+  "future_vs_additional34_overlaps": 0,
+  "additional_source_declared_sites": 34,
+  "source_declared_limited_registry_total": 88,
+  "conditional_overlap_disabled_stage36": {
+    "rva": "F79E4",
+    "owners": [
+      "Stage82NestedSelector.inl",
+      "Stage36ControlPredicate.inl"
+    ],
+    "length": 5,
+    "stage36_required_OFF": true
+  },
+  "source_capture_dateUTC": "2026-11-12T23:48:42.7293205Z",
+  "stage10_enable_by_default": true,
+  "actual_stage10_installed_in_users_running_game": "UNVERIFIED_CURRENT_RUNTIME",
+  "current_stage10_missing_fail_closed_thread_suspend_proof": true,
+  "current_stage10_capture_and_call_wraps_normal_original": true,
+  "current_stage10_exceptional_scope_cleanup_proven": false,
+  "stage129_complete_all_candidate27_bridge": false,
+  "original_AALib_exe_sha256": "28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba",
+  "original_AALib_exe_bytes": 175556608,
+  "offline_tests_pass": 12,
+  "windows_build_this_stage": false,
+  "new_hooks_this_stage": 0,
+  "new_gameplay_writes_this_stage": 0,
+  "safe_to_install_new_hooks": false,
+  "stage129_dll_rollback_bytes": 2099200,
+  "stage122_dll_rollback_bytes": 2089984,
+  "artifact_archive": "ArcanaAI_Stage135_CurrentSource_Owner_Collision_Audit.zip",
+  "artifact_archive_bytes": 10134,
+  "artifact_archive_sha256": "4ce2541d6b1df71ce6ac3d662667608025e62d8d96273458c765704152e66910",
+  "artifact_zip_crc_pass": true,
+  "artifact_in_github": false,
+  "next": "Stage136 owner-integrated Stage10 scope design and fail-closed quiescence/SEH/Stage129 all-interesting-candidate bridge"
+}

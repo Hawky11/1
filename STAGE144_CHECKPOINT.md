@@ -2,6 +2,25 @@
 
 **STATIC/READ-ONLY ONLY. SAFE_TO_INSTALL=false. Stage36 OFF. Working game DLL untouched.**
 
+## Windows PowerShell 5.1 current-tree snapshot verification — USER-CONFIRMED 5/5 PASS (2026-11-13)
+
+- User executed the read-only `Test-Stage144LocalSnapshot.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` directly in the actual project directory on Windows.
+- **Five exact SHA256 reference matches**: `src\AIProducerContextTrace.cpp`, `ArcanaAIOverhaul.vcxproj`, `src\Proxy.cpp`, `src\Stage129ProducerProbe.inl`, and `src\Stage81SelectorWriter.inl`. Current Windows copies of **these five files** match Stage134's November 12 archival capture. It does **not** establish that all 70 files in the current Windows tree still match: the 70/70 manifest recheck was on the archived source snapshot.
+- Script explicitly prints `STAGE144_NO_LIVE_OWNER_PROOF`: no game process read, no installed-hook state/owner census, no native detour ABI or quiescence check.
+- **SAFE_TO_INSTALL=false**; Stage36 OFF; Stage145 can use these 5 static files without a new capture for them only, but must request new source evidence if any other currently used source changed.
+
+Exact user Windows console output (2026-11-13):
+
+```text
+STAGE144_SOURCE_MATCH src\AIProducerContextTrace.cpp
+STAGE144_SOURCE_MATCH ArcanaAIOverhaul.vcxproj
+STAGE144_SOURCE_MATCH src\Proxy.cpp
+STAGE144_SOURCE_MATCH src\Stage129ProducerProbe.inl
+STAGE144_SOURCE_MATCH src\Stage81SelectorWriter.inl
+STAGE144_NO_LIVE_OWNER_PROOF snapshot comparison only; no game process access
+STAGE144_SNAPSHOT_MATCH files=5; snapshot-only, SAFE_TO_INSTALL=false
+```
+
 ## Starting point
 
 - Stage143 **r2 isolated Windows x86** test DLL/host: **MSVC build PASS, 16/16 test scenarios PASS** (user-provided log, retained in [Stage143 checkpoint](STAGE143_CHECKPOINT.md)). The test-only host Gate/Lease can block cooperating host calls, but it is not wired into native Stage10/Stage129 detours or Stage141 candidate bridge.
@@ -41,7 +60,7 @@ Each record in `evidence/entry_surfaces.json` has exact snapshot-relative source
 - **102/102 static assertions PASS**: 11 reference file SHA256/length checks, 38 surface-line anchors, 70-file capture metadata/sampled-source comparisons, source-specific hook/worker/FLS/lease checks, source-only gate.
 - **6/6 Python model unittests PASS**, including exhaustive **4096/4096** booleans for a *synthetic* 12-obligation shutdown eligibility policy and the counterexample where a raw native caller bypasses a fully drained cooperating test host.
 - **70/70** original archived source-file hashes verified separately from the complete extracted capture (not all 70 copied into Stage144).
-- **No Windows MSVC/native Stage144 test exists or is claimed**: this is a static audit. Read-only Windows current-tree drift check **NOT RUN** as of this checkpoint.
+- **No Windows MSVC/native Stage144 test exists or is claimed**: this is a static audit. Read-only Windows current-tree drift check **PASS 5/5**, user-reported console output above. This is an archival source match only, **not** a live owner or hook verification.
 
 ### Windows local source drift check (read-only, no game process)
 
@@ -52,7 +71,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 .\Test-Stage144LocalSnapshot.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'
 ```
 
-Expected: five `STAGE144_SOURCE_MATCH` rows then `STAGE144_SNAPSHOT_MATCH files=5`, **only if** current files exactly match **Nov 12 source snapshot**. If files changed: `STAGE144_SOURCE_DRIFT` / `STAGE144_SOURCE_MISSING` with exit code 2: require new source capture before assuming exact current code. This checker is **not** a live memory/hook scan and does not open, launch, inject or modify the game/DLL.
+Observed on user's Windows machine: all five `STAGE144_SOURCE_MATCH` rows and `STAGE144_SNAPSHOT_MATCH files=5`, confirming those specific files match **Nov 12 source snapshot**. If files changed: `STAGE144_SOURCE_DRIFT` / `STAGE144_SOURCE_MISSING` with exit code 2: require new source capture before assuming exact current code. This checker is **not** a live memory/hook scan and does not open, launch, inject or modify the game/DLL.
 
 ### Next Stage145
 

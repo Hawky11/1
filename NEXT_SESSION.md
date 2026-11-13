@@ -1,10 +1,10 @@
-## ACTIVE CHECKPOINT — Stage142 isolated FLS DLL unload lifecycle; native Windows 13/13 NOT RUN (2026-11-13)
+## ACTIVE CHECKPOINT — Stage142 Windows x86 isolated test DLL + host 13/13 PASS; next Stage143 (2026-11-13)
 
-- **Stage141 confirmed:** isolated Win32 x86 test EXE 16/16 PASS; FIFO sequence-order bug corrected in Stage141 source-only candidate. FLS `fls_preflight` previously predicate-only, not real FreeLibrary/FlsFree. [Stage142 checkpoint](STAGE142_CHECKPOINT.md) records details.
-- **Stage142 deliverable:** disposable test `Stage142FlsProbe.dll` plus standalone `Stage142Host.exe`, all sources only; `Stage142_IsolatedFlsUnload/tests/Test-Stage142NativeHarness.ps1` builds in %TEMP% using MSVC x86, exercises 13 scenarios: thread/fiber FLS callbacks, double shutdown, live value/in-flight refusal, 8-thread parallel exit, double LoadLibrary/FreeLibrary. Test-only FLS teardown invokes FlsFree after all locally known contexts drained; **does not integrate Stage141 game bridge**.
-- **Verified OFFLINE:** static audit 44/44; GCC 291/291 and Clang 291/291 policy checks including 256 FLS predicate combinations; ZIP 15 source/docs files, 23,093 B SHA-256 `2fa2d5c4f7d778079925f130b19d57998d1ea97f8797d1f8d717d13c3553461b`, CRC and manifest PASS. **Windows x86 compile/link and native 13/13 NOT RUN, no PASS claimed**.
-- **NEXT:** Run `Stage142_IsolatedFlsUnload\\tests\\Test-Stage142NativeHarness.ps1` in Windows PowerShell 5.1, capture complete MSVC and per-scenario console output. Stage143 to explore complete external caller admission / callback registry and unload barriers after reviewing native results; no game deployment.
-- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin(0x27)=UNKNOWN`, no second JMP or Arm; preserve Stage129 DLL **2,099,200 B** and Stage122 rollback **2,089,984 B**.
+- **Confirmed from user Windows console:** VS2026 Community MSVC x86 built disposable `Stage142FlsProbe.dll` and `Stage142Host.exe`, `STAGE142_NATIVE_BUILD PASS`; **all 13/13 isolated FLS lifecycle scenarios PASS**. [Stage142 checkpoint](STAGE142_CHECKPOINT.md) preserves the full output. Garbled linker .lib/.exp status line was harmless encoding.
+- `thread_exit`, `fiber_delete`, `fiber_switch` observed real test FLS callbacks; `parallel_exit` callbacks=8, manualFrees=512, live=0, inFlight=0; `live_slot_block`/ `inflight_block` denied premature completion; `preflight_missing` blocked=8; `reload_twice` passed. Stage141 previous standalone native 16/16 PASS remains verified.
+- Stage142 offline checks also 44/44 static, 291/291 portable GCC and Clang with 256 gate combinations; source ZIP `ArcanaAI_Stage142_IsolatedFLS_DllUnload_Lifecycle_SourceOnly.zip`, 23,093 B SHA256 `2fa2d5c4f7d778079925f130b19d57998d1ea97f8797d1f8d717d13c3553461b`, 15 files.
+- **NEXT Stage143:** audit/prototype production bridge admission/active-caller/context registry and quiescent unload barrier **source-only**, with race/fault tests in isolated DLL/host; no automatic game patch or bridge installation. Isolated FLS callback/unload PASS is not proof of live Stage141 detour safety.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin=UNKNOWN`; preserve Stage129 working DLL **2,099,200 B** and Stage122 rollback DLL **2,089,984 B**.
 
 ---
 

@@ -14,11 +14,46 @@
 - Patch `patches/Stage139_to_Stage141_sequence.patch` modifies **only** the header comment and `Enqueue(Event)`. It allocates `g_finalSeq` **inside** `g_ringLock` **after** the full/tainted queue rejection gate, immediately before `g_ring[g_tail]=e`. Rejected publications consume no sequence; signed counter rollover taints/block publication instead of emitting ambiguous IDs. Sequence describes successful in-memory queue publication; not game timestamp, source attribution, crash durability or ACK.
 - No change to parent hooks F34D0/F3930; no added JMP, `Arm()` call, gameplay modification, game project change or game DLL build. Candidate references existing Stage139 names because it is a standalone isolated source alternative.
 
-## Isolated Windows x86 test harness: NOT YET EXECUTED
+## Isolated Windows x86 test harness: USER-REPORTED PASS (16/16)
 
 - `Stage141_SourceOnly/tests/Test-Stage141NativeHarness.ps1` checks baseline/candidate SHA-256, selects VS with `Microsoft.VisualStudio.Component.VC.Tools.x86.x64`, compiles a test EXE **only in a new %TEMP% directory** (no `Build.bat`, game DLL, or injection) and runs **16 deterministic scenarios**.
 - Carried forward 14 Stage140 scenarios; replaces old `order_repro` with **`order_fixed`** asserting two forced-overlap publications have strictly increasing sequence 1 then 2; strengthens `parallel` to assert a strictly monotonic sequence over all 400 events; adds **`fls_preflight`**. Retains no-arm, fallback, mismatch, wrongparent, nested, artificial SEH, pending FLS thread exit, double flush and forced IO failures.
-- **Stage141 MSVC x86 build/link and 16/16 test result are NOT RUN / not yet received.** Do not infer PASS from Stage140 or GCC/Clang.
+- **Stage141 MSVC x86 isolated EXE build/link and 16/16 deterministic test scenarios PASS**, confirmed by user's Windows console output below (2026-11-13). This is not an installed game hook or safe unload demonstration.
+
+## User-reported Windows MSVC x86 native execution (2026-11-13)
+
+- **Build/link PASS**: `Stage141Win32Harness.cpp` compiled with VS2026 Community x86 into isolated test EXE; no game DLL.
+- **16/16 scenarios PASS**; `order_fixed` asserts repaired monotonic FIFO publication; `parallel` verifies 400 queued, 400 finalized, 400 ACK, with `sinkTainted=0`. This verifies the deterministic test, not exhaustive real-world concurrency.
+- `fls_exit` reports 1 seen / 0 finalized / 0 ACK with `sinkTainted=1`; injected write/partial/flush/open failures correctly withhold ACK and taint the sink.
+- `fls_preflight` tests only the fail-closed predicate: **it never calls `FlsFree`** and cannot prove a DLL can safely unload.
+- **Important:** Stage140 `order_repro` PASS was expected defect reproduction; Stage141 `order_fixed` PASS is verification of the candidate repair in the isolated harness.
+- `SAFE_TO_INSTALL=false` remains unchanged; no real Stage10/129 ownership/quiescence/native detour ABI proof.
+
+Exact console transcript supplied by user:
+
+```text
+STAGE141_MSVC_SELECTED C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+Stage141Win32Harness.cpp
+STAGE141_NATIVE_BUILD PASS: isolated test EXE only (not game DLL)
+STAGE141_PASS scenario=happy ack=1 queued=1 seen27=1 finalized=1 sinkTainted=0
+STAGE141_PASS scenario=noarm ack=1 queued=1 seen27=1 finalized=1 sinkTainted=0
+STAGE141_PASS scenario=fallback ack=1 queued=1 seen27=1 finalized=1 sinkTainted=0
+STAGE141_PASS scenario=mismatch ack=1 queued=1 seen27=1 finalized=1 sinkTainted=0
+STAGE141_PASS scenario=wrongparent ack=1 queued=1 seen27=1 finalized=1 sinkTainted=0
+STAGE141_PASS scenario=nested ack=2 queued=2 seen27=2 finalized=2 sinkTainted=0
+STAGE141_PASS scenario=exception ack=1 queued=1 seen27=1 finalized=1 sinkTainted=0
+STAGE141_PASS scenario=fls_exit ack=0 queued=0 seen27=1 finalized=0 sinkTainted=1
+STAGE141_PASS scenario=parallel ack=400 queued=400 seen27=400 finalized=400 sinkTainted=0
+STAGE141_PASS scenario=double_flush ack=1 queued=1 seen27=1 finalized=1 sinkTainted=0
+STAGE141_PASS scenario=write_fail ack=0 queued=1 seen27=1 finalized=1 sinkTainted=1
+STAGE141_PASS scenario=partial ack=0 queued=1 seen27=1 finalized=1 sinkTainted=1
+STAGE141_PASS scenario=flush_fail ack=0 queued=1 seen27=1 finalized=1 sinkTainted=1
+STAGE141_PASS scenario=open_fail ack=0 queued=1 seen27=1 finalized=1 sinkTainted=1
+STAGE141_PASS scenario=order_fixed ack=2 queued=2 seen27=2 finalized=2 sinkTainted=0
+STAGE141_PASS scenario=fls_preflight ack=0 queued=0 seen27=0 finalized=0 sinkTainted=0
+STAGE141_NATIVE_HARNESS PASS: 16/16 deterministic scenarios (order_fixed asserts monotonic FIFO publication; FLS preflight does not call FlsFree)
+STAGE141_SAFE_TO_INSTALL false: isolated EXE does not prove game detours, quiescence, complete FLS lifetimes or safe DLL unload.
+```
 
 ## FLS shutdown preflight (not an unload implementation)
 
@@ -42,7 +77,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 .\Test-Stage141NativeHarness.ps1
 ```
 
-Expect source-hash checks, `STAGE141_MSVC_SELECTED`, `STAGE141_NATIVE_BUILD PASS`, per-scenario `STAGE141_PASS`, final `STAGE141_NATIVE_HARNESS PASS: 16/16`. **Expected output is not observed output.**
+These expected build and scenario markers are now **observed in the user's Windows console log above** (test-only EXE).
 
 ## Open deployment gates / next
 
@@ -51,4 +86,4 @@ Expect source-hash checks, `STAGE141_MSVC_SELECTED`, `STAGE141_NATIVE_BUILD PASS
 - Candidate origin of `0x27` remains **UNKNOWN**, even with a verified parent link.
 - Sink ACK after Win32 flush does not guarantee durable exactly-once delivery through crashes.
 - **SAFE_TO_INSTALL=false; Stage36 OFF**. Keep the Windows-tested Stage129 DLL **2,099,200 bytes** and Stage122 fallback DLL **2,089,984 bytes** untouched.
-- Next: collect complete user Stage141 Windows native harness 16/16 log; fix errors source-only if necessary. Stage142 should analyze live-context registry, quiescent shutdown and controlled FLS unload in a separate test DLL/exe, **never install automatically into game**.
+- Next: the full user Stage141 Windows native 16/16 log has been captured. Stage142 should analyze live-context registry, quiescent shutdown and controlled FLS unload in a separate test DLL/exe, **never install automatically into game**.

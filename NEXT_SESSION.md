@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage157 r3 Windows SOURCE_ONLY PASS; next Stage158 native raw ingress + callback lifetime audit (2026-11-14)
+
+- **Actual current Windows project Stage157 r3 PASS** (not only synthetic offline): user `Invoke-Stage157Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` reported `Ran 32 tests in 0.272s; OK` (32/32), `STAGE157_WORKERS lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0`, `STAGE157_STAGE59_SOURCE_SIGNATURES matched=12 total=12 veh_remove_candidates=0`, `STAGE157_STAGE38_BRANCH shape=BRACED_STAGE58_DIRECT_STAGE59 structure=MATCH reason=MATCH`, `STAGE157_NINE_WORKER_SITES_RECONCILED=YES`, and sparse VEH removal consistency YES. Final `STAGE157_R3_LOCAL_SOURCE_ONLY_TESTS_PASS`. The earlier r2 11/12 was a false-negative from an overly narrow unbraced pattern, now resolved by structural nesting.
+- **Next Stage158 SOURCE_ONLY**: no need to revisit the Stage38 regex. Audit raw/native entry/trampoline owner provenance for Stage10 `F34D0/F3930`, Stage129 `F30B0/F325A/F326A`, additional reachable naked handlers; enumerate 9 worker stop/join gaps plus all 3 reachable VEH callbacks, especially persistent Stage59 VEH after watched DR cleanup. Confirm evidence is only source-level unless owner/EIP/callback lifetime is separately proven. Reuse pinned Stage146 source snapshot/current metadata as available; do not guess live owners.
+- User console gives `RAW_CALLER_PROOF=NO FUTURE_CALLBACK_RETIREMENT=NO NATIVE_OWNER_PROOF=NO`. **`SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`**; Stage36 OFF; origin(0x27)=UNKNOWN; working Stage129 2,099,200B DLL and Stage122 2,089,984B rollback untouched. No game process, native build, or unload was exercised.
+- Full evidence [STAGE157_R3_CHECKPOINT.md](STAGE157_R3_CHECKPOINT.md). Stage158 work has **not** been executed or tested yet.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage157 r3 structural scanner ready, current Windows run pending (2026-11-14)
 
 - Current `src/Stage38CallbackWindow.inl:325–353` **directly supplied by user**: success-only Stage54→55→56→57→58 chain, `InstallStage58Hooks(){` at 329, optional Stage65/67/70/76/78/79/80 called in the block, **`StartStage59Watch()` at 346 back at Stage58 body depth**. Under normal returns, Stage59 not blocked by Stage67/70/76/78/79/80 returning false. The r2 single-statement regex was overly strict; that explains 11/12 without implying a game failure. No runtime exception/early stop proof.

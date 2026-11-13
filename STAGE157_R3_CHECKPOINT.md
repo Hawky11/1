@@ -1,6 +1,40 @@
 # ArcanaAIOverhaul — Stage157 r3 Stage38 branch-structure validation (2026-11-14)
 
-**SOURCE_ONLY. r3 portable offline tests PASS (32/32); user's current Windows r3 run PENDING. Game DLL installation and unload remain FORBIDDEN.**
+**SOURCE_ONLY. User-confirmed Windows r3 current-tree audit PASS (32/32 tests, 9/9 worker sites, 12/12 signatures, Stage38 branch MATCH). Game DLL installation and unload remain FORBIDDEN.**
+
+## User-confirmed current Windows Stage157 r3 audit — PASS (2026-11-14)
+
+The user ran `Invoke-Stage157Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` within the r3 extracted folder after `Set-ExecutionPolicy Bypass -Scope Process -Force`. The **user-pasted** Windows PowerShell transcript (not a directly received metadata JSON or private source tree) reports:
+
+```text
+STAGE157_R3_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+Ran 32 tests in 0.272s
+OK
+STAGE157_WORKERS lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0
+STAGE157_STAGE59_SOURCE_SIGNATURES matched=12 total=12 veh_remove_candidates=0
+STAGE157_STAGE38_BRANCH shape=BRACED_STAGE58_DIRECT_STAGE59 structure=MATCH reason=MATCH
+STAGE157_NINE_WORKER_SITES_RECONCILED=YES
+STAGE157_VEH_REMOVE_SPARSE_COUNT candidates=0 count_consistent=YES
+STAGE157_RAW_CALLER_PROOF=NO FUTURE_CALLBACK_RETIREMENT=NO NATIVE_OWNER_PROOF=NO
+STAGE157_SOURCE_ONLY_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage157_SourceOnly\stage157_worker_lifecycle_metadata.json
+STAGE157_R3_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE157_R3_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+All **32/32** Windows Python tests passed (zero failures/skips shown). All **nine** lexical CreateThread source sites reconcile with eight Proxy-start sites and the conditional Stage59 start. The 12/12 bounded Stage59/Stage38 signatures now match current Windows sources; the r2 11/12 false negative is **resolved**. The Stage58 braced branch independently reports direct Stage59 body-depth `MATCH`. Sparse missing zero VEH removal is correctly interpreted `candidates=0 count_consistent=YES`; it is **not VEH retirement proof**.
+
+**Scope of PASS:** Current Windows **read-only lexical/structural SOURCE_ONLY** gate; there was no native MSVC build or game DLL/process access, nor independently uploaded full Stage157 JSON. This PASS does **not** authorize runtime hook installation or game module unload; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, `origin(0x27)=UNKNOWN`.
+
+### Next Stage158 scope — still SOURCE_ONLY
+
+1. Reconstruct a **bounded** native raw ingress / trampoline owner map from pinned Stage146 provenance and any additionally supplied current-source metadata: Stage10 `F34D0/F3930`, Stage129 `F30B0/F325A/F326A`, and other source-reachable naked handlers. Source mentions and declaration counts are **not live ownership proof**.
+2. Draw **callback lifecycle edges**: Stage59 `AddVectoredExceptionHandler` with retained callback, two other reachable VEH registrations, native exception handling and late callbacks; separate watched game-thread handles from original Stage59 worker join handle.
+3. Enumerate **all nine** worker-start paths and missing retained handles, stop signals, and joins; detect potential source-only failure/rollback/early-return paths conservatively; never re-arm registers or install patches.
+4. Exercise isolated negative/fail-closed metadata/model tests on Windows, *if a further package is prepared*. Do not claim an actual Stage158 test was run yet.
+
+Retain Stage129 tested DLL **2,099,200 B** and Stage122 fallback **2,089,984 B** unchanged. Gate remains **DENY** for live install/unload and unknown foreign raw callers/callbacks.
+
+---
 
 ## User-provided current Windows Stage38 source: exact branch facts
 
@@ -28,7 +62,7 @@ Stage157 r2's failed `stage38_installs_then_starts_stage59` regex expected a one
 
 - ZIP `ArcanaAI_Stage157_r3_Stage38_StructuralLifecycle_SOURCE_ONLY.zip`, **16,368 bytes**, actual **SHA256 `3df439d0066516b5efa9db69c7e7dc03442c1f5eea39ad3649bcb0fc487cd757`**, **6 archive entries** (five payload + manifest), ZIP CRC PASS, SHA manifest **5/5 PASS**.
 - Actual local Python unittest `Ran 32 tests ... OK`, **32/32 PASS**, includes 18 r2 regressions + 14 new bounded branch checks and denials. Test runs use synthetic fixtures only, not real game DLL.
-- No Windows r3 run has occurred in the user-provided evidence. Do not imply r3 current-source PASS until the actual output is supplied.
+- Historical package-preparation note, now **superseded by the user-confirmed Windows r3 PASS above**. Do not conflate these Windows read-only checks with game process/lifecycle proof.
 
 ## Next Windows read-only check
 

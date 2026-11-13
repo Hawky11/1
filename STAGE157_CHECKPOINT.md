@@ -1,6 +1,10 @@
 # ArcanaAIOverhaul — Stage157 ninth worker and Stage59 VEH callback lifetime SOURCE_ONLY (2026-11-13)
 
-**Status: Stage157 Windows r2 SOURCE_ONLY executed; 18/18 tests PASS; 9/9 worker sites MATCH; 11/12 source signatures; exact unmatched Stage38 chain identified; REVIEW_REQUIRED.** No game process access, native build, DLL installation/unload, extra JMP, Arm() or gameplay write. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`.
+**Latest status: Stage157 r3 current Windows SOURCE_ONLY PASS (32/32 unit tests, 9/9 worker sites, 12/12 signatures, Stage38 structural MATCH); historical r1/r2 REVIEW_REQUIRED findings remain documented below. Game DLL safety still DENY.** No game process access, native build, DLL installation/unload, extra JMP, Arm() or gameplay write. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`.
+
+## Stage157 r3 Windows PASS (2026-11-14)
+
+User ran r3 locally: 32/32 Python tests PASS; 9/9 source worker sites, 12/12 Stage59/38 signatures and braced Stage58→direct Stage59 structural MATCH; sparse VEH removal candidates=0 consistent. Full console markers and strict test-vs-game distinction are now preserved in [Stage157 r3 checkpoint](STAGE157_R3_CHECKPOINT.md). **SAFE_TO_INSTALL=false; SAFE_TO_UNLOAD_GAME_DLL=false.**
 
 ## Stage157 r3 follow-up (2026-11-14)
 

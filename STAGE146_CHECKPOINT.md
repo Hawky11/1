@@ -1,3 +1,9 @@
+## Stage146 evidence ZIP actually received and inspected (2026-11-13)
+
+**Correction to earlier handoff:** user already uploaded `ArcanaAI_Stage146_Evidence_493fc20dff504bdabc3abc4924a9426f.zip` to this conversation; the prior request to upload it again was unnecessary. The ZIP was opened and checked in [Stage147 checkpoint](STAGE147_CHECKPOINT.md): **489,054 bytes, SHA256 `6d9c39d59b4883dab6cc4ea95f08deac56fe8c477fd6b4746bd1c764f96a207b`, 94 entries, ZIP CRC PASS, 85/85 source-copy SHA/size verified**. Stage146 console-reported `70/70` current vs Stage134, 37 new paths. Stage147 classifies the 37 as 31 backups and 6 config/installation state files; no evidence of 37 new compiled modules. Full Stage147 file-level analysis supersedes the old pending-ZIP note. **No live owner proof; SAFE_TO_INSTALL=false**.
+
+---
+
 # ArcanaAIOverhaul — Stage146 full current source/config owner inventory READ-ONLY (2026-11-13)
 
 **SOURCE-ONLY; no game files or native hooks modified; SAFE_TO_INSTALL=false; Stage36 OFF.**

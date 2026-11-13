@@ -2,6 +2,38 @@
 
 **SOURCE_ONLY. No game DLL patch, live game process access, injection, unload, or installed native hook work.** `SAFE_TO_INSTALL=false`; `SAFE_TO_UNLOAD_GAME_DLL=false`; `Stage36 OFF`; `origin(0x27)=UNKNOWN`.
 
+## User-confirmed current Windows project audit — PASS (2026-11-13, source-only)
+
+User ran `Invoke-Stage156Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` from the extracted Stage156 folder in Windows PowerShell. This is **new user-pasted console evidence**, not direct model access to the Windows tree or a separately uploaded JSON. The read-only script reported `NO_NATIVE_BUILD NO_GAME_DLL_ACCESS` and finished successfully.
+
+- **7/7 Python tests passed** (`Ran 7 tests in 0.205s`, `OK`), no skips/errors in reported transcript.
+- **8 compile roots**, **66 literal-include reachable files**, **1,511 lexical findings**.
+- **32/32 pinned source anchors MATCH** and **0 drift/missing among those 32 anchors**. This is not an all-file SHA equality proof or live memory/hook ownership test.
+- **9 source-level `CreateThread(` lexical candidates** reported as `workers=9`; prior Stage153 audit anchored **eight** CreateThread→CloseHandle→loop paths. The ninth **must be classified from the JSON** before counting an additional actual worker. In `stage156_source_audit.py`, `workers` directly reads `finding_counts['create_thread']`, not unique launched threads.
+- VEH registrations=**3**, VEH removal=**0**, `FlsAlloc`=**0**, `DLL_PROCESS_DETACH`=**0** in the scanner's literal reachable source matching. These counts are not runtime registration or unload lifecycle proof.
+- Output generated **outside the project** under the user's local `%TEMP%\ArcanaAI_Stage156_SourceOnly\stage156_current_source_inventory.json`; JSON itself **not supplied / not reviewed yet**. Do not upload unreviewed source data to public GitHub.
+
+User-reported core transcript:
+
+```text
+PS D:\INCUBATOR\ArcanaAI_Stage156_Entrypoints_RawCallers_CallbackLifecycle_SOURCE_ONLY\Stage156_SourceOnly> .\Invoke-Stage156Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'
+STAGE156_MODE SOURCE_ONLY READ_ONLY NO_NATIVE_BUILD NO_GAME_DLL_ACCESS
+Ran 7 tests in 0.205s
+OK
+STAGE156_METADATA_WRITTEN C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage156_SourceOnly\stage156_current_source_inventory.json
+STAGE156_SOURCE_COUNTS roots=8 reachable=66 findings=1511 workers=9 veh_register=3 veh_remove=0 fls_alloc=0 detach=0
+STAGE156_BASELINE_ANCHORS matched=32 drift_or_missing=0 total=32
+STAGE156_RAW_CALLER_PROOF=NO FUTURE_CALLBACK_PROOF=NO LIVE_OWNER_PROOF=NO
+STAGE156_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE156_WINDOWS_READONLY_DONE: Share only metadata JSON after privacy review; no game DLL status changed.
+```
+
+**Next targeted audit:** load only the Stage156 metadata JSON after privacy review; filter `findings` where `kind=="create_thread"`, list all `path:line` pairs, reconcile against the eight Stage153 anchors, then use `worker_handle_candidates` and source signatures to classify the unmatched candidate as active, repeated/conditional, dormant, or lexical false-positive. Likewise inventory `native_entry`, `trampoline`, `native_asm_transfer` and callback categories without claiming actual game raw-caller closure. No installation or game unload while any paths remain UNKNOWN.
+
+**Safety remains:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`, preserve Stage129 2,099,200 B game DLL and Stage122 2,089,984 B rollback. No EXE/DLL/INI/project modifications made by this audit.
+
+---
+
 ## Baseline and provenance
 
 - Verified the previous [Stage153](STAGE153_CHECKPOINT.md), [Stage154](STAGE154_CHECKPOINT.md), and [Stage155](STAGE155_CHECKPOINT.md) repository records in this session; Stage155 user-confirmed Windows x86 isolated self-owned fixture passed **5,040 synthetic interleavings / 18 of 18 special tests**. The UNKNOWN raw-caller mode denied all 2,520 schedules, including **1,020 false-empty-counter cases**; no production game safety established.
@@ -46,8 +78,8 @@ cd 'D:\INCUBATOR\ArcanaAI_Stage156_SourceOnly\Stage156_SourceOnly'
 .\Invoke-Stage156Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'
 ```
 
-Expected messages: `STAGE156_SOURCE_COUNTS`, `STAGE156_BASELINE_ANCHORS`, `STAGE156_RAW_CALLER_PROOF=NO FUTURE_CALLBACK_PROOF=NO LIVE_OWNER_PROOF=NO`, `STAGE156_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. **Windows actual tree check is pending**, not asserted to have happened. If sharing generated JSON, review relative path/hashes first; do not commit original private source.
+Expected messages: `STAGE156_SOURCE_COUNTS`, `STAGE156_BASELINE_ANCHORS`, `STAGE156_RAW_CALLER_PROOF=NO FUTURE_CALLBACK_PROOF=NO LIVE_OWNER_PROOF=NO`, `STAGE156_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. **Superseded by the user-confirmed Windows read-only PASS above.** The JSON metadata file remains local and has not been independently reviewed. If sharing generated JSON, review relative path/hashes first; do not commit original private source.
 
 ## Decision / next stage
 
-Remain **SOURCE_ONLY** and keep `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, `origin(0x27)=UNKNOWN`. Preserve tested Stage129 `dinput8.dll` **2,099,200 B** and Stage122 fallback **2,089,984 B** without changes. Next: review Stage156 Windows **metadata only** for source drift, manual provenance of native raw entry and callback-source edges, enumerate unowned/unknown paths, and build separate isolated fail-closed tests as needed. No game DLL install/unload.
+Remain **SOURCE_ONLY** and keep `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, `origin(0x27)=UNKNOWN`. Preserve tested Stage129 `dinput8.dll` **2,099,200 B** and Stage122 fallback **2,089,984 B** without changes. Next: obtain and review the user-generated Stage156 Windows **metadata JSON only** for the ninth CreateThread lexical match and source drift, manual provenance of native raw entry and callback-source edges, enumerate unowned/unknown paths, and build separate isolated fail-closed tests as needed. No game DLL install/unload.

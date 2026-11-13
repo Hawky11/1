@@ -1,3 +1,9 @@
+## Stage156 Windows source audit — PASS (2026-11-13)
+
+User confirmed 7/7 read-only Python tests on the real Windows project, **8 compile roots / 66 reachable / 1,511 lexical findings / 32 of 32 pinned anchors matched**. `workers=9` reflects nine `CreateThread(` textual matches, **not nine proven live workers**; reconcile with eight previously anchored workers using the generated metadata JSON. Three VEH registrations and zero removal candidates; native raw/foreign caller and future callback proof remain NO. [Full transcript and safety report](STAGE156_CHECKPOINT.md). No game DLL access. **SOURCE_ONLY, SAFE_TO_INSTALL=false, SAFE_TO_UNLOAD_GAME_DLL=false**. Next source-only Stage157 classification detailed in [NEXT_SESSION.md](NEXT_SESSION.md).
+
+---
+
 ## Latest checkpoint — Stage156 SOURCE_ONLY native ingress / raw callers / callback lifetime (2026-11-13)
 
 [Stage156 checkpoint](STAGE156_CHECKPOINT.md) documents pinned Stage153–155 source-level entrypoints, eight worker join gaps, three VEH callback retirement gaps, raw caller/foreign-pointer/admission/ABI/SEH/unwind unknowns. New read-only 32-anchor source inventory package (chat-only ZIP SHA256 `63ed358cc4cfe23469f7e2f3feec281bc18c236491ae42436cae3843011e86ad`) has **7/7 synthetic tests PASS**; current Windows source scan pending. Stage155 Win32 test-only PASS does **not** authorize unload. **SAFE_TO_INSTALL=false, SAFE_TO_UNLOAD_GAME_DLL=false**, Stage36 OFF; working Stage129 DLL untouched. See [NEXT_SESSION.md](NEXT_SESSION.md) for the read-only local command and follow-up.

@@ -1,3 +1,13 @@
+## ACTIVE CHECKPOINT — Stage156 Windows source audit PASS; next Stage157 lexical/raw-caller provenance triage (2026-11-13)
+
+- User executed `Stage156_SourceOnly/Invoke-Stage156Audit.ps1` against **current Windows project** `D:\INCUBATOR\ArcanaAIOverhaul`. Console: **7/7 PASS**, `roots=8 reachable=66 findings=1511 workers=9 veh_register=3 veh_remove=0 fls_alloc=0 detach=0`, `matched=32 drift_or_missing=0 total=32`, `STAGE156_SOURCE_ONLY_PASS`.
+- **Important distinction:** `workers=9` is **nine lexical `CreateThread(` occurrences in source**, not nine proven independently started workers. Stage153 anchored eight concrete CreateThread/CloseHandle/for(;;) paths. Ninth requires `findings` `kind=create_thread` path:line from Stage156 metadata JSON and source review; could be an additional code path or a false positive/alternate source.
+- **NEXT Stage157 SOURCE_ONLY:** inspect locally generated `%TEMP%\ArcanaAI_Stage156_SourceOnly\stage156_current_source_inventory.json` (after user privacy review/upload), reconcile nine lexical create sites with eight known worker start sites, then review native entry/trampoline/raw caller/VEH categories. Do not infer live ownership from lexical findings, 32 matching anchors, or `host_leases=0`. No game patch, no game unload, no new JMP or Arm().
+- **Provenance:** user-pasted Windows console only; no JSON submitted in this turn, no live process or native ABI evidence. Full checkpoint [STAGE156_CHECKPOINT.md](STAGE156_CHECKPOINT.md).
+- **Safety:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF; origin(0x27)=UNKNOWN; preserve Stage129 2,099,200 B DLL and Stage122 2,089,984 B fallback.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage156 native/raw entry and callback lifecycle SOURCE_ONLY (2026-11-13)
 
 - **Current stage:** [STAGE156_CHECKPOINT.md](STAGE156_CHECKPOINT.md). In this session, re-read Stage153–155 GitHub evidence; **no original Stage146 ZIP or current Windows game source were re-opened or rescanned**. Stage155 Windows 5,040 synthetic schedules and 18/18 cases passed within a test-owned harness, **NOT** live game owner proof.

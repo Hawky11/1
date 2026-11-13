@@ -1,3 +1,9 @@
+## Stage140 — isolated Windows x86 ABI/SEH/FLS and sink fault test (2026-11-13)
+
+[Stage140 isolated Win32 ABI/SEH/FLS + sink fault harness](STAGE140_CHECKPOINT.md). Stage139 user-confirmed MSVC x86 `/Zs` PASS, but full Windows native build/link/fault-injection remains unverified. Stage140 provides 15 planned native EXE test scenarios and exact unchanged Stage139 bridge reference; **Windows Stage140 tests NOT RUN**. Portable verified: 40/40 static, 20/20 sink model, Stage139 policy 39/39 GCC+Clang; ZIP 30,026 B SHA256 `30e55725ee79266c1d00bd4528554391c36c57478286ac155a79e32c897f2cf2`. **New confirmed source defect:** Stage139 allocates event `sequence` before acquiring ring lock, so concurrent FIFO logs can show sequences out of order; `order_repro` is a *defect reproducer*, not a fix. Future Stage141 source-only fix + FLS unload safety; no new hooks, no DLL, **SAFE_TO_INSTALL=false**, Stage36 OFF, origin=UNKNOWN.
+
+---
+
 ## Stage139 checkpoint — Windows syntax validation PASS (2026-11-13)
 
 See [Stage136–139 detailed checkpoint](STAGE136_139_CHECKPOINT.md) for archive hashes, bridge architecture and deployment safety gates. User confirmed both **Stage137 r2** and **Stage139** Windows MSVC x86 `/Zs` syntax **PASS**. Stage139 checked `Stage139Win32Bridge.cpp`, `AIProducerContextTrace.cpp`, and `Proxy.cpp`; script printed `STAGE139_MSVC_SYNTAX PASS: /Zs only, no object/DLL emitted; original project untouched.` Stage139 offline checks: 39/39 policy GCC+Clang, 20/20 sink model and 51/51 static PASS. Syntax does **not** prove native ABI/SEH/FLS, linkage, runtime or loss-free writer. Parent linkage finalized after Stage129 exit, `0x27` origin stays **UNKNOWN**. **SAFE_TO_INSTALL=false**, no new JMP or `Arm()`, Stage36 OFF, preserve tested Stage129 DLL. Next **Stage140** isolated native ABI/SEH/FLS and Win32 sink fault tests.

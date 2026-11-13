@@ -1,3 +1,14 @@
+## ACTIVE CHECKPOINT — Stage144 source-only real entrypoint / admission coverage audit PASS; Windows current-source SHA check PENDING (2026-11-13)
+
+- **Predecessor Stage143 r2:** user-confirmed Win32 x86 isolated DLL/host build PASS, 16/16 native tests PASS. Source-only [Stage144 checkpoint](STAGE144_CHECKPOINT.md) identified why Stage143 cooperative host leases cannot protect game-native Stage10/Stage129 entrypoints.
+- **Source provenance:** Stage134 user source capture (UTC 2026-11-12) **70/70 SHA256+size** reverified; Stage139/141 candidates and Stage143 r2 test host archive CRC+hashes confirmed. 38 selected, exact line-anchored entry surfaces: baseline 19 (Proxy 2, Stage10 8, Stage81 3, Stage129 6); candidate 13; isolated test-only 6. BOUNDED STATIC inventory, **not all live entrypoints**.
+- **Core missing gate:** Stage10 native owner F34D0/F3930 + Stage129 F30B0/F325A/F326A can be entered from game without `Stage143Host::Gate`. The Proxy starts independent workers; Stage81 loops Flush/Health; Stage141 FLS callback and diagnostic IO have no proven unload barriers. Host leases = 0 does not imply no raw game caller pending. Stage141 FIFO sequence fix is unrelated to unload safety.
+- **Offline audit:** **102/102 static PASS**, **6/6 model tests PASS**, 4096 exhaustive synthetic 12-bit gate combinations. Stage144 source-only ZIP **75,660 B**, SHA256 `5adfe52843106df2a1832f6e7b70fdceaf645620b35d93d1df2ceadd696b32fc`, 25 files, CRC PASS, manifest 24/24. No DLL/EXE/hook/compiled code.
+- **NEXT:** Windows PowerShell 5.1 **read-only** in `Stage144_SourceAudit\\tests`: `.\\Test-Stage144LocalSnapshot.ps1 -ProjectRoot 'D:\\INCUBATOR\\ArcanaAIOverhaul'`. Expect 5 SOURCE_MATCH rows if files equal **Nov 12** snapshot; any drift demands renewed capture. Stage145 source-only shutdown obligation ledger/adversarial native ingress model, not auto-deployment.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin(0x27)=UNKNOWN`; preserve tested Stage129 DLL **2,099,200 B** / Stage122 rollback **2,089,984 B**; no new JMP/`Arm()`.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage143 r2 Windows x86 native isolated 16/16 PASS; next Stage144 (2026-11-13)
 
 - **User-confirmed Windows result:** PowerShell r2 corrected reserved `$Host` variable; VS2026 Community MSVC x86 built `Stage143FlsProbe.dll` + `Stage143Host.exe` as disposable test binaries, and **16/16** native admission/FLS-registry/unload scenarios PASS. Full output and r1 issue: [Stage143 checkpoint](STAGE143_CHECKPOINT.md).

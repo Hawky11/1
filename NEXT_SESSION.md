@@ -1,3 +1,15 @@
+## ACTIVE CHECKPOINT — Stage147 uploaded Stage146 evidence verified; next Stage148 source-only patch provenance (2026-11-13)
+
+- User already provided the complete Stage146 evidence ZIP. It was **actually opened and independently inspected**: 489,054 bytes SHA256 `6d9c39d59b4883dab6cc4ea95f08deac56fe8c477fd6b4746bd1c764f96a207b`, 94 entries CRC PASS, **85/85 copied current sources SHA and size match**; [Stage147 detailed checkpoint](STAGE147_CHECKPOINT.md).
+- Stage146 Windows 70/70 vs archival source SHA MATCH is consistent with the 70-row metadata; 37 additional paths = **31 backup manifests/source copies**, **6 config/state metadata**. Current project `.vcxproj` declares eight C++ compile roots; literal include closure reaches 66 source files; `Stage83F3930Writer.inl` **not reachable** but `Stage84F3930Writer.inl` reachable.
+- Reclassified all 485 RVA text mentions: 132 historical backup, 4 dormant Stage83, **12 misleading PATCH_OR_OWNER_REVIEW_CANDIDATE error-log messages**, 337 other reachable **owner-unproven** literals. Cannot infer hook owners from text occurrences.
+- Source-only verified 11 Stage10(5)/Stage129(3)/Stage81(3) declared code-patch intervals, all **55 restricted pairs nonoverlapping**. Found 4 exact shared addresses Stage83/Stage84 (`F3DE9,F3E02,F3F50,F3F69`), **conditional dormant conflict only**; Stage83 absent current literal include graph. Other potential patch sites remain **unmapped**.
+- Stage147 metadata-only r2 ZIP `ArcanaAI_Stage147_CurrentHookOwner_CollisionAudit_MetadataOnly_r2.zip`, 15,749B SHA256 `4f90a72b02f54b08f022553850fefc77185bf2852b4e93f81d278fb227858fe3`, 11 files CRC + 10/10 manifest PASS, **21/21 portable tests**. No C++/INI source copied into Stage147 ZIP. Full report included and shared in chat.
+- **NEXT Stage148:** source-only exact installation-write-to-site mapping for `VirtualProtect`/`memcpy`/JMP paths in reachable sources, owner conflict review and shutdown obligations. Do not assume 11-site bounded map is complete. No live hook install.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin(0x27)=UNKNOWN`, preserve Stage129 tested DLL 2,099,200 B and Stage122 rollback 2,089,984 B.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage146 user Windows current source census COMPLETE, Stage147 evidence ZIP awaiting upload (2026-11-13)
 
 - **User successfully ran** `Capture-Stage146CurrentSources.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul' -IncludeSourceSnapshot`; full console transcript archived in [Stage146 checkpoint](STAGE146_CHECKPOINT.md). `source=85 config=22 skippedGenerated=11 skippedSensitive=0 readErrors=0`; `expected=70 match=70 drift=0 missing=0 new=37` vs Stage134. `vcxprojItems=24 includeEdges=409 iniKeysWithoutValues=46`. Five historic hook intervals static source match=5 / known overlaps=0 / `liveOwnerProof=NO`. **485 heuristic RVA text references** have classification `UNVERIFIED_NOT_OWNER_PROOF`.

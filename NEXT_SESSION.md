@@ -1,9 +1,10 @@
-## ACTIVE CHECKPOINT — Stage143 r2 PowerShell $Host collision fixed; Windows native 16/16 STILL PENDING (2026-11-13)
+## ACTIVE CHECKPOINT — Stage143 r2 Windows x86 native isolated 16/16 PASS; next Stage144 (2026-11-13)
 
-- Stage143 r1 **failed before native compilation**, after MSVC toolchain selection. Script used read-only PowerShell automatic `$Host` as `$host` at line 46, causing `VariableNotWritable`. This is **not** a C++ compiler failure. [Full Stage143 r2 checkpoint](STAGE143_CHECKPOINT.md).
-- **Stage143 r2 source ZIP:** `ArcanaAI_Stage143_IsolatedAdmission_Registry_UnloadBarrier_SourceOnly_r2.zip`, **31,171 bytes**, SHA-256 `6e3c1c77525421ed7f156144c8910f924fc8ff98209b83c1272bbbb5bfe95cf4`, 18 files, CRC+SHA manifest PASS. Four exact occurrences of `$host` changed to `$hostExe`; C++ sources unchanged. Offline **66/66 static**, **526/526 GCC** and **526/526 Clang** PASS.
-- **NEXT:** Windows PowerShell from `Stage143_IsolatedAdmission\\tests` in extracted **r2**: `Set-ExecutionPolicy Bypass -Scope Process -Force`; `.\\Test-Stage143NativeHarness.ps1`. Need `STAGE143_NATIVE_BUILD PASS` and all 16 scenario results; **Windows Stage143 r2 NOT RUN yet**. Afterwards Stage144 source-only real entrypoint coverage audit.
-- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin(0x27)=UNKNOWN`, preserve installed Stage129 DLL 2,099,200 B / Stage122 backup 2,089,984 B.
+- **User-confirmed Windows result:** PowerShell r2 corrected reserved `$Host` variable; VS2026 Community MSVC x86 built `Stage143FlsProbe.dll` + `Stage143Host.exe` as disposable test binaries, and **16/16** native admission/FLS-registry/unload scenarios PASS. Full output and r1 issue: [Stage143 checkpoint](STAGE143_CHECKPOINT.md).
+- **Key observed**: `orphan_host_lease` PASS, `denied_after_host_close hostDenied=20`, `race_gate hostDenied=1`, `parallel callbacks=8/manual=512/live=registry=inFlight=registryErrors=0`. Native test demonstrates cooperative host leases, NOT full game call coverage or safe live hook ABI.
+- Verified r2 archive source-only 31,171 B SHA256 `6e3c1c77525421ed7f156144c8910f924fc8ff98209b83c1272bbbb5bfe95cf4`, 18 files CRC PASS. Offline checks 66/66 static, 526/526 GCC and Clang. Previous Stage142 13/13 and Stage141 16/16 isolated tests PASS.
+- **NEXT Stage144:** source-only audit real Stage10/Stage129 entrypoint ownership, all ways to enter, detach/unload lifecycle, externally bypassed host leases; explicitly list uninstrumented paths and missing evidence. No game DLL patch or automatic install.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin(0x27)=UNKNOWN`; preserve Windows Stage129 DLL 2,099,200 B and Stage122 backup 2,089,984 B; no new JMP/`Arm()`.
 
 ---
 

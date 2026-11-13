@@ -1,3 +1,9 @@
+## Stage157 — nine CreateThread sites reconciled; Stage59 VEH lifetime blocker (2026-11-13)
+
+From user's Stage156 source table, eight previously anchored Proxy worker starts plus **one conditional Stage59 X Writer Watch worker** (`src/Stage59XWriterWatch.inl:349`). Checked historical [Stage59 r2 source](https://github.com/Hawky11/1/blob/stage59-r2-wait-for-combat-objects/Stage59_Overlay/src/Stage59XWriterWatch.inl) and Stage38 adapter; Stage59 closes its own worker start handle, and when worker exits it disarms owned DR0/DR1 but deliberately **retains its VEH callback for process lifetime**. This does not prove nine threads actually running. [Stage157 checkpoint](STAGE157_CHECKPOINT.md). Read-only source preflight ZIP 10,748B SHA256 `383e801c59b3f2052bee2b2da791055b7893e91b994f7a65c91c651c9200729e`, **11/11 synthetic tests PASS**, Windows current-file signature test **PENDING**. `SAFE_TO_INSTALL=false` and `SAFE_TO_UNLOAD_GAME_DLL=false`. [Next session](NEXT_SESSION.md).
+
+---
+
 ## Stage156 Windows source audit — PASS (2026-11-13)
 
 User confirmed 7/7 read-only Python tests on the real Windows project, **8 compile roots / 66 reachable / 1,511 lexical findings / 32 of 32 pinned anchors matched**. `workers=9` reflects nine `CreateThread(` textual matches, **not nine proven live workers**; reconcile with eight previously anchored workers using the generated metadata JSON. Three VEH registrations and zero removal candidates; native raw/foreign caller and future callback proof remain NO. [Full transcript and safety report](STAGE156_CHECKPOINT.md). No game DLL access. **SOURCE_ONLY, SAFE_TO_INSTALL=false, SAFE_TO_UNLOAD_GAME_DLL=false**. Next source-only Stage157 classification detailed in [NEXT_SESSION.md](NEXT_SESSION.md).

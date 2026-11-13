@@ -1,3 +1,14 @@
+## ACTIVE CHECKPOINT — Stage145 fail-closed shutdown ledger 17 obligations, Windows source evidence PENDING (2026-11-13)
+
+- **Stage144 current Windows sources MATCH 5/5**: AIProducerContextTrace.cpp, ArcanaAIOverhaul.vcxproj, Proxy.cpp, Stage129ProducerProbe.inl, Stage81SelectorWriter.inl; archival 70/70 is not a present-day Windows tree check. User's script explicitly reported NO_LIVE_OWNER_PROOF.
+- **Stage145 source-only**: [Stage145 shutdown obligations and native ingress audit](STAGE145_CHECKPOINT.md) with 17 UNPROVEN obligations covering all 38/38 selected Stage144 surfaces (19 original, 13 undeployed candidate, 6 isolated test-host). Adversarial model shows `host_lease=0`, `dll_inFlight=0`, `native_pending=1` still **BLOCK** (game native ingress bypasses Stage143 host lease). FLS callback, worker, sink and nested-parent quiescence remain unknown.
+- **Verified offline:** Stage145 92/92 static, Stage144 regression 102/102 static, Stage145 14/14 Python tests and 65,536 exhaustive 16-bit *assertion-mask* combinations. Positive synthetic outcome is **ELIGIBLE_FOR_ISOLATED_TEST_ONLY**, never permission to install/unload game DLL. Corrected source-only **r2** chat ZIP `ArcanaAI_Stage145_ShutdownObligations_AdversarialNativeIngress_SourceAudit_r2.zip` 90,872 B, SHA256 `d59c55d30524263994bf9e2e2aa432cb352a4afb1a540196790ec3374d5a208f`, 34 files CRC PASS / 33/33 manifest; no executable or pyc.
+- **NEXT Windows read-only check (NOT RUN):** from extracted `Stage145_SourceOnly\\tests`, execute `.\\Test-Stage145LocalEvidence.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` (11 reference + five current SHA pairs, 38 surface IDs, 17 obligation statuses; NO game read). Capture actual output and record drift if any.
+- **Next Stage146:** source-only plan for complete current project/source/INI owner mapping plus conservative live owner byte/stack readback method; NO new JMP/Arm, no auto deploy.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, candidate `0x27` origin UNKNOWN, preserve Windows-tested Stage129 DLL 2,099,200 B and Stage122 rollback DLL 2,089,984 B.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage144 Windows current-source SHA 5/5 MATCH; next Stage145 source-only (2026-11-13)
 
 - **User-confirmed Windows PowerShell:** `Stage144_SourceAudit/tests/Test-Stage144LocalSnapshot.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` produced **5/5 SOURCE_MATCH** and `STAGE144_SNAPSHOT_MATCH files=5`. Matching files: `src/AIProducerContextTrace.cpp`, `ArcanaAIOverhaul.vcxproj`, `src/Proxy.cpp`, `src/Stage129ProducerProbe.inl`, `src/Stage81SelectorWriter.inl`. Full exact output: [Stage144 checkpoint](STAGE144_CHECKPOINT.md). **No live game process or loaded owner check**.

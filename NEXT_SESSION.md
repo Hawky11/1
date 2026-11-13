@@ -1,3 +1,13 @@
+## ACTIVE CHECKPOINT — Stage157 r1 Windows 9/9 workers but 11/12 source signatures; r2 diagnostics ready (2026-11-14)
+
+- **User's real Windows Stage157 r1 output:** `11/11 tests PASS`, `STAGE157_WORKERS lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0`, **`STAGE157_STAGE59_SOURCE_SIGNATURES matched=11 total=12 veh_remove_candidates=None`** followed by REVIEW_REQUIRED and PowerShell throw. This is **not** a native/game runtime failure and nine lexical workers are not proof of nine currently active threads.
+- **Two distinct issues:** one unreported regex signature missing in **current Windows source** relative to historical Stage59 r2/Stage38 (all 12 historic regex match independently); and confirmed r1 bug: Stage156 sparse `finding_counts` leaves out zero `veh_remove`, r1 converts absence to None and incorrectly treats `None!=0` as unsafe mismatch. Both remain source-only diagnostic matters.
+- **NEXT quickest action:** in PowerShell run `$j = Get-Content "$env:TEMP\ArcanaAI_Stage157_SourceOnly\stage157_worker_lifecycle_metadata.json" -Raw | ConvertFrom-Json; $j.current_source_signatures.PSObject.Properties | Where-Object { $_.Value -eq $false } | Select-Object Name,Value`. Send **only failed signature name**; no need to upload original source.
+- **Stage157 r2 optional rerun package:** `ArcanaAI_Stage157_r2_SourceSignature_Diagnostics_SOURCE_ONLY.zip` 12,028B SHA256 `1ceb0c847021b7373abf33991f7d843a6802e43b66e301a07a3888270f78a726`; 6 ZIP files CRC PASS, manifest 5/5, 18/18 offline tests PASS. Prints `STAGE157_SIGNATURE_MISMATCH signature=<name> file=<source>` and separate 9/9 site marker; sparse zero/count contract corrected. Run from `Stage157_r2_SourceOnly` via `.\Invoke-Stage157Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`. **No Windows r2 run recorded**. May still return status 2 when a true unmatched source signature remains; do not force PASS.
+- Details: [STAGE157_CHECKPOINT.md](STAGE157_CHECKPOINT.md). **`SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`**, Stage36 OFF, origin(0x27)=UNKNOWN, preserve Stage129 DLL 2,099,200B and Stage122 rollback 2,089,984B unchanged. No game process/DLL access, no new JMP, no Arm(), no FreeLibrary.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage157 ninth worker classified; targeted local source preflight pending (2026-11-13)
 
 - User's Stage156 metadata `create_thread` table lists **nine** source callsites: all eight previously source-anchored Stage153 workers plus **`src/Stage59XWriterWatch.inl:349`**. No claim that nine distinct threads are live. Prior Stage156 current Windows test PASS 7/7; 32/32 pinned anchors matched, 8 roots/66 reachable files.

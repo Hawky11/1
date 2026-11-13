@@ -1,6 +1,20 @@
 # ArcanaAIOverhaul — Stage157 ninth worker and Stage59 VEH callback lifetime SOURCE_ONLY (2026-11-13)
 
-**Status: Stage157 historical-source classification COMPLETE; current-Windows targeted source validation PENDING.** No game process access, native build, DLL installation/unload, extra JMP, Arm() or gameplay write. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`.
+**Status: Stage157 Windows r1 SOURCE_ONLY executed; 9/9 worker sites MATCH, 11/12 Stage59/Stage38 signatures; r2 diagnostic created but not Windows-tested.** No game process access, native build, DLL installation/unload, extra JMP, Arm() or gameplay write. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`.
+
+## User Windows Stage157 r1 result: 11/12 signatures + sparse-count checker bug (2026-11-14)
+
+User ran `Invoke-Stage157Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` on the **current Windows source tree**; reported `STAGE157_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD`, **11/11 Python tests PASS** in 0.175 s, `lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0`. Thus **9/9 source callsites reconcile**, but Stage59/Stage38 target source only matched **11 of 12** historical string/regex signatures. This console log did **NOT** name the missing signature. The archived Stage59 r2 source and Stage38 adapter were reread through GitHub and all 12 r1 patterns independently evaluated as matching; the **current** source variant was not directly inspected in this session. Reported `veh_remove_candidates=None` is a **separate r1 metadata bug**, not a positive evidence of VEH removal.
+
+**Confirmed Stage157 r1 bug from the distributed scripts:** Stage156 emits a *sparse* `finding_counts` dictionary; `veh_remove=0` in its Windows console arises via `.get('veh_remove',0)`, not necessarily a stored zero key. The r1 code uses `.get('veh_remove')` (yielding `None` when absent) then checks `None != 0`, triggering a misleading REVIEW_REQUIRED even if all 12 signatures matched. This problem is independent of the observed 11/12 mismatch. Missing category does **not** imply any runtime handler has been removed.
+
+**Stage157 r2 diagnostic-only repair:** Chat ZIP `ArcanaAI_Stage157_r2_SourceSignature_Diagnostics_SOURCE_ONLY.zip` **12,028 bytes**, SHA256 `1ceb0c847021b7373abf33991f7d843a6802e43b66e301a07a3888270f78a726`, **6 ZIP entries CRC PASS, 5/5 manifest PASS, 18/18 Python synthetic/negative tests PASS** in assistant container. Changes:
+- Separates `STAGE157_NINE_WORKER_SITES_RECONCILED=YES|NO` from source-signature matching.
+- Emits a `STAGE157_SIGNATURE_MISMATCH signature=<name> file=<stage59|stage38>` line for every missing current regex; stores only diagnostic metadata and SHA hashes, not source text.
+- Derives `veh_remove` from the complete Stage156 `findings` list, tolerates a missing zero-count sparse key, and fail-closes on inconsistent explicit count or any actual source removal candidate.
+- PowerShell prints meaningful REVIEW_REQUIRED + nonzero exit without opaque thrown stack trace. **No lowered game safety gates, no game build, no live inspection.**
+
+**Fastest next action (no rerun):** read the already written r1 `%TEMP%\ArcanaAI_Stage157_SourceOnly\stage157_worker_lifecycle_metadata.json` and list `current_source_signatures` entries with `false` value; the only requested output is the failed signature **name**. Optional r2 rerun does the same, with 18 tests and clear console marker. **Stage157 r2 Windows current-project run NOT YET PERFORMED.** After identifying the key, inspect only that current-source fragment before classifying semantic drift vs harmless formatting. Both flags stay `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF; origin(0x27)=UNKNOWN; Stage129/Stage122 unchanged.
 
 ## Input and provenance
 

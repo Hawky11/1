@@ -1,3 +1,9 @@
+## Stage157 r1 Windows result and r2 diagnostic correction (2026-11-14)
+
+User-confirmed **11/11 Stage157 Python tests PASS** and **9/9 declared worker sites matched**; Stage59/Stage38 source signature count **11/12**, unnamed mismatch requiring source review. R1 also misreads Stage156's sparse zero `veh_remove` count as `None`, producing a separate false REVIEW_REQUIRED. New Stage157 r2 read-only package: source-signature name diagnostics + corrected sparse-count contract, **18/18 offline tests PASS**, ZIP 12,028B SHA256 `1ceb0c847021b7373abf33991f7d843a6802e43b66e301a07a3888270f78a726`, CRC/manifest PASS. **Stage157 r2 Windows NOT RUN; actual failed signature unknown.** [Full Stage157 checkpoint](STAGE157_CHECKPOINT.md) and [handoff](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. Current DLL unmodified.
+
+---
+
 ## Stage157 — nine CreateThread sites reconciled; Stage59 VEH lifetime blocker (2026-11-13)
 
 From user's Stage156 source table, eight previously anchored Proxy worker starts plus **one conditional Stage59 X Writer Watch worker** (`src/Stage59XWriterWatch.inl:349`). Checked historical [Stage59 r2 source](https://github.com/Hawky11/1/blob/stage59-r2-wait-for-combat-objects/Stage59_Overlay/src/Stage59XWriterWatch.inl) and Stage38 adapter; Stage59 closes its own worker start handle, and when worker exits it disarms owned DR0/DR1 but deliberately **retains its VEH callback for process lifetime**. This does not prove nine threads actually running. [Stage157 checkpoint](STAGE157_CHECKPOINT.md). Read-only source preflight ZIP 10,748B SHA256 `383e801c59b3f2052bee2b2da791055b7893e91b994f7a65c91c651c9200729e`, **11/11 synthetic tests PASS**, Windows current-file signature test **PENDING**. `SAFE_TO_INSTALL=false` and `SAFE_TO_UNLOAD_GAME_DLL=false`. [Next session](NEXT_SESSION.md).

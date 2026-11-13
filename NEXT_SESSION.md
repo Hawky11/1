@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage143 r2 PowerShell $Host collision fixed; Windows native 16/16 STILL PENDING (2026-11-13)
+
+- Stage143 r1 **failed before native compilation**, after MSVC toolchain selection. Script used read-only PowerShell automatic `$Host` as `$host` at line 46, causing `VariableNotWritable`. This is **not** a C++ compiler failure. [Full Stage143 r2 checkpoint](STAGE143_CHECKPOINT.md).
+- **Stage143 r2 source ZIP:** `ArcanaAI_Stage143_IsolatedAdmission_Registry_UnloadBarrier_SourceOnly_r2.zip`, **31,171 bytes**, SHA-256 `6e3c1c77525421ed7f156144c8910f924fc8ff98209b83c1272bbbb5bfe95cf4`, 18 files, CRC+SHA manifest PASS. Four exact occurrences of `$host` changed to `$hostExe`; C++ sources unchanged. Offline **66/66 static**, **526/526 GCC** and **526/526 Clang** PASS.
+- **NEXT:** Windows PowerShell from `Stage143_IsolatedAdmission\\tests` in extracted **r2**: `Set-ExecutionPolicy Bypass -Scope Process -Force`; `.\\Test-Stage143NativeHarness.ps1`. Need `STAGE143_NATIVE_BUILD PASS` and all 16 scenario results; **Windows Stage143 r2 NOT RUN yet**. Afterwards Stage144 source-only real entrypoint coverage audit.
+- **SAFE_TO_INSTALL=false**, Stage36 OFF, `origin(0x27)=UNKNOWN`, preserve installed Stage129 DLL 2,099,200 B / Stage122 backup 2,089,984 B.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage143 isolated external admission/FLS registry; Windows x86 16/16 PENDING (2026-11-13)
 
 - Stage142 Windows VS2026 Community MSVC x86 **13/13 isolated DLL lifecycle PASS** remains confirmed. Stage143 advances to **host call-lease gate + bounded atomic FLS registry** without changing game code: full audit [Stage143 isolated admission + FLS registry checkpoint](STAGE143_CHECKPOINT.md).

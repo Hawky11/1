@@ -1,3 +1,13 @@
+## ACTIVE CHECKPOINT — Stage157 Stage38 current braced conditional found; source block body still missing (2026-11-14)
+
+- User current Windows `src/Stage38CallbackWindow.inl:329`: `if(InstallStage58Hooks()){`; `:346`: `StartStage59Watch();`.
+- Exact r2 scanner regex `if\s*\(\s*InstallStage58Hooks\s*\(\s*\)\s*\)\s*StartStage59Watch\s*\(\s*\)` excludes any `{`. **Confirmed regex false negative**, but the **16 intervening lines are unknown**; nested conditions/early exits may change Stage59 admission. Do not call it a harmless braces-only refactor yet.
+- **NEXT** print 1-based file lines 325–353: `$p='D:\INCUBATOR\ArcanaAIOverhaul\src\Stage38CallbackWindow.inl'; $s=Get-Content -LiteralPath $p; 325..353 | ForEach-Object { '{0,4}: {1}' -f $_, $s[$_ - 1] }`. Review before sharing. Then determine exact braces and guard dependencies and possibly implement a bounded structural fail-closed Stage157 r3 source checker. No further game runtime testing needed to classify the source syntax.
+- User Stage157 r2 still 18/18 Python tests PASS, 9/9 lexical worker sites reconciled, `veh_remove_candidates=0 count_consistent=YES`, source signatures 11/12 = static REVIEW_REQUIRED. Raw/native owner/callback retirement proof still NO. [Checkpoint](STAGE157_CHECKPOINT.md).
+- `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN, Stage129 2,099,200B and Stage122 2,089,984B unchanged.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage157 r2 Windows REVIEW_REQUIRED: exact Stage38 condition/call signature (2026-11-14)
 
 - **User's real Windows r2 output:** 18/18 Python tests PASS (0.265 s), `STAGE157_NINE_WORKER_SITES_RECONCILED=YES`, `lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0`, `STAGE157_VEH_REMOVE_SPARSE_COUNT candidates=0 count_consistent=YES`.

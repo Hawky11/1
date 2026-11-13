@@ -2,6 +2,29 @@
 
 **Status: Stage157 Windows r2 SOURCE_ONLY executed; 18/18 tests PASS; 9/9 worker sites MATCH; 11/12 source signatures; exact unmatched Stage38 chain identified; REVIEW_REQUIRED.** No game process access, native build, DLL installation/unload, extra JMP, Arm() or gameplay write. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`.
 
+## Stage157 current Windows Stage38 line confirmation (2026-11-14)
+
+The user ran a **read-only local** `Select-String -Context 5,7` against `D:\INCUBATOR\ArcanaAIOverhaul\src\Stage38CallbackWindow.inl` and pasted these two exact matching line fragments:
+
+```text
+329:                                                                     if(InstallStage58Hooks()){
+346:                                                                         StartStage59Watch();
+```
+
+The `MatchInfoContext` object was displayed but **its lines were not expanded** by `Format-List LineNumber,Line,Context`. Therefore the 16 intervening lines, braces, nested conditions, or possible early returns remain **unseen**. We cannot assert direct control-flow equivalence of current Stage38 to the historical Stage59 r2 adapter's `if(InstallStage58Hooks())StartStage59Watch();` line243.
+
+**Definitive scanner diagnosis:** the Stage157 r2 expression for `stage38_installs_then_starts_stage59` is `if\s*\(\s*InstallStage58Hooks\s*\(\s*\)\s*\)\s*StartStage59Watch\s*\(\s*\)`. This only accepts a direct single-statement `if`, so the **known `{` after the current `if(...)` alone explains the regex false-negative**. This is a tool-matching failure, not proof of a game error, and not proof that the current logic is semantically safe. Since `StartStage59Watch` is 17 lines below, there could be other guards or changed code between. Do not blanket-relax the regex without path/brace/branch verification.
+
+**Next minimal evidence** (prints real numbered lines, not unexpanded PowerShell `MatchInfoContext`):
+
+```powershell
+$p = 'D:\INCUBATOR\ArcanaAIOverhaul\src\Stage38CallbackWindow.inl'
+$s = Get-Content -LiteralPath $p
+325..353 | ForEach-Object { '{0,4}: {1}' -f $_, $s[$_ - 1] }
+```
+
+Review the snippet before sharing; no source copied to public GitHub. After line 325–353 control-flow review, either replace the overly rigid Stage157 signature with a **bounded, structural, fail-closed** check that proves the correct enclosing `if` and no critical early-return or nested precondition, or document new dependencies. **Do not yet mark Stage157 as SOURCE_ONLY_PASS**, nor infer native/worker/VEH unload safety. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN; Stage129/122 binaries untouched.
+
 ## User-confirmed Stage157 r2 Windows diagnostic — exact signature identified (2026-11-14)
 
 User ran `Stage157_r2_SourceOnly/Invoke-Stage157Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` on current Windows sources. **18/18 Python tests PASS** in 0.265s; `STAGE157_WORKERS lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0`; `STAGE157_NINE_WORKER_SITES_RECONCILED=YES`. Sparse-count r1 bug is now resolved: `STAGE157_VEH_REMOVE_SPARSE_COUNT candidates=0 count_consistent=YES`. The **one** source signature mismatch is now *named exactly*:

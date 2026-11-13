@@ -1,3 +1,9 @@
+## Stage157 source mismatch: regex limitation confirmed, current nested logic unverified (2026-11-14)
+
+Current Windows Stage38 line329 is `if(InstallStage58Hooks()){`, line346 is `StartStage59Watch();`; Stage157 r2 requires unbraced single-statement immediate call. So the lexical 11/12 regex miss is explained, but intervening code is **not provided** and could affect Stage59 admission. Need read-only numbered lines 325–353 before implementing a bounded structural checker. No game DLL change or unload approval. [Full checkpoint](STAGE157_CHECKPOINT.md); `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.
+
+---
+
 ## Stage157 r2 Windows: exact conditional Stage38 source mismatch isolated (2026-11-14)
 
 User successfully ran 18/18 r2 synthetic tests, reconciled all nine CreateThread callsites, and confirmed zero VEH remove candidates with consistent sparse count. **11/12 source signatures**: only `stage38_installs_then_starts_stage59` fails historical unbraced regex. The current `src/Stage38CallbackWindow.inl` source code hasn't been read yet; possibly braced syntax OR genuinely changed conditions. Windows r2 audit properly reports `REVIEW_REQUIRED`, no game runtime failure implied. Next inspect current Stage38 around `InstallStage58Hooks` / `StartStage59Watch` before any surgical scanner change. [Stage157 detailed checkpoint](STAGE157_CHECKPOINT.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; no DLL modifications.

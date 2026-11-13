@@ -1,9 +1,9 @@
-## ACTIVE CHECKPOINT — Stage139 SOURCE-ONLY; Stage137 MSVC x86 /Zs PASS, Stage139 /Zs PENDING (2026-11-13)
+## ACTIVE CHECKPOINT — Stage139 MSVC x86 /Zs PASS, source-only; next Stage140 (2026-11-13)
 
-- **History:** [Stage136–139 detailed checkpoint](STAGE136_139_CHECKPOINT.md). Stage136 unsampled-0x27 owner model; Stage137 r2 guarded Win32 FLS bridge; Stage138 ABI/SEH and data-loss audit; Stage139 pending/exit-verified parent linkage and serialized loss-accounted sink. No additional JMP at Stage10 F34D0/F3930, no Arm(), no default project integration.
-- **Windows validation:** User confirmed Stage137 r2 `STAGE137_MSVC_SYNTAX PASS` for Stage137Win32Bridge.cpp / AIProducerContextTrace.cpp / Proxy.cpp, MSVC x86 `/Zs` only. **Latest Stage139 Windows output contains only `STAGE139_MSVC_SELECTED ...\\vcvarsall.bat`; there is NO Stage139 compile PASS/FAIL yet.** Do not promote selected toolchain to passed syntax.
-- **Stage139 offline:** policy 39/39 GCC and Clang, sink model 20/20, static 51/51; regressions 136 20/20, 137 22/22, 138 31/31. Source-only gated candidates, not game runtime proof. Parent relationship only after exit validation; candidate `0x27` origin remains UNKNOWN.
-- **NEXT:** obtain remainder of Stage139 MSVC /Zs log; then Stage140 isolated x86 ABI/SEH/FLS and concurrent/partial-write sink fault harness. **SAFE_TO_INSTALL=false**, preserve Stage129 DLL 2,099,200 B and Stage122 backup 2,089,984 B, Stage36 OFF.
+- **Detailed history:** [Stage136–139 checkpoint](STAGE136_139_CHECKPOINT.md). Stage136 unsampled-0x27 owner model; Stage137 r2 guarded Win32 FLS bridge; Stage138 ABI/SEH and data-loss audit; Stage139 pending/exit-verified parent linkage and serialized, loss-accounted sink candidate. No additional JMP at Stage10 F34D0/F3930, no Arm(), no default project integration.
+- **Windows validation:** User confirmed **Stage139 `STAGE139_MSVC_SYNTAX PASS`** after `Stage139Win32Bridge.cpp`, `AIProducerContextTrace.cpp`, and `Proxy.cpp`; VS2026 Community `vcvarsall.bat` selected successfully. Stage137 r2 MSVC x86 `/Zs` PASS previously confirmed. Both are **syntax-only**; not full build/link, native ABI/SEH/FLS or gameplay evidence.
+- **Stage139 offline:** 39/39 policy GCC and Clang, 20/20 sink model, 51/51 static; regressions Stage136 20/20, Stage137 22/22, Stage138 31/31. `VerifiedParent` marks parent identity only, `0x27` source still UNKNOWN.
+- **NEXT Stage140:** isolated Win32 ABI/SEH/FLS, native compile/link analysis and sink concurrent/partial-write fault-injection. **SAFE_TO_INSTALL=false**; preserve Stage129 DLL 2,099,200 B / Stage122 backup 2,089,984 B, Stage36 OFF.
 
 ---
 

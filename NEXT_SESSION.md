@@ -1,3 +1,13 @@
+## ACTIVE CHECKPOINT — Stage158 r1 Windows SHA/worker/VEH PASS, RVA spelling REVIEW; r2 scanner next (2026-11-14)
+
+- User Windows Stage158 r1 `Invoke-Stage158Audit.ps1` **33/33 unittest PASS, manifest 6/6**, **66/66 SHA matches**, **9/9 CreateThread→CloseHandle→loop** source triplets, **3/3 VEH register anchors**. Stage10 RVA F34D0 5, F3930 4, Stage129 F30B0 1, F325A 0, F326A 0 by text pattern; `STAGE158_REVIEW_REQUIRED reason=NATIVE_RVA_LITERAL_REVIEW_REQUIRED`. This is **lexical review**, not proof those native hooks are absent.
+- R1 regex `\b` after an RVA cannot match integer suffix `u/UL/ULL` immediately following hex. Hypothesis is *not confirmed* by direct Stage129 source (user hasn't supplied Stage129 body). No change to game source or detours.
+- **New Stage158 r2** ZIP `ArcanaAI_Stage158_r2_NativeRVA_LexerDiagnostics_SOURCE_ONLY.zip`, **18,415B SHA256 `7d2d0041aadb167a571b5d5e67d2c81834f849ea9996f2fc4fc8425288ddbf1d`**, 8 entries CRC PASS, 7 payload SHA manifest PASS, **45/45 synthetic offline tests PASS**. It adds suffix-aware whole-token RVA detection and per-line lexical form/cpp suffix evidence with strict false-positive exclusions. Still source-only, all runtime owners unknown. **Windows Stage158 r2 NOT RUN.**
+- **NEXT local action** after extracting r2 ZIP into `Stage158_r2_SourceOnly`: `Set-ExecutionPolicy -Scope Process Bypass -Force`; `.\Invoke-Stage158Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`. Uses Stage156/Stage157 r3 metadata in %TEMP%, checks all 66 SHA; output `%TEMP%\ArcanaAI_Stage158_r2_SourceOnly\stage158_r2_native_lifecycle_metadata.json`. If F325A/F326A remain unrecognized, print only lines 1..30 of current `D:\INCUBATOR\ArcanaAIOverhaul\src\Stage129ProducerProbe.inl` for targeted source review, no patches.
+- **Unchanged hard gate:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; nine worker joins/three VEH retirement/raw owners ABI/SEH/unwind/live hook patch ownership UNPROVEN. Stage129 2,099,200B working DLL and Stage122 2,089,984B rollback untouched. [Checkpoint](STAGE158_CHECKPOINT.md).
+
+---
+
 ## ACTIVE CHECKPOINT — Stage158 native/raw ingress and callback lifecycle SOURCE_ONLY package ready; Windows check pending (2026-11-14)
 
 - **Current verified Windows baseline**: Stage157 r3 user run 32/32 Python tests PASS; 9/9 worker CreateThread sources, Stage59/Stage38 12/12 signatures, Stage38 conditional nesting MATCH. Stage156: 8 compile roots, 66 reachable sources, 32 anchors matched, 1,511 lexical candidates. No game module safety proof.

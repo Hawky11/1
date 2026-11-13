@@ -1,3 +1,9 @@
+## Stage158 Windows current-source SHA PASS; r2 RVA suffix parser needs Windows check (2026-11-14)
+
+User Stage158 r1: 33/33 Windows Python PASS, manifest 6/6 PASS, 66/66 source SHA, nine workers and three VEH anchors match; `F325A`/`F326A` Stage129 RVA text matches 0 with r1 regex while F30B0=1. This is `REVIEW_REQUIRED` for **source literal spelling only**, not a game DLL error. New Stage158 r2 suffix-aware whole-token source scanner ZIP **18,415B SHA256 `7d2d0041aadb167a571b5d5e67d2c81834f849ea9996f2fc4fc8425288ddbf1d`** (8 file CRC/7 SHA PASS) with **45/45 offline synthetic tests PASS**. **Current Windows r2 NOT RUN.** Next `Stage158_r2_SourceOnly/Invoke-Stage158Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`; if still missing, read-only Stage129 lines 1–30 review. [Full Stage158 checkpoint](STAGE158_CHECKPOINT.md). **`SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`**, Stage36 OFF, origin(0x27)=UNKNOWN, no DLL changes.
+
+---
+
 ## Stage158 — SOURCE_ONLY native/raw ingress + worker/VEH lifecycle auditor (2026-11-14)
 
 New read-only Stage158 ZIP `ArcanaAI_Stage158_NativeRawIngress_WorkerVEH_Lifecycle_SOURCE_ONLY.zip`, **18,335B SHA256 `5d1c9ed5cd2d003211dd4c4c4bd7f5bf4f22fa8a79b7f9531e6b4df524843edd`**, 7 file CRC/6 SHA manifest PASS and **33/33 synthetic Python tests PASS**. Validates current-project 66 file SHA against user Stage156, crosschecks Stage157 r3, inventories 9 worker source paths, 3 VEH and five Stage10/129 raw/native RVA *source literals*. **Windows Stage158 not yet executed**; game runtime/native ownership/callback retirement/worker join remain unproven. [Detailed Stage158 checkpoint](STAGE158_CHECKPOINT.md), [Windows read-only next command](NEXT_SESSION.md). **SAFE_TO_INSTALL=false**, **SAFE_TO_UNLOAD_GAME_DLL=false**, Stage36 OFF, origin(0x27)=UNKNOWN. Existing working game DLL unchanged.

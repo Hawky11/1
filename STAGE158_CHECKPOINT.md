@@ -1,6 +1,52 @@
 # ArcanaAIOverhaul — Stage158 native/raw ingress, worker and VEH lifecycle SOURCE_ONLY (2026-11-14)
 
-**Status: Stage158 offline SYNTHETIC source-only tests 33/33 PASS; Windows CURRENT PROJECT Stage158 audit NOT YET RUN.** Stage157 r3 *was* user-confirmed on Windows (32/32; nine CreateThread site reconciliation; 12/12 Stage38/59 source signatures) and is not confused with this separate Stage158 work.
+**Status: Stage158 r1 user Windows read-only 33/33 tests and 66/66 SHA PASS; review required for two unrecognized Stage129 RVA literal spellings. Stage158 r2 suffix-aware parser offline 45/45 tests PASS; Windows r2 still PENDING.** Stage157 r3 *was* user-confirmed on Windows (32/32; nine CreateThread site reconciliation; 12/12 Stage38/59 source signatures) and is not confused with this separate Stage158 work.
+
+## User-confirmed Stage158 r1 Windows current-source audit (2026-11-14) — REVIEW_REQUIRED, one bounded RVA issue
+
+User ran `Stage158_SourceOnly/Invoke-Stage158Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`, and pasted the actual console transcript; no original project C++ or resulting JSON uploaded to chat. Results:
+
+```text
+STAGE158_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE158_MANIFEST_PASS files=6
+Ran 33 tests in 2.324s
+OK
+STAGE158_SOURCE_HASHES matched=66 checked=66 roots=8 reachable=66
+STAGE158_WORKERS source_sites=9 create_close_loop_anchored=9
+STAGE158_VEH register_anchors=3 retirement_proof=NO
+STAGE158_NATIVE_SOURCE_RVAS candidates=5 lexical_literals=10 live_owner_proof=NO
+STAGE158_RVA_SOURCE stage=STAGE10 rva=F34D0 path=src/AIProducerContextTrace.cpp lexical_matches=5 owner=UNKNOWN
+STAGE158_RVA_SOURCE stage=STAGE10 rva=F3930 path=src/AIProducerContextTrace.cpp lexical_matches=4 owner=UNKNOWN
+STAGE158_RVA_SOURCE stage=STAGE129 rva=F30B0 path=src/Stage129ProducerProbe.inl lexical_matches=1 owner=UNKNOWN
+STAGE158_RVA_SOURCE stage=STAGE129 rva=F325A path=src/Stage129ProducerProbe.inl lexical_matches=0 owner=UNKNOWN
+STAGE158_RVA_SOURCE stage=STAGE129 rva=F326A path=src/Stage129ProducerProbe.inl lexical_matches=0 owner=UNKNOWN
+STAGE158_RAW_CALLER_PROOF=NO WORKER_JOIN_PROOF=NO FUTURE_VEH_RETIREMENT=NO
+STAGE158_REVIEW_REQUIRED reason=NATIVE_RVA_LITERAL_REVIEW_REQUIRED
+STAGE158_SOURCE_REVIEW_REQUIRED SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Interpretation:** The **66 current source files** are byte-identical in SHA/length to the user's Stage156 metadata; all nine bounded worker create/close/loop triplets and three VEH register anchors match. Two Stage129 RVA spellings **were not recognized by r1's narrow lexical regex**. This says nothing conclusive about whether those hooks exist or are installed. In particular, r1's `\b` immediately after an RVA rejects normal C++ suffixed integers such as `0xF325Au` and `0xF326AUL`; the user's actual Stage129 lines have **not** been inspected, so this is a *plausible technical cause*, not confirmed as their exact syntax. Do NOT modify source to force the regex.
+
+## Stage158 r2 read-only diagnostic patch — offline tested, Windows pending
+
+- New ZIP `ArcanaAI_Stage158_r2_NativeRVA_LexerDiagnostics_SOURCE_ONLY.zip`, **18,415 bytes**, verified **SHA256 `7d2d0041aadb167a571b5d5e67d2c81834f849ea9996f2fc4fc8425288ddbf1d`**; **8 ZIP entries CRC PASS**, manifest **7/7 payload SHA and byte size PASS** on re-extracted ZIP.
+- Re-extracted test suite **45/45 Python tests PASS** (33 original + 12 new) on synthetic inputs; no Windows user's r2 run has been performed yet.
+- R2 replaces the RVA matching helper with a **whole-token C++ hex integer suffix-aware lexical check**: accepts 0x/0X, leading zeroes, case differences, valid U/L suffixes; rejects identifier substrings, longer hex values, malformed suffix tails and comments/strings. Emits relative path/line, `CPP_HEX_INTEGER` versus `BARE_HEX_TOKEN`, `cpp_integer_suffix` boolean and count; **never embeds original source text**.
+- This change is **limited to the lexical source audit**; unchanged 66 source SHA cross-check, nine workers, three VEH, Stage157 r3 integrity, native owner and callback/worker DENY flags remain. Unknown computed expressions, macros or absent literals still `NATIVE_RVA_LITERAL_REVIEW_REQUIRED`, fail-closed.
+- New metadata path: `%TEMP%\ArcanaAI_Stage158_r2_SourceOnly\stage158_r2_native_lifecycle_metadata.json`. Script `Invoke-Stage158Audit.ps1` reuses local Stage156 and Stage157 r3 JSON; Python 3, no VS/game needed.
+
+Windows read-only r2 command from extracted `Stage158_r2_SourceOnly`:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+.\Invoke-Stage158Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'
+```
+
+If r2 still reports `NATIVE_RVA_LITERAL_REVIEW_REQUIRED`, next smallest evidence is numbered **lines 1–30 only** of current `src/Stage129ProducerProbe.inl` (review before sharing), *not* full project source. The r2 result must not be preclaimed as Windows PASS. Stage129 native return/unwind ownership and foreign raw-caller admission remain UNKNOWN.
+
+**Safety invariant:** `SAFE_TO_INSTALL=false`; `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF; origin(0x27)=UNKNOWN; no new native hooks, no build, no game process/memory access, no FreeLibrary, no change to Stage129 2,099,200 B or Stage122 2,089,984 B game DLLs.
+
+---
 
 ## Objective and evidence boundary
 

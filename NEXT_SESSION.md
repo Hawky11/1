@@ -1,3 +1,14 @@
+## ACTIVE CHECKPOINT — Stage156 native/raw entry and callback lifecycle SOURCE_ONLY (2026-11-13)
+
+- **Current stage:** [STAGE156_CHECKPOINT.md](STAGE156_CHECKPOINT.md). In this session, re-read Stage153–155 GitHub evidence; **no original Stage146 ZIP or current Windows game source were re-opened or rescanned**. Stage155 Windows 5,040 synthetic schedules and 18/18 cases passed within a test-owned harness, **NOT** live game owner proof.
+- **Real-source blockers from prior anchored snapshot:** 8 CreateThread→CloseHandle worker start paths without verified retained handles/global stop/join; 3 reachable VEH Add / 0 Remove, Stage59 keep-for-process-lifetime; existing Stage10 F34D0/F3930 and Stage129 F30B0/F325A/F326A naked/raw entrances bypass test host lease; foreign retained function pointers/exception callbacks, native frames/EIP ABI/unwind, rollback and external owner unknown. 122 reachable naked declarations are not installed hook count. Stage153 production FLS count=0; isolated FLS fixtures do not prove game.
+- **Stage156 delivery (chat-only):** `ArcanaAI_Stage156_Entrypoints_RawCallers_CallbackLifecycle_SOURCE_ONLY.zip` **15,028 bytes** SHA256 `63ed358cc4cfe23469f7e2f3feec281bc18c236491ae42436cae3843011e86ad`; Python/PowerShell *read-only* source scanner, 32 pinned source line anchors, 7/7 synthetic tests PASS (Linux Python), manifest 5/5 ZIP checks. No user's sources or binaries in archive.
+- **Next local task (Windows read-only):** unpack ZIP, `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force`; run `.\Invoke-Stage156Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` from `Stage156_SourceOnly`. Python 3 required; **VS dev shell/MSVC not needed**. Review `%TEMP%\ArcanaAI_Stage156_SourceOnly\stage156_current_source_inventory.json` before sharing. Metadata may show drift; matches alone DO NOT prove live owner. This new Windows audit has **NOT BEEN RUN**.
+- **Safety:** SOURCE_ONLY; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, `origin(0x27)=UNKNOWN`, no game DLL patch/FreeLibrary/Arm/new JMP; preserve Stage129 2,099,200B working DLL and Stage122 2,089,984B fallback.
+- **Following review:** map unmatched native/foreign ingress, callback/worker teardown and owner/caller line coverage conservatively; no deployment until independently proven.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage147 uploaded Stage146 evidence verified; next Stage148 source-only patch provenance (2026-11-13)
 
 - User already provided the complete Stage146 evidence ZIP. It was **actually opened and independently inspected**: 489,054 bytes SHA256 `6d9c39d59b4883dab6cc4ea95f08deac56fe8c477fd6b4746bd1c764f96a207b`, 94 entries CRC PASS, **85/85 copied current sources SHA and size match**; [Stage147 detailed checkpoint](STAGE147_CHECKPOINT.md).

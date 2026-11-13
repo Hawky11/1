@@ -1,6 +1,30 @@
 # ArcanaAIOverhaul — Stage157 ninth worker and Stage59 VEH callback lifetime SOURCE_ONLY (2026-11-13)
 
-**Status: Stage157 Windows r1 SOURCE_ONLY executed; 9/9 worker sites MATCH, 11/12 Stage59/Stage38 signatures; r2 diagnostic created but not Windows-tested.** No game process access, native build, DLL installation/unload, extra JMP, Arm() or gameplay write. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`.
+**Status: Stage157 Windows r2 SOURCE_ONLY executed; 18/18 tests PASS; 9/9 worker sites MATCH; 11/12 source signatures; exact unmatched Stage38 chain identified; REVIEW_REQUIRED.** No game process access, native build, DLL installation/unload, extra JMP, Arm() or gameplay write. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`.
+
+## User-confirmed Stage157 r2 Windows diagnostic — exact signature identified (2026-11-14)
+
+User ran `Stage157_r2_SourceOnly/Invoke-Stage157Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` on current Windows sources. **18/18 Python tests PASS** in 0.265s; `STAGE157_WORKERS lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0`; `STAGE157_NINE_WORKER_SITES_RECONCILED=YES`. Sparse-count r1 bug is now resolved: `STAGE157_VEH_REMOVE_SPARSE_COUNT candidates=0 count_consistent=YES`. The **one** source signature mismatch is now *named exactly*:
+
+```text
+STAGE157_STAGE59_SOURCE_SIGNATURES matched=11 total=12 veh_remove_candidates=0
+STAGE157_SIGNATURE_MISMATCH signature=stage38_installs_then_starts_stage59 file=stage38 classification=UNVERIFIED_SOURCE_VARIANT_OR_DRIFT
+STAGE157_RAW_CALLER_PROOF=NO FUTURE_CALLBACK_RETIREMENT=NO NATIVE_OWNER_PROOF=NO
+STAGE157_SOURCE_DRIFT_OR_UNMATCHED_SITE REVIEW_REQUIRED SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE157_R2_REVIEW_REQUIRED: inspect STAGE157_SIGNATURE_MISMATCH above; not a DLL or test failure
+```
+
+**Interpreting this correctly:** The Stage157 r2 `stage38_installs_then_starts_stage59` regex expects an **unbraced immediate expression** of the form `if(InstallStage58Hooks())StartStage59Watch();`, with flexible whitespace but not `{ ... }` braces or intervening other statements. Historical [Stage59 r2 Stage38 adapter](https://github.com/Hawky11/1/blob/stage59-r2-wait-for-combat-objects/Stage59_Overlay/src/Stage38CallbackWindow.inl) line243 contains that direct unbraced call. The current user's Stage38 source body **has not been uploaded / directly read in this session**. An equivalent braced if-body, an additional condition, a relocated call, or a changed control-flow chain can all produce the same mismatch: **do not call it either harmless formatting or a behavioral regression without inspecting current code**.
+
+**Next minimal read-only evidence to request**, without new scanner or full source upload, in user's Windows PowerShell:
+
+```powershell
+$path = 'D:\INCUBATOR\ArcanaAIOverhaul\src\Stage38CallbackWindow.inl'
+Select-String -Path $path -Pattern 'InstallStage58Hooks|StartStage59Watch' -Context 5,7 |
+  ForEach-Object { $_.ToString(); $_.Context.PreContext; $_.Line; $_.Context.PostContext; '' }
+```
+
+These specific source lines will distinguish a brace-only regex false negative from changed control flow. Alternatively show `(Get-Content $path)[230..250]` if the line locations have not changed. Review any sensitive source before sharing. Do **not** relax the life-cycle safety gate or modify the game DLL to satisfy a regex. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, `Stage36 OFF`, `origin(0x27)=UNKNOWN`; preserve Stage129 2,099,200B and Stage122 2,089,984B. Stage157 r2 Windows result is **REVIEW_REQUIRED**, not `PASS`, despite 18/18 unit tests.
 
 ## User Windows Stage157 r1 result: 11/12 signatures + sparse-count checker bug (2026-11-14)
 

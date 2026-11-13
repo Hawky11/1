@@ -1,3 +1,13 @@
+## ACTIVE CHECKPOINT — Stage157 r2 Windows REVIEW_REQUIRED: exact Stage38 condition/call signature (2026-11-14)
+
+- **User's real Windows r2 output:** 18/18 Python tests PASS (0.265 s), `STAGE157_NINE_WORKER_SITES_RECONCILED=YES`, `lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0`, `STAGE157_VEH_REMOVE_SPARSE_COUNT candidates=0 count_consistent=YES`.
+- **One specific unresolved difference:** `STAGE157_SIGNATURE_MISMATCH signature=stage38_installs_then_starts_stage59 file=stage38`, source signatures `11/12`. R2 expects historical *direct/unbraced* `if(InstallStage58Hooks())StartStage59Watch();`, so an equivalent braced block could be false negative, but the actual current Windows source hasn't been inspected. Additional conditions/different branches could also cause it. **Current result is REVIEW_REQUIRED, not stage PASS**.
+- **NEXT read-only user PowerShell command:** `$path='D:\INCUBATOR\ArcanaAIOverhaul\src\Stage38CallbackWindow.inl'; Select-String -Path $path -Pattern 'InstallStage58Hooks|StartStage59Watch' -Context 5,7 | Format-List LineNumber,Line,Context`. User should share only that relevant snippet after privacy review. This will decide whether Stage157 r3 narrowly supports semantically equivalent braces or the lifecycle chain actually changed. Do NOT assume bracket-only drift yet or modify game code to fit regex.
+- Prior Stage157 r2 fix properly handles sparse zero `veh_remove`; **no VEH retirement proof** and no raw/native callback owner proof. [Full checkpoint](STAGE157_CHECKPOINT.md).
+- `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. Preserve Stage129 2,099,200B and Stage122 2,089,984B without changes. No game DLL build/install/unload/Arm/new hook.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage157 r1 Windows 9/9 workers but 11/12 source signatures; r2 diagnostics ready (2026-11-14)
 
 - **User's real Windows Stage157 r1 output:** `11/11 tests PASS`, `STAGE157_WORKERS lexical=9 proxy_anchored=8 stage59=1 unexpected=0 missing=0`, **`STAGE157_STAGE59_SOURCE_SIGNATURES matched=11 total=12 veh_remove_candidates=None`** followed by REVIEW_REQUIRED and PowerShell throw. This is **not** a native/game runtime failure and nine lexical workers are not proof of nine currently active threads.

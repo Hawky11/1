@@ -1,3 +1,9 @@
+## Stage157 r2 Windows: exact conditional Stage38 source mismatch isolated (2026-11-14)
+
+User successfully ran 18/18 r2 synthetic tests, reconciled all nine CreateThread callsites, and confirmed zero VEH remove candidates with consistent sparse count. **11/12 source signatures**: only `stage38_installs_then_starts_stage59` fails historical unbraced regex. The current `src/Stage38CallbackWindow.inl` source code hasn't been read yet; possibly braced syntax OR genuinely changed conditions. Windows r2 audit properly reports `REVIEW_REQUIRED`, no game runtime failure implied. Next inspect current Stage38 around `InstallStage58Hooks` / `StartStage59Watch` before any surgical scanner change. [Stage157 detailed checkpoint](STAGE157_CHECKPOINT.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; no DLL modifications.
+
+---
+
 ## Stage157 r1 Windows result and r2 diagnostic correction (2026-11-14)
 
 User-confirmed **11/11 Stage157 Python tests PASS** and **9/9 declared worker sites matched**; Stage59/Stage38 source signature count **11/12**, unnamed mismatch requiring source review. R1 also misreads Stage156's sparse zero `veh_remove` count as `None`, producing a separate false REVIEW_REQUIRED. New Stage157 r2 read-only package: source-signature name diagnostics + corrected sparse-count contract, **18/18 offline tests PASS**, ZIP 12,028B SHA256 `1ceb0c847021b7373abf33991f7d843a6802e43b66e301a07a3888270f78a726`, CRC/manifest PASS. **Stage157 r2 Windows NOT RUN; actual failed signature unknown.** [Full Stage157 checkpoint](STAGE157_CHECKPOINT.md) and [handoff](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. Current DLL unmodified.

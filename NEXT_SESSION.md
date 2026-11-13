@@ -1,3 +1,13 @@
+## ACTIVE CHECKPOINT — Stage143 isolated external admission/FLS registry; Windows x86 16/16 PENDING (2026-11-13)
+
+- Stage142 Windows VS2026 Community MSVC x86 **13/13 isolated DLL lifecycle PASS** remains confirmed. Stage143 advances to **host call-lease gate + bounded atomic FLS registry** without changing game code: full audit [Stage143 isolated admission + FLS registry checkpoint](STAGE143_CHECKPOINT.md).
+- **New safety distinction:** DLL `inFlight=0` doesn't prove that a caller outside the DLL isn't about to enter. Experimental host takes lease before entry, closes admission before shutdown, awaits zero leases, joins its test workers, then DLL checks zero live/registry/callback/inFlight/errors before test-only `FlsFree` and `FreeLibrary`. A foreign raw caller bypasses the gate; game unload is not proven.
+- **Offline verified:** static 64/64, portable policy 526/526 GCC + 526/526 Clang; ZIP `ArcanaAI_Stage143_IsolatedAdmission_Registry_UnloadBarrier_SourceOnly.zip` **30,386 B**, SHA256 `1842562f03488399e1170a80767faa2a229d2b35c5496af9f84cd1546cf2d01a`, 18 files CRC/manifest PASS. **Stage143 native Windows MSVC x86 build/link & 16 scenarios NOT RUN**.
+- **NEXT:** Windows PowerShell 5.1 from `Stage143_IsolatedAdmission\\tests`: `Set-ExecutionPolicy Bypass -Scope Process -Force`, then `.\\Test-Stage143NativeHarness.ps1`. Capture all 16 scenario lines. Stage144 source-only scope: identify actual external entrypoints/owner coverage gap before any deployment.
+- **SAFE_TO_INSTALL=false**; Stage36 OFF; candidate27 origin UNKNOWN; no JMP, no `Arm()`, preserve Stage129 DLL **2,099,200 B** and Stage122 rollback DLL **2,089,984 B**.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage142 Windows x86 isolated test DLL + host 13/13 PASS; next Stage143 (2026-11-13)
 
 - **Confirmed from user Windows console:** VS2026 Community MSVC x86 built disposable `Stage142FlsProbe.dll` and `Stage142Host.exe`, `STAGE142_NATIVE_BUILD PASS`; **all 13/13 isolated FLS lifecycle scenarios PASS**. [Stage142 checkpoint](STAGE142_CHECKPOINT.md) preserves the full output. Garbled linker .lib/.exp status line was harmless encoding.

@@ -2,6 +2,28 @@
 
 **SOURCE-ONLY; no game files or native hooks modified; SAFE_TO_INSTALL=false; Stage36 OFF.**
 
+## User Windows PowerShell 5.1 current-source capture — USER-REPORTED COMPLETE (2026-11-13)
+
+- The user ran `Capture-Stage146CurrentSources.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul' -IncludeSourceSnapshot` in the project's Stage146 test directory. Console reports **`STAGE146_CAPTURE_COMPLETE`** and zero read errors.
+- Current local inventory reported `source=85`, `config=22`, `skippedGenerated=11`, `skippedSensitive=0`, `readErrors=0`. Full Stage134 archival comparison: **`expected=70 match=70 drift=0 missing=0 new=37`**. This is the first *reported* 70/70 comparison against the actual current Windows source tree, superseding the former five-file-only status.
+- `.vcxproj` items=24, `#include` edges=409, names-only INI keys=46. Known owner-site static review: **5 sites; 5 archived source hashes match; zero overlaps among those five known intervals**; `liveOwnerProof=NO`. Heuristic RVA references: **485**, expressly `UNVERIFIED_NOT_OWNER_PROOF`. These are text references, not confirmed patch writes or 485 installed hooks.
+- Actual produced evidence ZIP path (on **the user's Windows disk, not yet uploaded here**): `C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage146_Evidence_493fc20dff504bdabc3abc4924a9426f.zip`. The tool-generated ZIP's contents, manifest, current complete sources and individual 485 heuristic lines **have not been inspected in this conversation**. **Stage147 file-level ownership/conflict classification is pending that upload**.
+- `-IncludeSourceSnapshot` was used; user should **review source for embedded credentials/private strings before sharing**, despite config values being omitted. Do not send game binaries or actual secrets.
+- No game process opened; `STAGE146_NO_LIVE_OWNER_PROOF` explicitly printed. **No game owner readback, active-detour quiescence, ABI/SEH, FLS or worker lifetime verification; SAFE_TO_INSTALL=false**, Stage36 OFF.
+
+Exact user-provided console output:
+
+```text
+STAGE146_SOURCE_INVENTORY source=85 config=22 skippedGenerated=11 skippedSensitive=0 readErrors=0
+STAGE146_STAGE134_COMPARE expected=70 match=70 drift=0 missing=0 new=37
+STAGE146_PROJECT_ITEMS count=24 includeEdges=409 iniKeysWithoutValues=46
+STAGE146_KNOWN_SITE_REVIEW sites=5 archiveSourceHashMatch=5 knownIntervalOverlaps=0 liveOwnerProof=NO
+STAGE146_HEURISTIC_RVA_REFERENCES count=485 classification=UNVERIFIED_NOT_OWNER_PROOF
+STAGE146_EVIDENCE_ZIP C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage146_Evidence_493fc20dff504bdabc3abc4924a9426f.zip
+STAGE146_NO_LIVE_OWNER_PROOF: no game process access; source-only evidence; SAFE_TO_INSTALL=false
+STAGE146_CAPTURE_COMPLETE: current source/config metadata captured; SAFE_TO_INSTALL=false
+```
+
 ## Predecessor and current evidence boundary
 
 - User Windows Stage145 `Test-Stage145LocalEvidence.ps1`: **11/11 archival references SHA MATCH**, **5/5 current project sources SHA MATCH**, **38/38 selected surface records** and **17/17 obligations listed**. Console explicitly reports `STAGE145_NO_LIVE_OWNER_PROOF`. The 17 obligations are **not proven satisfied**. See [Stage145 checkpoint](STAGE145_CHECKPOINT.md).
@@ -25,7 +47,7 @@
 - **24/24** portable Python unit scenarios PASS, including archived SHA drift and missing detection, duplicate paths, fake live-owner claims, synthetic hook-reference collision and source snapshot corruption. No native/game executable was run.
 - **ZIP CRC PASS; per-file manifest SHA256/size 21/21 PASS**. This is the produced archive's verified state, not current Windows project evidence.
 
-## Windows handoff — **NOT RUN YET**
+## Windows handoff — **USER RUN COMPLETE; EVIDENCE ZIP NOT YET SHARED**
 
 Unzip Stage146; from Windows PowerShell 5.1 inside `Stage146_SourceOnly\tests`:
 
@@ -49,7 +71,7 @@ STAGE146_NO_LIVE_OWNER_PROOF: no game process access; source-only evidence; SAFE
 STAGE146_CAPTURE_COMPLETE: current source/config metadata captured; SAFE_TO_INSTALL=false
 ```
 
-**Windows script execution has NOT been independently validated yet.** Source-only checks and Python fixture tests cannot prove PowerShell 5.1 runtime compatibility or the real complete current project result. Record any failures and fix them as a source-only r2 if necessary.
+**Windows script executed successfully according to the user's console output above**. The exact generated current-source evidence ZIP has not been uploaded/inspected, so the reported 70/70 hash matches and RVA inventory remain unindependently audited at individual-record level. Record any failures and fix them as a source-only r2 if necessary.
 
 ## Current safety and Stage147
 

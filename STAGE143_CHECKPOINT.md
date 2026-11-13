@@ -2,6 +2,18 @@
 
 **SOURCE-ONLY / TEST-ONLY. SAFE_TO_INSTALL=false. Stage36 OFF. Working game DLL untouched.**
 
+## Stage143 r2 — Windows PowerShell automatic variable collision FIX (2026-11-13)
+
+- **Observed user failure of r1 before compilation:** after `STAGE143_MSVC_SELECTED C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat`, Windows PowerShell 5.1 raises `VariableNotWritable` at `Test-Stage143NativeHarness.ps1:46`, `$host=Join-Path $work 'Stage143Host.exe'`. PowerShell variables are case-insensitive, and automatic `$Host` is read-only. Neither `Stage143FlsProbe.cpp` nor `Stage143Host.cpp` was compiled in that attempt.
+- **Fix:** replace all **four** standalone references to variable `$host` with `$hostExe` (assignment, linker/host command, file-existence check, scenario invocation). The **four Stage143 C++ source files are byte-identical** to r1; no DLL/game code modification or gameplay hooks. Static auditor now checks against using a read-only `$Host` name.
+- **Corrected chat artifact**: `ArcanaAI_Stage143_IsolatedAdmission_Registry_UnloadBarrier_SourceOnly_r2.zip`, **31,171 B**, SHA-256 **`6e3c1c77525421ed7f156144c8910f924fc8ff98209b83c1272bbbb5bfe95cf4`**, 18 files, ZIP CRC and per-file manifest **PASS**, source-only (no compiled DLL/EXE). Script SHA-256 `2eabc1d2b5407cf4c81c02cf1084637fd657a5f0d2a4ec66fd3bd7ff6a92ec4c`.
+- **Offline recheck of r2:** **66/66** static, **526/526 GCC** and **526/526 Clang** portable policy assertions. No Windows PowerShell interpreter or MSVC available in current environment; **r2 Windows native build/link + 16/16 scenarios NOT RUN**. Do not claim a native PASS yet.
+- **Windows rerun:** extract r2; from `Stage143_IsolatedAdmission\tests` run `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force` then `.\Test-Stage143NativeHarness.ps1`. Capture complete compiler/linker/scenario output. Original Stage143 r1 archive unchanged.
+- **Safety:** `SAFE_TO_INSTALL=false`, Stage36 OFF; Stage129 game DLL/Stage122 rollback preserved, candidate origin of `0x27` remains UNKNOWN.
+
+---
+
+
 ## Predecessor confirmed
 
 - [Stage142 Windows native FLS DLL lifecycle](STAGE142_CHECKPOINT.md) completed **13/13 isolated DLL + host scenarios PASS** (user-submitted VS2026 Community MSVC x86 transcript), including thread/fiber callbacks, controlled local FlsFree/FreeLibrary, registry counters and eight-thread cleanup.

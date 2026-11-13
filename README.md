@@ -1,3 +1,9 @@
+## Stage158 — SOURCE_ONLY native/raw ingress + worker/VEH lifecycle auditor (2026-11-14)
+
+New read-only Stage158 ZIP `ArcanaAI_Stage158_NativeRawIngress_WorkerVEH_Lifecycle_SOURCE_ONLY.zip`, **18,335B SHA256 `5d1c9ed5cd2d003211dd4c4c4bd7f5bf4f22fa8a79b7f9531e6b4df524843edd`**, 7 file CRC/6 SHA manifest PASS and **33/33 synthetic Python tests PASS**. Validates current-project 66 file SHA against user Stage156, crosschecks Stage157 r3, inventories 9 worker source paths, 3 VEH and five Stage10/129 raw/native RVA *source literals*. **Windows Stage158 not yet executed**; game runtime/native ownership/callback retirement/worker join remain unproven. [Detailed Stage158 checkpoint](STAGE158_CHECKPOINT.md), [Windows read-only next command](NEXT_SESSION.md). **SAFE_TO_INSTALL=false**, **SAFE_TO_UNLOAD_GAME_DLL=false**, Stage36 OFF, origin(0x27)=UNKNOWN. Existing working game DLL unchanged.
+
+---
+
 ## Stage157 r3 Windows current-source audit PASSED; Stage158 ingress/callback audit next (2026-11-14)
 
 User confirmed 32/32 Stage157 r3 Python tests PASS on Windows current tree, 9/9 CreateThread callsites matched (eight Proxy starts and one Stage59 conditional), 12/12 Stage59/Stage38 source signatures matched, direct Stage59 call in Stage58 success branch structurally MATCH, zero VEH removal candidates and sparse-count consistency. This resolves the historical Stage157 r2 source-regex REVIEW_REQUIRED without proving worker joins, callback retirement, native/raw owner safety or any live game module unload. [Verbatim markers and follow-up](STAGE157_R3_CHECKPOINT.md), [Stage158 scope](NEXT_SESSION.md). **`SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`**, Stage36 OFF, origin(0x27)=UNKNOWN; original DLL untouched.

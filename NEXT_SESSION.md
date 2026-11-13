@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage139 SOURCE-ONLY; Stage137 MSVC x86 /Zs PASS, Stage139 /Zs PENDING (2026-11-13)
+
+- **History:** [Stage136–139 detailed checkpoint](STAGE136_139_CHECKPOINT.md). Stage136 unsampled-0x27 owner model; Stage137 r2 guarded Win32 FLS bridge; Stage138 ABI/SEH and data-loss audit; Stage139 pending/exit-verified parent linkage and serialized loss-accounted sink. No additional JMP at Stage10 F34D0/F3930, no Arm(), no default project integration.
+- **Windows validation:** User confirmed Stage137 r2 `STAGE137_MSVC_SYNTAX PASS` for Stage137Win32Bridge.cpp / AIProducerContextTrace.cpp / Proxy.cpp, MSVC x86 `/Zs` only. **Latest Stage139 Windows output contains only `STAGE139_MSVC_SELECTED ...\\vcvarsall.bat`; there is NO Stage139 compile PASS/FAIL yet.** Do not promote selected toolchain to passed syntax.
+- **Stage139 offline:** policy 39/39 GCC and Clang, sink model 20/20, static 51/51; regressions 136 20/20, 137 22/22, 138 31/31. Source-only gated candidates, not game runtime proof. Parent relationship only after exit validation; candidate `0x27` origin remains UNKNOWN.
+- **NEXT:** obtain remainder of Stage139 MSVC /Zs log; then Stage140 isolated x86 ABI/SEH/FLS and concurrent/partial-write sink fault harness. **SAFE_TO_INSTALL=false**, preserve Stage129 DLL 2,099,200 B and Stage122 backup 2,089,984 B, Stage36 OFF.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage135 CURRENT USER SOURCE reveals Stage10 hard owner collisions (2026-11-13)
 
 - **Stage135 source VERIFIED:** [full integrated-source review](https://github.com/Hawky11/1/blob/stage135-current-source-stage10-owner-collision-audit/Stage135_Audit/CURRENT_SOURCE_STAGE10_OWNERSHIP_REVIEW.md) · [machine results](https://github.com/Hawky11/1/blob/stage135-current-source-stage10-owner-collision-audit/Stage135_Audit/results.json). User uploaded `ArcanaAI_Stage134_CurrentSources.zip` SHA256 **e1ae1b0bb74b508a2d47ce600c37f67f730b64306c52fc3d4e6d16cf2077a84f**, ZIP CRC PASS. Capture dated 2026-11-12T23:48:42Z, **70/70** source files match manifest SHA256 and sizes, 0 missing/extra. **All 21/21** Stage134 archived module source SHA256 match current captured sources byte-identically, confirming **52 source ranges** are in current code, not proof of live in-memory installation. Original user AALib.exe 175,556,608 B SHA256 **28cd69a7b6219ff0fa101ecebfcbe98962dc3f391b522d1fd6e32c006cf855ba** reverified.

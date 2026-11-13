@@ -2,12 +2,48 @@
 
 **SOURCE-ONLY / TEST-ONLY. SAFE_TO_INSTALL=false. Stage36 OFF. Working game DLL untouched.**
 
+## Windows MSVC x86 Stage143 r2 — USER-REPORTED NATIVE PASS (2026-11-13)
+
+- **PowerShell r2 fixed** four uses of reserved `$Host` to `$hostExe`, allowing the runner to progress beyond VS selection. Native build of disposable `Stage143FlsProbe.dll` + standalone `Stage143Host.exe` **PASS**, **16/16** controlled Windows x86 DLL admission/unload scenarios **PASS**.
+- `orphan_host_lease` PASS exercises an outstanding host-side lease while the DLL-side `inFlight` may be zero; `denied_after_host_close` reports `hostDenied=20`; `race_gate` reports `hostDenied=1`. `parallel`: callbacks=8, manual=512, live=registry=inFlight=registryErrors=0. `live_blocks` / `inflight_blocks` deny unsafe finish, and the FLS callback scenarios behave as expected.
+- The garbled Russian compiler/linker console message for `.lib`/`.exp` is only terminal character-set output; successful build and test exit markers are explicitly present.
+- **Scope:** actual Windows native operations of **test-only** DLL/host, not game DLL. Cooperative host admission is not an all-caller registry for the game; the isolated test does not establish ownership/quiescence, hook ABI, arbitrary raw callers, crash safety, or safe production unload. `SAFE_TO_INSTALL=false` still.
+- **Archive r2 verified in this session:** 31,171 bytes, SHA-256 `6e3c1c77525421ed7f156144c8910f924fc8ff98209b83c1272bbbb5bfe95cf4`, 18 files, ZIP CRC PASS. Original Stage143 r1 remains historical evidence of PowerShell `$Host` failure.
+
+Exact user-submitted console transcript:
+
+```text
+STAGE143_MSVC_SELECTED C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+Stage143FlsProbe.cpp
+   ‘®§¤ Ґвбп ЎЁЎ«Ё®вҐЄ  C:\Users\Noma\AppData\Local\Temp\Stage143_Isolated_527cd8b21081450db3cdc619b53c447e\Stage143FlsProbe.lib Ё ®ЎкҐЄв C:\Users\Noma\AppData\Local\Temp\Stage143_Isolated_527cd8b21081450db3cdc619b53c447e\Stage143FlsProbe.exp
+Stage143Host.cpp
+STAGE143_NATIVE_BUILD PASS: isolated test DLL + host EXE only (not game DLL)
+STAGE143_PASS scenario=empty callbacks=0 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=thread_callback callbacks=1 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=manual_cleanup callbacks=0 manual=1 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=live_blocks callbacks=1 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=1 registryErrors=0
+STAGE143_PASS scenario=inflight_blocks callbacks=0 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=1 registryErrors=0
+STAGE143_PASS scenario=orphan_host_lease callbacks=0 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=denied_after_host_close callbacks=0 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=20 blocked=0 registryErrors=0
+STAGE143_PASS scenario=preflight_flags callbacks=0 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=8 registryErrors=0
+STAGE143_PASS scenario=fiber_delete callbacks=1 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=fiber_switch callbacks=1 manual=1 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=parallel callbacks=8 manual=512 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=race_gate callbacks=0 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=1 blocked=0 registryErrors=0
+STAGE143_PASS scenario=double_stop callbacks=0 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=double_finalize callbacks=0 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_PASS scenario=registry_audit callbacks=1 manual=0 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=1 registryErrors=0
+STAGE143_PASS scenario=reload_twice callbacks=0 manual=1 live=0 registry=0 inFlight=0 deniedDLL=0 hostDenied=0 blocked=0 registryErrors=0
+STAGE143_NATIVE_HARNESS PASS: 16/16 isolated admission and unload scenarios
+STAGE143_SAFE_TO_INSTALL false: no complete external caller registry, game ownership or live hook ABI proof.
+```
+
 ## Stage143 r2 — Windows PowerShell automatic variable collision FIX (2026-11-13)
 
 - **Observed user failure of r1 before compilation:** after `STAGE143_MSVC_SELECTED C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat`, Windows PowerShell 5.1 raises `VariableNotWritable` at `Test-Stage143NativeHarness.ps1:46`, `$host=Join-Path $work 'Stage143Host.exe'`. PowerShell variables are case-insensitive, and automatic `$Host` is read-only. Neither `Stage143FlsProbe.cpp` nor `Stage143Host.cpp` was compiled in that attempt.
 - **Fix:** replace all **four** standalone references to variable `$host` with `$hostExe` (assignment, linker/host command, file-existence check, scenario invocation). The **four Stage143 C++ source files are byte-identical** to r1; no DLL/game code modification or gameplay hooks. Static auditor now checks against using a read-only `$Host` name.
 - **Corrected chat artifact**: `ArcanaAI_Stage143_IsolatedAdmission_Registry_UnloadBarrier_SourceOnly_r2.zip`, **31,171 B**, SHA-256 **`6e3c1c77525421ed7f156144c8910f924fc8ff98209b83c1272bbbb5bfe95cf4`**, 18 files, ZIP CRC and per-file manifest **PASS**, source-only (no compiled DLL/EXE). Script SHA-256 `2eabc1d2b5407cf4c81c02cf1084637fd657a5f0d2a4ec66fd3bd7ff6a92ec4c`.
-- **Offline recheck of r2:** **66/66** static, **526/526 GCC** and **526/526 Clang** portable policy assertions. No Windows PowerShell interpreter or MSVC available in current environment; **r2 Windows native build/link + 16/16 scenarios NOT RUN**. Do not claim a native PASS yet.
+- **Offline recheck of r2:** **66/66** static, **526/526 GCC** and **526/526 Clang** portable policy assertions. No Windows PowerShell interpreter or MSVC available in current environment; **r2 Windows native build/link + 16/16 scenarios PASS, user-reported console output**; these are isolated test DLL/host results, NOT game safety evidence.
 - **Windows rerun:** extract r2; from `Stage143_IsolatedAdmission\tests` run `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force` then `.\Test-Stage143NativeHarness.ps1`. Capture complete compiler/linker/scenario output. Original Stage143 r1 archive unchanged.
 - **Safety:** `SAFE_TO_INSTALL=false`, Stage36 OFF; Stage129 game DLL/Stage122 rollback preserved, candidate origin of `0x27` remains UNKNOWN.
 
@@ -35,7 +71,7 @@
 - Clang C++17 portable policy **526/526 assertions PASS**.
 - Portable policy checks all **256** host+DLL prerequisite combinations and all **256** Stage141 FLS preflight combinations, plus an 8-thread lease admission/closure race.
 - SHA-256 manifest and ZIP CRC PASS.
-- **Windows MSVC x86 native DLL+host compilation/linkage/16 scenarios: NOT RUN.** Do not claim a Windows pass.
+- **Windows MSVC x86 native DLL+host build/link and 16/16 controlled scenarios: PASS on r2** as documented above; not a real game runtime pass.
 
 ## Windows native test plan
 
@@ -68,5 +104,5 @@ STAGE143_SAFE_TO_INSTALL false: ...
 - `SAFE_TO_INSTALL=false`; tested Windows Stage129 DLL **2,099,200 bytes**, Stage122 fallback **2,089,984 bytes** untouched; **Stage36 OFF**, no extra JMP at F34D0/F3930, no `Arm()`.
 - Candidate source provenance of `0x27` remains **UNKNOWN**; this lifecycle study does not establish origin.
 - Real module FLS shutdown requires verified *all-caller* admission, module lifetime protection, complete thread/fiber registry, owner quiescence even through nested helpers, x86 hook ABI and exceptional-unwind parity. This isolated prototype does not supply them.
-- **Immediate next:** obtain full Stage143 Windows x86 compiler/linker output and all 16 scenario results. Stage144 can then audit the coverage gap between a cooperative host gate and actual Stage10/Stage129 module entrypoints, source-only, before considering further runtime work.
+- **Immediate next:** Stage143 Windows x86 r2 full 16/16 transcript has been received; move to Stage144 source-only coverage-gap audit. Stage144 can then audit the coverage gap between a cooperative host gate and actual Stage10/Stage129 module entrypoints, source-only, before considering further runtime work.
 - Relevant Microsoft sources: https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-freelibrary , https://learn.microsoft.com/en-us/troubleshoot/developer/visualstudio/cpp/libraries/fatal-error-thread-exit-fls-callback , https://learn.microsoft.com/en-us/windows/win32/dlls/dllmain .

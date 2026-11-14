@@ -1,3 +1,9 @@
+## Stage170 USER Windows SOURCE_ONLY PASS; Stage171 isolated rollback design next (2026-11-14)
+
+User Windows verification: **7/7 manifest; 107 tests discovered, 106 passed, 1 skipped because Windows symlink test not supported, 0 failures** (1.934 s). `STAGE170_SOURCE_SHA_MATCHED 4/4`, three Stage67/70 RVA targets, **48 exact source witnesses, 12 per-target evidence requests, 12 wider production gaps OPEN and 0 runtime artifacts**. A SOURCE_ONLY PASS does not prove native hook ownership, preimage or safe byte rollback. [Stage170 checkpoint](STAGE170_CHECKPOINT.md); [Stage171 source-only design handoff](NEXT_SESSION.md). Stage171 NOT BUILT/RUN. Preserve `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; no live game DLL work.
+
+---
+
 ## Stage170 SOURCE_ONLY three-RVA native preimage and hook-owner evidence ZIP ready (2026-11-14)
 
 Produced `ArcanaAI_Stage170_NativePreimage_HookOwner_Evidence_SOURCE_ONLY.zip`, **21,009 B, SHA256 `ff85b16373c4c3410c24165d567dd2627f6d687884d4b4f1caa12100bae91c4f`**, 8 ZIP members CRC PASS, **7/7 manifest, 107/107 tests after clean extraction**, historical Stage146 source SHA **4/4**, and **48** pinned source anchors. Three target records cover Stage67 `AD75C` 5B + `E9E60` 6B and Stage70 `156784` 6B; **12 per-RVA independent evidence requests**, 12 broader prior production gaps still OPEN, 0 independent runtime proof artifacts. Stage67/70 do not preserve live original bytes in their reviewed installer bodies; separate source module `AICommandSiteTrace.cpp:1979` saves bytes for **another** hook (not proof of rollback here). **User Windows Stage170 has not yet run**; [checkpoint](STAGE170_CHECKPOINT.md), [run command](NEXT_SESSION.md). Hard gates `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. No native build/project change/live game access.

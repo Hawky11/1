@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage166 Windows SOURCE_ONLY PASS; Stage167 retirement protocol design next (2026-11-14)
+
+- **User Windows Stage166 PASS:** manifest **7/7**, **96/96 unittest PASS (3.813s)**, `STAGE166_UPSTREAM stage165_pass=True witnesses=25`, `STAGE166_SOURCE_SHA_MATCHED 13/13`, `STAGE166_LIFETIME workers=9 veh=3 witnesses=22 open_gaps=12`. Final `STAGE166_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. [Stage166 complete Windows checkpoint](STAGE166_CHECKPOINT.md). The Stage166 JSON remains local at `%TEMP%\ArcanaAI_Stage166_SourceOnly\stage166_native_lifetime_metadata.json`; user pasted console, not full JSON.
+- **Source-scope conclusions:** nine specific `CreateThread` starters and their `CloseHandle` sites do not prove thread completion/join; three VEH registration files contain no locally proved remove+in-flight retirement sequence. Exact-source SHA pinned for all 13 scoped files. None proves global absence, foreign ingress closure, module lease, native ABI/SEH, install/rollback or safe unload.
+- **NEXT Stage167 NOT YET BUILT/RUN:** construct narrow SOURCE_ONLY stop/join & three VEH callback retirement feasibility model: 9 worker stop signals, retained handles/join acknowledgements, no-new-work entry gate, in-flight callback count/epoch, remove VEH and drain, owner lease/foreign caller quiescence and Stage38/59 admission. Use deterministic synthetic state machine with forced failure/timeout; no game writes, DLL access or native build. Reuse actual Stage166 JSON and only essential source pins, fail closed on drift.
+- **Hard safety DENY:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN, rollback/preimage, raw caller/trampoline/ABI/SEH, nine joins and three VEH retirement UNPROVEN. Preserve existing working/backup DLLs.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage166 SOURCE_ONLY native/worker/VEH lifetime ZIP READY; Windows run pending (2026-11-14)
 
 - Latest actual user Windows project verification is **Stage165 PASS**: manifest 7/7, 55/55 tests, current 3/3 source SHA and 25 witness/12 open gaps. No user Windows Stage166 run yet. [Stage165 checkpoint](STAGE165_CHECKPOINT.md).

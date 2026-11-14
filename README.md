@@ -1,3 +1,9 @@
+## Stage170 SOURCE_ONLY three-RVA native preimage and hook-owner evidence ZIP ready (2026-11-14)
+
+Produced `ArcanaAI_Stage170_NativePreimage_HookOwner_Evidence_SOURCE_ONLY.zip`, **21,009 B, SHA256 `ff85b16373c4c3410c24165d567dd2627f6d687884d4b4f1caa12100bae91c4f`**, 8 ZIP members CRC PASS, **7/7 manifest, 107/107 tests after clean extraction**, historical Stage146 source SHA **4/4**, and **48** pinned source anchors. Three target records cover Stage67 `AD75C` 5B + `E9E60` 6B and Stage70 `156784` 6B; **12 per-RVA independent evidence requests**, 12 broader prior production gaps still OPEN, 0 independent runtime proof artifacts. Stage67/70 do not preserve live original bytes in their reviewed installer bodies; separate source module `AICommandSiteTrace.cpp:1979` saves bytes for **another** hook (not proof of rollback here). **User Windows Stage170 has not yet run**; [checkpoint](STAGE170_CHECKPOINT.md), [run command](NEXT_SESSION.md). Hard gates `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. No native build/project change/live game access.
+
+---
+
 ## Stage169 USER Windows SOURCE_ONLY PASS — source-to-runtime evidence matrix, 12 gaps open (2026-11-14)
 
 Verified user Windows console: **7/7 manifest, 104/104 Python tests (0.657s), 13/13 current SHA, 47 exact source witnesses**, `STAGE169_EVIDENCE_MATRIX open=12 source_witnesses=47 runtime_artifacts=0`. Intentional REVIEW_REQUIRED negative test lines did not affect final `STAGE169_TARGETED_SOURCE_ONLY_PASS`. This is a **source/metadata matrix**, not runtime safety proof; 0/12 production gates closed. [Stage169 Windows checkpoint](STAGE169_CHECKPOINT.md), [next Stage170 source-only evidence plan](NEXT_SESSION.md). Stage170 NOT YET BUILT/RUN. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; game DLL/process not accessed by this audit.

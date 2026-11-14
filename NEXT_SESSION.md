@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage168 Windows SOURCE_ONLY PASS; Stage169 source-to-runtime evidence gap review next (2026-11-14)
+
+- **Actual user Windows Stage168 PASS**: manifest **7/7**, **166/166 tests PASS (0.428s)**, upstream `STAGE168_UPSTREAM stage167_pass=True modeled=79`; `STAGE168_SOURCE_SHA_MATCHED 13/13`; `STAGE168_PROTOCOL workers=9 veh=3 modeled=99 open_gaps=12`; toy outcomes **1 drained, 9 pre-admission denied, 89 quarantined**. Both final markers `STAGE168_TARGETED_SOURCE_ONLY_PASS` and `STAGE168_LOCAL_SOURCE_ONLY_TESTS_PASS`, with `SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. [Full checkpoint](STAGE168_CHECKPOINT.md).
+- **Important boundary**: `DRAINED_TEST_DOUBLE_ONLY=1` applies solely to an artificial model. It is not evidence of live nine-worker joins, three VEH in-flight retirements, native/raw caller and trampoline ABI/SEH, original patch-byte rollback, real Stage59 admission safety, debug-register lease, future dispatch exclusion or module ownership. **12 real proof gaps remain open.** User's full Stage168 JSON remains at `%TEMP%\ArcanaAI_Stage168_SourceOnly\stage168_callback_module_lease_metadata.json`, not uploaded.
+- **NEXT Stage169 NOT YET CREATED/EXECUTED:** bounded SOURCE_ONLY **Source-to-Runtime Safety Evidence Gap Review**, aiming to bridge static exact source witnesses and missing independent runtime/native ownership proof, rather than repeating synthetic tests indefinitely. Build a 12-gap evidence matrix specifying witnessed source fact, unproven condition, possible nonproduction test/observational artifact, required success criteria and safety blockers. Keep all runtime gaps UNKNOWN unless separately observed. No native build/game process/DLL access or project source edits.
+- **Hard DENY** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN; keep working Stage129 and Stage122 backup DLLs unchanged.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage168 SOURCE_ONLY Callback Epoch & Module Lease ZIP ready; user Windows run pending (2026-11-14)
 
 - **Latest actual Windows current-tree audit is Stage167 PASS:** 7/7 manifest, 165/165 tests, 13/13 current source SHA, `STAGE167_UPSTREAM stage166_pass=True worker_sources=9 veh_sources=3`, 79 toy retirement states (1 drained/8 denied/70 quarantined), 12 production lifetime obligations OPEN. Full Stage167 JSON remains user-local in `%TEMP%\ArcanaAI_Stage167_SourceOnly\stage167_worker_veh_retirement_metadata.json`. [Stage167 checkpoint](STAGE167_CHECKPOINT.md).

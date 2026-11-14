@@ -1,3 +1,9 @@
+## Stage160 — read-only source API address-operand provenance, Windows audit pending (2026-11-14)
+
+New Stage160 `ArcanaAI_Stage160_NativeWriter_OperandDataflow_SOURCE_ONLY.zip` **27,945 B SHA256 `db9eaed266575ba4f24b375045451e577b64042e4e29bd2044ab45c04dd44cc3`**, 9 ZIP entries CRC PASS, manifest 8/8 SHA+size PASS, **73/73 synthetic/negative tests PASS after fresh extraction**. Unlike Stage159's ±60-line proximity, Stage160 inspects masked source **API address operands** for 11 native target plus 3 Stage67/70 risk RVAs; separates possible byte writes from protection/cache flush. Checks all 66 SHA and reconciles Stage156/158 r2/159 r2 source ledgers; reports path/line/role only. **No writer target alias dataflow, runtime hook ownership, live trampoline/caller/worker join/VEH retirement or rollback proofs**. **Current Windows Stage160 has NOT RUN**. Run `Stage160_SourceOnly/Invoke-Stage160Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` read-only. [Detailed checkpoint](STAGE160_CHECKPOINT.md) and [next commands](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN; DLL untouched.
+
+---
+
 ## Stage159 r2 Windows SOURCE_ONLY preflight PASS; Stage160 native writer dataflow next (2026-11-14)
 
 User Windows console: **43/43 tests PASS**, manifest 6/6, **66/66 source SHA match**, **11/11 historical native target RVA literals found**, 418 lexical writer API candidates but **zero proven writer→target edges**, 9 worker sites and 3 VEH registration anchors. Prior Windows WinError1314 symlink fixture failure resolved. Static preflight is PASS; real raw/foreign ownership, trampoline, rollback, 9 worker joins and 3 VEH retirement are still UNKNOWN/NO. [Exact Stage159 r2 checkpoint](STAGE159_CHECKPOINT.md) and [Stage160 read-only next scope](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF; origin(0x27)=UNKNOWN. No game DLL changes.

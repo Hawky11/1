@@ -1,3 +1,13 @@
+## ACTIVE CHECKPOINT — Stage160 source API address-operand audit ZIP READY, Windows run pending (2026-11-14)
+
+- User's **last actual Windows project check**: Stage159 r2 SOURCE_ONLY PASS: 43/43 tests, 66/66 source SHA, 11/11 native target declarations, 418 lexical write API candidates and 0 writer→target proven edges. [Full previous checkpoint](STAGE159_CHECKPOINT.md).
+- **New Stage160 chat ZIP:** `ArcanaAI_Stage160_NativeWriter_OperandDataflow_SOURCE_ONLY.zip`, **27,945 bytes SHA256 `db9eaed266575ba4f24b375045451e577b64042e4e29bd2044ab45c04dd44cc3`**, 9 ZIP entries CRC PASS, manifest 8/8 SHA+size PASS, **73/73 Python offline tests PASS after fresh extraction** (43 Stage159 r2 regression + 30 new Stage160).
+- **NEXT Windows read-only:** unpack ZIP, open PowerShell in `Stage160_SourceOnly`; `Set-ExecutionPolicy Bypass -Scope Process -Force` then `.\Invoke-Stage160Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`. No admin/MSVC/game process. Reads existing local Stage156+Stage158 r2+Stage159 r2 metadata in %TEMP% and all 66 sources, rehashes, extracts argument positions for API call candidates. Output **outside project**: `%TEMP%\ArcanaAI_Stage160_SourceOnly\stage160_writer_dataflow_metadata.json`. `STAGE160_SOURCE_ONLY_PREFLIGHT_PASS` is only SHA/identity/lexical-evidence pass; direct source operands are not runtime dataflow proof. **Windows Stage160 NOT YET EXECUTED**.
+- **What to inspect after console:** count of RVA tokens found specifically in address operands for 11 historic native targets + 3 Stage67/70 rollback-risk targets, distinguishing write/protect/flush. If zero, do NOT conclude native hook absent: pointer can be computed via helper/macro/variable. Next narrow source slices only when justified by metadata.
+- **Hard DENY:** `proven_writer_to_target_dataflow_edges=0`, 9 worker joins=NO, 3 VEH retirements=NO, trampoline/raw caller/ABI/SEH/partial rollback/module lease UNKNOWN; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. Preserve working Stage129 2,099,200B game DLL and Stage122 2,089,984B backup untouched. [Stage160 full checkpoint](STAGE160_CHECKPOINT.md).
+
+---
+
 ## ACTIVE CHECKPOINT — Stage159 r2 Windows SOURCE_ONLY PASS; Stage160 writer→target dataflow is next (2026-11-14)
 
 - **User-confirmed Stage159 r2 Windows**: all **43/43 tests PASS** (incl. WinError1314 workaround test30); SHA manifest 6/6; **66/66 current source hashes match**; **11/11 source target declarations found**; `writer_api_lexical_candidates=418` BUT `proven_writer_target_edges=0`; nine worker sites, three VEH registrations. Final `STAGE159_LOCAL_SOURCE_ONLY_TESTS_PASS`. Previous r1 synthetic symlink failure resolved; actual [3/3] current source scan completed.

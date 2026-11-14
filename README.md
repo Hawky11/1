@@ -1,3 +1,9 @@
+## Stage168 Windows current-source PASS; Stage169 real-evidence gap review next (2026-11-14)
+
+User confirmed `STAGE168_TARGETED_SOURCE_ONLY_PASS`: **7/7 manifest, 166/166 Python tests (0.428s), 13/13 current source SHA**, Stage167 upstream 79 toy scenarios, and **99** new epoch/module lease test-double cases (**1 drained, 9 denied, 89 quarantined**) with **12 unresolved real lifecycle/rollback/owner gaps**. The PASS validates source pins and toy contract, not installed-byte ownership or live worker/VEH retirement. [Detailed Stage168 checkpoint](STAGE168_CHECKPOINT.md), [Stage169 handoff](NEXT_SESSION.md). Stage169 not built/run; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. No game DLL accessed by audit.
+
+---
+
 ## Stage168 SOURCE_ONLY callback epoch/module owner lease ZIP ready (2026-11-14)
 
 New `ArcanaAI_Stage168_CallbackEpoch_ModuleOwnerLease_Integration_SOURCE_ONLY.zip`: **16,340 B SHA256 `240130f2066a22b3035ef9013f34895b0cbd6cb9f9ba457d7e23ec7e00752b06`**, 8 ZIP members CRC PASS, **7/7 manifest**, **166/166 fresh-extract tests PASS**, historical source SHA **13/13**. Versioned callback/Stage59 ingress and module owner lease integration **test double** with **99** artificial cases (1 drained, 9 denied, 89 quarantined). No live worker join, VEH removal, native hook rollback or DLL unload. **User Stage168 Windows current-project run NOT YET DONE.** [Checkpoint](STAGE168_CHECKPOINT.md), [Windows command and next phase](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. Working game DLL untouched.

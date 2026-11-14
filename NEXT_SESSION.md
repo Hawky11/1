@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage167 user Windows SOURCE_ONLY PASS; Stage168 lease integration model next (2026-11-14)
+
+- **Windows Stage167 PASS from user-supplied console:** manifest **7/7**, **165/165 Python tests PASS (1.677s)**, `STAGE167_UPSTREAM stage166_pass=True worker_sources=9 veh_sources=3`, `STAGE167_SOURCE_SHA_MATCHED 13/13`, `STAGE167_PROTOCOL workers=9 veh=3 modeled=79 open_gaps=12`. Toy outcomes `DRAINED_TEST_DOUBLE_ONLY=1`, `DENIED_BEFORE_RETIREMENT_TEST_DOUBLE=8`, `QUARANTINED_TEST_DOUBLE_UNPROVEN=70`. Final `STAGE167_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. [Detailed Stage167 checkpoint](STAGE167_CHECKPOINT.md).
+- **Scope:** 79 are only artificial state-machine scenarios; the one drained toy case does NOT prove nine real worker joins, three VEH deregistrations/in-flight callback retirements, no future dispatch, native ABI/SEH, exact patch rollback or external module lease. All 12 production proof gaps remain open. The output JSON exists on the user's Windows machine at `%TEMP%\ArcanaAI_Stage167_SourceOnly\stage167_worker_veh_retirement_metadata.json`, not uploaded in chat.
+- **NEXT Stage168 (not built/run):** bounded SOURCE_ONLY versioned callback and module owner lease integration *design/test-double*, using exact Stage167 sanitized upstream contract and 13 current SHA pins: entry epochs, no-new-work admission gates (Stage38/59), nine stop-ACK-join obligations, three VEH remove+inflight drain, native/raw caller leases, rollback-preimage and module lease, fail-closed timeout/crash/reentry races. No global scan unless needed by evidence, no game process/DLL access, no native build or source changes.
+- **Mandatory gates:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. No claim of safe runtime unload.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage167 SOURCE_ONLY Worker Join & VEH Retirement Protocol READY; Windows run pending (2026-11-14)
 
 - **Latest user Windows current-source evidence remains Stage166 PASS**: manifest 7/7, **96/96 tests**, 13/13 SHA, 9 worker startup sites, 3 VEH registrations, 22 source witnesses, 12 open gaps. Stage166 current user JSON at `%TEMP%\ArcanaAI_Stage166_SourceOnly\stage166_native_lifetime_metadata.json`. [Stage166 checkpoint](STAGE166_CHECKPOINT.md).

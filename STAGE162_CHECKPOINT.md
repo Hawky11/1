@@ -1,6 +1,6 @@
 # Stage162 — Stage67/70 focused write order, alias provenance, and partial-failure review (2026-11-14)
 
-**Status: Stage162 SOURCE_ONLY local package and archived-source preview completed; USER WINDOWS STAGE162 NOT YET RUN.** No game DLL/process access, no native build, no source edits, no installation/unload. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN.
+**Status: Stage162 USER WINDOWS SOURCE_ONLY PASS (15/15 tests and 12/15 ledger reconciliation).** No game DLL/process access, no native build, no source edits, no installation/unload. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN.
 
 ## Evidence and scope
 
@@ -29,7 +29,7 @@ Each group of four Stage161 candidates represents **one destination alias used i
 
 New chat artifact: `ArcanaAI_Stage162_Stage67_70_WriteOrder_PartialFailure_SOURCE_ONLY.zip`, **9,205 B**, SHA256 `f9adddc5d77eb70ab05e64661f4808095fcc52282e7c190e330eb1fc716e1dff`; six ZIP entries, CRC PASS, **5/5 SHA manifest**, **15/15 local synthetic and adversarial tests PASS** after clean extraction. Independent historical Stage146 source-only preview also PASS (12/15 candidate metadata and 3/3 pinned file hashes). ZIP contains only Python/PowerShell/README/tests/manifest; no private game C++ or DLLs.
 
-**NEXT Windows read-only run** (extract ZIP, CD to `Stage162_SourceOnly`):
+**Historical Windows run instructions (already executed successfully)** (extract ZIP, CD to `Stage162_SourceOnly`):
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
@@ -38,4 +38,34 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 Output: `%TEMP%\ArcanaAI_Stage162_SourceOnly\stage162_targeted_write_order_metadata.json`. `TARGETED_SOURCE_ONLY_PASS` means only that the **current** targeted files match the archived source hash pins and Stage161 metadata witness lines; it does not permit install/unload. If drift, inspect only relevant lines; no broad 443-API rerun.
 
-**Next after Windows output:** Stage163 should address source-level rollback transaction obligations and error-path recovery in a separate **design/source-only** analysis (not modify production game code without explicit direction), while keeping native owner/worker/VEH lifetime gates blocked. Stage129 working DLL (2,099,200 B) and Stage122 rollback DLL (2,089,984 B) unchanged.
+**Follow-up after Windows PASS:** Stage163 should address source-level rollback transaction obligations and error-path recovery in a separate **design/source-only** analysis (not modify production game code without explicit direction), while keeping native owner/worker/VEH lifetime gates blocked. Stage129 working DLL (2,099,200 B) and Stage122 rollback DLL (2,089,984 B) unchanged.
+
+
+---
+
+## User Windows execution — PASS (2026-11-14)
+
+**CURRENT STATUS: Stage162 has now been run by the user on the actual Windows source tree and PASSED.** Original user PowerShell console (provided in conversation, not an uploaded full metadata file) records:
+
+```text
+STAGE162_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE162_MANIFEST_PASS files=5
+Ran 15 tests in 0.056s
+OK
+STAGE162_RECONCILE bounded=12 blocked=15
+STAGE162_TARGET stage=STAGE67 rva=AD75C length=5 source_writer_target=HASH_PINNED_CPP_SOURCE_ONLY rollback=NO
+STAGE162_TARGET stage=STAGE67 rva=E9E60 length=6 source_writer_target=HASH_PINNED_CPP_SOURCE_ONLY rollback=NO
+STAGE162_TARGET stage=STAGE70 rva=156784 length=6 source_writer_target=HASH_PINNED_CPP_SOURCE_ONLY rollback=NO
+STAGE162_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage162_SourceOnly\stage162_targeted_write_order_metadata.json
+STAGE162_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE162_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+- The Windows run confirms the package manifest (5/5), all **15/15 synthetic/negative tests**, the exact Stage161 `bounded=12 blocked=15` reconciliation, and **three source SHA-pinned RVA writer candidates** with intended lengths 5, 6, 6. The audit implementation pins `Stage67NativePaths.inl`, `Stage70DeferredWriter.inl`, `Stage38CallbackWindow.inl`; this supports applying the archived-source findings below to the current **matching source text**. This is *not* an independently uploaded full Stage162 JSON or a runtime/game test.
+- `source_writer_target=HASH_PINNED_CPP_SOURCE_ONLY` establishes source provenance under the exact pinned file/content and Stage161 witness record contract, not installed patch state, executable call path/owner, runtime atomicity, or safety.
+- All three report **`rollback=NO`**. The Stage67 two-write order and Stage70 single write, post-write error paths, and Stage38 caller implications require further source-level failure modelling. In particular, a failed cache flush or protection restore after bytes have changed is not undone by restoration of page protections.
+- New NEXT: **Stage163 SOURCE_ONLY fault-state/transaction obligations matrix**. Do not repeat the broad source scan; build a *per-site state machine* from Stage67/70 and Stage38 exact lines: protection obtained, first write committed, second write committed, ICache flush outcomes, installed flags, reverse-order protect restoration, suspend/resume/mutex cleanup, Stage38 admission. Distinguish ordinary API-return failures, C++ exceptions/SEH, partial memory-copy faults and asynchronous thread execution; model rollback only when original bytes are snapshotted, verified and safely restorable. Fail-closed on current-source SHA drift; no live patching, no DLL/source modification, no ownership claims.
+- Persistent hard gate: `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. Raw/foreign callers, trampolines/ABI/SEH/unwind, nine worker stop/join, three VEH future dispatch retirement, true installed-byte ownership, external module lease and complete rollback remain UNKNOWN/NO. Prior working Stage129 and fallback Stage122 DLLs should remain untouched.
+
+---
+

@@ -1,3 +1,9 @@
+## Stage166 SOURCE_ONLY native caller/worker/VEH lifecycle ZIP ready (2026-11-14)
+
+With user **Stage165 Windows PASS** as upstream, new `ArcanaAI_Stage166_NativeCaller_WorkerVEH_OwnershipLifecycle_SOURCE_ONLY.zip` **17,844 B SHA256 `7a5f3143d87836a23b08b263814b64e98da4d02665acb096fdf2fc77f08d7040`**, 8 ZIP entries CRC PASS, **7/7 manifest and 96/96 clean-extraction tests PASS**. Historical pinned source preview **13/13**, local witness graph **9 worker starters, 3 VEH registrations, 22 source anchors and 12 open lifetime gaps**; not native/runtime proof. **Actual Windows Stage166 NOT RUN.** Run `Stage166_SourceOnly/Invoke-Stage166Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`; reads user-local Stage165 JSON. [Stage166 checkpoint](STAGE166_CHECKPOINT.md), [handoff](NEXT_SESSION.md). No DLL edits, no live hooks, `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.
+
+---
+
 ## Stage165 user Windows SOURCE_ONLY PASS; Stage166 targeted owner/lifetime review next (2026-11-14)
 
 User-confirmed Stage165 **7/7 manifest, 55/55 Python unittest PASS (0.739s), 3/3 current SHA**, Stage164 65-case upstream compatibility and **25 source witnesses / 12 open proof gaps**. Stage67 AD75C 5B and E9E60 6B; Stage70 156784 6B each remain `preimage=NOT_SAVED_IN_REVIEWED_INSTALLER owner=UNPROVEN rollback=NO`. [Detailed current checkpoint](STAGE165_CHECKPOINT.md), [next Stage166 plan](NEXT_SESSION.md). This is static source-only PASS, **not** proof of safe install/unload; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. Stage166 not run, game DLL unchanged.

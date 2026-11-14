@@ -1,6 +1,34 @@
 # ArcanaAIOverhaul Stage168 — callback epoch & module owner lease integration (2026-11-14)
 
-**STATUS: Stage168 SOURCE_ONLY archive created and independently validated locally. User Windows Stage168 has NOT yet run.** Latest user Windows current-project checkpoint remains **Stage167 PASS** (manifest 7/7, 165/165 tests, Stage166 metadata 9 workers/3 VEH, 13/13 actual current source SHA, 79 synthetic retirement cases, 12 open production safety obligations). [Stage167 checkpoint](STAGE167_CHECKPOINT.md). No game process, game DLL or production source files were accessed or modified by Stage168.
+**CURRENT STATUS: Stage168 USER WINDOWS SOURCE_ONLY PASS (7/7 manifest, 166/166 tests, 13/13 current source SHA, 99 synthetic epoch/lease cases; 12 open production gaps).** Previous Stage167 user Windows PASS remains the exact upstream. No game process, game DLL or production source files were accessed or modified by Stage168.
+
+## User Windows Stage168 current-source execution — PASS (2026-11-14)
+
+User executed `Invoke-Stage168Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` from the extracted `Stage168_SourceOnly`. The following is **actual user-pasted Windows PowerShell console evidence**; the full Stage168 JSON remains user-local and was not uploaded here. No live game process/DLL instrumentation was performed.
+
+```text
+STAGE168_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE168_MANIFEST_PASS files=7
+Ran 166 tests in 0.428s
+OK
+STAGE168_UPSTREAM stage167_pass=True modeled=79
+STAGE168_SOURCE_SHA_MATCHED 13/13
+STAGE168_PROTOCOL workers=9 veh=3 modeled=99 open_gaps=12
+STAGE168_TEST_DOUBLE_OUTCOMES DRAINED_TEST_DOUBLE_ONLY=1,DENIED_BEFORE_ADMISSION_TEST_DOUBLE=9,QUARANTINED_TEST_DOUBLE_UNPROVEN=89
+STAGE168_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage168_SourceOnly\stage168_callback_module_lease_metadata.json
+STAGE168_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE168_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Verified source-only outcome:** manifest **7/7**, **166/166 Python tests PASS (0.428s)**, exact Stage167 upstream data (`stage167_pass=True modeled=79`), **13/13 current source SHA** and 99 **artificial** epoch/module-lease cases (1 toy drained, 9 pre-admission denied, 89 quarantined). **12 production proof gaps remain open**. The tests validate a proposed design under toy conditions, not actual worker joins, VEH removal, byte ownership, trampoline ABI/SEH or module unload.
+
+### Stage169 next (not built/run)
+
+Proceed with **SOURCE_ONLY Source-to-Runtime Safety Evidence Gap Review**, specifically *not merely another larger synthetic-state model*. Inventory the exact artifacts and independently testable source/runtime facts needed to promote each of the existing 12 proof gaps (raw caller/trampoline provenance, native byte preimages and exclusive hook owner, original-byte rollback under partial failure, worker stop/ACK/join, VEH removal and in-flight drain, Stage38/59 admission, debug-register ownership, future callback closure and external module lease). Where running code is necessary, label **NOT TESTED**, propose a constrained, isolated offline or nonproduction test plan, and require separate explicit approval before any live hook or DLL edit. Keep unknowns unknown; do not equate SHA-pinned source witnesses or toy-drained states with runtime safety.
+
+**HARD DENY unchanged:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. Working Stage129 and fallback Stage122 DLL files unaffected by source-only audit.
+
+---
 
 ## Verified release
 
@@ -35,7 +63,7 @@ All 99 cases report `game_install_approved=false`, `game_unload_approved=false`,
 
 **Still open:** production callback epoch gate, all nine stop/ACK/joins, all three VEH unregister/in-flight drain, raw/native and trampoline ABI/SEH, Stage38→Stage59 admission and debug-register owner, original-byte preimage/rollback, foreign hook owner exclusion, future dispatch quiescence, external module lease, exception-safe timeout cleanup, no ABA/restart races. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. Stage36 OFF, origin(0x27)=UNKNOWN.
 
-## Windows run — pending
+## Windows SOURCE_ONLY run — completed
 
 Extract the ZIP outside `D:\INCUBATOR\ArcanaAIOverhaul`; PowerShell in `Stage168_SourceOnly`:
 
@@ -47,8 +75,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 Expected upstream: `%TEMP%\ArcanaAI_Stage167_SourceOnly\stage167_worker_veh_retirement_metadata.json`.
 Output (outside project): `%TEMP%\ArcanaAI_Stage168_SourceOnly\stage168_callback_module_lease_metadata.json`.
 
-Expected **only if Windows source/JSON pins are unchanged**: manifest 7/7, 166/166 Python tests, 13/13 source SHA, Stage167 79 toy cases, Stage168 99 toy cases (1 drained/9 denied/89 quarantined), 12 open gaps and `STAGE168_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. If drift, REVIEW_REQUIRED. No project source/DLL changes, native build, game access or module unload.
+Now confirmed by the user's Windows console: manifest 7/7, 166/166 Python tests, 13/13 source SHA, Stage167 79 toy cases, Stage168 99 toy cases (1 drained/9 denied/89 quarantined), 12 open gaps and `STAGE168_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. If drift, REVIEW_REQUIRED. No project source/DLL changes, native build, game access or module unload.
 
-## Next after user Windows Stage168 evidence
+## Next after verified user Windows Stage168 PASS
 
 Proposed Stage169 SOURCE_ONLY review of **missing real-world bridge** between artificial lease/epoch invariants and actual worker/VEH/raw-caller/native-ownership source control flow. Demand verifiable, source-anchored evidence before any production changes. Do not automatically continue endlessly with synthetic-only tests as a substitute for observed real safety. Existing working Stage129 and backup Stage122 game DLLs remain unchanged.

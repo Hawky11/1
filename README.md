@@ -1,3 +1,9 @@
+## Stage167 Windows current-source SOURCE_ONLY PASS — Stage168 lease integration next (2026-11-14)
+
+User confirmed `STAGE167_TARGETED_SOURCE_ONLY_PASS` with **7/7 manifest, 165/165 tests, 13/13 current source hashes**, Stage166 upstream nine worker and three VEH sources, **79 toy protocol cases (1 drained, 8 denied, 70 quarantined)**; **12 real retirement/ownership proof gaps remain OPEN**. This is only a **static source + synthetic model** result, not real worker joins, VEH retirement or module unload. [Full Stage167 Windows checkpoint](STAGE167_CHECKPOINT.md), [Stage168 handoff](NEXT_SESSION.md). Stage168 NOT BUILT/RUN; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.
+
+---
+
 ## Stage167 SOURCE_ONLY worker join/VEH callback retirement ZIP ready (2026-11-14)
 
 New `ArcanaAI_Stage167_WorkerJoin_VEHRetirement_Protocol_SOURCE_ONLY.zip`, **17,107 B SHA256 `ca0229e1a06814b0a9abfdae338ffff1271544e4f6c9a02306b5dc2ea15d73ad`**, 8 ZIP entries CRC PASS, manifest **7/7** and **165/165 synthetic/adversarial tests PASS after clean extraction**, Stage146 historic 13/13 source SHA preview PASS. Source-only test-double protocol verifies 79 artificial cases (1 toy drain, 8 denied, 70 quarantined) for 9 worker stop/ACK/join plus 3 VEH unregister/in-flight callback drain, Stage59 and owner leases. **USER Stage167 Windows has NOT RUN**; previous Stage166 Windows PASS remains latest on-machine evidence. [Full Stage167 checkpoint](STAGE167_CHECKPOINT.md), [next command](NEXT_SESSION.md). No live game DLL/process operations, no code changes and no false install/unload claims. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.

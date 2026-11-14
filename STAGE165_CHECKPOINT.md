@@ -1,6 +1,34 @@
 # ArcanaAIOverhaul Stage165 — native preimage/owner gap audit (2026-11-14)
 
-**STATUS: Stage165 SOURCE_ONLY package prepared and tested locally; USER WINDOWS STAGE165 NOT YET RUN.** The last user-confirmed Windows project execution remains Stage164 PASS (80/80 tests, manifest 6/6, 3/3 source SHA, 65 isolated bytearray model cases, production rollback=NO for all three Stage67/70 targets). Stage165 does not access or modify the game DLL, process, or original C++ tree.
+**CURRENT STATUS: User Windows Stage165 SOURCE_ONLY PASS (7/7 manifest, 55/55 tests, 3/3 current SHA, 25 source witnesses, 12 open gaps).** Stage164 remains the verified upstream. This source-only audit does not access or modify the game DLL, process, or original C++ tree.
+
+## User Windows Stage165 current-source audit — PASS (2026-11-14)
+
+The user executed `Invoke-Stage165Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` from the extracted SOURCE_ONLY package. **The following are actual user-pasted Windows PowerShell console markers**, not an uploaded full Stage165 JSON and not a game-process/runtime experiment:
+
+```text
+STAGE165_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE165_MANIFEST_PASS files=7
+Ran 55 tests in 0.739s
+OK
+STAGE165_UPSTREAM stage164_pass=True test_double_cases=65
+STAGE165_SOURCE_SHA_MATCHED 3/3
+STAGE165_PROOF_GAPS open=12 source_witnesses=25
+STAGE165_TARGET stage=STAGE67 rva=AD75C bytes=5 preimage=NOT_SAVED_IN_REVIEWED_INSTALLER owner=UNPROVEN rollback=NO
+STAGE165_TARGET stage=STAGE67 rva=E9E60 bytes=6 preimage=NOT_SAVED_IN_REVIEWED_INSTALLER owner=UNPROVEN rollback=NO
+STAGE165_TARGET stage=STAGE70 rva=156784 bytes=6 preimage=NOT_SAVED_IN_REVIEWED_INSTALLER owner=UNPROVEN rollback=NO
+STAGE165_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage165_SourceOnly\stage165_preimage_owner_gap_metadata.json
+STAGE165_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE165_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Interpretation:** manifest **7/7** and tests **55/55 PASS (0.739s)** on user's Windows source tree; Stage164 65-case upstream ledger verified, current SHA pins matched for **3/3** Stage67/Stage70/Stage38 source files; **25** source witnesses and **12** unresolved proof gaps are consistent with the reviewed installer scope. For all three 5/6/6-byte RVA targets, the analyzed installer does not save live preimage bytes in an independent rollback snapshot; owner is UNPROVEN and production rollback is NO. This does **not** assert no snapshot elsewhere in the codebase, nor demonstrate live bytes, writer provenance, foreign module ownership, trampoline/ABI/SEH or callback quiescence.
+
+**Current state:** Stage165 user Windows SOURCE_ONLY audit is complete, but **no installation or unload is authorized**. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. No game DLL/source mutation reported. The Stage165 JSON remains on the user's Windows system; only console output is present in this conversation.
+
+**Next Stage166 (not built or executed):** narrow SOURCE_ONLY native/raw caller ingress and hook-owner lifetime gap review, reusing Stage165 hash pins and earlier Stage156–164 inventories: identify real producer/owner of each native entry, 9 worker stop/join paths, 3 VEH registrations/removals and in-flight callback retirement, trampoline EIP/ABI/SEH/unwind, Stage38→Stage59 gating, and external module lease. Every ungrounded owner/retirement claim remains UNKNOWN; no broad API scan and no live game access.
+
+---
 
 ## Artifact, integrity and local evidence
 
@@ -49,7 +77,7 @@ Stage165 uses exact upstream sanitized Stage164 model contract including method,
 
 **The audit can PASS while all twelve remain OPEN**: PASS means that the *source-scoped negative and positive witness classifications* match pinned evidence, not that hook installation is safe.
 
-## User Windows action (not yet executed)
+## User Windows command (successfully executed)
 
 Unzip outside game project, enter `Stage165_SourceOnly` and run:
 
@@ -61,10 +89,10 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 Default input: `%TEMP%\ArcanaAI_Stage164_SourceOnly\stage164_rollback_feasibility_metadata.json`.
 Default output: `%TEMP%\ArcanaAI_Stage165_SourceOnly\stage165_preimage_owner_gap_metadata.json`.
 
-Expected only if current evidence unchanged: `STAGE165_MANIFEST_PASS files=7`, 55/55 tests, `STAGE165_SOURCE_SHA_MATCHED 3/3`, `STAGE165_PROOF_GAPS open=12 source_witnesses=25`, and `STAGE165_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. If any SHA/upstream/witness drift, status is `REVIEW_REQUIRED`, **with no positive target/proof ledger released**. Do NOT blindly update hashes to bypass changes.
+User Windows results confirmed the following expected source-only baseline: `STAGE165_MANIFEST_PASS files=7`, 55/55 tests, `STAGE165_SOURCE_SHA_MATCHED 3/3`, `STAGE165_PROOF_GAPS open=12 source_witnesses=25`, and `STAGE165_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. If any SHA/upstream/witness drift, status is `REVIEW_REQUIRED`, **with no positive target/proof ledger released**. Do NOT blindly update hashes to bypass changes.
 
 ## Next phase
 
-Upon actual user Windows Stage165 evidence, Stage166 may carry out a bounded **SOURCE_ONLY** ownership/caller/worker-VEH lifetime gap inventory, with small source windows, no broad unscoped scan, no real hook installation, no project code change, no unload. A safe rollback implementation needs separate explicit review, actual byte owner lease evidence and quiescence guarantees. Existing working Stage129 DLL (2,099,200 B) and Stage122 backup (2,089,984 B) unchanged.
+With actual user Windows Stage165 PASS now recorded, Stage166 may carry out a bounded **SOURCE_ONLY** ownership/caller/worker-VEH lifetime gap inventory, with small source windows, no broad unscoped scan, no real hook installation, no project code change, no unload. A safe rollback implementation needs separate explicit review, actual byte owner lease evidence and quiescence guarantees. Existing working Stage129 DLL (2,099,200 B) and Stage122 backup (2,089,984 B) unchanged.
 
 **HARD GATES:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN, no game DLL access or native build.

@@ -1,3 +1,9 @@
+## Stage165 source-only preimage/hook-owner gap ZIP ready (2026-11-14)
+
+**Stage164 Windows PASS** is current user-local baseline. New `ArcanaAI_Stage165_PreimageOwnership_RollbackGap_SOURCE_ONLY.zip` **17,861 B, SHA256 `c19cfab7f43235cf0bb83d9e4a9cc23b1752b41c0087fb82f732abeebdba7b64`**, manifest 7/7, **55/55 synthetic tests PASS after fresh extraction**, archival 3/3 source SHA preview, 25 line witnesses/12 open proof obligations. It validates Stage164 JSON and only Stage67/70/38 current sources, **never edits or accesses game DLL/process**. No live preimage snapshot/byte restore observed **within the two reviewed installers**, and native/foreign ownership and quiescence remain UNPROVEN. **Stage165 Windows NOT YET RUN.** [Stage165 checkpoint](STAGE165_CHECKPOINT.md), [next run](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN.
+
+---
+
 ## Stage164 Windows current-source PASS; Stage165 SOURCE_ONLY preimage/owner audit next (2026-11-14)
 
 User-confirmed **80/80 tests PASS** (0.281s), manifest **6/6**, Stage163 31-case upstream confirmation and **3/3 SHA-pinned source files**. Stage164 isolated test double: 65 cases = **2 commits, 10 no-write aborts, 31 verified synthetic rollbacks, 22 quarantines**. Stage67 AD75C/5 B and E9E60/6 B, Stage70 156784/6 B each `production_rollback=NO` on current source. [Full Stage164 Windows checkpoint](STAGE164_CHECKPOINT.md), [handoff](NEXT_SESSION.md). **Stage165 not started**; no game DLL modifications. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.

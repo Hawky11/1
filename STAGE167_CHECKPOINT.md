@@ -1,6 +1,32 @@
 # ArcanaAIOverhaul Stage167 — worker join / VEH callback retirement protocol (2026-11-14)
 
-**STATUS: Stage167 SOURCE_ONLY ZIP prepared, clean-extracted, independently tested and archived-source preview PASS. USER WINDOWS STAGE167 NOT YET RUN.** Latest confirmed user Windows current-tree proof remains Stage166 (manifest 7/7, 96/96 Python tests, 13/13 source SHA, 9 workers / 3 VEH registration sites, 22 source witnesses, 12 open lifecycle obligations). See [Stage166 checkpoint](STAGE166_CHECKPOINT.md). No native build, game DLL/process access, production source edits, hook installation, or unload.
+**CURRENT STATUS: Stage167 USER WINDOWS SOURCE_ONLY PASS (7/7 manifest, 165/165 tests, 13/13 current-source SHA, 79 test-double cases, 12 open gaps).** Stage166 remains the verified upstream; no native build, game DLL/process access, production source edits, hook installation or unload.
+
+## User Windows Stage167 SOURCE_ONLY — PASS (2026-11-14)
+
+**Actual user-pasted PowerShell output** after running `Invoke-Stage167Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` from extracted `Stage167_SourceOnly`:
+
+```text
+STAGE167_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE167_MANIFEST_PASS files=7
+Ran 165 tests in 1.677s
+OK
+STAGE167_UPSTREAM stage166_pass=True worker_sources=9 veh_sources=3
+STAGE167_SOURCE_SHA_MATCHED 13/13
+STAGE167_PROTOCOL workers=9 veh=3 modeled=79 open_gaps=12
+STAGE167_TEST_DOUBLE_OUTCOMES DRAINED_TEST_DOUBLE_ONLY=1,DENIED_BEFORE_RETIREMENT_TEST_DOUBLE=8,QUARANTINED_TEST_DOUBLE_UNPROVEN=70
+STAGE167_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage167_SourceOnly\stage167_worker_veh_retirement_metadata.json
+STAGE167_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE167_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Verified user Windows outcome:** 7/7 package manifest, **165/165 tests PASS** in 1.677 s, upstream Stage166 source-only ledger PASS (9 worker and 3 VEH starter sources), SHA **13/13 current sources**, **79 isolated test-double protocol cases** divided into one toy drained control, eight pre-retirement denial cases, and seventy quarantined states. **Twelve production lifecycle obligations remain OPEN.** No live worker was joined, no actual VEH handler was removed/drained and no game module was unloaded as part of this source-only run. The full Stage167 JSON remains only on the user's Windows machine; evidence supplied here is console text.
+
+**Safety boundary:** a test-double `DRAINED_TEST_DOUBLE_ONLY=1` is **not** proof of runtime quiescence, worker joins, callback retirement, native/raw ingress exclusion, trampoline ABI/SEH/unwind, original bytes rollback or module lease. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. Existing working and fallback game DLLs were not accessed or modified by this source-only audit.
+
+**NEXT Stage168 (NOT YET CREATED/RUN):** bounded SOURCE_ONLY **Callback/Module Owner Lease Integration Specification**. Build explicit design and synthetic tests for versioned callback ingress epochs, admission closure before retirement, real join ACK invariants, in-flight VEH exit counters, module owner and raw caller leases, Stage38→Stage59 admission, rollback/preimage obligations, and crash/timeout `QUARANTINED` treatment. Reuse current Stage167 output and exact 13-file SHA pins; do not run game hooks, build a native DLL, modify C++ or grant unload permissions.
+
+---
 
 ## Release package
 
@@ -37,7 +63,7 @@ Every case reports `game_install_approved=false`, `game_unload_approved=false`, 
 
 **12 remaining Stage167 real-world requirements** include stop requests, stop ACK, retained join handles, Stage59 worker/debug-register retirement, new entry exclusion, three handler removals, draining in-flight callback epochs, future dispatch exclusion, native raw caller/trampoline safety, original-byte owner/preimage/rollback, external owner module lease, and exception-safe timeout cleanup.
 
-## Next user Windows SOURCE_ONLY run (NOT YET DONE)
+## Windows SOURCE_ONLY run command (now executed successfully)
 
 Unpack ZIP **outside** game project. In `Stage167_SourceOnly`:
 
@@ -49,7 +75,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 Expected input: `%TEMP%\ArcanaAI_Stage166_SourceOnly\stage166_native_lifetime_metadata.json`.
 Default sanitized output: `%TEMP%\ArcanaAI_Stage167_SourceOnly\stage167_worker_veh_retirement_metadata.json`.
 
-Only if user's actual 13 current sources and local Stage166 metadata are unchanged should the run report `STAGE167_MANIFEST_PASS files=7`, 165 tests PASS, `STAGE167_SOURCE_SHA_MATCHED 13/13`, 9/3 worker/VEH, 79 synthetic cases (1/8/70), 12 open gaps, `STAGE167_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. On drift, fail closed with no positive 79-case model ledger. Never update pins blindly.
+The actual user Windows run has now confirmed `STAGE167_MANIFEST_PASS files=7`, 165 tests PASS, `STAGE167_SOURCE_SHA_MATCHED 13/13`, 9/3 worker/VEH, 79 synthetic cases (1/8/70), 12 open gaps, `STAGE167_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. On drift, fail closed with no positive 79-case model ledger. Never update pins blindly.
 
 ## Handoff after Stage167 user Windows evidence
 

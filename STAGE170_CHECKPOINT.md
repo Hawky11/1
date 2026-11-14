@@ -1,6 +1,33 @@
 # ArcanaAIOverhaul Stage170 — Native Preimage & Hook Ownership Evidence (2026-11-14)
 
-**STATUS: Stage170 SOURCE_ONLY release ZIP CREATED, CLEAN-EXTRACTED, AND TESTED LOCALLY; USER WINDOWS STAGE170 NOT YET RUN.** The last independently user-confirmed Windows current-source audit is **Stage169 PASS** (7/7 manifest, 104/104 tests, SHA-pinned 13/13 current sources, 47 exact source-line witnesses, 12 OPEN production gaps, zero independent runtime artifacts). See [Stage169 checkpoint](STAGE169_CHECKPOINT.md). No game process, game DLL, native build, C++ production source modification, real hook installation or unload.
+**CURRENT STATUS: Stage170 USER WINDOWS SOURCE_ONLY PASS (7/7 manifest; 107 tests discovered, 106 passed, 1 skipped for unsupported symlinks; 4/4 current source SHA; 48 source witnesses; 12 per-RVA requests + 12 broader production gaps OPEN; 0 independent runtime artifacts).** Stage169 is the verified upstream. No game process/DLL access, native build, C++ production source modification, live hook installation or unload.
+
+## User Windows Stage170 SOURCE_ONLY verification — PASS (2026-11-14)
+
+**Actual user-supplied PowerShell console** from extracted `Stage170_SourceOnly`, invocation `Invoke-Stage170Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`:
+
+```text
+STAGE170_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE170_MANIFEST_PASS files=7
+Ran 107 tests in 1.934s
+OK (skipped=1)
+STAGE170_UPSTREAM stage169_pass=True open=12 witnesses=47 runtime_artifacts=0
+STAGE170_SOURCE_SHA_MATCHED 4/4
+STAGE170_EVIDENCE targets=3 source_witnesses=48 open_requests=12 production_gaps=12 runtime_artifacts=0
+STAGE170_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage170_SourceOnly\stage170_native_preimage_owner_evidence.json
+STAGE170_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE170_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Correct test accounting:** 107 unittest cases discovered; **106 passed**, **one was skipped**, **zero failed**, with final Python result `OK (skipped=1)`. The skipped case is `test_027_unsafe_source_symlink_rejected`, specifically reporting `skipped 'symlinks not supported'` on the user's Windows testing environment. Do **not** describe symlink-escape test coverage as completed in Windows; all other run cases passed, including the fail-closed source/metadata spoof checks. The package manifest was **7/7 PASS**.
+
+**Real source-only evidence:** exact Stage169 upstream accepted (`open=12 witnesses=47 runtime_artifacts=0`), four current source SHA **4/4 matched**; all three target records Stage67 `AD75C` 5B, Stage67 `E9E60` 6B, Stage70 `156784` 6B; **48 exact source witnesses**, **12 unfulfilled per-RVA independent proof requests** and **12 broader production safety gaps**, **zero independent runtime artifacts**. The full Stage170 generated JSON is still on user's Windows machine; user supplied console text, not the JSON.
+
+The analyzed Stage67/70 installers still have no demonstrated persistent live-preimage buffers, foreign-owner collision lease or byte rollback in reviewed code paths. Source-only inspection cannot determine external writer ownership or actual runtime hook health. `SAFE_TO_INSTALL=false` and `SAFE_TO_UNLOAD_GAME_DLL=false` remain mandatory; Stage36 OFF, origin(0x27)=UNKNOWN. No game DLL/process/native build or production source edits performed by Stage170.
+
+**Next Stage171 (NOT YET CREATED/RUN)**: small, reviewable SOURCE_ONLY C++ **isolated nonproduction** transaction design/specification and tests for three RVA semantics (expected preimage vs captured actual bytes, foreign owner arbitration, atomicity limits, mixed Stage67 partial-state error rollback, postwrite cleanup/flag agreement). Include a nonnative test-double design where suitable. Do **not** patch the real game C++, build/inject a DLL, install hooks or claim unload safety; nine worker joins, three VEH retirements, ABI/SEH and external module lease are still independently blocked.
+
+---
 
 ## Release package and reproducibility
 
@@ -52,7 +79,7 @@ Each of three targets has precisely four **OPEN** evidence requirements:
 
 Twelve per-RVA requests are **not** twelve new proofs. **All twelve separate, high-level Stage169 production safety gaps remain OPEN**, and there are **zero independent runtime artifacts**. No production safety flags promoted.
 
-## User Windows run — PENDING
+## User Windows SOURCE_ONLY run — completed
 
 Extract outside `D:\INCUBATOR\ArcanaAIOverhaul`; open PowerShell in `Stage170_SourceOnly` and run:
 
@@ -64,9 +91,9 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 Default Stage169 input: `%TEMP%\ArcanaAI_Stage169_SourceOnly\stage169_source_runtime_evidence_matrix.json`.
 Default output: `%TEMP%\ArcanaAI_Stage170_SourceOnly\stage170_native_preimage_owner_evidence.json`.
 
-Expected **only if the actual user metadata/current four sources still match**: `STAGE170_MANIFEST_PASS files=7`, 107/107 tests, `STAGE170_SOURCE_SHA_MATCHED 4/4`, `STAGE170_EVIDENCE targets=3 source_witnesses=48 open_requests=12 production_gaps=12 runtime_artifacts=0`, `STAGE170_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. On SHA/upstream drift the script fails closed and emits `STAGE170_SOURCE_REVIEW_REQUIRED`.
+Confirmed by the user Windows console (with one unsupported-symlink unittest skipped): `STAGE170_MANIFEST_PASS files=7`, 107/107 tests, `STAGE170_SOURCE_SHA_MATCHED 4/4`, `STAGE170_EVIDENCE targets=3 source_witnesses=48 open_requests=12 production_gaps=12 runtime_artifacts=0`, `STAGE170_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. On SHA/upstream drift the script fails closed and emits `STAGE170_SOURCE_REVIEW_REQUIRED`.
 
-## Stage171 proposal (after actual Stage170 Windows result)
+## Stage171 proposal (after confirmed Stage170 Windows PASS)
 
 Instead of repeating status-only audits: prepare a **reviewable SOURCE_ONLY C++ transaction design/patch proposal** for *isolated nonproduction* preimage/foreign-owner/rollback semantics at these three sites. Preserve existing production C++ unchanged until explicit separate consent and independent native/loader/worker/VEH safety evidence. Do not imply offline tests validate safe live patch installation or unload.
 

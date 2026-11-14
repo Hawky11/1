@@ -1,6 +1,36 @@
 # ArcanaAIOverhaul Stage164 — Stage67/70 transaction rollback feasibility (2026-11-14)
 
-**STATUS: SOURCE_ONLY local test-double package READY; user Windows Stage164 NOT RUN.** User's latest *actual Windows* source checkpoint is Stage163 PASS (6/6 manifest, 55/55 tests, 3/3 SHA-pinned current sources, 31 source-path/hypothetical fault scenarios). No stage164 runtime or Windows-source completion claim.
+**CURRENT STATUS: User Windows Stage164 SOURCE_ONLY PASS (6/6 manifest, 80/80 tests, 3/3 current source SHA, 65 isolated test-double cases).** Previous Stage163 Windows PASS is the verified upstream checkpoint. Production rollback remains NO for all three sites.
+
+## User Windows Stage164 current-source result — PASS (2026-11-14)
+
+**User-supplied PowerShell console confirms the Stage164 source-only check completed on the actual `D:\INCUBATOR\ArcanaAIOverhaul` tree.** This is console evidence; the full local Stage164 JSON was not uploaded to the conversation.
+
+```text
+STAGE164_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE164_MANIFEST_PASS files=6
+Ran 80 tests in 0.281s
+OK
+STAGE164_UPSTREAM stage163_pass=True modeled=31
+STAGE164_SOURCE_SHA_MATCHED 3/3
+STAGE164_TARGET stage=STAGE67 rva=AD75C bytes=5 writer_line=275 production_rollback=NO
+STAGE164_TARGET stage=STAGE67 rva=E9E60 bytes=6 writer_line=275 production_rollback=NO
+STAGE164_TARGET stage=STAGE70 rva=156784 bytes=6 writer_line=231 production_rollback=NO
+STAGE164_TEST_DOUBLE cases=65 outcomes=ABORTED_NO_PATCH_TEST_DOUBLE=10,COMMITTED_TEST_DOUBLE_ONLY=2,QUARANTINED_TEST_DOUBLE_UNPROVEN=22,ROLLED_BACK_TEST_DOUBLE_VERIFIED=31
+STAGE164_METADATA %TEMP%\ArcanaAI_Stage164_SourceOnly\stage164_rollback_feasibility_metadata.json
+STAGE164_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE164_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+The **6/6 manifest PASS**, **80/80 test PASS** and **3/3 current SHA match** establish that the targeted user source files and Stage163 proof metadata passed this fixed source-only analyzer. The **65** cases are isolated test-double executions, not live game patch attempts: **2 test commits, 10 no-write aborts, 31 synthetic verified rollbacks, 22 quarantines**. Every production RVA is still explicitly marked `production_rollback=NO`.
+
+A Stage164 source-only PASS is **not** proof that a real native hook can be safely installed, restored, or unloaded. It does not establish original live instruction bytes/ownership, noninterference with foreign hooks, EIP/trampoline/ABI/SEH, nine worker stop/join, three VEH callbacks' retirement, safe Stage59 admission, or module lease. No game DLL build, mutation, or process access is reported.
+
+**Next Stage165 (NOT yet built/run):** narrow **SOURCE_ONLY preimage ownership + rollback feasibility gap audit**. Use Stage164 pinned source/metadata and only relevant exact source windows to inventory where actual pre-write original bytes are captured/stored, when other hook owners may collide, how inter-thread EIP and raw callbacks could invalidate restoration, and what evidence would make state transitions and rollback cleanup provable. Separate static source witnesses from hypothetical transaction test-double success; fail closed on source drift/unknown ownership and keep `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.
+
+**Hard constraints** Stage36 OFF; origin(0x27)=UNKNOWN; existing Stage129 working and Stage122 backup DLLs unchanged.
+
+---
 
 ## Artifact and clean-extraction verification
 
@@ -34,7 +64,7 @@ A strictly synthetic Python bytearray model explores snapshot, preimage verifica
 
 This does **NOT** demonstrate real Win32 exception safety, machine-code atomicity, native hook ownership, installed-byte rollback, foreign caller retirement, nine worker joins, three VEH callbacks retirement, or module unload. There is no automatic escalation of `SAFE_TO_INSTALL` or `SAFE_TO_UNLOAD_GAME_DLL`.
 
-## User Windows read-only action (NOT YET RUN)
+## User Windows read-only command (now successfully run)
 
 Extract outside `D:\INCUBATOR\ArcanaAIOverhaul`, open PowerShell in `Stage164_SourceOnly`:
 
@@ -45,7 +75,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 
 Default Stage163 input: `%TEMP%\ArcanaAI_Stage163_SourceOnly\stage163_fault_state_metadata.json`.
 Output: `%TEMP%\ArcanaAI_Stage164_SourceOnly\stage164_rollback_feasibility_metadata.json`.
-Expected only if Stage163 metadata + pinned sources unchanged: manifest 6/6, 80/80 synthetic tests, source SHA 3/3, upstream 31 cases, 65 synthetic transaction cases. A PASS is source-only feasibility consistency, not game safety proof.
+The user Windows run confirmed: manifest 6/6, 80/80 tests, SHA 3/3, Stage163 31 upstream cases, and 65 synthetic transaction cases. A PASS is source-only feasibility consistency, not game safety proof.
 
 ## Next after user Windows evidence
 

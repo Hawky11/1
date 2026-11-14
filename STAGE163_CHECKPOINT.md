@@ -1,6 +1,36 @@
 # ArcanaAIOverhaul — Stage163 source-only Stage67/70 fault-state matrix and rollback obligations (2026-11-14)
 
-**STATUS: Stage163 ZIP prepared and independently validated after clean extraction. Local synthetic tests 55/55 PASS; historical Stage146 source-pin preview PASS (3/3, 31 model scenarios). User Windows Stage163 current-tree execution NOT YET RUN.** The last actual user Windows execution is Stage162 SOURCE_ONLY PASS (15/15, 12 bounded/15 blocked, 3/3 hash-pinned writer sites), as recorded in [Stage162 checkpoint](STAGE162_CHECKPOINT.md).
+**CURRENT STATUS: Stage163 user Windows SOURCE_ONLY PASS (55/55 tests, 6/6 manifest, 3/3 current source SHA and 31 source-path scenarios); real installed-byte rollback remains NO/UNPROVEN.** Last actual Windows source audit is now Stage163. Stage162 upstream PASS is documented in [Stage162 checkpoint](STAGE162_CHECKPOINT.md).
+
+## User Windows Stage163 current-tree confirmation — PASS (2026-11-14)
+
+User executed `Invoke-Stage163Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` from the extracted Stage163 SOURCE_ONLY package. **This is user-supplied PowerShell console evidence, not an uploaded full Stage163 JSON and not runtime fault injection.**
+
+```text
+STAGE163_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE163_MANIFEST_PASS files=6
+Ran 55 tests in 0.187s
+OK
+STAGE163_UPSTREAM stage162_targeted=True bounded=12 blocked=15
+STAGE163_TARGET stage=STAGE67 rva=AD75C bytes=5 writer_line=275 rollback=NO
+STAGE163_TARGET stage=STAGE67 rva=E9E60 bytes=6 writer_line=275 rollback=NO
+STAGE163_TARGET stage=STAGE70 rva=156784 bytes=6 writer_line=231 rollback=NO
+STAGE163_SOURCE_SHA_MATCHED 3/3
+STAGE163_SCENARIOS modeled=31 evidence=SOURCE_PATHS_ONLY
+STAGE163_METADATA %TEMP%\ArcanaAI_Stage163_SourceOnly\stage163_fault_state_metadata.json
+STAGE163_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE163_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Expected negative test diagnostics are not a failed actual audit:** tests 51 and 52 deliberately invoke rejected output paths and print `STAGE163_REVIEW_REQUIRED type=ValueError`; test 53 deliberately forges the Stage162 install safety flag, prints `STAGE163_SCENARIOS modeled=0` and `STAGE163_REVIEW_REQUIRED reason=STAGE162_UNSAFE_FLAG_SAFE_TO_INSTALL`, and asserts fail-closed behavior. All three tests report `ok`. The separate **final** real source preflight reports **31 modeled scenarios** and `STAGE163_TARGETED_SOURCE_ONLY_PASS`.
+
+The actual current source tree passed the Stage163 pinned three-file SHA check, and the source-model witness relationships from Stage162 remained valid. **31 are static source-path/hypothetical fault scenarios, not 31 observed game failures.** Output contains no live installed-byte, ABI/SEH, original-byte rollback or owner-lease proof.
+
+**Next Stage164 (not yet created or run)**: bounded SOURCE_ONLY transaction/rollback feasibility audit for the three write targets. Define per-site original-byte snapshot, protected write sequence/commit point, verify-on-write and restore-on-failure obligations, concurrency/EIP & foreign hook ownership conflicts, exception/SEH cleanup, mismatch of install flags and return values, plus Stage38 admission and Stage59 behavior. Use a private test-double/fault injection simulator only; never touch a running game or the DLL. External native callers/trampolines, nine worker joins, three VEH retirements, module unload remain separate blocked proof obligations.
+
+**Hard gates unchanged:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN. Game DLL not modified by these source-only audits.
+
+---
 
 ## Release artifact and reproducibility
 
@@ -16,7 +46,7 @@
   - `src/Stage70DeferredWriter.inl` SHA256 `bf3becbf1893426002fb3dfee0eb849caf1836c2d42059379c40958b7995b8df`
   - `src/Stage38CallbackWindow.inl` SHA256 `d0ad34650a94102e6c9dfc8b74228cf841510d04a690739dd11933af2e51557a`.
 - Stage163 refuses stale/forged Stage162 identity, unsigned/mismatched three-file provenance, rewritten 3 RVA witness records, missing 12/15 ledger, unexpected game access, or any proof escalation. No fresh 443-API broad scan.
-- **Historical local verification**, not current Windows Stage163 run: a local copy of uploaded archived Stage146 evidence snapshot plus the Stage162 snapshot preview produced `STAGE163_SOURCE_SHA_MATCHED 3/3`, `STAGE163_SCENARIOS modeled=31`, `STAGE163_TARGETED_SOURCE_ONLY_PASS`. This is not runtime installation proof.
+- **Earlier historical local verification (now superseded by the user's Windows Stage163 current-tree PASS):** a local copy of uploaded archived Stage146 evidence snapshot plus the Stage162 snapshot preview produced `STAGE163_SOURCE_SHA_MATCHED 3/3`, `STAGE163_SCENARIOS modeled=31`, `STAGE163_TARGETED_SOURCE_ONLY_PASS`. This is not runtime installation proof.
 - All 31 scenarios are **source-control-flow or explicitly hypothetical fault injections** in a model, **not** game events, executed Win32 fault injection or partial-memory-copy observations.
 
 ## Source-path conclusions and detailed failure classes

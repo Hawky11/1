@@ -1,3 +1,9 @@
+## Stage169 USER Windows SOURCE_ONLY PASS — source-to-runtime evidence matrix, 12 gaps open (2026-11-14)
+
+Verified user Windows console: **7/7 manifest, 104/104 Python tests (0.657s), 13/13 current SHA, 47 exact source witnesses**, `STAGE169_EVIDENCE_MATRIX open=12 source_witnesses=47 runtime_artifacts=0`. Intentional REVIEW_REQUIRED negative test lines did not affect final `STAGE169_TARGETED_SOURCE_ONLY_PASS`. This is a **source/metadata matrix**, not runtime safety proof; 0/12 production gates closed. [Stage169 Windows checkpoint](STAGE169_CHECKPOINT.md), [next Stage170 source-only evidence plan](NEXT_SESSION.md). Stage170 NOT YET BUILT/RUN. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; game DLL/process not accessed by this audit.
+
+---
+
 ## Stage169 source-to-runtime EVIDENCE GAP matrix ZIP ready (2026-11-14)
 
 New `ArcanaAI_Stage169_SourceToRuntime_EvidenceGapMatrix_SOURCE_ONLY.zip` **20,905 B SHA256 `cd86de5e05bfeff9742d7313908edbc4cc388b55c839970dcd10eeb57f9f3ad0`**, 8 ZIP entries CRC PASS, **7/7 manifest and 104/104 clean-extract tests PASS**, historical SHA **13/13** and **47 scoped line witnesses**. Twelve production source→runtime proof requirements each specify witness, missing independently testable artifact and acceptance criterion; **0/12 gates closed and no game runtime evidence acquired**. Stage59 source intentionally keeps VEH for process lifetime, so no safe unload may be inferred. **User Stage169 Windows NOT RUN.** [Full checkpoint](STAGE169_CHECKPOINT.md), [Windows run and next real proof work](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; current game DLL unaffected.

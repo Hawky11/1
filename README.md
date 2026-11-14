@@ -1,3 +1,9 @@
+## Stage166 USER Windows SOURCE_ONLY PASS — Stage167 worker/VEH retirement model next (2026-11-14)
+
+Verified user Windows console: **7/7 manifest, 96/96 unittest PASS (3.813s), 13/13 current SHA source matches**, Stage165 upstream 25 witnesses, Stage166 **9 workers, 3 VEH registrations, 22 exact source witnesses, 12 open gaps**. `STAGE166_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. This does not demonstrate real join/VEH retirement, native owner or safe unload. [Full Stage166 checkpoint](STAGE166_CHECKPOINT.md), [Stage167 source-only handoff](NEXT_SESSION.md). Stage167 not built/run; game DLL untouched by audit.
+
+---
+
 ## Stage166 SOURCE_ONLY native caller/worker/VEH lifecycle ZIP ready (2026-11-14)
 
 With user **Stage165 Windows PASS** as upstream, new `ArcanaAI_Stage166_NativeCaller_WorkerVEH_OwnershipLifecycle_SOURCE_ONLY.zip` **17,844 B SHA256 `7a5f3143d87836a23b08b263814b64e98da4d02665acb096fdf2fc77f08d7040`**, 8 ZIP entries CRC PASS, **7/7 manifest and 96/96 clean-extraction tests PASS**. Historical pinned source preview **13/13**, local witness graph **9 worker starters, 3 VEH registrations, 22 source anchors and 12 open lifetime gaps**; not native/runtime proof. **Actual Windows Stage166 NOT RUN.** Run `Stage166_SourceOnly/Invoke-Stage166Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`; reads user-local Stage165 JSON. [Stage166 checkpoint](STAGE166_CHECKPOINT.md), [handoff](NEXT_SESSION.md). No DLL edits, no live hooks, `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.

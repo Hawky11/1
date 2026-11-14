@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage163 Windows SOURCE_ONLY PASS; Stage164 rollback feasibility design next (2026-11-14)
+
+- **User Windows Stage163 passed**: 6/6 manifest, 55/55 unittest (0.187 s), Stage162 ledger `bounded=12 blocked=15`, **3/3 current-source SHA matched**, three target writer/source locations checked (Stage67 AD75C/5B line275; E9E60/6B line275; Stage70 156784/6B line231) and **31 SOURCE_PATHS_ONLY modeled scenarios**. Final `STAGE163_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. Details: [Stage163 checkpoint](STAGE163_CHECKPOINT.md).
+- **Important test-output distinction:** `STAGE163_REVIEW_REQUIRED` printed within tests 51–53 is deliberate negative-fixture behavior (invalid output paths and forged upstream install-safety). `modeled=0` occurs **only** in the negative test, not actual preflight. All three tests `ok`; actual Stage163 modeled=31 PASS.
+- **Next Stage164 (NOT YET BUILT/EXECUTED):** bounded SOURCE_ONLY rollback transaction feasibility for Stage67 two consecutive 5/6-byte memcpy operations and Stage70 one 6-byte copy. Model original-byte snapshots, patch/flush/verify, partial-write and API-return failure rollback obligations, inconsistent install flags, protection restoration, resume/release cleanup, foreign/owner collisions and Stage38 conditional Stage70 / Stage59 reachability. Add test-double negative fault injection and fail-closed SHA/metadata checks. **No game process or DLL write and no native build/install/unload.**
+- Remaining blockers: rollback proof NO; raw foreign callers/trampoline ABI/SEH, nine worker joins, three VEH callback retirement, exact installed-byte owner and external lease unknown. Stage36 OFF, origin(0x27)=UNKNOWN. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; preserve working Stage129 and backup Stage122 DLLs. User's Stage163 JSON remains local at `%TEMP%\ArcanaAI_Stage163_SourceOnly\stage163_fault_state_metadata.json` (console pasted, JSON not uploaded).
+
+---
+
 ## ACTIVE CHECKPOINT — Stage163 SOURCE_ONLY fault model ZIP READY; Windows current-source run pending (2026-11-14)
 
 - Stage162 **actual user Windows PASS** remains latest on-machine evidence: manifest 5/5, 15/15 tests, 12 bounded/15 blocked reconciliation, three SHA-pinned C++ write sites at Stage67 AD75C/5B + E9E60/6B and Stage70 156784/6B; all rollback=NO. [Stage162](STAGE162_CHECKPOINT.md).

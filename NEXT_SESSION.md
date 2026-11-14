@@ -1,3 +1,13 @@
+## ACTIVE CHECKPOINT — Stage159 r2 Windows SOURCE_ONLY PASS; Stage160 writer→target dataflow is next (2026-11-14)
+
+- **User-confirmed Stage159 r2 Windows**: all **43/43 tests PASS** (incl. WinError1314 workaround test30); SHA manifest 6/6; **66/66 current source hashes match**; **11/11 source target declarations found**; `writer_api_lexical_candidates=418` BUT `proven_writer_target_edges=0`; nine worker sites, three VEH registrations. Final `STAGE159_LOCAL_SOURCE_ONLY_TESTS_PASS`. Previous r1 synthetic symlink failure resolved; actual [3/3] current source scan completed.
+- **Per-target source literals:** Stage10 F34D0=6/F3930=5; Stage10 parent F3280/F4030/F4360=6 each; Stage129 F30B0=3/F325A=1/F326A=1; Stage81 F7D22=1/F7D38=1/F7D43=1. These are **source literals** not live installed hooks. [Full output and caveats](STAGE159_CHECKPOINT.md).
+- **Stage160 SOURCE_ONLY next:** inspect bounded *actual current-source* executable dataflow from RVA definitions to computed target pointers and VirtualProtect/memcpy/WriteProcessMemory/FlushInstructionCache, saved original-byte storage and trampoline/restore on partial failure. Start Stage10 (F34D0/F3930), Stage10 parent (F3280/F4030/F4360), Stage129 (F30B0/F325A/F326A), then Stage81 (F7D22/F7D38/F7D43); separately Stage67/70 rollback transaction liabilities. Never treat ±60-line writer API as owner proof, and refuse stale source SHA or missing edges. Source or anchored snapshot, not merely Stage159 summary, is required to prove relationships.
+- **Hard DENY:** `RAW_CALLER_PROOF=NO`, `WRITER_DATAFLOW_PROOF=NO`, `TRAMPOLINE_PROOF=NO`, `ROLLBACK_PROOF=NO`, 9 worker joins=NO, 3 VEH retirement=NO; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. Stage36 OFF, origin(0x27)=UNKNOWN. Preserve Stage129 tested DLL 2,099,200B and Stage122 backup 2,089,984B; no native build/game process access, no new hooks/unload.
+- **Stage160 NOT YET EXECUTED.** Use isolated read-only, no game access.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage159 r2 Windows non-admin symlink-fixture fix prepared; run pending (2026-11-14)
 
 - **User Windows Stage159 r1:** manifest `STAGE159_MANIFEST_PASS files=6`; 39 tests `ok`, `test_30_symlink_escape_denied` failed with `OSError: [WinError 1314]` on synthetic `Path.symlink_to` under %TEMP% (Python 3.14). `STAGE159_TESTS_FAIL` stopped before **[3/3] actual source SHA/native provenance**. Not a game or source finding; no Stage159 current Windows source result yet.

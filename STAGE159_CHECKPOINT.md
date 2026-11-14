@@ -1,6 +1,45 @@
 # ArcanaAIOverhaul — Stage159 SOURCE_ONLY native hook writer/caller provenance gap graph (2026-11-14)
 
-**Status: Stage159 r1 attempted on user Windows but stopped at synthetic symlink privilege error WinError 1314; real-project source step NOT RUN. Stage159 r2 test-only fixture repair 43/43 offline PASS, Windows r2 audit PENDING.** The previous user-confirmed Stage158 r2 Windows source audit **DID PASS**, with 45/45 tests and all 66 source SHA; do not confuse these separate stages.
+**Latest status: Stage159 r2 user-confirmed Windows SOURCE_ONLY PASS: 43/43 tests, 66/66 source hashes, 11/11 source RVA declarations. Zero proven writer→target dataflow edges; live ownership and safe unloading still DENY.** The previous user-confirmed Stage158 r2 Windows source audit **DID PASS**, with 45/45 tests and all 66 source SHA; do not confuse these separate stages.
+
+## User-confirmed Stage159 r2 Windows current-project SOURCE_ONLY PASS (2026-11-14)
+
+User ran the **Stage159 r2** `Invoke-Stage159Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` after a process-scoped execution-policy bypass. The following is from the user's console (the complete private source or generated metadata JSON was **not** uploaded):
+
+```text
+STAGE159_R2_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE159_MANIFEST_PASS files=6
+Ran 43 tests in 2.953s
+OK
+STAGE159_HASHES matched=66 expected=66
+STAGE159_NATIVE_DECLARATIONS found=11/11 writer_api_lexical_candidates=418 proven_writer_target_edges=0
+STAGE159_TARGET stage=STAGE10 rva=F34D0 declared_bytes=5 source_literals=6 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE10 rva=F3930 declared_bytes=6 source_literals=5 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE10_PARENT rva=F3280 declared_bytes=6 source_literals=6 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE10_PARENT rva=F4030 declared_bytes=6 source_literals=6 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE10_PARENT rva=F4360 declared_bytes=6 source_literals=6 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE129 rva=F30B0 declared_bytes=6 source_literals=3 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE129 rva=F325A declared_bytes=5 source_literals=1 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE129 rva=F326A declared_bytes=5 source_literals=1 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE81 rva=F7D22 declared_bytes=6 source_literals=1 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE81 rva=F7D38 declared_bytes=6 source_literals=1 owner=UNKNOWN
+STAGE159_TARGET stage=STAGE81 rva=F7D43 declared_bytes=10 source_literals=1 owner=UNKNOWN
+STAGE159_LIFECYCLE worker_sites=9 veh_register_sites=3 join=NO veh_retirement=NO
+STAGE159_RAW_CALLER_PROOF=NO WRITER_DATAFLOW_PROOF=NO TRAMPOLINE_PROOF=NO ROLLBACK_PROOF=NO
+STAGE159_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage159_SourceOnly\stage159_native_provenance_metadata.json
+STAGE159_SOURCE_ONLY_PREFLIGHT_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE159_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**What is now proven within the SOURCE_ONLY boundary:** Stage159 r2 package manifest verified; **43/43 Python tests PASS** on user Windows 3.14, including previously failing `test_30_symlink_escape_denied` now PASS without elevation. The [3/3] current-project scan ran and independently reported **66/66** unchanged Stage156/Stage158 r2 source hashes; **all 11/11 historically pinned native target literals found** across Stage10, Stage10 parent, Stage129 and Stage81; **418** lexical write API candidates; **9** worker sites, **3** VEH registrations. Previous Windows r1 WinError 1314 fixture blocker is resolved.
+
+**What remains UNPROVEN:** 418 lexical occurrences are **not 418 installed hooks**; `proven_writer_target_edges=0` is a deliberate proof gap, not a report of zero runtime writers. No actual writer→RVA dataflow (target expression, patch length, write kind, original-byte snapshot/rollback), trampoline stolen-byte/return, foreign raw-caller origin, native ABI/SEH/unwind, global worker join, VEH handler retirement, live game owner/module lease or safe unloading was demonstrated. Stage67/70 transaction risk remains pending. The report's successful lexical source preflight does not supply install or unload permission.
+
+**Next Stage160 (not yet executed):** narrow source-based writer-target **dataflow**, starting with `src/AIProducerContextTrace.cpp` Stage10 F34D0/F3930, `src/AIParentFlowTrace.cpp` F3280/F4030/F4360, `src/Stage129ProducerProbe.inl` Stage129 F30B0/F325A/F326A, then Stage81 sites F7D22/F7D38/F7D43. For each, trace declaration and executable writer call/target pointer construction, guard and call order, length, saved original bytes, trampolines and rollback path. Use actual user current source or pinned byte-equal snapshot, with source anchors; **do not infer owner from proximity**. Record any unknown intermediate as UNKNOWN, not PASS. Preserve negative tests for stage67/70 partial writes, cross-owner collision, raw foreign re-entry, and out-of-module callback after unload. No live/game access, no new patches.
+
+**Safety unchanged:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, `origin(0x27)=UNKNOWN`. Working Stage129 game DLL **2,099,200 bytes** and Stage122 backup **2,089,984 bytes** must remain intact.
+
+---
 
 ## User-confirmed first Windows Stage159 attempt — environment-only unit-test failure (2026-11-14)
 

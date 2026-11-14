@@ -1,3 +1,9 @@
+## Stage159 r2 Windows SOURCE_ONLY preflight PASS; Stage160 native writer dataflow next (2026-11-14)
+
+User Windows console: **43/43 tests PASS**, manifest 6/6, **66/66 source SHA match**, **11/11 historical native target RVA literals found**, 418 lexical writer API candidates but **zero proven writer→target edges**, 9 worker sites and 3 VEH registration anchors. Prior Windows WinError1314 symlink fixture failure resolved. Static preflight is PASS; real raw/foreign ownership, trampoline, rollback, 9 worker joins and 3 VEH retirement are still UNKNOWN/NO. [Exact Stage159 r2 checkpoint](STAGE159_CHECKPOINT.md) and [Stage160 read-only next scope](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF; origin(0x27)=UNKNOWN. No game DLL changes.
+
+---
+
 ## Stage159 r2 — Windows non-admin synthetic symlink test fix; current project audit pending (2026-11-14)
 
 User's Stage159 r1 Windows package manifest passed (6/6), 39 Python tests succeeded and one test errored **before source audit** on `symlink_to()` with WinError 1314 (Windows symlink privilege). New Stage159 r2 ZIP **19,554B SHA256 `8655cb0d25f6d8c8f5b066efcac88918d8123074b1975fe75d84b1888065c497`**, 7 files CRC PASS/6 SHA manifest PASS; **43/43 offline synthetic tests PASS**. Runs real symlink test where allowed; otherwise simulates resolved external target for WinError 1314 and keeps fail-closed. **Production source-only auditor unchanged; Windows r2 not run.** [Checkpoint](STAGE159_CHECKPOINT.md) and [next command](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. No game DLL changes.

@@ -1,3 +1,9 @@
+## Stage165 user Windows SOURCE_ONLY PASS; Stage166 targeted owner/lifetime review next (2026-11-14)
+
+User-confirmed Stage165 **7/7 manifest, 55/55 Python unittest PASS (0.739s), 3/3 current SHA**, Stage164 65-case upstream compatibility and **25 source witnesses / 12 open proof gaps**. Stage67 AD75C 5B and E9E60 6B; Stage70 156784 6B each remain `preimage=NOT_SAVED_IN_REVIEWED_INSTALLER owner=UNPROVEN rollback=NO`. [Detailed current checkpoint](STAGE165_CHECKPOINT.md), [next Stage166 plan](NEXT_SESSION.md). This is static source-only PASS, **not** proof of safe install/unload; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. Stage166 not run, game DLL unchanged.
+
+---
+
 ## Stage165 source-only preimage/hook-owner gap ZIP ready (2026-11-14)
 
 **Stage164 Windows PASS** is current user-local baseline. New `ArcanaAI_Stage165_PreimageOwnership_RollbackGap_SOURCE_ONLY.zip` **17,861 B, SHA256 `c19cfab7f43235cf0bb83d9e4a9cc23b1752b41c0087fb82f732abeebdba7b64`**, manifest 7/7, **55/55 synthetic tests PASS after fresh extraction**, archival 3/3 source SHA preview, 25 line witnesses/12 open proof obligations. It validates Stage164 JSON and only Stage67/70/38 current sources, **never edits or accesses game DLL/process**. No live preimage snapshot/byte restore observed **within the two reviewed installers**, and native/foreign ownership and quiescence remain UNPROVEN. **Stage165 Windows NOT YET RUN.** [Stage165 checkpoint](STAGE165_CHECKPOINT.md), [next run](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN.

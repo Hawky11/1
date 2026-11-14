@@ -1,3 +1,9 @@
+## Stage163 SOURCE_ONLY fault-state matrix ready — Windows run pending (2026-11-14)
+
+Read-only Stage163 ZIP with **31 source/hypothetical failure states**, 55/55 clean-extract synthetic tests PASS and SHA manifest 6/6: `ArcanaAI_Stage163_Stage67_70_FaultState_RollbackObligations_SOURCE_ONLY.zip`, **16,486 B SHA256 `e654a8515b37f8fc6ddf9f6ed64fd133339b9063cb907ec555b91673063bfb99`**. Uses Stage162 current Windows metadata and hashes three precise Stage67/70/38 sources; distinguishes normal API returns from hypothetical faults and tracks source-level post-write false with flags set, partial bytes and Stage59 call reachability. **User Windows Stage163 NOT RUN**. [Detailed checkpoint and instructions](STAGE163_CHECKPOINT.md). No game source edits/DLL activity; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.
+
+---
+
 ## Stage162 Windows current-source PASS — Stage163 fault-state design next (2026-11-14)
 
 **User-confirmed 5/5 manifest and 15/15 Python tests PASS** on Windows, Stage161 alias ledger **12 bounded / 15 blocked** reconciled. Stage67 `AD75C` 5B / `E9E60` 6B and Stage70 `156784` 6B each `source_writer_target=HASH_PINNED_CPP_SOURCE_ONLY`, **`rollback=NO`**. Current source SHA pins enable narrow matching-source conclusions, **not runtime installation/ownership/rollback safety**. [Full Stage162 checkpoint](STAGE162_CHECKPOINT.md). Next Stage163 read-only partial-write/failure-state matrix. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; preserve existing DLL.

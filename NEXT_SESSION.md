@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage164 Windows SOURCE_ONLY PASS; Stage165 targeted preimage/owner audit next (2026-11-14)
+
+- **Actual user Windows Stage164 PASS** on `D:\INCUBATOR\ArcanaAIOverhaul`: manifest **6/6**, Python unittest **80/80 PASS (0.281s)**, `STAGE164_UPSTREAM stage163_pass=True modeled=31`, `STAGE164_SOURCE_SHA_MATCHED 3/3`. Stage67 `AD75C` 5B at writer line275, Stage67 `E9E60` 6B line275, Stage70 `156784` 6B line231 all explicitly `production_rollback=NO`. `STAGE164_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. [Full Stage164 checkpoint](STAGE164_CHECKPOINT.md).
+- **Test-double ledger:** 65 isolated bytearray test scenarios = **2 COMMITTED_TEST_DOUBLE_ONLY + 10 ABORTED_NO_PATCH_TEST_DOUBLE + 31 ROLLED_BACK_TEST_DOUBLE_VERIFIED + 22 QUARANTINED_TEST_DOUBLE_UNPROVEN**. Model success is NOT native byte-ownership/rollback proof. Stage164 JSON remains local in `%TEMP%\ArcanaAI_Stage164_SourceOnly\stage164_rollback_feasibility_metadata.json`; user pasted console, not complete JSON.
+- **Next Stage165 NOT YET CREATED/RUN:** narrowly audit exact preimage-byte capture and storage, per-RVA expected original vs live/foreign patch-owner collisions, dependency on EIP/raw callers/trampolines, rollback and post-write cleanup conditions, Stage38/59 continuation. Reuse current Stage164 hash-pinned provenance and source windows, negative metadata tests; no broad generic scanning or live code patch. Unavailable live ownership evidence => UNKNOWN/blocked, never auto-PASS.
+- **Hard gates remain blocked:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN, 9 worker join paths and 3 VEH retirement NOT PROVEN, raw foreign callers/ABI/SEH/unwind/module lease UNKNOWN. Game DLL unmodified.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage164 SOURCE_ONLY transaction rollback feasibility ZIP ready; Windows run pending (2026-11-14)
 
 - Last real Windows-source audit **Stage163 PASS**: 6/6 manifest; 55/55 tests; 3/3 pinned SHA; 31 source-path/hypothetical Stage67/70 fault cases. User's Stage163 JSON exists at `%TEMP%\ArcanaAI_Stage163_SourceOnly\stage163_fault_state_metadata.json`. [Stage163 checkpoint](STAGE163_CHECKPOINT.md).

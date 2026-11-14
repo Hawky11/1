@@ -1,3 +1,9 @@
+## Stage164 source-only transaction feasibility ZIP ready (2026-11-14)
+
+**Stage163 Windows PASS** is current runtime-independent source baseline. Prepared `ArcanaAI_Stage164_Stage67_70_TransactionRollbackFeasibility_SOURCE_ONLY.zip`, **18,505 bytes SHA256 `e2488f1403c5c41317853a0b54aa84384a7e18bd54617c36e03d860f7c07b99f`**; 6/6 manifest, **80/80 tests PASS on clean ZIP extraction**, historical Stage146 3/3 source hash and Stage163 31-case contract preview PASS. Model runs **65** isolated synthetic cases (2 toy commits, 10 prewrite aborts, 31 synthetic rollbacks, 22 quarantines) and never asserts live patch safety. **User Windows Stage164 not yet executed**. Run `Stage164_SourceOnly/Invoke-Stage164Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`. [Checkpoint and safety limits](STAGE164_CHECKPOINT.md); [handoff](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; game DLL unchanged.
+
+---
+
 ## Stage163 Windows current-source PASS — Stage164 source-only rollback feasibility next (2026-11-14)
 
 User-confirmed `STAGE163_TARGETED_SOURCE_ONLY_PASS` after 6/6 manifest, **55/55 Python tests**, upstream Stage162 `bounded=12 blocked=15`, **3/3 current source SHA** and **31 static/hypothetical fault states** across Stage67/70. Three target writes remain `rollback=NO`. `REVIEW_REQUIRED` lines inside tests 51–53 are expected fail-closed fixtures; actual audit passes. [Full checkpoint](STAGE163_CHECKPOINT.md), [next work](NEXT_SESSION.md). **Stage164 not yet built or run**; no game DLL edits. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.

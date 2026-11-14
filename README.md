@@ -1,3 +1,9 @@
+## Stage171 SOURCE_ONLY portable C++ transaction design ready (2026-11-14)
+
+New ZIP `ArcanaAI_Stage171_OfflineNativeTransaction_RollbackDesign_SOURCE_ONLY.zip` **24,741 B SHA256 `ee6266ee3e3a0c356a838c95d27bbba83e23b6b40b371037ed7062c6bc54a646`**, 11 ZIP entries CRC PASS, **10/10 manifest, 141/141 Python tests on fresh extraction**. Host-only C++17 transaction sketch passed **syntax-only** check (NO BINARY); Python tests exercise an independent toy model, NOT executable C++. Reads exact Stage170 user JSON and **4 source SHA**, verifies 48 line witnesses and reviews **12 design invariants** for 3 RVA target templates. **12 per-RVA evidence requests + 12 wider real production gaps still OPEN, 0 runtime artifacts, no real patch/unload permission. USER Stage171 Windows NOT RUN.** [Stage171 checkpoint](STAGE171_CHECKPOINT.md), [next command](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; working game DLL unchanged.
+
+---
+
 ## Stage170 USER Windows SOURCE_ONLY PASS; Stage171 isolated rollback design next (2026-11-14)
 
 User Windows verification: **7/7 manifest; 107 tests discovered, 106 passed, 1 skipped because Windows symlink test not supported, 0 failures** (1.934 s). `STAGE170_SOURCE_SHA_MATCHED 4/4`, three Stage67/70 RVA targets, **48 exact source witnesses, 12 per-target evidence requests, 12 wider production gaps OPEN and 0 runtime artifacts**. A SOURCE_ONLY PASS does not prove native hook ownership, preimage or safe byte rollback. [Stage170 checkpoint](STAGE170_CHECKPOINT.md); [Stage171 source-only design handoff](NEXT_SESSION.md). Stage171 NOT BUILT/RUN. Preserve `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; no live game DLL work.

@@ -1,6 +1,35 @@
 # ArcanaAIOverhaul — Stage160 bounded writer address-operand source evidence and dataflow gaps (2026-11-14)
 
-**STATUS: Stage160 package completed and independently re-tested on freshly extracted ZIP; 73/73 Python tests PASS; current user's Windows Stage160 project audit NOT YET RUN.** The most recent *actual* Windows result is Stage159 r2 SOURCE_ONLY PASS (43/43 tests, 66/66 source hashes, 11/11 target source RVA declarations, 418 lexical write-API candidates, **0 proven writer→target edges**).
+**LATEST STATUS: Stage160 user-confirmed Windows SOURCE_ONLY PASS: 73/73 tests, SHA 66/66, 443 API syntax candidates, 0 direct RVA source address operand witnesses; game DLL safety still DENY.** The most recent *actual* Windows result is Stage159 r2 SOURCE_ONLY PASS (43/43 tests, 66/66 source hashes, 11/11 target source RVA declarations, 418 lexical write-API candidates, **0 proven writer→target edges**).
+
+## User-confirmed Stage160 current Windows SOURCE_ONLY PASS (2026-11-14)
+
+The user ran `Invoke-Stage160Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` and pasted the full PowerShell transcript (provided as a large-paste text attachment). This is **actual current Windows source audit**, unlike the earlier synthetic package tests:
+
+```text
+STAGE160_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE160_MANIFEST_PASS files=8
+Ran 73 tests in 5.497s
+OK
+STAGE160_HASHES matched=66 expected=66
+STAGE160_DECLARED_SITES current=11 risk_stage67_70=3 source_api_candidates=443
+STAGE160_WRITE_OPERANDS direct_source_literal_witnesses=0 writer_target_dataflow_proven=0
+STAGE160_TARGET STAGE10 F34D0/F3930: 0 direct source address argument witnesses
+STAGE160_TARGET STAGE10_PARENT F3280/F4030/F4360: 0 each
+STAGE160_TARGET STAGE129 F30B0/F325A/F326A: 0 each
+STAGE160_TARGET STAGE81 F7D22/F7D38/F7D43: 0 each
+STAGE160_TARGET STAGE67 AD75C/E9E60 and STAGE70 156784: 0 each
+STAGE160_RAW_CALLER_PROOF=NO TRAMPOLINE_PROOF=NO WORKER_JOIN_PROOF=NO VEH_RETIREMENT=NO ROLLBACK_PROOF=NO
+STAGE160_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage160_SourceOnly\stage160_writer_dataflow_metadata.json
+STAGE160_SOURCE_ONLY_PREFLIGHT_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE160_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Interpretation:** manifest 8/8, 73/73 tests PASS, all 66 source hashes match. Stage160 reports **443 source API syntax candidates**, 11 pinned native sites plus 3 Stage67/70 risk sites, and **zero direct RVA tokens in the *address operand* of covered API calls**. Zero direct tokens is **not proof of no hooks or no write calls**: target pointers can be computed using variables, structure members, macros or helpers and unrecognized/inline assembly. The previous Stage159 418 and Stage160 443 are different scanner/API scopes (Stage160 includes `memset`); do not interpret their difference as source drift. All live ownership, raw/foreign caller, trampoline return, nine-worker join, three-VEH retirement and Stage67/70 rollback proofs remain unknown/NO.
+
+**Next:** prepared Stage161 bounded 1–3 same-file lexical assignment to API address operand hypothesis report, not a semantic compiler/dataflow proof. [Stage161 checkpoint](STAGE161_CHECKPOINT.md). **Windows Stage161 has NOT yet run**.
+
+---
 
 ## Delivered Stage160 artifact
 

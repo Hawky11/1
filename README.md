@@ -1,3 +1,9 @@
+## Stage162 SOURCE_ONLY Stage67/70 write-order analysis ready (2026-11-14)
+
+Reproduced Stage161 **12 bounded / 15 blocked** on archived Stage146 source, traced two Stage67 writes (`AD75C` 5 B → `E9E60` 6 B) and one Stage70 write (`156784` 6 B), and identified post-write `false` without code-byte rollback and Stage38 Stage59 admission implications. Hash-pinned Stage162 local script ZIP (9,205 B SHA256 `f9adddc5d77eb70ab05e64661f4808095fcc52282e7c190e330eb1fc716e1dff`) tests 15/15 PASS; **user Windows Stage162 current-tree run NOT YET done**. [Evidence, exact source lines and run instructions](STAGE162_CHECKPOINT.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; game DLL untouched.
+
+---
+
 ## Stage161 Windows SOURCE_ONLY PASS; Stage162 Stage67/70 focused provenance next (2026-11-14)
 
 User-confirmed Windows Stage161 `99/99` tests PASS, 10-file package manifest PASS, 66/66 SHA source match, Stage160 API baseline 443 direct RVA operands 0, bounded 1–3-hop alias candidates **12** and blocked/ambiguous **15**. All 12 are Stage67 `AD75C`/Stage67 `E9E60`/Stage70 `156784` **4 candidates each**, and **0 proven writer→target edges**. Other 11 pinned target RVAs have 0 *bounded heuristic* hints, not proof of no patches. Next Stage162 source-only review candidate source lines, intermediate assignments and rollback failure order. [Full Stage161 current Windows checkpoint](STAGE161_CHECKPOINT.md); [next work](NEXT_SESSION.md). **SAFE_TO_INSTALL=false; SAFE_TO_UNLOAD_GAME_DLL=false**, Stage36 OFF, origin(0x27)=UNKNOWN; existing game DLL not touched.

@@ -1,3 +1,9 @@
+## Stage168 SOURCE_ONLY callback epoch/module owner lease ZIP ready (2026-11-14)
+
+New `ArcanaAI_Stage168_CallbackEpoch_ModuleOwnerLease_Integration_SOURCE_ONLY.zip`: **16,340 B SHA256 `240130f2066a22b3035ef9013f34895b0cbd6cb9f9ba457d7e23ec7e00752b06`**, 8 ZIP members CRC PASS, **7/7 manifest**, **166/166 fresh-extract tests PASS**, historical source SHA **13/13**. Versioned callback/Stage59 ingress and module owner lease integration **test double** with **99** artificial cases (1 drained, 9 denied, 89 quarantined). No live worker join, VEH removal, native hook rollback or DLL unload. **User Stage168 Windows current-project run NOT YET DONE.** [Checkpoint](STAGE168_CHECKPOINT.md), [Windows command and next phase](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. Working game DLL untouched.
+
+---
+
 ## Stage167 Windows current-source SOURCE_ONLY PASS — Stage168 lease integration next (2026-11-14)
 
 User confirmed `STAGE167_TARGETED_SOURCE_ONLY_PASS` with **7/7 manifest, 165/165 tests, 13/13 current source hashes**, Stage166 upstream nine worker and three VEH sources, **79 toy protocol cases (1 drained, 8 denied, 70 quarantined)**; **12 real retirement/ownership proof gaps remain OPEN**. This is only a **static source + synthetic model** result, not real worker joins, VEH retirement or module unload. [Full Stage167 Windows checkpoint](STAGE167_CHECKPOINT.md), [Stage168 handoff](NEXT_SESSION.md). Stage168 NOT BUILT/RUN; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.

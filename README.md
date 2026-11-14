@@ -1,3 +1,9 @@
+## Stage159 r2 — Windows non-admin synthetic symlink test fix; current project audit pending (2026-11-14)
+
+User's Stage159 r1 Windows package manifest passed (6/6), 39 Python tests succeeded and one test errored **before source audit** on `symlink_to()` with WinError 1314 (Windows symlink privilege). New Stage159 r2 ZIP **19,554B SHA256 `8655cb0d25f6d8c8f5b066efcac88918d8123074b1975fe75d84b1888065c497`**, 7 files CRC PASS/6 SHA manifest PASS; **43/43 offline synthetic tests PASS**. Runs real symlink test where allowed; otherwise simulates resolved external target for WinError 1314 and keeps fail-closed. **Production source-only auditor unchanged; Windows r2 not run.** [Checkpoint](STAGE159_CHECKPOINT.md) and [next command](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. No game DLL changes.
+
+---
+
 ## Stage159 — SOURCE_ONLY native RVA/writer/trampoline/raw caller provenance gap graph (2026-11-14)
 
 New metadata-only Stage159 ZIP **17,451B SHA256 `23486989d255c0d137398ed5ff5b94e02214a34c5ccb2bb13c4d849d76c01ffa`**, **7 ZIP entries CRC PASS, manifest 6/6, 40/40 offline negative/synthetic tests PASS**. Rehashes 66 current source paths against Stage156/Stage158 r2, inventories 11 historically pinned target declarations, 3 Stage67/70 known rollback risks, and writer API lexical/proximity candidates; **does not infer writer→target dataflow, installed live owners or safe module unload**. **Stage159 Windows project run pending**. [Checkpoint and exact read-only Windows command](STAGE159_CHECKPOINT.md), [handoff](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; no game DLL changes.

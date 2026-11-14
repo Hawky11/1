@@ -1,6 +1,44 @@
 # ArcanaAIOverhaul — Stage159 SOURCE_ONLY native hook writer/caller provenance gap graph (2026-11-14)
 
-**Status: Stage159 package prepared; 40/40 offline synthetic/negative Python tests PASS, ZIP/manifest verified. Current Windows project Stage159 audit NOT YET EXECUTED.** The previous user-confirmed Stage158 r2 Windows source audit **DID PASS**, with 45/45 tests and all 66 source SHA; do not confuse these separate stages.
+**Status: Stage159 r1 attempted on user Windows but stopped at synthetic symlink privilege error WinError 1314; real-project source step NOT RUN. Stage159 r2 test-only fixture repair 43/43 offline PASS, Windows r2 audit PENDING.** The previous user-confirmed Stage158 r2 Windows source audit **DID PASS**, with 45/45 tests and all 66 source SHA; do not confuse these separate stages.
+
+## User-confirmed first Windows Stage159 attempt — environment-only unit-test failure (2026-11-14)
+
+User executed `Invoke-Stage159Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` on Windows Python **3.14**, in an ordinary unelevated PowerShell. The package SHA manifest verified `STAGE159_MANIFEST_PASS files=6`. The 40-test synthetic unit suite reported **39 `ok` and one `ERROR`**:
+
+```text
+test_30_symlink_escape_denied ... ERROR
+File "...\tests\test_stage159.py", line 198, in test_30_symlink_escape_denied
+    (self.root/'src/link.cpp').symlink_to(outside)
+OSError: [WinError 1314] Клиент не обладает требуемыми правами
+Ran 40 tests in 2.809s
+FAILED (errors=1)
+STAGE159_TESTS_FAIL SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+This error occurs **during the construction of a synthetic test symlink under %TEMP%**; Windows does not allow the unelevated token to create one. It is not an actual game/native runtime error and does not show a source mismatch. Crucially, **[3/3] current source SHA/native graph audit was never reached**, so **no Stage159 current-project source preflight result exists**. The hard safety gate behaved correctly.
+
+### Stage159 r2 non-admin fixture repair — offline tested, Windows pending
+
+New chat-only ZIP `ArcanaAI_Stage159_r2_WindowsNonAdminSymlinkFixture_SOURCE_ONLY.zip`, **19,554 bytes**, SHA256 `8655cb0d25f6d8c8f5b066efcac88918d8123074b1975fe75d84b1888065c497`, **7 archive entries CRC PASS; 6/6 SHA+length manifest PASS after fresh extraction**, Python tests on clean extract **43/43 PASS** (~4.243 s). The **production `stage159_provenance_audit.py` is byte-identical to Stage159 r1**.
+
+Only the synthetic tests, package marker and release docs changed:
+- `test_30_symlink_escape_denied` first tries a **real** filesystem symlink. It now handles **only** Windows `OSError.winerror==1314` by simulating `Path.resolve()` yielding an external path and asserting production `checked_source` raises `SOURCE_SYMLINK_ESCAPE`. Other exceptions **still fail the test**; no elevation or Windows Developer Mode needed.
+- `test_41` always checks simulated external-path resolution; `test_42` forces the WinError 1314 branch cross-platform; `test_43` proves unrelated OS errors are not swallowed. Simulation is **not** proof of real Windows junction/reparse-point integration.
+- Wrapper prints `STAGE159_R2_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD`; package remains source-only, no native build or game DLL access.
+
+**NEXT (not yet performed on user's Windows r2):**
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+.\Invoke-Stage159Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'
+```
+
+Run from unpacked `Stage159_r2_SourceOnly`. It reuses existing local Stage156 and Stage158 r2 JSON in `%TEMP%`. Expect `STAGE159_MANIFEST_PASS files=6` and 43 tests; only afterwards will the **actual [3/3] current-source** source graph run. If that step returns `REVIEW_REQUIRED`, analyze it separately instead of treating the WinError fix as source proof.
+
+Both `SAFE_TO_INSTALL=false` and `SAFE_TO_UNLOAD_GAME_DLL=false` remain. `RAW_CALLER_PROOF=NO`, `WORKER_JOIN_PROOF=NO`, `FUTURE_VEH_RETIREMENT=NO`; Stage36 OFF, origin(0x27)=UNKNOWN; Stage129 working DLL **2,099,200 B** and Stage122 backup **2,089,984 B** untouched.
+
+---
 
 ## Deliverable integrity and provenance
 

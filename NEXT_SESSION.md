@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage159 r2 Windows non-admin symlink-fixture fix prepared; run pending (2026-11-14)
+
+- **User Windows Stage159 r1:** manifest `STAGE159_MANIFEST_PASS files=6`; 39 tests `ok`, `test_30_symlink_escape_denied` failed with `OSError: [WinError 1314]` on synthetic `Path.symlink_to` under %TEMP% (Python 3.14). `STAGE159_TESTS_FAIL` stopped before **[3/3] actual source SHA/native provenance**. Not a game or source finding; no Stage159 current Windows source result yet.
+- **New r2 ZIP in chat:** `ArcanaAI_Stage159_r2_WindowsNonAdminSymlinkFixture_SOURCE_ONLY.zip`, **19,554 bytes SHA256 `8655cb0d25f6d8c8f5b066efcac88918d8123074b1975fe75d84b1888065c497`**, 7 ZIP entries CRC PASS, manifest 6/6 SHA+size, **43/43 offline synthetic Python tests PASS** after clean extraction. Stage159 production C++ source auditor unchanged; test 30 handles *only* Windows WinError1314 via simulated Path.resolve-outside-root boundary; extra forced WinError1314 and unrelated-error regression tests. Real symlink test still runs where permitted; no elevation or Developer Mode required. **Windows r2 not yet run.**
+- **NEXT Windows:** extract ZIP, cd to `Stage159_r2_SourceOnly`, run `Set-ExecutionPolicy Bypass -Scope Process -Force`; `.\Invoke-Stage159Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`. Reads previous Stage156 and Stage158 r2 metadata, rehashes 66 reachable source files, reports 11 declared Stage10/Parent/Stage129/Stage81 RVA sites, three Stage67/70 rollback-risk sites and writer proximity (NOT dataflow). Output `%TEMP%\ArcanaAI_Stage159_SourceOnly\stage159_native_provenance_metadata.json`. If `[3/3]` source audit reports REVIEW, inspect that independently.
+- **Hard gate unchanged:** Stage36 OFF, origin(0x27)=UNKNOWN; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; native raw caller owner, trampoline/ABI/SEH, 9 worker joins, 3 VEH retirement, Stage67/70 rollback unproven; Stage129 and Stage122 DLLs untouched. [Full checkpoint](STAGE159_CHECKPOINT.md).
+
+---
+
 ## ACTIVE CHECKPOINT — Stage159 SOURCE_ONLY writer/entry/caller provenance audit ZIP ready (2026-11-14)
 
 - **Previous Windows evidence:** Stage158 r2 user-confirmed PASS: SHA 66/66, 9 worker create/close/loop anchors, 3 VEH registrations, all 5 Stage10/Stage129 RVA lexical literals; Python 45/45. No live ownership/caller proof.

@@ -1,6 +1,33 @@
 # ArcanaAIOverhaul Stage169 — Source-to-Runtime Safety Evidence Gap Review (2026-11-14)
 
-**STATUS: Stage169 SOURCE_ONLY package BUILT and tested locally on the archived, hash-pinned source snapshot. USER WINDOWS Stage169 NOT YET RUN.** Last verified user Windows current-tree audit is Stage168 PASS (manifest 7/7, 166/166 unittest, 13/13 current source SHA, upstream Stage167 79 synthetic cases and Stage168 99 synthetic cases with 12 unresolved production proofs). See [Stage168 checkpoint](STAGE168_CHECKPOINT.md).
+**CURRENT STATUS: Stage169 USER WINDOWS SOURCE_ONLY PASS (7/7 manifest, 104/104 tests, 13/13 current SHA, 47 exact source witnesses, 12 open gaps and 0 runtime artifacts).** Stage168 is the validated upstream. No game DLL or process access, native build or source edits during this audit.
+
+## User Windows Stage169 SOURCE_ONLY execution — PASS (2026-11-14)
+
+User ran the extracted `Invoke-Stage169Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` in PowerShell. The **actual user-supplied console** confirms:
+
+```text
+STAGE169_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE169_MANIFEST_PASS files=7
+Ran 104 tests in 0.657s
+OK
+STAGE169_MODE SOURCE_ONLY READ_ONLY EVIDENCE_GAPS_NO_GAME_DLL_ACCESS_NO_NATIVE_BUILD
+STAGE169_SOURCE_SHA_MATCHED 13/13
+STAGE169_EVIDENCE_MATRIX open=12 source_witnesses=47 runtime_artifacts=0
+STAGE169_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage169_SourceOnly\stage169_source_runtime_evidence_matrix.json
+STAGE169_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE169_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Result:** 7/7 package manifest, **104/104 tests PASS in 0.657 seconds**, current-project **13/13 source SHA**, **47 exact source line witnesses**, **12/12 production safety proof gaps still OPEN**, **0 independent runtime artifacts**. The full Stage169 JSON has not been uploaded; only the Windows console was supplied. The `STAGE169_REVIEW_REQUIRED` messages inside tests 031–034 are intentional negative/fault-injection test behavior; the actual final stage run is `TARGETED_SOURCE_ONLY_PASS` and has no review-required final status.
+
+A Windows SOURCE_ONLY PASS is a successful **read-only source/metadata evidence inventory**, not a demonstration of live patch owner/preimage/rollback, worker stop/join, VEH removal and drain, Stage59/debug-register lease, future callback exclusion, native trampoline ABI/SEH or module unload. The twelve evidence gaps were intentionally **not closed**. The user did not run any hook or native live experiment for Stage169. Keep `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF and origin(0x27)=UNKNOWN.
+
+### Next targeted evidence action (Stage170 proposal; not yet created)
+
+**Stage170 SOURCE_ONLY: per-RVA original-byte / foreign-hook-owner evidence collection.** Unlike expanding synthetic scenario counts, trace and enumerate complete source-defined ownership/restore artifacts for the exact Stage67 `AD75C` 5 B + `E9E60` 6 B and Stage70 `156784` 6 B targets, compare with the separate `AICommandSiteTrace.cpp` original-byte preservation pattern, and define independent, nonproduction acceptance evidence for original-byte capture, collision detection, mixed-stage partial failure, and byte-restore + verify. Clearly mark unobserved live ownership and actual rollback `UNKNOWN/NOT_TESTED`. Continue worker/VEH proof gathering as an independent stream. No project modifications, native builds, live hooks or unload permissions without separate explicit approval.
+
+---
 
 ## Verified artifact and provenance
 
@@ -41,7 +68,7 @@ Stages 164, 167 and 168 demonstrated controlled *test-double* scenarios. Stage16
 
 Every gap remains `OPEN_NEEDS_INDEPENDENT_EVIDENCE`, `runtime_proof=NOT_TESTED`, `production_approval=false`. A source-only PASS is an accurate evidence matrix, **never** a safe install/unload decision. This is **not a global-source absence census**.
 
-## User Windows command (pending)
+## Windows SOURCE_ONLY command (user successfully executed)
 
 Unzip outside the project; inside `Stage169_SourceOnly` run:
 
@@ -53,9 +80,9 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 Inputs: user local `%TEMP%\ArcanaAI_Stage168_SourceOnly\stage168_callback_module_lease_metadata.json` and 13 current hash-pinned sources.
 Output: `%TEMP%\ArcanaAI_Stage169_SourceOnly\stage169_source_runtime_evidence_matrix.json`.
 
-On unchanged Windows inputs expected: `STAGE169_MANIFEST_PASS files=7`, 104/104 tests, `STAGE169_SOURCE_SHA_MATCHED 13/13`, `STAGE169_EVIDENCE_MATRIX open=12 source_witnesses=47 runtime_artifacts=0`, and `STAGE169_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. The user has **not** run this yet. Source/metadata drift leads to `REVIEW_REQUIRED` with **zero positive gap/witness rows**; do not just update pins to bypass review.
+On unchanged Windows inputs expected: `STAGE169_MANIFEST_PASS files=7`, 104/104 tests, `STAGE169_SOURCE_SHA_MATCHED 13/13`, `STAGE169_EVIDENCE_MATRIX open=12 source_witnesses=47 runtime_artifacts=0`, and `STAGE169_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. The user has now run this successfully on their current source tree. Source/metadata drift leads to `REVIEW_REQUIRED` with **zero positive gap/witness rows**; do not just update pins to bypass review.
 
-## After Stage169 Windows evidence — prioritized real proof collection, not endless synthetic escalation
+## After confirmed Stage169 Windows PASS — prioritized real proof collection, not endless synthetic escalation
 
 Stop increasing toy scenario counts. Next work should collect **actual scoped source/design proof artifacts** and, only following separate explicit authorization, safe nonproduction harness evidence for (1) ownership and original-byte save/restore semantics, (2) worker stop/ACK/join + three VEH registration removal/in-flight retirement, and (3) full native/callback future-entry lease, Stage59/DR register and module lifetime. Anything requiring the actual game's runtime must remain **NOT TESTED** until separately approved and observed.
 

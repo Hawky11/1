@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage165 Windows SOURCE_ONLY PASS; Stage166 native/raw owner lifetime next (2026-11-14)
+
+- **Actual user Windows Stage165 PASS**: `STAGE165_MANIFEST_PASS files=7`; **55/55 tests PASS (0.739s)**; `STAGE165_UPSTREAM stage164_pass=True test_double_cases=65`; **3/3 current-source SHA matched**; `STAGE165_PROOF_GAPS open=12 source_witnesses=25`. Targets: Stage67 `AD75C`/5B, Stage67 `E9E60`/6B, Stage70 `156784`/6B, each `preimage=NOT_SAVED_IN_REVIEWED_INSTALLER owner=UNPROVEN rollback=NO`. Final `STAGE165_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. [Full checkpoint](STAGE165_CHECKPOINT.md).
+- **Evidence limit**: user pasted the Windows console; full JSON `%TEMP%\ArcanaAI_Stage165_SourceOnly\stage165_preimage_owner_gap_metadata.json` not uploaded. Source witnesses apply only to reviewed Stage67/70 installers and Stage38 integration; not a global codebase or live hook-owner proof.
+- **NEXT Stage166 NOT YET BUILT/RUN**: narrowly inventory native/raw hook entry and owner chains, installed byte owner vs foreign hooks, trampoline/ABI/SEH, 9 worker joins and 3 VEH removal/in-flight retirement paths, Stage38/59 admission and module lease. Reuse Stage165 plus older exact metadata and anchored source lines, no repeated broad 443 API scan. Must fail closed on missing or drifted source metadata; source-only evidence never establishes live safety.
+- **Hard gates** remain `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; existing game DLL unchanged.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage165 SOURCE_ONLY package ready; user Windows run pending (2026-11-14)
 
 - Last actual user Windows audit remains **Stage164 PASS**: manifest 6/6, 80/80 Python tests (0.281s), 3/3 current-source SHA, Stage163 31 source cases, Stage164 65 isolated test-double outcomes (2 committed/10 no-write aborts/31 synthetic verified rollbacks/22 quarantines); three production site rollback flags remain NO. [Stage164 checkpoint](STAGE164_CHECKPOINT.md).

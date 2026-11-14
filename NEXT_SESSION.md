@@ -1,3 +1,12 @@
+## ACTIVE CHECKPOINT — Stage169 actual Windows SOURCE_ONLY PASS; Stage170 per-RVA owner/preimage evidence next (2026-11-14)
+
+- **User Windows Stage169 PASS:** `STAGE169_MANIFEST_PASS files=7`, **104/104 Python tests PASS (0.657 s)**, `STAGE169_SOURCE_SHA_MATCHED 13/13`, `STAGE169_EVIDENCE_MATRIX open=12 source_witnesses=47 runtime_artifacts=0`, final `STAGE169_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. `REVIEW_REQUIRED` lines were inside intentional negative tests 031–034 and not final audit failure. [Confirmed Stage169 checkpoint](STAGE169_CHECKPOINT.md).
+- **Evidence boundary:** 13/13 SHA and 47 exact source witnesses provide an accurate *source-scoped* matrix of **12 still OPEN** native/caller/owner/worker/VEH/rollback lifetime gaps; **zero independent runtime safety artifacts**. The full Stage169 JSON remains on user's Windows `%TEMP%\ArcanaAI_Stage169_SourceOnly\stage169_source_runtime_evidence_matrix.json` (not uploaded); only console pasted. No real hooks were installed/restored or DLL unloaded in Stage169.
+- **NEXT Stage170 (NOT YET BUILT/RUN):** narrow **SOURCE_ONLY per-RVA native preimage/foreign owner/rollback evidence inventory**, targeting Stage67 `AD75C` 5 B + `E9E60` 6 B and Stage70 `156784` 6 B, using preserved prior source SHA/evidence and the contrast with `AICommandSiteTrace.cpp:1979` (another hook with preimage storage). Enumerate actual source-defined buffer ownership/scope/lifetime, installed-byte expected signature vs live snapshot, foreign writer/race arbitration, partial-write rollback and independent acceptance artifacts; do not confuse separate hook's saved preimage with Stage67/70 transaction proof. Keep worker stop/join and three VEH removal/in-flight drain independently open.
+- **Do NOT** return to endlessly expanding artificial scenario counts or promote source-only PASS to native safety. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF; origin(0x27)=UNKNOWN; no native build/game DLL/process access, no production source mutation. Working Stage129 and fallback Stage122 untouched.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage169 SOURCE_ONLY evidence matrix ready; user Windows run pending (2026-11-14)
 
 - **Last actual user Windows result: Stage168 SOURCE_ONLY PASS** (7/7 manifest, 166/166 tests, 13/13 current source SHA, 99 artificial epoch/module lease cases, 12 unresolved *real* obligations). [Stage168 checkpoint](STAGE168_CHECKPOINT.md).

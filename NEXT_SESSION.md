@@ -1,3 +1,11 @@
+## ACTIVE CHECKPOINT — Stage162 Windows SOURCE_ONLY PASS; Stage163 targeted fault-state model next (2026-11-14)
+
+- **User Windows Stage162 completed on actual project**: `STAGE162_MANIFEST_PASS files=5`; **15/15 tests PASS (0.056s)**; `STAGE162_RECONCILE bounded=12 blocked=15`; source-hash-pinned Stage67 `AD75C` 5B, `E9E60` 6B, Stage70 `156784` 6B all report `source_writer_target=HASH_PINNED_CPP_SOURCE_ONLY rollback=NO`. Terminal: `STAGE162_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. Metadata at `%TEMP%\ArcanaAI_Stage162_SourceOnly\stage162_targeted_write_order_metadata.json`; console was pasted, JSON not uploaded. [Full source/evidence checkpoint](STAGE162_CHECKPOINT.md).
+- **Next Stage163 SOURCE_ONLY:** exact-line Stage67/70 ordinary failure and fault-state matrix for 3 RVA targets, recording prewrite protections, 1st/2nd memcpy sequence, cache flush, patch state flag, protection restoration, resume/mutex cleanup, Stage38 Stage59/Stage70 admission. Explicitly separate return-`false` with patched bytes from no-write and half-write states; distinguish C++/SEH exceptions from ordinary API return values. Add synthetic adversarial tests and SHA drift checks; report unknown where unavailable. No new global scan, no compile/game access.
+- **Unchanged safety:** rollback=NO for all three; native owner/caller/trampoline, 9 worker joins, 3 VEH callback retirement and external module lease UNPROVEN. `SAFE_TO_INSTALL=false`; `SAFE_TO_UNLOAD_GAME_DLL=false`. Stage36 OFF, origin(0x27)=UNKNOWN; keep game DLL untouched.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage162 SOURCE_ONLY package ready, current Windows run pending (2026-11-14)
 
 - **Local Stage162 analysis completed from archived Stage146 source:** exact Stage161 algorithm independently reproduced 12 bounded Stage67/70 hints (four at AD75C, E9E60 and 156784) and 15 blocked (6 Stage129 + 9 Stage81). Three code-byte writers are Stage67 two memcpy writes in sequence (AD75C 5 B, E9E60 6 B) and Stage70 one (156784 6 B); remaining 9 candidate hits are VirtualProtect/FlushInstructionCache calls, not separate byte writes. [Detail](STAGE162_CHECKPOINT.md).

@@ -1,6 +1,33 @@
 # ArcanaAIOverhaul — Stage166 native caller / worker / VEH ownership lifetime review (2026-11-14)
 
-**STATUS: Stage166 SOURCE_ONLY ZIP built, clean-extracted and tested locally. USER WINDOWS STAGE166 NOT YET RUN.** Last actual user Windows current-source evidence: Stage165 PASS (7/7 manifest; 55/55 tests; 3/3 pinned SHA; 25 source witnesses; 12 open preimage/owner/rollback gaps). No game process or game DLL accessed; no native build; no production source edits.
+**CURRENT STATUS: Stage166 user Windows SOURCE_ONLY PASS (7/7 manifest, 96/96 tests, 13/13 current source SHA, 9 workers, 3 VEH, 22 witnesses, 12 open gaps).** Stage165 is the confirmed upstream. No game process or DLL access, native build or production source edits from this audit.
+
+## User Windows Stage166 SOURCE_ONLY verification — PASS (2026-11-14)
+
+The user executed `Invoke-Stage166Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` in the extracted `Stage166_SourceOnly` directory. **This is user-provided PowerShell console evidence (not the full uploaded Stage166 JSON and not live runtime testing).**
+
+```text
+STAGE166_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE166_MANIFEST_PASS files=7
+Ran 96 tests in 3.813s
+OK
+STAGE166_UPSTREAM stage165_pass=True witnesses=25
+STAGE166_SOURCE_SHA_MATCHED 13/13
+STAGE166_LIFETIME workers=9 veh=3 witnesses=22 open_gaps=12
+STAGE166_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage166_SourceOnly\stage166_native_lifetime_metadata.json
+STAGE166_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE166_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+All **96/96 Python tests PASS** (3.813s), **7/7 manifest**, current source pins **13/13**, Stage165 upstream validated (`witnesses=25`), nine worker start sites and three VEH registration source sites, 22 exact source witnesses, and **12 open lifetime/ownership proof gaps**. The test pass includes adversarial cases that would reject new worker waits, VEH removal, modified proxy detach, or spoofed source/metadata; these reject *unreviewed drift*, not future safe changes.
+
+**Scope limit:** reviewed local worker starter blocks close thread HANDLEs but this does not prove the thread has joined; the reviewed VEH registration source files contain no locally established removal/retirement protocol. The static audit does not prove absence throughout the codebase, determine the complete native raw caller set, or establish module unload safety. No game process/DLL access or code mutation was performed by this audit.
+
+**Next Stage167 (NOT YET BUILT/RUN):** SOURCE_ONLY stop/join + VEH in-flight retirement + callback/owner lease protocol *design and isolated state machine*. Define stop request, acknowledgement, joinable handle ownership, in-flight callback entry/exit counter, preventing new callbacks, handler removal, module lease/drain, and fail-closed timeout/partial retirement states. Explicitly model Stage59 watch worker and Stage38 admission. No native build, no production DLL/source modification and no game unload.
+
+**Unchanged safety:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN; installed byte owner/rollback, trampoline ABI/SEH and actual nine-worker/three-VEH retirement remain UNPROVEN.
+
+---
 
 ## Artifact and verification
 
@@ -37,7 +64,7 @@ Stage166 rehashes the following currently user-local files against previously up
 - **12 still-open Stage166 gates**: worker stop/join, immediate HANDLE closing versus thread completion, three VEH removals, in-flight retirement, proxy detach/lease, raw caller set, trampoline ABI/SEH/unwind, foreign byte owner, Stage67/70 preimage and rollback, Stage38/Stage59 transaction admission, Stage59 debug-register retirement, external module/future dispatch lease. See shipped `STAGE166_MODEL_NOTES.md`.
 - The upstream Stage165 JSON must match the exact deterministic sanitized contract. Its canonical SHA check catches metadata drift; it is **not** cryptographic provenance proof. User actual Stage165 JSON has not been uploaded, so Stage166 must still validate the user-local file.
 
-## Next Windows read-only command (not yet executed)
+## Windows read-only command (successfully executed)
 
 Extract ZIP *outside* `D:\INCUBATOR\ArcanaAIOverhaul`, open PowerShell in `Stage166_SourceOnly`, run:
 
@@ -46,10 +73,10 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 .\Invoke-Stage166Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'
 ```
 
-Default upstream `%TEMP%\ArcanaAI_Stage165_SourceOnly\stage165_preimage_owner_gap_metadata.json`; output `%TEMP%\ArcanaAI_Stage166_SourceOnly\stage166_native_lifetime_metadata.json`. Expected if evidence unchanged: manifest 7/7, 96/96 tests, source 13/13, workers=9, veh=3, witnesses=22, open_gaps=12, final `STAGE166_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. If a source hash/line or upstream ledger has changed, the script returns REVIEW_REQUIRED and clears positive witness ledgers. Never bypass SHA drift by changing pins without investigating.
+Default upstream `%TEMP%\ArcanaAI_Stage165_SourceOnly\stage165_preimage_owner_gap_metadata.json`; output `%TEMP%\ArcanaAI_Stage166_SourceOnly\stage166_native_lifetime_metadata.json`. The user's Windows source audit has now confirmed manifest 7/7, 96/96 tests, SHA 13/13, workers=9, veh=3, witnesses=22, open_gaps=12 and `STAGE166_TARGETED_SOURCE_ONLY_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false`. If a source hash/line or upstream ledger has changed, the script returns REVIEW_REQUIRED and clears positive witness ledgers. Never bypass SHA drift by changing pins without investigating.
 
 ## Subsequent work (proposal only)
 
-After the user's Windows Stage166 output: Stage167 **SOURCE_ONLY stop/join/VEH retirement protocol feasibility design**, with synthetic acknowledgement barriers and module callback lease model. No real game unload, no project C++ edit or game process access.
+After the confirmed user Windows Stage166 PASS: Stage167 **SOURCE_ONLY stop/join/VEH retirement protocol feasibility design**, with synthetic acknowledgement barriers and module callback lease model. No real game unload, no project C++ edit or game process access.
 
 **Permanent hard gate until independent proof:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF; origin(0x27)=UNKNOWN. Original game DLL (Stage129 working and Stage122 fallback) unchanged.

@@ -1,3 +1,9 @@
+## Stage169 source-to-runtime EVIDENCE GAP matrix ZIP ready (2026-11-14)
+
+New `ArcanaAI_Stage169_SourceToRuntime_EvidenceGapMatrix_SOURCE_ONLY.zip` **20,905 B SHA256 `cd86de5e05bfeff9742d7313908edbc4cc388b55c839970dcd10eeb57f9f3ad0`**, 8 ZIP entries CRC PASS, **7/7 manifest and 104/104 clean-extract tests PASS**, historical SHA **13/13** and **47 scoped line witnesses**. Twelve production source→runtime proof requirements each specify witness, missing independently testable artifact and acceptance criterion; **0/12 gates closed and no game runtime evidence acquired**. Stage59 source intentionally keeps VEH for process lifetime, so no safe unload may be inferred. **User Stage169 Windows NOT RUN.** [Full checkpoint](STAGE169_CHECKPOINT.md), [Windows run and next real proof work](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; current game DLL unaffected.
+
+---
+
 ## Stage168 Windows current-source PASS; Stage169 real-evidence gap review next (2026-11-14)
 
 User confirmed `STAGE168_TARGETED_SOURCE_ONLY_PASS`: **7/7 manifest, 166/166 Python tests (0.428s), 13/13 current source SHA**, Stage167 upstream 79 toy scenarios, and **99** new epoch/module lease test-double cases (**1 drained, 9 denied, 89 quarantined**) with **12 unresolved real lifecycle/rollback/owner gaps**. The PASS validates source pins and toy contract, not installed-byte ownership or live worker/VEH retirement. [Detailed Stage168 checkpoint](STAGE168_CHECKPOINT.md), [Stage169 handoff](NEXT_SESSION.md). Stage169 not built/run; `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`. No game DLL accessed by audit.

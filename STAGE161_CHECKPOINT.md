@@ -1,6 +1,46 @@
 # ArcanaAIOverhaul — Stage161 bounded local assignment-alias source hints (2026-11-14)
 
-**Status: Stage161 release built and independently re-tested after clean ZIP extraction, 99/99 synthetic/negative tests PASS; user Windows Stage161 current-tree audit NOT YET RUN.** The **actual** Stage160 Windows source-only audit is confirmed PASS (73/73, 66/66, 443 source API call candidates, 0 direct RVA address operand tokens).
+**Latest status: Stage161 user-confirmed Windows SOURCE_ONLY PASS: 99/99 tests, 66/66 SHA, 12 local alias candidates (4 each for three Stage67/70 RVAs), 15 blocked; real writer→target proof remains 0.** The **actual** Stage160 Windows source-only audit is confirmed PASS (73/73, 66/66, 443 source API call candidates, 0 direct RVA address operand tokens).
+
+## User-confirmed Stage161 Windows current-project SOURCE_ONLY PASS — 2026-11-14
+
+The user ran `Stage161_SourceOnly/Invoke-Stage161Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'` on their actual Windows source tree and pasted the console transcript. This is user-provided console evidence, **not** an independently uploaded complete Stage161 JSON or private C++ code.
+
+```text
+STAGE161_MODE SOURCE_ONLY READ_ONLY NO_GAME_DLL_ACCESS NO_NATIVE_BUILD
+STAGE161_MANIFEST_PASS files=10
+Ran 99 tests in 8.552s
+OK
+STAGE161_HASHES matched=66 expected=66
+STAGE161_BASELINE stage160_api_candidates=443 direct_rva_operands=0
+STAGE161_ALIAS_CANDIDATES bounded=12 blocked=15 proven_writer_target_edges=0
+STAGE161_TARGET stage=STAGE10 rva=F34D0 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE10 rva=F3930 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE10_PARENT rva=F3280 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE10_PARENT rva=F4030 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE10_PARENT rva=F4360 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE129 rva=F30B0 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE129 rva=F325A alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE129 rva=F326A alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE81 rva=F7D22 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE81 rva=F7D38 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE81 rva=F7D43 alias_candidates=0 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE67 rva=AD75C alias_candidates=4 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE67 rva=E9E60 alias_candidates=4 owner=UNKNOWN
+STAGE161_TARGET stage=STAGE70 rva=156784 alias_candidates=4 owner=UNKNOWN
+STAGE161_LIFETIME RAW_CALLER_PROOF=NO WORKER_JOIN_PROOF=NO VEH_RETIREMENT=NO ROLLBACK_PROOF=NO
+STAGE161_METADATA C:\Users\Noma\AppData\Local\Temp\ArcanaAI_Stage161_SourceOnly\stage161_alias_lineage_metadata.json
+STAGE161_SOURCE_ONLY_PREFLIGHT_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+STAGE161_LOCAL_SOURCE_ONLY_TESTS_PASS SAFE_TO_INSTALL=false SAFE_TO_UNLOAD_GAME_DLL=false
+```
+
+**Evidence interpretation:** 99/99 unittest PASS on actual Windows 3.14 (including previous non-admin symlink test), manifest 10/10, 66/66 current-source SHA and Stage160 baseline 443/0 consistency. **Twelve bounded assignment-chain source candidates found**, all at the three Stage67/70 risk target RVAs (**four each**), while **15 candidates are blocked/ambiguous**. The other 11 declared native target RVAs yield zero candidates **under Stage161's bounded 1–3 hop/200-line same-file lexical rule**, not a proof of no writer. The 12 are syntactic hints, not 12 installed hooks, not proven calls/ownership, not rollback transactions. **`proven_writer_target_edges=0`** and all live safety gates remain unchanged.
+
+**Next Stage162 — targeted semantic source-only review, not yet executed:** consume the exact local Stage161 metadata (or targeted redacted source snippets), classify the 12 bounded Stage67/70 candidates by path/line, API role and ambiguity reasons, trace true source variable definitions, guards and earlier writes and restore-on-failure paths. Pay special attention to Stage67 `0xAD75C`/5, `0xE9E60`/6 and Stage70 `0x156784`/6; prior Stage150/151 model indicated partial write/rollback gaps. Treat no matches on Stage10/129/81 as analyzer coverage gaps, never as proof of absent patches. Do not change game code or introduce hooks. Stage162 has not been built or run yet.
+
+**Hard gate:** `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`, Stage36 OFF, origin(0x27)=UNKNOWN. External raw/foreign native caller census, trampoline/ABI/SEH, nine worker joins, three VEH retirement, installed byte ownership and rollback stay UNKNOWN/NO. Existing Stage129 working DLL 2,099,200 B and Stage122 fallback 2,089,984 B remain unchanged.
+
+---
 
 ## Why Stage161
 

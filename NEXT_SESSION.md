@@ -1,3 +1,11 @@
+## ACTIVE CHECKPOINT — Stage161 user Windows PASS; Stage162 targeted Stage67/70 alias/rollback review next (2026-11-14)
+
+- Actual user's Stage161 Windows console: **99/99 Python tests PASS**, manifest **10/10**, **66/66** source hashes, `STAGE161_BASELINE stage160_api_candidates=443 direct_rva_operands=0`, `STAGE161_ALIAS_CANDIDATES bounded=12 blocked=15 proven_writer_target_edges=0`. All 12 bounded hints occur at Stage67 `AD75C`/5 (4), `E9E60`/6 (4), Stage70 `156784`/6 (4). Every Stage10/Parent/129/81 target has 0 bounded hints (may use helpers/structures/macros; no absence claim). Detailed evidence [STAGE161_CHECKPOINT.md](STAGE161_CHECKPOINT.md).
+- **NEXT Stage162 SOURCE_ONLY:** do not repeat a broad 443-API scan. Inspect only 12 bounded candidate records and 15 blocked cases from user-local `%TEMP%\ArcanaAI_Stage161_SourceOnly\stage161_alias_lineage_metadata.json`; trace source-defined assignment and native writer destination/byte length/guards; classify partial rollback risk for Stage67/70. If full semantic source not available, report `UNKNOWN`, never 12 installed hooks. Current Stage161 JSON has not been uploaded; user pasted console only. Stage162 not yet created/tested.
+- Maintain native raw caller, trampoline replay/ABI/SEH, nine worker stop/join, three VEH callbacks/retirement, exact original bytes and rollback, external game DLL owner lease as UNPROVEN. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; Stage36 OFF, origin(0x27)=UNKNOWN; Stage129 working 2,099,200 B and Stage122 backup 2,089,984 B DLLs unchanged.
+
+---
+
 ## ACTIVE CHECKPOINT — Stage160 Windows PASS; Stage161 SOURCE_ONLY alias lineage package next (2026-11-14)
 
 - **New actual user Windows evidence**: Stage160 manifest 8/8 and **73/73 Python tests PASS** (5.497s). `STAGE160_HASHES matched=66 expected=66`; `STAGE160_DECLARED_SITES current=11 risk_stage67_70=3 source_api_candidates=443`; `STAGE160_WRITE_OPERANDS direct_source_literal_witnesses=0 writer_target_dataflow_proven=0`. All 14 pinned native/risk targets show zero direct RVA in API address argument. Static source preflight PASS. Zero direct operand tokens ≠ no runtime hook; aliases/structs/helpers/macros may hide target construction. `RAW_CALLER_PROOF=NO TRAMPOLINE_PROOF=NO WORKER_JOIN_PROOF=NO VEH_RETIREMENT=NO ROLLBACK_PROOF=NO`.

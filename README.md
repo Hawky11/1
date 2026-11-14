@@ -1,3 +1,9 @@
+## Stage162 Windows current-source PASS — Stage163 fault-state design next (2026-11-14)
+
+**User-confirmed 5/5 manifest and 15/15 Python tests PASS** on Windows, Stage161 alias ledger **12 bounded / 15 blocked** reconciled. Stage67 `AD75C` 5B / `E9E60` 6B and Stage70 `156784` 6B each `source_writer_target=HASH_PINNED_CPP_SOURCE_ONLY`, **`rollback=NO`**. Current source SHA pins enable narrow matching-source conclusions, **not runtime installation/ownership/rollback safety**. [Full Stage162 checkpoint](STAGE162_CHECKPOINT.md). Next Stage163 read-only partial-write/failure-state matrix. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; preserve existing DLL.
+
+---
+
 ## Stage162 SOURCE_ONLY Stage67/70 write-order analysis ready (2026-11-14)
 
 Reproduced Stage161 **12 bounded / 15 blocked** on archived Stage146 source, traced two Stage67 writes (`AD75C` 5 B → `E9E60` 6 B) and one Stage70 write (`156784` 6 B), and identified post-write `false` without code-byte rollback and Stage38 Stage59 admission implications. Hash-pinned Stage162 local script ZIP (9,205 B SHA256 `f9adddc5d77eb70ab05e64661f4808095fcc52282e7c190e330eb1fc716e1dff`) tests 15/15 PASS; **user Windows Stage162 current-tree run NOT YET done**. [Evidence, exact source lines and run instructions](STAGE162_CHECKPOINT.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; game DLL untouched.

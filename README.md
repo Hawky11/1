@@ -1,3 +1,9 @@
+## Stage164 Windows current-source PASS; Stage165 SOURCE_ONLY preimage/owner audit next (2026-11-14)
+
+User-confirmed **80/80 tests PASS** (0.281s), manifest **6/6**, Stage163 31-case upstream confirmation and **3/3 SHA-pinned source files**. Stage164 isolated test double: 65 cases = **2 commits, 10 no-write aborts, 31 verified synthetic rollbacks, 22 quarantines**. Stage67 AD75C/5 B and E9E60/6 B, Stage70 156784/6 B each `production_rollback=NO` on current source. [Full Stage164 Windows checkpoint](STAGE164_CHECKPOINT.md), [handoff](NEXT_SESSION.md). **Stage165 not started**; no game DLL modifications. `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`.
+
+---
+
 ## Stage164 source-only transaction feasibility ZIP ready (2026-11-14)
 
 **Stage163 Windows PASS** is current runtime-independent source baseline. Prepared `ArcanaAI_Stage164_Stage67_70_TransactionRollbackFeasibility_SOURCE_ONLY.zip`, **18,505 bytes SHA256 `e2488f1403c5c41317853a0b54aa84384a7e18bd54617c36e03d860f7c07b99f`**; 6/6 manifest, **80/80 tests PASS on clean ZIP extraction**, historical Stage146 3/3 source hash and Stage163 31-case contract preview PASS. Model runs **65** isolated synthetic cases (2 toy commits, 10 prewrite aborts, 31 synthetic rollbacks, 22 quarantines) and never asserts live patch safety. **User Windows Stage164 not yet executed**. Run `Stage164_SourceOnly/Invoke-Stage164Audit.ps1 -ProjectRoot 'D:\INCUBATOR\ArcanaAIOverhaul'`. [Checkpoint and safety limits](STAGE164_CHECKPOINT.md); [handoff](NEXT_SESSION.md). `SAFE_TO_INSTALL=false`, `SAFE_TO_UNLOAD_GAME_DLL=false`; game DLL unchanged.
